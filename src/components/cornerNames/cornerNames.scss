@@ -1,0 +1,227 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"cornerNamesContainer":"cornerNamesContainer","trackNameTextContainer":"trackNameTextContainer","trackNameTextText":"trackNameTextText","trackNameContainer":"trackNameContainer","trackNameText":"trackNameText","isGerman":"isGerman","isFrench":"isFrench","isSpanish":"isSpanish","layoutNameTextContainer":"layoutNameTextContainer","layoutNameTextText":"layoutNameTextText","layoutNameContainer":"layoutNameContainer","layoutNameText":"layoutNameText","trackLengthTextContainer":"trackLengthTextContainer","trackLengthText":"trackLengthText","trackLengthContainer":"trackLengthContainer","trackLengthNumber":"trackLengthNumber","trackDistTextContainer":"trackDistTextContainer","trackDistText":"trackDistText","trackDistContainer":"trackDistContainer","trackDistNumber":"trackDistNumber","cornerNameContainer":"cornerNameContainer","cornerNameText":"cornerNameText","showDetails":"showDetails","showCorners":"showCorners","showBoth":"showBoth","theSillyShit":"theSillyShit"};
+
+.cornerNamesContainer {
+  width: 505px;
+  height: 110px;
+  border-radius: 5px;
+  border: 1px solid hsla(0, 0%, 100%, 0);
+  background: rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.cornerNamesContainer,
+.cornerNamesContainer .trackNameTextContainer {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackNameTextContainer {
+  width: 68px;
+  height: 28px;
+  left: 0;
+  top: 2px;
+  background-color: hsla(0, 0%, 100%, 0);
+}
+.cornerNamesContainer .trackNameTextContainer .trackNameTextText {
+  width: 55px;
+  height: 28px;
+  white-space: pre;
+  font-weight: 350;
+  color: #ffffcd;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .trackNameContainer {
+  display: block;
+  width: 302px;
+  height: 28px;
+  left: 60px;
+  top: 2px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackNameContainer .trackNameText {
+  width: 302px;
+  height: 21px;
+  white-space: pre;
+  font-weight: 350;
+  color: #fff;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .trackNameContainer.isFrench,
+.cornerNamesContainer .trackNameContainer.isGerman {
+  left: 68px;
+}
+.cornerNamesContainer .trackNameContainer.isSpanish {
+  left: 70px;
+}
+.cornerNamesContainer .layoutNameTextContainer {
+  display: block;
+  width: 65px;
+  height: 28px;
+  left: 0;
+  top: 28px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .layoutNameTextContainer .layoutNameTextText {
+  width: 55px;
+  height: 28px;
+  white-space: pre;
+  font-weight: 350;
+  color: #ffffcd;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .layoutNameContainer {
+  display: block;
+  width: 302px;
+  height: 28px;
+  left: 60px;
+  top: 28px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .layoutNameContainer .layoutNameText {
+  width: 302px;
+  height: 21px;
+  white-space: pre;
+  font-weight: 350;
+  color: #fff;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .layoutNameContainer.isFrench,
+.cornerNamesContainer .layoutNameContainer.isGerman {
+  left: 68px;
+}
+.cornerNamesContainer .layoutNameContainer.isSpanish {
+  left: 70px;
+}
+.cornerNamesContainer .trackLengthTextContainer {
+  display: block;
+  width: 68px;
+  height: 28px;
+  left: 360px;
+  top: 2px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackLengthTextContainer .trackLengthText {
+  width: 55px;
+  height: 28px;
+  white-space: pre;
+  font-weight: 350;
+  color: #ffffcd;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .trackLengthContainer {
+  display: block;
+  width: 85px;
+  height: 28px;
+  left: 420px;
+  top: 2px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackLengthContainer .trackLengthNumber {
+  width: 85px;
+  height: 21px;
+  white-space: pre;
+  font-weight: 350;
+  color: #fff;
+  font-size: 22px;
+  text-align: right;
+  margin: 0;
+}
+.cornerNamesContainer .trackDistTextContainer {
+  display: block;
+  width: 65px;
+  height: 28px;
+  left: 360px;
+  top: 28px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackDistTextContainer .trackDistText {
+  width: 65px;
+  height: 28px;
+  white-space: pre;
+  font-weight: 350;
+  color: #ffffcd;
+  font-size: 22px;
+  margin: 0;
+}
+.cornerNamesContainer .trackDistContainer {
+  display: block;
+  width: 85px;
+  height: 28px;
+  left: 420px;
+  top: 28px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .trackDistContainer .trackDistNumber {
+  width: 85px;
+  height: 28px;
+  white-space: pre;
+  font-weight: 350;
+  color: #fff;
+  font-size: 22px;
+  text-align: right;
+  margin: 0;
+}
+.cornerNamesContainer .cornerNameContainer {
+  display: block;
+  width: 505px;
+  height: 54px;
+  left: 5px;
+  top: 51px;
+  background-color: hsla(0, 0%, 100%, 0);
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.cornerNamesContainer .cornerNameContainer .cornerNameText {
+  width: 505px;
+  height: 54px;
+  white-space: pre;
+  font-weight: 700;
+  color: #1e90ff;
+  font-size: 40px;
+  text-align: center;
+  margin: 6px 0;
+}
+.cornerNamesContainer.showCorners,
+.cornerNamesContainer.showDetails {
+  height: 55px;
+}
+.cornerNamesContainer.showCorners .cornerNameContainer {
+  top: 1px;
+}
+.cornerNamesContainer.showBoth {
+  height: 110px;
+}
+.cornerNamesContainer.theSillyShit {
+  background: transparent;
+}
+.cornerNamesContainer.theSillyShit .cornerNameContainer .cornerNameText {
+  color: #fff;
+}

@@ -1,0 +1,74 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"spottingContainer":"spottingContainer","shouldShow":"shouldShow","autoHide":"autoHide","noneClose":"noneClose","someoneClose":"someoneClose","warning":"warning","left":"left","right":"right","spotting":"spotting","driver":"driver","isUser":"isUser","isFrontNotShow":"isFrontNotShow","blib":"blib"};
+
+.spottingContainer {
+  display: none;
+  width: 140px;
+  height: 140px;
+  bottom: 40px;
+  right: 270px;
+  position: absolute;
+  background: url(./../../img/radar.svg);
+  opacity: 0;
+}
+.spottingContainer.shouldShow {
+  display: block;
+}
+.spottingContainer.autoHide.noneClose {
+  display: none;
+}
+.spottingContainer.autoHide.someoneClose {
+  display: block;
+}
+.spottingContainer .warning {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.spottingContainer .warning.left {
+  background: url(./../../img/gridWarningLeft.png);
+}
+.spottingContainer .warning.right {
+  background: url(./../../img/gridWarningRight.png);
+}
+.spotting {
+  transform-origin: top left;
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  pointer-events: none;
+}
+.spotting .driver {
+  transform-origin: top left;
+  width: 9px;
+  height: 23px;
+  position: absolute;
+  border-radius: 3px;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 10px #000, 0 0 10px #000, 0 0 10px #000;
+  font-size: 10px;
+}
+.spotting .driver.isUser {
+  background: #fff !important;
+}
+.spotting .driver.isFrontNotShow {
+  background: transparent;
+  box-shadow: 0 0 0 transparent;
+  text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+}
+.spotting .blib {
+  transform-origin: top left;
+  top: 0;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: #000;
+  border: 2px solid #fff;
+}

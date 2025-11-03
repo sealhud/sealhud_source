@@ -1,0 +1,283 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"tires":"tires","wheel":"wheel","tempcenter":"tempcenter","templeft":"templeft","tempright":"tempright","rearLeft":"rearLeft","rearRight":"rearRight","gripLevel":"gripLevel","frontLeft":"frontLeft","frontRight":"frontRight","tireDirtOverlay":"tireDirtOverlay","brake":"brake","tireWearContainer":"tireWearContainer","tireWearLeft":"tireWearLeft","tireWearCenter":"tireWearCenter","tireWearRight":"tireWearRight","tireWearNumber":"tireWearNumber","tirePressureNumber":"tirePressureNumber","tirePuncture":"tirePuncture","wearLaps":"wearLaps","tiresa":"tiresa","temp":"temp","tireWear":"tireWear"};
+
+.tires {
+  position: absolute;
+  height: 100px;
+  width: 130px;
+  top: 940px;
+  left: 1750px;
+  margin-right: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  opacity: 1;
+}
+.tires .wheel {
+  background: #000;
+  width: 61px;
+  height: 46px;
+  float: left;
+  margin: 2px;
+  position: relative;
+  border-radius: 5px;
+}
+.tires .wheel .tempcenter {
+  left: 35%;
+}
+.tires .wheel .tempcenter,
+.tires .wheel .templeft {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 3px;
+  z-index: 11;
+  font-size: 10px;
+  width: 33%;
+  text-align: center;
+}
+.tires .wheel .templeft {
+  left: 2%;
+}
+.tires .wheel .tempright {
+  position: absolute;
+  bottom: 100%;
+  left: 68%;
+  margin-bottom: 3px;
+  z-index: 11;
+  font-size: 10px;
+  width: 33%;
+  text-align: center;
+}
+.tires .wheel.rearLeft .tempcenter,
+.tires .wheel.rearLeft .templeft,
+.tires .wheel.rearLeft .tempright,
+.tires .wheel.rearRight .tempcenter,
+.tires .wheel.rearRight .templeft,
+.tires .wheel.rearRight .tempright {
+  position: absolute;
+  bottom: auto;
+  top: 100%;
+  margin-top: 3px;
+  z-index: 11;
+  font-size: 10px;
+}
+.tires .wheel.frontLeft .gripLevel,
+.tires .wheel.rearLeft .gripLevel {
+  left: -8px;
+}
+.tires .wheel.frontRight .gripLevel,
+.tires .wheel.rearRight .gripLevel {
+  right: -8px;
+}
+.tires .wheel:after {
+  display: block;
+  content: "";
+  border-radius: 3px;
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
+}
+.tires .wheel .tireDirtOverlay,
+.tires .wheel:after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+.tires .wheel .tireDirtOverlay {
+  border-radius: 5px;
+  border: 2px solid red;
+}
+.tires .wheel .brake {
+  position: absolute;
+  width: 6px;
+  border-radius: 5px;
+  background: grey;
+  border: 1px solid #000;
+  top: 10px;
+  bottom: 10px;
+}
+.tires .wheel .brake.frontLeft,
+.tires .wheel .brake.rearLeft {
+  left: -4px;
+}
+.tires .wheel .brake.frontRight,
+.tires .wheel .brake.rearRight {
+  right: -4px;
+}
+.tires .wheel .tireWearContainer {
+  top: 2px;
+  right: 4px;
+  left: 4px;
+  bottom: 2px;
+  position: absolute;
+}
+.tires .wheel .tireWearContainer .tireWearLeft {
+  left: 0;
+}
+.tires .wheel .tireWearContainer .tireWearCenter,
+.tires .wheel .tireWearContainer .tireWearLeft {
+  background: #222;
+  border-top: 1px solid #555;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 33%;
+}
+.tires .wheel .tireWearContainer .tireWearCenter {
+  left: 33%;
+}
+.tires .wheel .tireWearContainer .tireWearRight {
+  background: #222;
+  border-top: 1px solid #555;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 66%;
+  right: 0;
+  width: 33%;
+}
+.tires .wheel .tireWearContainer .tireWearNumber {
+  bottom: 50%;
+  width: 100px;
+}
+.tires .wheel .tireWearContainer .tirePressureNumber,
+.tires .wheel .tireWearContainer .tireWearNumber {
+  position: absolute;
+  transform: translate(-50%);
+  left: 50%;
+  margin-bottom: 3px;
+  z-index: 11;
+  font-size: 12px;
+  text-align: center;
+}
+.tires .wheel .tireWearContainer .tirePressureNumber {
+  bottom: 5%;
+}
+.tires .wheel .tireWearContainer .tirePuncture {
+  margin: 2px 0 0 9px;
+}
+.tires .wearLaps {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 12px;
+  width: 120px;
+  font-size: 12px;
+  background: transparent;
+  border-radius: -5px;
+  text-align: center;
+  color: #fff;
+}
+.tiresa {
+  position: absolute;
+  height: 100px;
+  width: 50px;
+  top: 940px;
+  left: 1750px;
+  margin-right: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  opacity: 1;
+}
+.tiresa .wheel {
+  background: #000;
+  width: 21px;
+  height: 46px;
+  float: left;
+  margin: 2px;
+  position: relative;
+  border-radius: 5px;
+}
+.tiresa .wheel .temp {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 3px;
+  z-index: 11;
+  font-size: 10px;
+  width: 100%;
+  text-align: center;
+}
+.tiresa .wheel.rearLeft .temp,
+.tiresa .wheel.rearRight .temp {
+  position: absolute;
+  bottom: auto;
+  top: 100%;
+  margin-top: 3px;
+  z-index: 11;
+  font-size: 10px;
+}
+.tiresa .wheel.frontLeft .gripLevel,
+.tiresa .wheel.rearLeft .gripLevel {
+  left: -8px;
+}
+.tiresa .wheel.frontRight .gripLevel,
+.tiresa .wheel.rearRight .gripLevel {
+  right: -8px;
+}
+.tiresa .wheel:after {
+  display: block;
+  content: "";
+  border-radius: 3px;
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
+}
+.tiresa .wheel .tireDirtOverlay,
+.tiresa .wheel:after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+.tiresa .wheel .tireDirtOverlay {
+  border-radius: 5px;
+  border: 2px solid red;
+}
+.tiresa .wheel .brake {
+  position: absolute;
+  width: 6px;
+  border-radius: 5px;
+  background: grey;
+  border: 1px solid #000;
+  top: 10px;
+  bottom: 10px;
+}
+.tiresa .wheel .brake.frontLeft,
+.tiresa .wheel .brake.rearLeft {
+  left: -4px;
+}
+.tiresa .wheel .brake.frontRight,
+.tiresa .wheel .brake.rearRight {
+  right: -4px;
+}
+.tiresa .wheel .tireWearContainer {
+  top: 3px;
+  right: 3px;
+  left: 3px;
+  bottom: 3px;
+  position: absolute;
+}
+.tiresa .wheel .tireWearContainer .tireWear {
+  background: #222;
+  border-top: 1px solid #555;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.tiresa .wearLaps {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 12px;
+  width: 120px;
+  font-size: 12px;
+  background: transparent;
+  border-radius: -5px;
+  text-align: center;
+  color: #fff;
+}
+.tiresa .tirePuncture {
+  height: 50px;
+  width: 50px;
+}

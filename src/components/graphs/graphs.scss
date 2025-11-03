@@ -1,0 +1,133 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"graphs":"graphs","wide":"wide","wider":"wider","widest":"widest","selection":"selection","depth-1":"depth-1","hasTracking":"hasTracking","canvases":"canvases","toggleEdit":"toggleEdit","reset":"reset","clearTracking":"clearTracking","closeSelection":"closeSelection","clearSelection":"clearSelection"};
+
+.graphs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  min-width: 312px;
+  max-width: 624px;
+  max-height: 95%;
+  cursor: pointer;
+}
+.graphs.wide {
+  max-width: 932px;
+}
+.graphs.wider {
+  max-width: 1238px;
+}
+.graphs.widest {
+  max-width: 1545px;
+}
+.graphs:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+.graphs canvas {
+  border: 1px solid hsla(0, 0%, 100%, 0.1);
+  margin: 0 2.5px;
+}
+.graphs .selection {
+  position: fixed;
+  right: 15px;
+  top: 60px;
+  width: 300px;
+  height: 1000px;
+  bottom: 0;
+  background: #000;
+  color: #fff;
+  border: 1px solid #333;
+  font-family: Oswald;
+}
+.graphs .selection option {
+  padding: 2.5px 10px;
+  white-space: pre-line;
+}
+.graphs .selection option.depth-1 {
+  padding-left: 30px;
+  color: hsla(0, 0%, 100%, 0.6);
+  position: relative;
+}
+.graphs .selection option.depth-1:before {
+  content: "↳";
+  display: inline;
+  position: relative;
+  left: -10px;
+  font-family: arial;
+}
+.graphs .selection option:nth-child(odd) {
+  background: hsla(0, 0%, 100%, 0.1);
+}
+.graphs .selection:focus {
+  outline: none;
+}
+.graphs .selection::-webkit-scrollbar {
+  width: 10px;
+  background-color: #1b1b1b;
+  border-left: 0.1vh solid hsla(0, 0%, 100%, 0.1);
+}
+.graphs .selection::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #fff;
+}
+.graphs.hasTracking .canvases {
+  padding: 5px;
+}
+.graphs.hasTracking .clearTracking,
+.graphs.hasTracking .reset,
+.graphs.hasTracking .toggleEdit {
+  display: none;
+}
+.graphs.hasTracking:hover .clearTracking,
+.graphs.hasTracking:hover .reset,
+.graphs.hasTracking:hover .toggleEdit {
+  display: block;
+}
+.graphs .clearSelection,
+.graphs .clearTracking,
+.graphs .closeSelection,
+.graphs .reset,
+.graphs .toggleEdit {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  border-radius: 0 5px 0 0;
+}
+.graphs .clearSelection:hover,
+.graphs .clearTracking:hover,
+.graphs .closeSelection:hover,
+.graphs .reset:hover,
+.graphs .toggleEdit:hover {
+  color: #ffa;
+}
+.graphs .reset {
+  right: 0;
+  left: auto;
+}
+.graphs .clearTracking {
+  right: 0;
+  left: auto;
+  top: 0;
+  bottom: auto;
+}
+.graphs .closeSelection {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.graphs .clearSelection,
+.graphs .closeSelection {
+  position: fixed;
+  bottom: auto;
+  left: auto;
+  right: 315px;
+  font-size: 50px;
+  border-radius: 5px 0 0 5px;
+  padding: 5px 10px 10px;
+  cursor: pointer;
+}
+.graphs .clearSelection {
+  top: 60px;
+}

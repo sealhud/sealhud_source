@@ -1,0 +1,84 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"fuel":"fuel","low":"low","barContainer":"barContainer","bar":"bar","svgIcon":"svgIcon","fuelPerLap":"fuelPerLap","fuelLeft":"fuelLeft"};
+
+.fuel {
+  background: red;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+  height: 100px;
+  position: absolute;
+  top: 940px;
+  left: 1660px;
+  margin-right: 70px;
+  border-radius: 2px;
+  width: 46px;
+  width: 22px;
+  right: 150px;
+  padding: 5px 5px 30px;
+}
+.fuel.low {
+  background: rgba(255, 0, 0, 0.7);
+}
+.fuel .barContainer {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  margin: 0 1px;
+  width: 14px;
+  left: 45%;
+  transform: translate(-50%);
+  display: inline-block;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid hsla(0, 0%, 100%, 0.15);
+}
+.fuel .barContainer .bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  background: linear-gradient(45deg, #e7e7e7, #c9c9c9);
+}
+.fuel .barContainer .bar:after {
+  position: absolute;
+  display: block;
+  content: "";
+  border-radius: 3px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+.fuel .barContainer {
+  top: 10px;
+  height: 53px;
+}
+.fuel .svgIcon {
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: 1px;
+  transform: translate(-50%, -50%);
+}
+.fuel .svgIcon svg {
+  fill: #fff;
+}
+.fuel .fuelLeft,
+.fuel .fuelPerLap {
+  position: absolute;
+  font-size: 9px;
+  left: -5px;
+  right: -5px;
+  text-align: center;
+}
+.fuel .fuelPerLap {
+  top: 3px;
+}
+.fuel .fuelLeft {
+  bottom: 20px;
+}
