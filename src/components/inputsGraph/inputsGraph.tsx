@@ -1,0 +1,129 @@
+import { observer } from "mobx-react";
+import { action, observable } from "mobx";
+import {
+	IWidgetSetting,
+	// lowPerformanceMode,
+	// highPerformanceMode,
+	showAllMode
+} from '../app/app';
+import r3e, { registerUpdate, unregisterUpdate, nowCheck } from "../../lib/r3e";
+import { widgetSettings } from "../../lib/utils";
+import React from "react";
+import './inputsGraph.scss';
+
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+	settings: IWidgetSetting;
+}
+
+@observer
+export default class InputsGraph extends React.Component<IProps> {
+	private maxHistoryMs = 6000; // duração do histórico em milisegundos
+	private canvasWidth = 160;
+	private canvasHeight = 50;
+
+	@observable accessor throttleHistory: { t: number; v: number }[] = [];
+	@observable accessor brakeHistory: { t: number; v: number }[] = [];
+	@observable accessor clutchHistory: { t: number; v: number }[] = [];
+
+	constructor(props: IProps) {
+		super(props);
+		registerUpdate(this.update);
+	}
+
+	componentWillUnmount() {
+		unregisterUpdate(this.update);
+	}
+
+	@action
+	@action
+	private update = () => {
+		const now = nowCheck;
+		// Parâmetro de suavização (1=sem suavizar | 0.1=curva ultra suave)
+		const smoothFactor = 0.20;
+		const smoothedThrottle =
+			this.throttleHistory.length > 0
+				? this.throttleHistory[this.throttleHistory.length - 1].v * (1 - smoothFactor) +
+				r3e.data.ThrottleRaw * smoothFactor
+				: r3e.data.ThrottleRaw;
+		const smoothedBrake =
+			this.brakeHistory.length > 0
+				? this.brakeHistory[this.brakeHistory.length - 1].v * (1 - smoothFactor) +
+				r3e.data.BrakeRaw * smoothFactor
+				: r3e.data.BrakeRaw;
+		const smoothedClutch =
+			this.clutchHistory.length > 0
+				? this.clutchHistory[this.clutchHistory.length - 1].v * (1 - smoothFactor) +
+				r3e.data.ClutchRaw * smoothFactor
+				: r3e.data.ClutchRaw;
+		this.throttleHistory.push({ t: now, v: smoothedThrottle });
+		this.brakeHistory.push({ t: now, v: smoothedBrake });
+		this.clutchHistory.push({ t: now, v: smoothedClutch });
+		// Mantém somente o tempo configurado na memória
+		while (this.throttleHistory.length && now - this.throttleHistory[0].t > this.maxHistoryMs)
+			this.throttleHistory.shift();
+		while (this.brakeHistory.length && now - this.brakeHistory[0].t > this.maxHistoryMs)
+			this.brakeHistory.shift();
+		while (this.clutchHistory.length && now - this.clutchHistory[0].t > this.maxHistoryMs)
+			this.clutchHistory.shift();
+	};
+
+	private renderPath(history: { t: number; v: number }[], color: string) {
+		if (history.length < 2) return "";
+
+		const now = nowCheck;
+		const points = history.map(h => {
+			const age = now - h.t;
+			const x = this.canvasWidth - (age / this.maxHistoryMs) * this.canvasWidth;
+			const y = this.canvasHeight - h.v * this.canvasHeight;
+			return `${x},${y}`;
+		});
+
+		return points.join(" ");
+	}
+
+	render() {
+		return (
+			<div {...widgetSettings(this.props)} className="inputsGraph">
+				<svg
+					width={this.canvasWidth}
+					height={this.canvasHeight}
+					style={{ overflow: "visible" }}
+				>
+					{/* Brake RED */}
+					{
+						this.props.settings.subSettings.showInputBrake.enabled && (
+							<polyline
+								fill="none"
+								stroke="#cd5c5c"
+								strokeWidth="1.1"
+								points={this.renderPath(this.brakeHistory, "red")}
+							/>
+						)
+					}
+					{/* Throttle GREEN */}
+					{
+						this.props.settings.subSettings.showInputThrottle.enabled && (
+							<polyline
+								fill="none"
+								stroke="#30b66cff"
+								strokeWidth="1.1"
+								points={this.renderPath(this.throttleHistory, "green")}
+							/>
+						)
+					}
+					{/* Clutch GRAY */}
+					{
+						this.props.settings.subSettings.showInputClutch.enabled && (
+							<polyline
+								fill="none"
+								stroke="#707070ff"
+								strokeWidth="1.1"
+								points={this.renderPath(this.clutchHistory, "gray")}
+							/>
+						)
+					}
+				</svg>
+			</div>
+		);
+	}
+}

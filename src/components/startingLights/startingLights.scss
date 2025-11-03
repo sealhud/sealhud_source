@@ -1,0 +1,50 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"startingLights":"startingLights","inner":"inner","light":"light","active":"active","green":"green"};
+
+.startingLights .inner {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  background: #1d1d1d;
+  border-radius: 50px;
+  padding: 10px;
+  transform: translate(-50%);
+  box-shadow: 0 0 20px #000;
+  border: 2px solid #222;
+  background: linear-gradient(0, #141414, #323232);
+}
+.startingLights .inner .light {
+  width: 94px;
+  height: 90px;
+  float: left;
+  box-shadow: 0 0 20px #000;
+  border-radius: 100%;
+  background: url(./../../img/countdownLight.png),
+    linear-gradient(0, #1e1e1e, #0a0a0a);
+  border: 1px solid #333;
+  margin: 0 5px;
+  position: relative;
+}
+.startingLights .inner .light:after {
+  background: url(./../../img/countdownLightActive.png);
+}
+.startingLights .inner .light:after,
+.startingLights .inner .light:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  content: "";
+  width: 94px;
+  height: 90px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.startingLights .inner .light:before {
+  background: url(./../../img/countdownLightGreen.png);
+  z-index: 11;
+}
+.startingLights .inner .light.active:after,
+.startingLights .inner .light.green:before {
+  opacity: 1;
+}

@@ -1,0 +1,76 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"flags":"flags","flag":"flag","text":"text","flagBlock":"flagBlock","white":"white","blue":"blue","yellow":"yellow","black":"black","checkered":"checkered","blackAndWhite":"blackAndWhite","green":"green"};
+
+.flags {
+  position: absolute;
+  top: 150px;
+  left: 20px;
+}
+.flags .flag {
+  margin-bottom: 10px;
+}
+.flags .flag .text {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  font-size: 13px;
+  padding: 5px 10px;
+  text-align: center;
+  width: 130px;
+  overflow: hidden;
+  white-space: wrap;
+}
+.flags .flag .flagBlock {
+  width: 130px;
+  height: 50px;
+  position: relative;
+}
+.flags .flag .flagBlock:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(./../../img/flag.png);
+}
+.flags .flag.white .flagBlock {
+  background: #fff;
+}
+.flags .flag.blue .flagBlock {
+  background: #4949d4;
+}
+.flags .flag.yellow .flagBlock {
+  background: #fcf831;
+}
+.flags .flag.black .flagBlock {
+  background: #000;
+}
+.flags .flag.checkered .flagBlock {
+  background-image: linear-gradient(
+      90deg,
+      hsla(0, 0%, 100%, 0),
+      hsla(0, 0%, 100%, 0)
+    ),
+    linear-gradient(90deg, #000 50%, #fff 0),
+    linear-gradient(180deg, #000 50%, #fff 0);
+  background-blend-mode: normal, difference, normal;
+  background-size: 34px 33px;
+}
+.flags .flag.blackAndWhite .flagBlock {
+  background: #fff;
+  position: relative;
+}
+.flags .flag.blackAndWhite .flagBlock:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: #000 transparent transparent;
+  border-style: solid;
+  border-width: 50px 130px 0 0;
+}
+.flags .flag.green .flagBlock {
+  background: #29c25c;
+}

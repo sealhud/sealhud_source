@@ -1,0 +1,11 @@
+- Temperatura de Oleo
+- Temperatura de Motor
+- Agradecer ChatGPT
+- Alterar o widget dos pneus
+- Musica quando ganha corrida
+- Incluir canal de doação
+- Mapear mais pistas
+- Delta a partir da primeira volta
+- Delta continua quando invalida
+- Mudar as bandeiras para sinais eletronicos em gif
+- Marcar o piloto em bandeira amarela

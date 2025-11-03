@@ -1,0 +1,31 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"info":"info","warning":"warning","svgIcon":"svgIcon"};
+
+.info {
+  position: absolute;
+  left: 20px;
+  top: 405px;
+  font-family: EurasiaEx;
+  white-space: pre;
+  font-size: 14px;
+}
+.info .warning {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 5px 5px 3px 18px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  position: relative;
+}
+.info .warning .svgIcon {
+  vertical-align: top;
+}
+.info .warning .svgIcon svg {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  height: 17px;
+  width: 17px;
+  fill: orange;
+  margin-right: 0;
+  padding: 0;
+}

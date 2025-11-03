@@ -1,0 +1,29 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"pitLimiter":"pitLimiter","shouldShow":"shouldShow","max":"max","current":"current","warning":"warning"};
+
+.pitLimiter {
+  display: none;
+  position: absolute;
+  top: 200px;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  transform: translateX(-50%);
+  text-align: center;
+  padding: 10px;
+}
+.pitLimiter * {
+  margin: 0;
+}
+.pitLimiter.shouldShow {
+  display: block;
+}
+.pitLimiter .max {
+  font-size: 20px;
+  padding: 0 5px 5px;
+}
+.pitLimiter .current {
+  opacity: 0.75;
+}
+.pitLimiter.warning {
+  background: rgba(119, 0, 0, 0.75);
+}

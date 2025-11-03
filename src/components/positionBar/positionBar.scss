@@ -1,0 +1,436 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"positionBarContainer":"positionBarContainer","normal":"normal","shouldShow":"shouldShow","positionBar":"positionBar","player":"player","position":"position","name":"name","diff":"diff","isUser":"isUser","classStyle":"classStyle","pitting":"pitting","noShadow":"noShadow","pittime":"pittime","pittimea":"pittimea","currentLapTime":"currentLapTime","currentPosition":"currentPosition","currentPositionClass":"currentPositionClass","sessionLaps":"sessionLaps","sessionLapsRemain":"sessionLapsRemain","sessionTime":"sessionTime","incidentPoints":"incidentPoints","lastLap":"lastLap","bestLap":"bestLap","strengthOfField":"strengthOfField","currentLap":"currentLap","label":"label","sessionRemainHours":"sessionRemainHours","sessionRemainHoursText":"sessionRemainHoursText","sessionRemainMinutes":"sessionRemainMinutes","sessionRemainMinutesText":"sessionRemainMinutesText","sessionRemainSeconds":"sessionRemainSeconds","sessionRemainSecondsText":"sessionRemainSecondsText","noTime":"noTime","noStandings":"noStandings","gameIsVR":"gameIsVR","noMultiClass":"noMultiClass","relative":"relative","sCarNames":"sCarNames","carName":"carName","sRankData":"sRankData","rankData":"rankData","carLogo":"carLogo","stopStatus":"stopStatus","textShadow":"textShadow","lapping":"lapping","sameLap":"sameLap","lapped":"lapped","noRaceSession":"noRaceSession","validLap":"validLap","noValidLap":"noValidLap","classLogo":"classLogo","userId":"userId","sClassLogos":"sClassLogos","sCarLogos":"sCarLogos","sGapsInSeconds":"sGapsInSeconds"};
+
+.positionBarContainer.normal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.normal.shouldShow {
+  display: block;
+}
+.positionBarContainer.normal .positionBar {
+  position: absolute;
+  top: 0;
+  padding-top: 3px;
+  left: 50%;
+  transform: translate(-50%);
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  white-space: pre;
+  bottom: 0;
+  white-space: nowrap;
+  width: 1920px;
+  height: 43px;
+}
+.positionBarContainer.normal .positionBar:before {
+  left: 100%;
+}
+.positionBarContainer.normal .positionBar:after,
+.positionBarContainer.normal .positionBar:before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10000px;
+  content: "";
+  display: block;
+  background: rgba(0, 0, 0, 0.3);
+}
+.positionBarContainer.normal .positionBar:after {
+  right: 100%;
+}
+.positionBarContainer.normal .positionBar .player {
+  width: 148px;
+  height: 40px;
+  position: relative;
+  display: inline-block;
+}
+.positionBarContainer.normal .positionBar .player .position {
+  background: rgba(0, 0, 0, 0.15);
+  color: #fff;
+  width: 25px;
+  position: absolute;
+  top: 0;
+  line-height: 40px;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  font-weight: 700;
+}
+.positionBarContainer.normal .positionBar .player .name {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  left: 10px;
+  height: 45px;
+  text-align: center;
+  padding: 0 5px 0 20px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}
+.positionBarContainer.normal .positionBar .player .diff {
+  position: absolute;
+  text-align: center;
+  bottom: 4px;
+  right: 0;
+  left: 20px;
+}
+.positionBarContainer.normal .positionBar .player.isUser {
+  background: rgba(0, 0, 0, 0.3);
+}
+.positionBarContainer.normal .positionBar .player.isUser .diff {
+  bottom: 8px;
+  font-size: 25px;
+  color: #fffd8e;
+}
+.positionBarContainer.normal .positionBar .player.isUser .name {
+  display: none;
+}
+.positionBarContainer.normal .positionBar .player .classStyle {
+  display: block;
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
+.positionBarContainer.normal .positionBar .player .pitting {
+  display: inline-block;
+  position: relative;
+  width: 27px;
+  padding: 0;
+  line-height: 21px;
+  text-align: center;
+  color: #fff;
+  top: 17px;
+  left: 0;
+  margin-top: 23px;
+  z-index: -1;
+  height: 21px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.normal .positionBar .player .pitting.noShadow {
+  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+}
+.positionBarContainer.normal .positionBar .player .pitting .pittime {
+  display: inline-block;
+  position: relative;
+  width: 45px;
+  line-height: 21px;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 100, 255, 0.6);
+  top: 0;
+  left: 2px;
+  z-index: -2;
+  height: 21px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.normal .positionBar .player .pitting .pittime.noShadow {
+  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+}
+.positionBarContainer.normal .positionBar .player .pitting .pittimea {
+  display: inline-block;
+  position: relative;
+  width: 45px;
+  top: -6px;
+  left: 2px;
+  text-align: rightcenter;
+  color: #fff;
+  background: rgba(0, 100, 255, 0.6);
+  top: 0;
+  z-index: -2;
+  height: 21px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.normal .positionBar .player .pitting .pittimea.noShadow {
+  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+}
+.positionBarContainer.normal .bestLap,
+.positionBarContainer.normal .currentLap,
+.positionBarContainer.normal .currentLapTime,
+.positionBarContainer.normal .currentPosition,
+.positionBarContainer.normal .currentPositionClass,
+.positionBarContainer.normal .incidentPoints,
+.positionBarContainer.normal .lastLap,
+.positionBarContainer.normal .sessionLaps,
+.positionBarContainer.normal .sessionLapsRemain,
+.positionBarContainer.normal .sessionTime,
+.positionBarContainer.normal .strengthOfField {
+  position: absolute;
+  top: 60px;
+  font-size: 32px;
+  text-align: center;
+}
+.positionBarContainer.normal .bestLap .label,
+.positionBarContainer.normal .currentLap .label,
+.positionBarContainer.normal .currentLapTime .label,
+.positionBarContainer.normal .currentPosition .label,
+.positionBarContainer.normal .currentPositionClass .label,
+.positionBarContainer.normal .incidentPoints .label,
+.positionBarContainer.normal .lastLap .label,
+.positionBarContainer.normal .sessionLaps .label,
+.positionBarContainer.normal .sessionLapsRemain .label,
+.positionBarContainer.normal .sessionTime .label,
+.positionBarContainer.normal .strengthOfField .label {
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+.positionBarContainer.normal .sessionLapsRemain {
+  white-space: pre;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainHours {
+  display: inline-block;
+  font-size: 32px;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainHoursText {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  color: silver;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainMinutes {
+  display: inline-block;
+  font-size: 32px;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainMinutesText {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  color: silver;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainSeconds {
+  display: inline-block;
+  font-size: 32px;
+}
+.positionBarContainer.normal .sessionTime .sessionRemainSecondsText {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  color: silver;
+}
+.positionBarContainer.normal .currentLapTime {
+  width: 130px;
+}
+.positionBarContainer.normal .currentPosition,
+.positionBarContainer.normal .currentPositionClass,
+.positionBarContainer.normal .sessionLaps {
+  width: 120px;
+}
+.positionBarContainer.normal .currentPositionClass {
+  text-align: center;
+}
+.positionBarContainer.normal .sessionTime {
+  width: 120px;
+  right: 10px;
+}
+.positionBarContainer.normal .incidentPoints {
+  width: 115px;
+  right: 10px;
+}
+.positionBarContainer.normal .bestLap,
+.positionBarContainer.normal .lastLap {
+  width: 130px;
+  right: 10px;
+}
+.positionBarContainer.normal .currentLap,
+.positionBarContainer.normal .strengthOfField {
+  width: 100px;
+  right: 10px;
+}
+.positionBarContainer.normal .currentLapTime {
+  left: 10px;
+}
+.positionBarContainer.normal .currentLapTime .label,
+.positionBarContainer.normal .currentLapTime.noTime .label {
+  padding-left: 0;
+}
+.positionBarContainer.normal .sessionLaps,
+.positionBarContainer.normal .sessionLapsRemain {
+  text-align: center;
+}
+.positionBarContainer.normal.noStandings .bestLap,
+.positionBarContainer.normal.noStandings .currentLap,
+.positionBarContainer.normal.noStandings .currentLapTime,
+.positionBarContainer.normal.noStandings .currentPosition,
+.positionBarContainer.normal.noStandings .currentPositionClass,
+.positionBarContainer.normal.noStandings .incidentPoints,
+.positionBarContainer.normal.noStandings .lastLap,
+.positionBarContainer.normal.noStandings .sessionLaps,
+.positionBarContainer.normal.noStandings .sessionLapsRemain,
+.positionBarContainer.normal.noStandings .sessionTime,
+.positionBarContainer.normal.noStandings .strengthOfField {
+  top: 0;
+}
+.positionBarContainer.normal.gameIsVR {
+  width: 84.9%;
+}
+.positionBarContainer.normal.noMultiClass .positionBar {
+  height: 40px;
+  padding-top: 0;
+}
+.positionBarContainer.relative {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+  top: 400px;
+  left: 1610px;
+  transform-origin: bottom right;
+  font-size: 14px;
+  text-overflow: ellipsis;
+}
+.positionBarContainer.relative .player {
+  height: 24px;
+  padding: 4px;
+  position: relative;
+  white-space: nowrap;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.relative .player:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.2);
+}
+.positionBarContainer.relative .player .position {
+  width: 21px;
+  text-align: center;
+  display: inline-block;
+}
+.positionBarContainer.relative .player .name {
+  width: 198px;
+}
+.positionBarContainer.relative .player .name,
+.positionBarContainer.relative .player.sCarNames .carName {
+  display: inline-block;
+  white-space: nowrap;
+  height: 28px;
+  overflow: hidden;
+  vertical-align: top;
+  text-overflow: ellipsis;
+}
+.positionBarContainer.relative .player.sCarNames .carName {
+  color: silver;
+  width: 120px;
+  margin-left: 2px;
+}
+.positionBarContainer.relative .player.sRankData .rankData {
+  display: inline-block;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+  background: #000;
+  color: #fff;
+  width: 68px;
+  vertical-align: top;
+  text-align: left;
+  margin-left: 2px;
+  margin-top: -1px;
+}
+.positionBarContainer.relative .player .carLogo {
+  display: inline-block;
+  position: absolute;
+  left: 203px;
+  width: 20px;
+  background: #fff;
+  text-align: center;
+  margin: -1px 0;
+}
+.positionBarContainer.relative .player .diff {
+  display: inline-block;
+  font-weight: 700;
+  padding: 0 0 0 2px;
+  margin-left: 5px;
+  width: 55px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.9);
+}
+.positionBarContainer.relative .player .stopStatus {
+  text-shadow: 0 0 0 transparent;
+  width: 21px;
+  text-align: center;
+  display: inline-block;
+}
+.positionBarContainer.relative .player .stopStatus.textShadow {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.positionBarContainer.relative .player.lapping {
+  color: #5997b0;
+}
+.positionBarContainer.relative .player.sameLap {
+  color: #fff;
+}
+.positionBarContainer.relative .player.lapped {
+  color: #b03a4a;
+}
+.positionBarContainer.relative .player.noRaceSession {
+  color: #fff;
+}
+.positionBarContainer.relative .player.noRaceSession.validLap {
+  color: #3cb371;
+}
+.positionBarContainer.relative .player.noRaceSession.noValidLap {
+  color: #b03a4a;
+}
+.positionBarContainer.relative .player.noRaceSession.isUser {
+  color: #fffd8e;
+}
+.positionBarContainer.relative .player.isUser {
+  background: rgba(50, 50, 50, 0.8);
+  color: #fffd8e;
+}
+.positionBarContainer.relative .player .classStyle {
+  display: inline-block;
+  content: "";
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: -3px;
+  width: 4px;
+}
+.positionBarContainer.relative .player .classLogo {
+  display: inline-block;
+  position: absolute;
+  left: -24px;
+  width: 20px;
+  top: 2px;
+}
+.positionBarContainer.relative .player .userId {
+  display: inline-block;
+  position: absolute;
+  background: hsla(0, 0%, 58.8%, 0.8);
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  left: -76px;
+  width: 75px;
+  text-align: center;
+  height: 20px;
+  top: 1px;
+  bottom: 1px;
+  padding-top: 2px;
+}
+.positionBarContainer.relative .player.sCarNames .name,
+.positionBarContainer.relative .player.sRankData .name {
+  width: 128px;
+}
+.positionBarContainer.relative .player.sRankData .carLogo {
+  left: 228px;
+}
+.positionBarContainer.relative .player.sClassLogos .userId {
+  left: -99px;
+}
+.positionBarContainer.relative .player.sCarLogos .name {
+  width: 173px;
+}
+.positionBarContainer.relative .player.sCarLogos .diff {
+  margin-left: 30px;
+}
+.positionBarContainer.relative .player.sCarLogos.sRankData .name {
+  width: 128px;
+}
+.positionBarContainer.relative .player.sGapsInSeconds .diff {
+  width: 45px;
+}

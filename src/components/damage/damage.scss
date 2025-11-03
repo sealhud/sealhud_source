@@ -1,0 +1,49 @@
+// extracted by mini-css-extract-plugin
+// module.exports = {"damage":"damage","carDamage":"carDamage","part":"part","label":"label","barContainer":"barContainer","bar":"bar","bad":"bad","broken":"broken"};
+
+.damage {
+  position: absolute;
+  top: 930px;
+  left: 1890px;
+  padding: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+.damage .carDamage {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 210px;
+  margin-bottom: 20px;
+}
+.damage .carDamage .part .label {
+  display: inline-block;
+  font-size: 14px;
+  width: 90px;
+  position: relative;
+  top: 2px;
+}
+.damage .carDamage .part .barContainer {
+  display: inline-block;
+  width: 110px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: 1px solid #666;
+  margin: -2px -5px;
+}
+.damage .carDamage .part .barContainer .bar {
+  height: 8px;
+  border-radius: 3px;
+  background: #fff;
+}
+.damage .carDamage .part.bad {
+  color: orange;
+}
+.damage .carDamage .part.bad .barContainer .bar {
+  background: orange;
+}
+.damage .carDamage .part.broken {
+  color: red;
+}
+.damage .carDamage .part.broken .barContainer .bar {
+  background: red;
+}
