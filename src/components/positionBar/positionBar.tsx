@@ -255,11 +255,11 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			this.pitState = r3e.data.PitState;
 			this.pitWindowStatus = r3e.data.PitWindowStatus;
 			this.maxIncidentPoints = r3e.data.MaxIncidentPoints !== undefined
-				?	r3e.data.MaxIncidentPoints
-				:	-1;
+				? r3e.data.MaxIncidentPoints
+				: -1;
 			this.myIncidentPoints = r3e.data.IncidentPoints !== undefined
-				?	r3e.data.IncidentPoints
-				:	-1;
+				? r3e.data.IncidentPoints
+				: -1;
 
 			/* if (this.props.relative &&
 				this.props.settings.subSettings.showClassAndCounts.enabled) {
@@ -279,20 +279,20 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			let driverData = this.props.relative
 				? this.props.settings.subSettings.showAllSessions.enabled
 					? r3e.data.DriverData.map(
-							this.formatDriverData
-						).filter(
-							this.filterDriverDataQualy
-						)
+						this.formatDriverData
+					).filter(
+						this.filterDriverDataQualy
+					)
 					: r3e.data.DriverData.map(
-							this.formatDriverData
-						).filter(
-							this.filterDriverData
-						)
+						this.formatDriverData
+					).filter(
+						this.filterDriverData
+					)
 				: r3e.data.DriverData.map(
-							this.formatDriverData
-						).filter(
-							this.filterDriverData
-						);
+					this.formatDriverData
+				).filter(
+					this.filterDriverData
+				);
 
 			// Deal with filtering and ordering relative positions
 			if (this.props.relative) {
@@ -321,15 +321,15 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				const dataLength = driverData.length;
 				const aheadCount = dataLength - (dataLength - playerIndex);
 				const start = aheadCount >= eDriverNum
-					?	playerIndex - eDriverNum
-					:	playerIndex - aheadCount;
+					? playerIndex - eDriverNum
+					: playerIndex - aheadCount;
 				const end = aheadCount >= eDriverNum
-					?	playerIndex + (eDriverNum + 1)
-					:	playerIndex + (((eDriverNum * 2) + 1) - aheadCount);
+					? playerIndex + (eDriverNum + 1)
+					: playerIndex + (((eDriverNum * 2) + 1) - aheadCount);
 
 				driverData = uniq(
 					driverData
-					.slice(start, end)
+						.slice(start, end)
 				);
 				/*driverData = uniq(
 					driverData
@@ -359,14 +359,14 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				const playerPosition = this.getPlayerPosition(driverData);
 
 				driverData = this.vrGame
-					?	driverData.slice(
-							Math.max(playerPosition - 5, 0),
-							playerPosition + 6
-						)
-					:	driverData.slice(
-							Math.max(playerPosition - 6, 0),
-							playerPosition + 7
-						);
+					? driverData.slice(
+						Math.max(playerPosition - 5, 0),
+						playerPosition + 6
+					)
+					: driverData.slice(
+						Math.max(playerPosition - 6, 0),
+						playerPosition + 7
+					);
 			}
 
 			this.drivers = driverData.map((driver) => {
@@ -495,8 +495,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			diff: isUser ? this.getPlayerPositionText() : '',
 			lapDiff: driver.CompletedLaps - this.completedLaps,
 			classColor: this.multiClass
-				?	getClassColor(driver.DriverInfo.ClassPerformanceIndex)
-				:	'rgba(0, 0, 0, 0)',
+				? getClassColor(driver.DriverInfo.ClassPerformanceIndex)
+				: 'rgba(0, 0, 0, 0)',
 			carPerformance: driver.DriverInfo.ClassPerformanceIndex,
 			inPit: driver.InPitlane,
 			pitting: driver.InPitlane,
@@ -509,23 +509,19 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			userId: driver.DriverInfo.UserId,
 			lapDistance: dLapDistance,
 			logoUrl: driver.DriverInfo.ManufacturerId > 0
-				?	this.logoUrlp1 +
-					driver.DriverInfo.ManufacturerId.toString() +
-					this.logoUrlp2
-				:	`${
-						this.logoUrlp1
-					}4596${
-						this.logoUrlp2
-					}`,
+				? this.logoUrlp1 +
+				driver.DriverInfo.ManufacturerId.toString() +
+				this.logoUrlp2
+				: `${this.logoUrlp1
+				}4596${this.logoUrlp2
+				}`,
 			classUrl: driver.DriverInfo.ClassId > 0
-				?	this.logoUrlp1 +
-					driver.DriverInfo.ClassId.toString() +
-					this.logoUrlp2
-				:	`${
-						this.logoUrlp1
-					}1717${
-						this.logoUrlp2
-					}`,
+				? this.logoUrlp1 +
+				driver.DriverInfo.ClassId.toString() +
+				this.logoUrlp2
+				: `${this.logoUrlp1
+				}1717${this.logoUrlp2
+				}`,
 			bestLapTime: driver.SectorTimeBestSelf.Sector3,
 			lapsDone: driver.CompletedLaps,
 			rankingData: getRankingData(driver.DriverInfo.UserId),
@@ -546,11 +542,11 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		const isRace = this.sessionType === ESession.Race;
 
 		isRace
-			?	this.props.relative
+			? this.props.relative
 				? this.calculateDiffsRaceRelative(drivers)
 				: this.calculateDiffsRace(drivers)
-			:	this.props.relative
-					&& this.props.settings.subSettings.showAllSessions.enabled
+			: this.props.relative
+				&& this.props.settings.subSettings.showAllSessions.enabled
 				? this.calculateDiffsRaceRelative(drivers)
 				: this.calculateDiffsQualify(drivers);
 	}
@@ -586,8 +582,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			) {
 				gotLapped = true;
 				driver.diff = `-${Math.abs(driver.lapDiff)} ${_(
-								'lap'
-						  )}`;
+					'lap'
+				)}`;
 			}
 			if (
 				driver.lapDiff > 1
@@ -597,27 +593,27 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					driver.lapDistance > this.lapDistance
 				) {
 					driver.diff = `-${Math.abs(driver.lapDiff)} ${_(
-									'laps'
-							)}`;
+						'laps'
+					)}`;
 				} else {
 					const theLapDiff = driver.lapDiff - 1;
 					driver.diff = theLapDiff > 1
-						?	(driver.diff = `-${Math.abs(theLapDiff)} ${_(
-								'laps'
-							)}`)
-						:	(driver.diff = `-${Math.abs(theLapDiff)} ${_(
-								'lap'
-							)}`);
+						? (driver.diff = `-${Math.abs(theLapDiff)} ${_(
+							'laps'
+						)}`)
+						: (driver.diff = `-${Math.abs(theLapDiff)} ${_(
+							'lap'
+						)}`);
 				}
 			}
 
 			if (!gotLapped) {
 				driver.diff =
 					eDriverDiffs[driver.id] !== undefined
-					?	eDriverDiffs[driver.id][1][0] > 60
-						? formatTime(eDriverDiffs[driver.id][1][0] * -1, 'm:ss.SSS')
-						: formatTime(eDriverDiffs[driver.id][1][0] * -1, 's.SSS')
-					:	'-';
+						? eDriverDiffs[driver.id][1][0] > 60
+							? formatTime(eDriverDiffs[driver.id][1][0] * -1, 'm:ss.SSS')
+							: formatTime(eDriverDiffs[driver.id][1][0] * -1, 's.SSS')
+						: '-';
 			}
 		});
 
@@ -635,8 +631,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			) {
 				gotLapped = true;
 				driver.diff = `+${Math.abs(driver.lapDiff)} ${_(
-								'lap'
-						  )}`;
+					'lap'
+				)}`;
 			}
 			if (
 				driver.lapDiff < -1
@@ -646,17 +642,17 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					driver.lapDistance < this.lapDistance
 				) {
 					driver.diff = `+${Math.abs(driver.lapDiff)} ${_(
-									'laps'
-							)}`;
+						'laps'
+					)}`;
 				} else {
 					const theLapDiff = driver.lapDiff + 1;
 					driver.diff = theLapDiff < -1
-						?	`+${Math.abs(theLapDiff)} ${_(
-								'laps'
-							)}`
-						:	`+${Math.abs(theLapDiff)} ${_(
-								'lap'
-							)}`;
+						? `+${Math.abs(theLapDiff)} ${_(
+							'laps'
+						)}`
+						: `+${Math.abs(theLapDiff)} ${_(
+							'lap'
+						)}`;
 				}
 			}
 			if (!gotLapped) {
@@ -694,52 +690,52 @@ export default class PositionBar extends React.Component<IProps, {}> {
 
 			const bestLapSelf =
 				personalBestTime > -1
-					?	personalBestTime
-					:	this.lapTimeBestSelf > -1
-							? this.lapTimeBestSelf
-							: 0;
+					? personalBestTime
+					: this.lapTimeBestSelf > -1
+						? this.lapTimeBestSelf
+						: 0;
 
 			const bestLapClass =
 				r3e.data.LapTimeBestLeaderClass > -1
-				? r3e.data.LapTimeBestLeaderClass
-				: 0;
+					? r3e.data.LapTimeBestLeaderClass
+					: 0;
 
 			const bestLapLeader =
 				r3e.data.LapTimeBestLeader > -1
-				? r3e.data.LapTimeBestLeader
-				: 0;
+					? r3e.data.LapTimeBestLeader
+					: 0;
 
 			const bestLapOpponent =
 				driver.meta &&
-				driver.meta.SectorTimeBestSelf.Sector3 > 0
-				? driver.meta.SectorTimeBestSelf.Sector3
-				: 0;
+					driver.meta.SectorTimeBestSelf.Sector3 > 0
+					? driver.meta.SectorTimeBestSelf.Sector3
+					: 0;
 
 			const avgLapSpeed =
 				bestLapSelf > 0
-				? this.layoutLength / bestLapSelf
-				: bestLapClass > 0
-					? this.layoutLength / bestLapClass
-					: bestLapLeader > 0
-						? this.layoutLength / bestLapLeader
-						: 100;
+					? this.layoutLength / bestLapSelf
+					: bestLapClass > 0
+						? this.layoutLength / bestLapClass
+						: bestLapLeader > 0
+							? this.layoutLength / bestLapLeader
+							: 100;
 
 			const avgLapSpeedOpponent =
 				bestLapOpponent > 0
-				?	this.layoutLength / bestLapOpponent
-				:	driver.meta &&
-					driver.meta.DriverInfo.ClassPerformanceIndex ===
-					r3e.data.VehicleInfo.ClassPerformanceIndex &&
-					bestLapClass > 0
-					?	this.layoutLength / bestLapClass
-					:	bestLapLeader > 0
-						?	this.layoutLength / bestLapLeader
-						:	avgLapSpeed;
+					? this.layoutLength / bestLapOpponent
+					: driver.meta &&
+						driver.meta.DriverInfo.ClassPerformanceIndex ===
+						r3e.data.VehicleInfo.ClassPerformanceIndex &&
+						bestLapClass > 0
+						? this.layoutLength / bestLapClass
+						: bestLapLeader > 0
+							? this.layoutLength / bestLapLeader
+							: avgLapSpeed;
 
 			const avgSpeed =
-			(
-				avgLapSpeed + avgLapSpeedOpponent
-			) / 2;
+				(
+					avgLapSpeed + avgLapSpeedOpponent
+				) / 2;
 
 			const timeDiff = fancyTimeFormatGap((diff / avgSpeed), 1, 1);
 			/* const timeDiff = r3e.data.CarSpeed.toString().indexOf('E') > -1
@@ -777,9 +773,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			sumUp += driver.rankingData.Rating;
 			count += 1;
 		});
-		return `${
-			((sumUp / count) / 1000).toFixed(2)
-		}K`;
+		return `${((sumUp / count) / 1000).toFixed(2)
+			}K`;
 	}
 
 	private getPlayerPositionText(): string {
@@ -832,8 +827,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		}
 
 		const positionOffset = this.vrGame
-			?	6 - this.playerPosition
-			:	7 - this.playerPosition;
+			? 6 - this.playerPosition
+			: 7 - this.playerPosition;
 
 		let sessionName = '';
 		switch (this.sessionType) {
@@ -906,47 +901,47 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						)
 					) &&
 					this.sessionPhase !== INVALID && (
-					<div
-						className={classNames('positionBar',this.props.className,
-							{
-								gameIsVR: this.vrGame
-							}
-						)}
-					>
-						{
-							times(!this.props.relative ? positionOffset : 0).map(
-								(i: number) => {
-									return (
-										<div
-											key={`empty-${i}`}
-											className="player"
-										/>
-									);
+						<div
+							className={classNames('positionBar', this.props.className,
+								{
+									gameIsVR: this.vrGame
 								}
-							)
-						}
-						{this.drivers.map((player, i) => {
-							return (
-								<PositionEntry
-									key={`${player.id}-${i}`}
-									player={player}
-									relative={this.props.relative}
-									settings={this.props.settings}
-									playerPitInfo={eDriverPitInfo}
-									playerLapInfo={eDriverLapInfo}
-									playerDiffs={eDriverDiffs}
-									singleplayerRace={this.singleplayerRace}
-									sessionType={this.sessionType}
-									sessionPhase={this.sessionPhase}
-									position={this.position}
-									multiClass={this.multiClass}
-									isLeaderboard={this.isLeaderboard}
-									isHillClimb={this.isHillClimb}
-								/>
-							);
-						})}
-					</div>
-				)}
+							)}
+						>
+							{
+								times(!this.props.relative ? positionOffset : 0).map(
+									(i: number) => {
+										return (
+											<div
+												key={`empty-${i}`}
+												className="player"
+											/>
+										);
+									}
+								)
+							}
+							{this.drivers.map((player, i) => {
+								return (
+									<PositionEntry
+										key={`${player.id}-${i}`}
+										player={player}
+										relative={this.props.relative}
+										settings={this.props.settings}
+										playerPitInfo={eDriverPitInfo}
+										playerLapInfo={eDriverLapInfo}
+										playerDiffs={eDriverDiffs}
+										singleplayerRace={this.singleplayerRace}
+										sessionType={this.sessionType}
+										sessionPhase={this.sessionPhase}
+										position={this.position}
+										multiClass={this.multiClass}
+										isLeaderboard={this.isLeaderboard}
+										isHillClimb={this.isHillClimb}
+									/>
+								);
+							})}
+						</div>
+					)}
 
 				{!this.props.relative &&
 					this.props.settings.subSettings.lapTime.enabled &&
@@ -962,9 +957,9 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							<span className="mono">
 								{this.lapTimeCurrentSelf !== INVALID
 									? formatTime(
-											this.lapTimeCurrentSelf,
-											'mm:ss.SSS'
-									  )
+										this.lapTimeCurrentSelf,
+										'mm:ss.SSS'
+									)
 									: '-:--.---'}
 							</span>
 							<div className="label">{_('Lap time')}</div>
@@ -987,16 +982,16 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							style={{
 								left:
 									this.props.settings.subSettings.lapTime.enabled &&
-									(r3e.data.GameInReplay <= 0 || showAllMode)
-									?	'160px'
-									:	'10px'
+										(r3e.data.GameInReplay <= 0 || showAllMode)
+										? '160px'
+										: '10px'
 							}}
 						>
 							<span className="mono">
 								{
 									showAllMode
-									?	'9/12'
-									:	`${this.position}/${this.playerCount}`
+										? '9/12'
+										: `${this.position}/${this.playerCount}`
 								}
 							</span>
 							<div className="label">{_('Position')}</div>
@@ -1023,16 +1018,16 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							style={{
 								left:
 									this.props.settings.subSettings.lapTime.enabled &&
-									(r3e.data.GameInReplay <= 0 || showAllMode)
-									?	'270px'
-									:	'120px'
+										(r3e.data.GameInReplay <= 0 || showAllMode)
+										? '270px'
+										: '120px'
 							}}
 						>
 							<span className="mono">
 								{
 									showAllMode
-									?	'3/6'
-									:	`${this.positionClass}/${this.classDriverCount}`
+										? '3/6'
+										: `${this.positionClass}/${this.classDriverCount}`
 								}
 							</span>
 							<div className="label">{_('Position Class')}</div>
@@ -1059,31 +1054,31 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							(!this.isLeaderboard && !this.isHillClimb)
 						) || showAllMode
 					) && (
-					<div
-						className="sessionLaps"
-						style={{
-							left:
-								this.props.settings.subSettings.lapTime.enabled &&
-								(r3e.data.GameInReplay <= 0 || showAllMode)
-								?	this.props.settings.subSettings.currentPosition.enabled
-									?	'380px'
-									:	'160px'
-								:	this.props.settings.subSettings.currentPosition.enabled
-									?	'230px'
-									:	'10px'
-						}}
-					>
-						<span className="mono">
-							{
-								showAllMode
-								?	6
-								:	this.completedLaps
-							}
-						</span>
-						<div className="label">
-							{_('Completed Laps')}
+						<div
+							className="sessionLaps"
+							style={{
+								left:
+									this.props.settings.subSettings.lapTime.enabled &&
+										(r3e.data.GameInReplay <= 0 || showAllMode)
+										? this.props.settings.subSettings.currentPosition.enabled
+											? '380px'
+											: '160px'
+										: this.props.settings.subSettings.currentPosition.enabled
+											? '230px'
+											: '10px'
+							}}
+						>
+							<span className="mono">
+								{
+									showAllMode
+										? 6
+										: this.completedLaps
+								}
+							</span>
+							<div className="label">
+								{_('Completed Laps')}
+							</div>
 						</div>
-					</div>
 					)}
 
 				{
@@ -1121,99 +1116,95 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						) ||
 						showAllMode
 					) && (
-					<div
-						className="sessionLapsRemain"
-						style={{
-							left:
-								this.props.settings.subSettings.lapTime.enabled &&
-								(r3e.data.GameInReplay <= 0 || showAllMode)
-								?	this.props.settings.subSettings.currentPosition.enabled
-									?	this.props.settings.subSettings.sessionLaps.enabled
-										?	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'490px'
-											:	'480px'
-										:	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'380px'
-											:	'370px'
-									:	this.props.settings.subSettings.sessionLaps.enabled
-										?	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'280px'
-											:	'270px'
-										:	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'180px'
-											:	'180px'
-								:	this.props.settings.subSettings.currentPosition.enabled
-									?	this.props.settings.subSettings.sessionLaps.enabled
-										?	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'340px'
-											:	'330px'
-										:	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'230px'
-											:	'220px'
-									:	this.props.settings.subSettings.sessionLaps.enabled
-										?	this.actualRoundsLeft > 99 ||
-											Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-											?	'120px'
-											:	'110px'
-										:	'10px',
-							width: this.actualRoundsLeft > 99 ||
-								Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
-								?	'180px'
-								:	'160px'
-						}}
-					>
-						<span className="mono">
-							{
-								this.props.settings.subSettings.sessionLapsTotal.enabled ||
-								this.props.settings.subSettings.sessionLapsRemain.enabled
-								?	this.props.settings.subSettings.sessionLapsTotal.enabled &&
-									(personalBestTime > 0 || showAllMode) &&
-									this.props.settings.subSettings.sessionLapsRemain.enabled &&
-									(this.actualRoundsLeft > -1 || showAllMode)
-									?	`${
-											showAllMode
-											?	6
-											:	this.actualRoundsLeft
-										}/${
-											showAllMode
-											?	12
-											:	Math.ceil(this.sessionTimeDuration / personalBestTime)
-										}`
-									:	this.props.settings.subSettings.sessionLapsTotal.enabled &&
-										(personalBestTime > 0 || showAllMode)
-										?	`${
-												showAllMode
-												?	12
-												:	Math.ceil(this.sessionTimeDuration / personalBestTime)
+						<div
+							className="sessionLapsRemain"
+							style={{
+								left:
+									this.props.settings.subSettings.lapTime.enabled &&
+										(r3e.data.GameInReplay <= 0 || showAllMode)
+										? this.props.settings.subSettings.currentPosition.enabled
+											? this.props.settings.subSettings.sessionLaps.enabled
+												? this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '490px'
+													: '480px'
+												: this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '380px'
+													: '370px'
+											: this.props.settings.subSettings.sessionLaps.enabled
+												? this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '280px'
+													: '270px'
+												: this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '180px'
+													: '180px'
+										: this.props.settings.subSettings.currentPosition.enabled
+											? this.props.settings.subSettings.sessionLaps.enabled
+												? this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '340px'
+													: '330px'
+												: this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '230px'
+													: '220px'
+											: this.props.settings.subSettings.sessionLaps.enabled
+												? this.actualRoundsLeft > 99 ||
+													Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+													? '120px'
+													: '110px'
+												: '10px',
+								width: this.actualRoundsLeft > 99 ||
+									Math.ceil(this.sessionTimeDuration / personalBestTime) >= 100
+									? '180px'
+									: '160px'
+							}}
+						>
+							<span className="mono">
+								{
+									this.props.settings.subSettings.sessionLapsTotal.enabled ||
+										this.props.settings.subSettings.sessionLapsRemain.enabled
+										? this.props.settings.subSettings.sessionLapsTotal.enabled &&
+											(personalBestTime > 0 || showAllMode) &&
+											this.props.settings.subSettings.sessionLapsRemain.enabled &&
+											(this.actualRoundsLeft > -1 || showAllMode)
+											? `${showAllMode
+												? 6
+												: this.actualRoundsLeft
+											}/${showAllMode
+												? 12
+												: Math.ceil(this.sessionTimeDuration / personalBestTime)
 											}`
-										:	`${
-												showAllMode
-												?	6
-												:	this.actualRoundsLeft
-											}`
-									:	''
-							}
-						</span>
-						<div className="label">
-							{
-								this.props.settings.subSettings.sessionLapsRemain.enabled ||
-								this.props.settings.subSettings.sessionLapsTotal.enabled
-								?	this.props.settings.subSettings.sessionLapsTotal.enabled &&
-									(personalBestTime > 0 || showAllMode)
-									?	!this.props.settings.subSettings.sessionLapsRemain.enabled
-										?	_('Estimated Laps total')
-										:	_('Est.L. left / Est.L. total')
-									:	_('Estimated Laps left')
-								:	''
-							}
+											: this.props.settings.subSettings.sessionLapsTotal.enabled &&
+												(personalBestTime > 0 || showAllMode)
+												? `${showAllMode
+													? 12
+													: Math.ceil(this.sessionTimeDuration / personalBestTime)
+												}`
+												: `${showAllMode
+													? 6
+													: this.actualRoundsLeft
+												}`
+										: ''
+								}
+							</span>
+							<div className="label">
+								{
+									this.props.settings.subSettings.sessionLapsRemain.enabled ||
+										this.props.settings.subSettings.sessionLapsTotal.enabled
+										? this.props.settings.subSettings.sessionLapsTotal.enabled &&
+											(personalBestTime > 0 || showAllMode)
+											? !this.props.settings.subSettings.sessionLapsRemain.enabled
+												? _('Estimated Laps total')
+												: _('Est.L. left / Est.L. total')
+											: _('Estimated Laps left')
+										: ''
+								}
+							</div>
 						</div>
-					</div>
 					)}
 
 				{!this.props.relative &&
@@ -1224,51 +1215,51 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							style={{
 								right: this.props.settings.subSettings.sessionTime.enabled &&
 									((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-									?	showIncPoints
-										?	this.props.settings.subSettings.showLastLap.enabled
-											?	this.props.settings.subSettings.showBestLap.enabled &&
+									? showIncPoints
+										? this.props.settings.subSettings.showLastLap.enabled
+											? this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'585px'
-												:	'430px'
-											:	this.props.settings.subSettings.showBestLap.enabled &&
+												? '585px'
+												: '430px'
+											: this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'430px'
-												:	'275px'
-										:	this.props.settings.subSettings.showLastLap.enabled
-											?	this.props.settings.subSettings.showBestLap.enabled &&
+												? '430px'
+												: '275px'
+										: this.props.settings.subSettings.showLastLap.enabled
+											? this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'445px'
-												:	'290px'
-											:	this.props.settings.subSettings.showBestLap.enabled &&
+												? '445px'
+												: '290px'
+											: this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'290px'
-												:	'135px'
-									:	showIncPoints
-										?	this.props.settings.subSettings.showLastLap.enabled
-											?	this.props.settings.subSettings.showBestLap.enabled &&
+												? '290px'
+												: '135px'
+									: showIncPoints
+										? this.props.settings.subSettings.showLastLap.enabled
+											? this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'460px'
-												:	'305px'
-											:	this.props.settings.subSettings.showBestLap.enabled &&
+												? '460px'
+												: '305px'
+											: this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'305px'
-												:	'150px'
-										:	this.props.settings.subSettings.showLastLap.enabled
-											?	this.props.settings.subSettings.showBestLap.enabled &&
+												? '305px'
+												: '150px'
+										: this.props.settings.subSettings.showLastLap.enabled
+											? this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'320px'
-												:	'165px'
-											:	this.props.settings.subSettings.showBestLap.enabled &&
+												? '320px'
+												: '165px'
+											: this.props.settings.subSettings.showBestLap.enabled &&
 												(r3e.data.GameInReplay <= 0 || showAllMode)
-												?	'165px'
-												:	'10px'
+												? '165px'
+												: '10px'
 							}}
 						>
 							<span className="mono">
 								{
 									showAllMode
-									?	'2.22K'
-									:	this.getStrengthOfField()
+										? '2.22K'
+										: this.getStrengthOfField()
 								}
 							</span>
 							<div className="label">{_('Strength of Field')}</div>
@@ -1287,57 +1278,54 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							)}
 							style={{
 								color: showAllMode
-									?	'rgba(255, 255, 255, 1)'
-									:	!(
-											(
-												this.sessionType === 2 &&
-													this.completedLaps < 1
-											) || (
-												this.sessionType !== 2 &&
-												this.lapTimeBestSelf < 0
-											)
-										) &&
+									? 'rgba(255, 255, 255, 1)'
+									: !(
+										(
+											this.sessionType === 2 &&
+											this.completedLaps < 1
+										) || (
+											this.sessionType !== 2 &&
+											this.lapTimeBestSelf < 0
+										)
+									) &&
 										nowCheck <= this.lapInfoData[this.currentSlotId][2]
-										?	`rgba(${
-												this.lapInfoData[this.currentSlotId][3]
-											}, ${
-												this.lapInfoData[this.currentSlotId][4]
-											}, ${
-												this.lapInfoData[this.currentSlotId][5]
-											}, 1)`
-										:	'rgba(255, 255, 255, 1)',
+										? `rgba(${this.lapInfoData[this.currentSlotId][3]
+										}, ${this.lapInfoData[this.currentSlotId][4]
+										}, ${this.lapInfoData[this.currentSlotId][5]
+										}, 1)`
+										: 'rgba(255, 255, 255, 1)',
 								right: this.props.settings.subSettings.sessionTime.enabled &&
 									((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-									?	showIncPoints
-										?	this.props.settings.subSettings.showBestLap.enabled &&
+									? showIncPoints
+										? this.props.settings.subSettings.showBestLap.enabled &&
 											(r3e.data.GameInReplay <= 0 || showAllMode)
-											?	'430px'
-											:	'275px'
-										:	this.props.settings.subSettings.showBestLap.enabled &&
+											? '430px'
+											: '275px'
+										: this.props.settings.subSettings.showBestLap.enabled &&
 											(r3e.data.GameInReplay <= 0 || showAllMode)
-											?	'290px'
-											:	'135px'
-									:	showIncPoints
-										?	this.props.settings.subSettings.showBestLap.enabled &&
+											? '290px'
+											: '135px'
+									: showIncPoints
+										? this.props.settings.subSettings.showBestLap.enabled &&
 											(r3e.data.GameInReplay <= 0 || showAllMode)
-											?	'305px'
-											:	'150px'
-										:	this.props.settings.subSettings.showBestLap.enabled &&
+											? '305px'
+											: '150px'
+										: this.props.settings.subSettings.showBestLap.enabled &&
 											(r3e.data.GameInReplay <= 0 || showAllMode)
-											?	'165px'
-											:	'10px'
+											? '165px'
+											: '10px'
 							}}
 						>
 							<span className="mono">
 								{
 									this.lapTimePreviousSelf !== -1
-									?	formatTime(
+										? formatTime(
 											this.lapTimePreviousSelf,
 											'mm:ss.SSS'
 										)
-									:	showAllMode
-										?	'01:48.023'
-										:	'-:--.---'
+										: showAllMode
+											? '01:48.023'
+											: '-:--.---'
 								}
 							</span>
 							<div className="label">{_('Last Lap')}</div>
@@ -1359,24 +1347,24 @@ export default class PositionBar extends React.Component<IProps, {}> {
 								color: 'white',
 								right: this.props.settings.subSettings.sessionTime.enabled &&
 									((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-									?	showIncPoints
-										?	'275px'
-										:	'135px'
-									:	showIncPoints
-										?	'150px'
-										:	'10px'
+									? showIncPoints
+										? '275px'
+										: '135px'
+									: showIncPoints
+										? '150px'
+										: '10px'
 							}}
 						>
 							<span className="mono">
 								{
 									this.bestSelfSector3 !== -1
-									?	formatTime(
+										? formatTime(
 											this.bestSelfSector3,
 											'mm:ss.SSS'
 										)
-									:	showAllMode
-										?	'01:48.023'
-										:	'-:--.---'
+										: showAllMode
+											? '01:48.023'
+											: '-:--.---'
 								}
 							</span>
 							<div className="label">{_('Best Lap')}</div>
@@ -1391,26 +1379,24 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							)}
 							style={{
 								color: warnInc
-									?	'rgba(255, 0, 0, 1)'
-									:	'rgba(255,255,255,1)',
+									? 'rgba(255, 0, 0, 1)'
+									: 'rgba(255,255,255,1)',
 								right: this.props.settings.subSettings.sessionTime.enabled &&
 									((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-									?	'135px'
-									:	'10px'
+									? '135px'
+									: '10px'
 							}}
 						>
 							<span className="mono">
 								{
-									`${
-										showAllMode
-										?	135
-										:	this.myIncidentPoints === -1
-											?	'N/A'
-											:	this.myIncidentPoints
-									}/${
-										showAllMode
-										?	200
-										:	this.maxIncidentPoints
+									`${showAllMode
+										? 135
+										: this.myIncidentPoints === -1
+											? 'N/A'
+											: this.myIncidentPoints
+									}/${showAllMode
+										? 200
+										: this.maxIncidentPoints
 									}`
 								}
 							</span>
@@ -1426,8 +1412,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 								<div className="sessionRemainHours">
 									{
 										showAllMode
-										?	'2'
-										:	formatTime(this.sessionTimeRemaining, 'H')
+											? '2'
+											: formatTime(this.sessionTimeRemaining, 'H')
 									}
 								</div>
 								<div className="sessionRemainHoursText">
@@ -1436,8 +1422,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 								<div className="sessionRemainMinutes">
 									{
 										showAllMode
-										?	'34'
-										:	formatTime(this.sessionTimeRemaining, 'mm')
+											? '34'
+											: formatTime(this.sessionTimeRemaining, 'mm')
 									}
 								</div>
 								<div className="sessionRemainMinutesText">
@@ -1446,8 +1432,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 								<div className="sessionRemainSeconds">
 									{
 										showAllMode
-										?	'56'
-										:	formatTime(this.sessionTimeRemaining, 'ss')
+											? '56'
+											: formatTime(this.sessionTimeRemaining, 'ss')
 									}
 								</div>
 								<div className="sessionRemainSecondsText">
@@ -1507,8 +1493,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					)
 				)
 			)
-			?	{}
-			:	this.props.playerPitInfo;
+				? {}
+				: this.props.playerPitInfo;
 		const playerLapInfo = this.props.playerLapInfo;
 		const singleplayerRace = this.props.singleplayerRace;
 		const multiClass = this.props.multiClass;
@@ -1525,7 +1511,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					!showAllMode
 				) ||
 				(
-					( !singleplayerRace || showAllMode ) &&
+					(!singleplayerRace || showAllMode) &&
 					!this.props.settings.subSettings.showRanking.enabled
 				)
 			) &&
@@ -1537,7 +1523,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				this.props.settings.subSettings.showCarLogos.enabled ||
 				(
 					this.props.settings.subSettings.showRanking.enabled &&
-					( !singleplayerRace || showAllMode ) &&
+					(!singleplayerRace || showAllMode) &&
 					this.props.settings.subSettings.showCarNames.enabled
 				)
 			);
@@ -1566,7 +1552,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 			if (
 				showCL &&
 				this.props.settings.subSettings.showRanking.enabled &&
-				( !singleplayerRace || showAllMode )
+				(!singleplayerRace || showAllMode)
 			) { returnWidth = returnWidth + 25; }
 
 		}
@@ -1580,194 +1566,170 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				((!isLeaderboard && !isHillClimb) || showAllMode)
 			)
 		) {
-		return (
-			<div
-				className={classNames('player', {
-					isUser: player.isUser,
-					lapping: player.lapDiff < 0,
-					sameLap: player.lapDiff === 0,
-					lapped: player.lapDiff > 0,
-					validLap: player.validLap > 0 && player.currentTime > 0,
-					noValidLap: player.validLap < 1,
-					noRaceSession: showAllMode || sessionType !== ESession.Race,
-					sGapsInSeconds: this.props.relative &&
-						this.props.settings.subSettings.showGapsInSeconds.enabled,
-					sCarNames: this.props.relative &&
-						showCN,
-					sCarLogos: this.props.relative &&
-						showCL,
-					sClassLogos: this.props.relative &&
-						this.props.settings.subSettings.showClassLogos.enabled,
-					sRankData: this.props.relative &&
-						( !singleplayerRace || showAllMode ) &&
-						this.props.settings.subSettings.showRanking.enabled,
-					sPitStops: this.props.relative &&
-						this.props.settings.subSettings.showPitStops.enabled
-				})}
-				style={{
-					width: this.props.relative
-						?	relativeWidth
-						:	'148px'
-				}}
-			>
+			return (
 				<div
-					className="position"
+					className={classNames('player', {
+						isUser: player.isUser,
+						lapping: player.lapDiff < 0,
+						sameLap: player.lapDiff === 0,
+						lapped: player.lapDiff > 0,
+						validLap: player.validLap > 0 && player.currentTime > 0,
+						noValidLap: player.validLap < 1,
+						noRaceSession: showAllMode || sessionType !== ESession.Race,
+						sGapsInSeconds: this.props.relative &&
+							this.props.settings.subSettings.showGapsInSeconds.enabled,
+						sCarNames: this.props.relative &&
+							showCN,
+						sCarLogos: this.props.relative &&
+							showCL,
+						sClassLogos: this.props.relative &&
+							this.props.settings.subSettings.showClassLogos.enabled,
+						sRankData: this.props.relative &&
+							(!singleplayerRace || showAllMode) &&
+							this.props.settings.subSettings.showRanking.enabled,
+						sPitStops: this.props.relative &&
+							this.props.settings.subSettings.showPitStops.enabled
+					})}
 					style={{
-						color: this.props.relative
-							? '#fff'
-							: undefined,
-						width: !this.props.relative
-							?	'25px'
-							:	undefined,
-						borderRight: !this.props.relative
-							?	sessionType === ESession.Race &&
-								sessionPhase >= 5 &&
-								player.mandatoryPit !== -1 &&
-								pitWindow <= 0 &&
-								isRange(player.finishStatus, 0, 0)
-								?	`5px solid ${
-										player.mandatoryPit === 0 || player.mandatoryPit === 1
-										?	'rgba(255, 70, 0, 0.8)'
-										:	player.mandatoryPit === 2
-											?	'rgba(100, 221, 23, 0.8)'
-											:	'rgba(0, 0, 0, 0)'
-									}`
-								:	'0px solid rgba(255, 255, 255, 1)'
-							:	undefined
+						width: this.props.relative
+							? relativeWidth
+							: '148px'
 					}}
 				>
-					{player.positionClass}
-				</div>{' '}
-				<div className="name">
-					{
-						this.props.relative
-						?	(
-								this.props.settings.subSettings.showCarNames.enabled ||
-								this.props.settings.subSettings.showCarLogos.enabled ||
-								(
-									this.props.settings.subSettings.showRanking.enabled &&
-									( !singleplayerRace || showAllMode )
+					<div
+						className="position"
+						style={{
+							color: this.props.relative
+								? '#fff'
+								: undefined,
+							width: !this.props.relative
+								? '25px'
+								: undefined,
+							borderRight: !this.props.relative
+								? sessionType === ESession.Race &&
+									sessionPhase >= 5 &&
+									player.mandatoryPit !== -1 &&
+									pitWindow <= 0 &&
+									isRange(player.finishStatus, 0, 0)
+									? `5px solid ${player.mandatoryPit === 0 || player.mandatoryPit === 1
+										? 'rgba(255, 70, 0, 0.8)'
+										: player.mandatoryPit === 2
+											? 'rgba(100, 221, 23, 0.8)'
+											: 'rgba(0, 0, 0, 0)'
+									}`
+									: '0px solid rgba(255, 255, 255, 1)'
+								: undefined
+						}}
+					>
+						{player.positionClass}
+					</div>{' '}
+					<div className="name">
+						{
+							this.props.relative
+								? (
+									this.props.settings.subSettings.showCarNames.enabled ||
+									this.props.settings.subSettings.showCarLogos.enabled ||
+									(
+										this.props.settings.subSettings.showRanking.enabled &&
+										(!singleplayerRace || showAllMode)
+									)
 								)
-							)
-								?	player.shortName
-								:	player.name
-						:	this.props.settings.subSettings.showStandings.enabled &&
-							((!isLeaderboard && !isHillClimb) || showAllMode)
-							?	player.shortName
-							:	''
-					}
-				</div>
-				{
-					this.props.relative &&
-					( !singleplayerRace || showAllMode ) &&
-					this.props.settings.subSettings.showRanking.enabled && (
-						<div
-							className="rankData"
-							style={{
+									? player.shortName
+									: player.name
+								: this.props.settings.subSettings.showStandings.enabled &&
+									((!isLeaderboard && !isHillClimb) || showAllMode)
+									? player.shortName
+									: ''
+						}
+					</div>
+					{
+						this.props.relative &&
+						(!singleplayerRace || showAllMode) &&
+						this.props.settings.subSettings.showRanking.enabled && (
+							<div
+								className="rankData"
+								style={{
 									background: eRankInvertRelative
-										?	undefined
-										:	'rgba(255, 255, 255, 1)',
+										? undefined
+										: 'rgba(255, 255, 255, 1)',
 									color: eRankInvertRelative
-										?	undefined
-										:	'rgba(0, 0, 0, 1)',
+										? undefined
+										: 'rgba(0, 0, 0, 1)',
 									fontWeight: eRankInvertRelative
-										?	undefined
-										:	'bold'
+										? undefined
+										: 'bold'
 								}}
-						>
-							{
-								`${
-									showAllMode
-									?	2.22
-									:	(player.rankingData.Rating / 1000).toFixed(2)
-								}K / ${
-									showAllMode
-									?	94.6
-									:	player.rankingData.Reputation.toFixed(1)
-								}`
-							}
-						</div>
-					)
-				}
-				{
-					this.props.relative &&
-					showCN && (
-						<div className="carName">
-							{
-								getCarName(player.modelId)
-							}
-						</div>
-					)
-				}
-				{
-					this.props.relative &&
-					showCL && (
-						<div className="carLogo">
-							<img src={player.logoUrl} width="18" height="18"/>
-						</div>
-					)
-				}
-				{
-					this.props.relative && (
-						<div
-							className="diff mono"
-							style={{
-								padding:
-									this.props.settings.subSettings.showGapsInSeconds.enabled &&
-									playerDiffs[player.id] !== undefined &&
-									playerDiffs[player.id][1][0] > 0
-									?	'0 0 0 7px'
-									:	'0 0 0 2px'
-							}}
-						>
-							{
-								this.props.settings.subSettings.showGapsInSeconds.enabled
-								?	playerDiffs[player.id] !== undefined
-									?	fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 1, false, false)
-									:	' '
-								:	player.diff
-							}
-						</div>
-					)
-				}
-				{
-					!this.props.relative &&
-					(
-						this.props.settings.subSettings.showStandings.enabled &&
-						((!isLeaderboard && !isHillClimb) || showAllMode) &&
+							>
+								{
+									`${showAllMode
+										? 2.22
+										: (player.rankingData.Rating / 1000).toFixed(2)
+									}K / ${showAllMode
+										? 94.6
+										: player.rankingData.Reputation.toFixed(1)
+									}`
+								}
+							</div>
+						)
+					}
+					{
+						this.props.relative &&
+						showCN && (
+							<div className="carName">
+								{
+									getCarName(player.modelId)
+								}
+							</div>
+						)
+					}
+					{
+						this.props.relative &&
+						showCL && (
+							<div className="carLogo">
+								<img src={player.logoUrl} width="18" height="18" />
+							</div>
+						)
+					}
+					{
+						this.props.relative && (
+							<div
+								className="diff mono"
+								style={{
+									padding:
+										this.props.settings.subSettings.showGapsInSeconds.enabled &&
+											playerDiffs[player.id] !== undefined &&
+											playerDiffs[player.id][1][0] > 0
+											? '0 0 0 7px'
+											: '0 0 0 2px'
+								}}
+							>
+								{
+									this.props.settings.subSettings.showGapsInSeconds.enabled
+										? playerDiffs[player.id] !== undefined
+											? fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 1, false, false)
+											: ' '
+										: player.diff
+								}
+							</div>
+						)
+					}
+					{
+						!this.props.relative &&
 						(
+							this.props.settings.subSettings.showStandings.enabled &&
+							((!isLeaderboard && !isHillClimb) || showAllMode) &&
 							(
-								this.props.settings.subSettings.showLastLaps.enabled &&
-								playerLapInfo[player.id] !== undefined &&
-								nowCheck <= playerLapInfo[player.id][2] &&
 								(
-									<div
-										className={classNames(
-											'diff mono'
-										)}
-										style={{
-											color: !(
-												(
-													sessionType === 2 &&
-														player.lapsDone < 1
-												) || (
-													sessionType !== 2 &&
-													player.bestLapTime < 0
-												)
-											)
-											?	`rgba(${
-													playerLapInfo[player.id][3]
-												}, ${
-													playerLapInfo[player.id][4]
-												}, ${
-													playerLapInfo[player.id][5]
-												}, 1)`
-											:	'rgba(255, 255, 255, 1)'
-										}}
-									>
-										{
-											`${
-												!(
+									this.props.settings.subSettings.showLastLaps.enabled &&
+									playerLapInfo[player.id] !== undefined &&
+									nowCheck <= playerLapInfo[player.id][2] &&
+									(
+										<div
+											className={classNames(
+												'diff mono'
+											)}
+											style={{
+												color: !(
 													(
 														sessionType === 2 &&
 														player.lapsDone < 1
@@ -1776,54 +1738,70 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 														player.bestLapTime < 0
 													)
 												)
-												?	playerLapInfo[player.id][1] !== -999
-													?	playerLapInfo[player.id][1] >= 60
-														?	formatTime(
+													? `rgba(${playerLapInfo[player.id][3]
+													}, ${playerLapInfo[player.id][4]
+													}, ${playerLapInfo[player.id][5]
+													}, 1)`
+													: 'rgba(255, 255, 255, 1)'
+											}}
+										>
+											{
+												`${!(
+													(
+														sessionType === 2 &&
+														player.lapsDone < 1
+													) || (
+														sessionType !== 2 &&
+														player.bestLapTime < 0
+													)
+												)
+													? playerLapInfo[player.id][1] !== -999
+														? playerLapInfo[player.id][1] >= 60
+															? formatTime(
 																playerLapInfo[player.id][1],
 																'm:ss.SSS'
 															)
-														:	formatTime(
+															: formatTime(
 																playerLapInfo[player.id][1],
 																'ss.SSS'
 															)
-													:	'INVALID'
-												:	player.diff.toString().indexOf('.') <= -1 ||
-													sessionType !== ESession.Race
-													?	player.diff
-													:	playerDiffs[player.id] !== undefined
-														?	fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 0)
-														:	'-'
-											}`
-										}
-									</div>
-								)
-							) || (
-								(
-									!this.props.settings.subSettings.showLastLaps.enabled ||
-									playerLapInfo[player.id] === undefined ||
-									(
-										playerLapInfo[player.id] !== undefined &&
-										nowCheck > playerLapInfo[player.id][2]
+														: 'INVALID'
+													: player.diff.toString().indexOf('.') <= -1 ||
+														sessionType !== ESession.Race
+														? player.diff
+														: playerDiffs[player.id] !== undefined
+															? fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 0)
+															: '-'
+												}`
+											}
+										</div>
 									)
-								) &&
-								(
-									<div
-										className={classNames(
-											'diff mono'
-										)}
-										style={{
-											color: 'rgba(255, 255, 255, 1)'
-										}}
-									>
-										{
-											`${
-												player.diff.toString().indexOf('.') <= -1 ||
-												sessionType !== ESession.Race
-												?	player.diff
-												:	playerDiffs[player.id] !== undefined
-													?	player.position < position &&
-														playerDiffs[player.id][1][0] > 0
-														?	fancyTimeFormatGap(
+								) || (
+									(
+										!this.props.settings.subSettings.showLastLaps.enabled ||
+										playerLapInfo[player.id] === undefined ||
+										(
+											playerLapInfo[player.id] !== undefined &&
+											nowCheck > playerLapInfo[player.id][2]
+										)
+									) &&
+									(
+										<div
+											className={classNames(
+												'diff mono'
+											)}
+											style={{
+												color: 'rgba(255, 255, 255, 1)'
+											}}
+										>
+											{
+												`${player.diff.toString().indexOf('.') <= -1 ||
+													sessionType !== ESession.Race
+													? player.diff
+													: playerDiffs[player.id] !== undefined
+														? player.position < position &&
+															playerDiffs[player.id][1][0] > 0
+															? fancyTimeFormatGap(
 																(
 																	0 -
 																	(
@@ -1841,10 +1819,10 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 																	)
 																), 1, 0
 															)
-														:	player.position > position &&
-															playerDiffs[player.id] !== undefined &&
-															playerDiffs[player.id][1][0] < 0
-															?	fancyTimeFormatGap(
+															: player.position > position &&
+																playerDiffs[player.id] !== undefined &&
+																playerDiffs[player.id][1][0] < 0
+																? fancyTimeFormatGap(
 																	(
 																		(
 																			playerDiffs[player.id][0][0] /
@@ -1859,281 +1837,276 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 																		)
 																	), 1, 0
 																)
-															:	fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 0)
-													:	'-'
-											}`
-										}
-									</div>
+																: fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 0)
+														: '-'
+												}`
+											}
+										</div>
+									)
 								)
 							)
 						)
-					)
-				}
-				{
-					!this.props.relative &&
-					this.props.settings.subSettings.showPitTime.enabled &&
-					(
-						showAllMode ||
-						(
-							sessionType === ESession.Race &&
-							player.finishStatus === 0 &&
-							playerPitInfo[player.id] !== undefined
-						)
-					)
-					?	player.pitting > 0 || showAllMode
-						?	playerPitInfo[player.id][2] > 0 || showAllMode
-							?	<div
-								className={classNames(
-									'pitting',
-									{
-										noShadow: false
-									}
-								)}
-								style={{
-									background: showAllMode ||
-									playerPitInfo[player.id][3] > 0
-									?	showAllMode || playerPitInfo[player.id][4] > 0
-										?	'rgba(0, 190, 60, 0.8)'
-										:	'rgba(255, 70, 0, 0.8)'
-									:	'rgba(0, 176, 255, 0.8)',
-									color: '#fff',
-									width: '25px'
-								}}
-							>
-								{`${'PIT'}`}
-								<div
-									className={classNames(
-										'pittime',
-										{
-											noShadow: false
-										}
-									)}
-									style={{
-										marginLeft: '5px'
-									}}
-								>
-									{
-										`${
-											showAllMode
-											?	52.9
-											:	(
-													(
-														nowCheck - playerPitInfo[player.id][2]
-													) / 1000
-												).toFixed(1)
-										}`
-									}
-								</div>
-								<div
-									className={classNames(
-										'pittimea',
-										{
-											noShadow: showAllMode
-											?	false
-											:	playerPitInfo[player.id][3] <= 0
-										}
-									)}
-									style={{
-										marginLeft: '0px',
-										color: showAllMode || playerPitInfo[player.id][3] > 0
-										?	showAllMode || playerPitInfo[player.id][4] > 0
-											?	'rgba(0, 190, 60, 1)'
-											:	'rgba(255, 255, 255, 1)'
-										:	'rgba(255, 255, 255, 0)',
-
-										background: showAllMode || playerPitInfo[player.id][3] > 0
-										?	'rgba(0, 100, 255, 0.8)'
-										:	'rgba(0, 100, 255, 0)'
-									}}
-								>
-									{
-										showAllMode || playerPitInfo[player.id][3] > 0
-										?	showAllMode || playerPitInfo[player.id][4] <= 0
-											?	`${
-													showAllMode
-													?	13.5
-													:	(
-															(
-																nowCheck - playerPitInfo[player.id][3]
-															) / 1000
-														).toFixed(1)
-												}`
-											:	`${
-													(
+					}
+					{
+						!this.props.relative &&
+							this.props.settings.subSettings.showPitTime.enabled &&
+							(
+								showAllMode ||
+								(
+									sessionType === ESession.Race &&
+									player.finishStatus === 0 &&
+									playerPitInfo[player.id] !== undefined
+								)
+							)
+							? player.pitting > 0 || showAllMode
+								? playerPitInfo[player.id][2] > 0 || showAllMode
+									? <div
+										className={classNames(
+											'pitting',
+											{
+												noShadow: false
+											}
+										)}
+										style={{
+											background: showAllMode ||
+												playerPitInfo[player.id][3] > 0
+												? showAllMode || playerPitInfo[player.id][4] > 0
+													? 'rgba(0, 190, 60, 0.8)'
+													: 'rgba(255, 70, 0, 0.8)'
+												: 'rgba(0, 176, 255, 0.8)',
+											color: '#fff',
+											width: '25px'
+										}}
+									>
+										{`${'PIT'}`}
+										<div
+											className={classNames(
+												'pittime',
+												{
+													noShadow: false
+												}
+											)}
+											style={{
+												marginLeft: '5px'
+											}}
+										>
+											{
+												`${showAllMode
+													? 52.9
+													: (
 														(
-															playerPitInfo[player.id][4] - playerPitInfo[player.id][3]
+															nowCheck - playerPitInfo[player.id][2]
 														) / 1000
 													).toFixed(1)
 												}`
-										:	'|'
-									}
-								</div>
-							</div>
-							:	<div
-								className={classNames(
-									'pitting',
-									{
-										noShadow: false
-									}
-								)}
-								style={{
-									background: showAllMode ||
-									playerPitInfo[player.id][3] > 0
-									?	showAllMode || playerPitInfo[player.id][4] > 0
-										?	'rgba(0, 190, 60, 0.8)'
-										:	'rgba(255, 70, 0, 0.8)'
-									:	'rgba(0, 176, 255, 0.8)',
-									color: '#fff',
-									width: '25px'
-								}}
-							>
-								{`${'PIT'}`}
-							</div>
-						:	playerPitInfo[player.id][5] > 0 &&
-							(
-								(
-									nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-									this.props.settings.subSettings.autoHidePitTime.enabled
-								) ||
-								!this.props.settings.subSettings.autoHidePitTime.enabled
-							)
-							?	<div
-								className={classNames(
-									'pitting',
-									{
-										noShadow: true
-									}
-								)}
-								style={{
-									background: 'rgba(0, 176, 255, 0)',
-									color: 'rgba(255, 255, 255, 0)',
-									width: '25px'
-								}}
-							>
-								{`${'PIT'}`}
-								<div
-									className={classNames(
-										'pittime',
-										{
-											noShadow: false
-										}
-									)}
-									style={{
-										marginLeft: '5px'
-									}}
-								>
-									{
-										`${
-												(
+											}
+										</div>
+										<div
+											className={classNames(
+												'pittimea',
+												{
+													noShadow: showAllMode
+														? false
+														: playerPitInfo[player.id][3] <= 0
+												}
+											)}
+											style={{
+												marginLeft: '0px',
+												color: showAllMode || playerPitInfo[player.id][3] > 0
+													? showAllMode || playerPitInfo[player.id][4] > 0
+														? 'rgba(0, 190, 60, 1)'
+														: 'rgba(255, 255, 255, 1)'
+													: 'rgba(255, 255, 255, 0)',
+
+												background: showAllMode || playerPitInfo[player.id][3] > 0
+													? 'rgba(0, 100, 255, 0.8)'
+													: 'rgba(0, 100, 255, 0)'
+											}}
+										>
+											{
+												showAllMode || playerPitInfo[player.id][3] > 0
+													? showAllMode || playerPitInfo[player.id][4] <= 0
+														? `${showAllMode
+															? 13.5
+															: (
+																(
+																	nowCheck - playerPitInfo[player.id][3]
+																) / 1000
+															).toFixed(1)
+														}`
+														: `${(
+															(
+																playerPitInfo[player.id][4] - playerPitInfo[player.id][3]
+															) / 1000
+														).toFixed(1)
+														}`
+													: '|'
+											}
+										</div>
+									</div>
+									: <div
+										className={classNames(
+											'pitting',
+											{
+												noShadow: false
+											}
+										)}
+										style={{
+											background: showAllMode ||
+												playerPitInfo[player.id][3] > 0
+												? showAllMode || playerPitInfo[player.id][4] > 0
+													? 'rgba(0, 190, 60, 0.8)'
+													: 'rgba(255, 70, 0, 0.8)'
+												: 'rgba(0, 176, 255, 0.8)',
+											color: '#fff',
+											width: '25px'
+										}}
+									>
+										{`${'PIT'}`}
+									</div>
+								: playerPitInfo[player.id][5] > 0 &&
+									(
+										(
+											nowCheck - playerPitInfo[player.id][5] <= 7500 &&
+											this.props.settings.subSettings.autoHidePitTime.enabled
+										) ||
+										!this.props.settings.subSettings.autoHidePitTime.enabled
+									)
+									? <div
+										className={classNames(
+											'pitting',
+											{
+												noShadow: true
+											}
+										)}
+										style={{
+											background: 'rgba(0, 176, 255, 0)',
+											color: 'rgba(255, 255, 255, 0)',
+											width: '25px'
+										}}
+									>
+										{`${'PIT'}`}
+										<div
+											className={classNames(
+												'pittime',
+												{
+													noShadow: false
+												}
+											)}
+											style={{
+												marginLeft: '5px'
+											}}
+										>
+											{
+												`${(
 													(
 														playerPitInfo[player.id][5] - playerPitInfo[player.id][2]
 													) / 1000
 												).toFixed(1)
-											}`
-									}
-								</div>
-								<div
-									className={classNames(
-										'pittimea',
-										{
-											noShadow: playerPitInfo[player.id][4] <= 0
-										}
-									)}
-									style={{
-										marginLeft: '0px',
-										color: playerPitInfo[player.id][4] > 0
-										?	'rgba(0, 190, 60, 1)'
-										:	'rgba(0, 190, 60, 0)',
-										background: playerPitInfo[player.id][4] > 0
-										?	'rgba(0, 100, 255, 0.8)'
-										:	'rgba(0, 100, 255, 0)'
-									}}
-								>
-									{
-										playerPitInfo[player.id][4] > 0
-										?	`${
-												(
-													(
-														playerPitInfo[player.id][4] - playerPitInfo[player.id][3]
-													) / 1000
-												).toFixed(1)
-											}`
-										:	'|'
-									}
-								</div>
+												}`
+											}
+										</div>
+										<div
+											className={classNames(
+												'pittimea',
+												{
+													noShadow: playerPitInfo[player.id][4] <= 0
+												}
+											)}
+											style={{
+												marginLeft: '0px',
+												color: playerPitInfo[player.id][4] > 0
+													? 'rgba(0, 190, 60, 1)'
+													: 'rgba(0, 190, 60, 0)',
+												background: playerPitInfo[player.id][4] > 0
+													? 'rgba(0, 100, 255, 0.8)'
+													: 'rgba(0, 100, 255, 0)'
+											}}
+										>
+											{
+												playerPitInfo[player.id][4] > 0
+													? `${(
+														(
+															playerPitInfo[player.id][4] - playerPitInfo[player.id][3]
+														) / 1000
+													).toFixed(1)
+													}`
+													: '|'
+											}
+										</div>
+									</div>
+									: null
+							: null
+					}
+					{' '}
+					{
+						this.props.relative &&
+						(sessionType === ESession.Race || showAllMode) &&
+						this.props.settings.subSettings.showPitStops.enabled && (
+							<div
+								className={classNames('stopStatus', {
+									textShadow: player.numStops > 0
+								})}
+								style={{
+									background:
+										player.mandatoryPit === 2
+											? 'green'
+											: player.mandatoryPit === 0 || player.mandatoryPit === 1
+												? 'red'
+												: player.inPit
+													? 'red'
+													: 'dimgray',
+									color:
+										player.numStops > 0
+											? 'white'
+											: player.inPit
+												? 'white'
+												: player.mandatoryPit === 2
+													? 'green'
+													: player.mandatoryPit === 0 || player.mandatoryPit === 1
+														? 'red'
+														: player.inPit
+															? 'red'
+															: 'dimgray'
+								}}
+							>
+								{
+									player.inPit
+										? `${'PIT'}`
+										: player.numStops
+								}
 							</div>
-							:	null
-					: null
-				}
-				{' '}
-				{
-					this.props.relative &&
-					(sessionType === ESession.Race || showAllMode) &&
-					this.props.settings.subSettings.showPitStops.enabled && (
+						)
+					}
+					{this.props.relative &&
+						this.props.settings.subSettings.showUserId.enabled && (
+							<div className="userId">{player.userId}</div>
+						)}
+					{multiClass && (
 						<div
-							className={classNames('stopStatus', {
-								textShadow: player.numStops > 0
-							})}
+							className="classStyle"
 							style={{
-								background:
-									player.mandatoryPit === 2
-										?	'green'
-										:	player.mandatoryPit === 0  || player.mandatoryPit === 1
-											?	'red'
-											:	player.inPit
-												? 	'red'
-												:	'dimgray',
-								color:
-									player.numStops > 0
-										?	'white'
-										:	player.inPit
-											?	'white'
-											:	player.mandatoryPit === 2
-												?	'green'
-												:	player.mandatoryPit === 0 || player.mandatoryPit === 1
-													?	'red'
-													:	player.inPit
-														? 	'red'
-														:	'dimgray'
+								borderTop: !this.props.relative &&
+									multiClass
+									? `3px solid ${player.classColor}`
+									: `0`,
+								borderLeft: this.props.relative &&
+									multiClass
+									? `4px solid ${player.classColor}`
+									: undefined
 							}}
-						>
-							{
-								player.inPit
-								?	`${'PIT'}`
-								:	player.numStops
-							}
-						</div>
-					)
-				}
-				{this.props.relative &&
-					this.props.settings.subSettings.showUserId.enabled && (
-						<div className="userId">{player.userId}</div>
-				)}
-				{multiClass && (
-					<div
-						className="classStyle"
-						style={{
-							borderTop: !this.props.relative &&
-								multiClass
-								? `3px solid ${player.classColor}`
-								: `0`,
-							borderLeft: this.props.relative &&
-								multiClass
-								? `4px solid ${player.classColor}`
-								: undefined
-						}}
-					/>
-				)}
-				{
-					this.props.relative &&
-					this.props.settings.subSettings.showClassLogos.enabled && (
-						<div className="classLogo">
-							<img src={player.classUrl} width="20" height="20"/>
-						</div>
-					)
-				}
-			</div>
-		);
+						/>
+					)}
+					{
+						this.props.relative &&
+						this.props.settings.subSettings.showClassLogos.enabled && (
+							<div className="classLogo">
+								<img src={player.classUrl} width="20" height="20" />
+							</div>
+						)
+					}
+				</div>
+			);
 		}
 		return null;
 	}

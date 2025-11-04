@@ -11,3 +11,4 @@
 - Something else for suggestions.TXT: could you make the “all widgets off” setting an option when cycling through views 1,2,3? I’d like to have just one button bound to cycle through all the views, but don’t want to sacrifice one of the three layouts. Thanks!
 - Inputs graph: controle de segundos
 - Inputs graph: adicionar as barras de inputs e wheel
+(Pedro) - Tempo Relativo GAP 
