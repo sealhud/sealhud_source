@@ -1,2 +1,0 @@
-"oi!"
-!Oi do Pedrão!
