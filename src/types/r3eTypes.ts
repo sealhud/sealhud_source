@@ -483,7 +483,7 @@ export interface ISectors {
 	Sector2: number;
 	Sector3: number;
 }
-// adicionado CarWidht e CarLength//
+// Pedro - adicionado CarWidht e CarLength//
 export interface IDriverInfo {
 	Name: string;
 	CarNumber: number;
