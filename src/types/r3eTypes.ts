@@ -483,7 +483,7 @@ export interface ISectors {
 	Sector2: number;
 	Sector3: number;
 }
-
+// adicionado CarWidht e CarLength//
 export interface IDriverInfo {
 	Name: string;
 	CarNumber: number;
@@ -497,8 +497,8 @@ export interface IDriverInfo {
 	ClassPerformanceIndex: number;
 	EngineType: EEngineType;
 
-	Unused1: number;
-	Unused2: number;
+	CarWidht: number;
+	CarLength: number;
 }
 
 export interface IRaceSessionMinutes {
