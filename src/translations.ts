@@ -1069,7 +1069,7 @@ const translations = {
 		"Saved Layout-Settings to Clipboard": "Configurações de layout salvas para o clipboard",
 		"Saved game state to clip board as JSON": "Salvar estado do jogo para o clipboard como JSON",
 		"Serve": "Servir",
-		"Serve within": "Servir em ",
+		"Serve within": "Servir em",
 		"Should beep": "Deve bipar",
 		"Show Best-Lap": "Mostrar melhor volta",
 		"Show Car Names": "Mostrar nome dos carros",
