@@ -89,13 +89,46 @@ export default class InputsGraph extends React.Component<IProps> {
 					height={this.canvasHeight}
 					style={{ overflow: "visible" }}
 				>
+					{/* Linha 75% (mais próxima do topo) */}
+					<line
+						x1={0}
+						y1={this.canvasHeight * 0.25}
+						x2={this.canvasWidth}
+						y2={this.canvasHeight * 0.25}
+						stroke="rgba(255,255,255,0.4)"
+						strokeWidth="0.3"
+						strokeDasharray="2 3"
+					/>
+
+					{/* Linha 50% */}
+					<line
+						x1={0}
+						y1={this.canvasHeight / 2}
+						x2={this.canvasWidth}
+						y2={this.canvasHeight / 2}
+						stroke="rgba(255,255,255,0.5)"
+						strokeWidth="0.4"
+						strokeDasharray="2 3"
+					/>
+
+					{/* Linha 25% (mais próxima do fundo) */}
+					<line
+						x1={0}
+						y1={this.canvasHeight * 0.75}
+						x2={this.canvasWidth}
+						y2={this.canvasHeight * 0.75}
+						stroke="rgba(255,255,255,0.4)"
+						strokeWidth="0.3"
+						strokeDasharray="2 3"
+					/>
+
 					{/* Brake RED */}
 					{
 						this.props.settings.subSettings.showInputBrake.enabled && (
 							<polyline
 								fill="none"
 								stroke="#cd5c5c"
-								strokeWidth="1.1"
+								strokeWidth="1.5"
 								points={this.renderPath(this.brakeHistory, "red")}
 							/>
 						)
@@ -105,8 +138,8 @@ export default class InputsGraph extends React.Component<IProps> {
 						this.props.settings.subSettings.showInputThrottle.enabled && (
 							<polyline
 								fill="none"
-								stroke="#30b66cff"
-								strokeWidth="1.1"
+								stroke="#30b65dff"
+								strokeWidth="1.5"
 								points={this.renderPath(this.throttleHistory, "green")}
 							/>
 						)
@@ -117,7 +150,7 @@ export default class InputsGraph extends React.Component<IProps> {
 							<polyline
 								fill="none"
 								stroke="#707070ff"
-								strokeWidth="1.1"
+								strokeWidth="1.5"
 								points={this.renderPath(this.clutchHistory, "gray")}
 							/>
 						)

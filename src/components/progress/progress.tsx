@@ -1,350 +1,523 @@
 import {
-    classNames,
-    ePlayerIsFocus,
-    eCurrentSlotId,
-    fancyTimeFormatGap,
-    formatTime,
-    getClassColor,
-    // showDebugMessage,
-    widgetSettings,
-    INVALID
+	classNames,
+	ePlayerIsFocus,
+	eCurrentSlotId,
+	fancyTimeFormatGap,
+	formatTime,
+	getClassColor,
+	// showDebugMessage,
+	widgetSettings,
+	INVALID
 } from './../../lib/utils';
 import {
-    IWidgetSetting,
-    eIsLeaderboard,
-    eIsHillClimb,
-    lowPerformanceMode,
-    highPerformanceMode,
-    showAllMode
+	IWidgetSetting,
+	eIsLeaderboard,
+	eIsHillClimb,
+	lowPerformanceMode,
+	highPerformanceMode,
+	showAllMode
 } from '../app/app';
-import {action, observable} from 'mobx';
-import {ESession, EPitState} from './../../types/r3eTypes';
-import {observer} from 'mobx-react';
-import {personalBestTime} from '../fuelDetail/fuelDetail';
+import { action, observable } from 'mobx';
+import { ESession, EPitState } from './../../types/r3eTypes';
+import { observer } from 'mobx-react';
+import { personalBestTime } from '../fuelDetail/fuelDetail';
 import _ from './../../translate';
-import r3e, {registerUpdate, unregisterUpdate, nowCheck} from '../../lib/r3e';
+import r3e, {
+	registerUpdate,
+	unregisterUpdate,
+	nowCheck
+} from '../../lib/r3e';
 import React from 'react';
 import './progress.scss';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
-    settings: IWidgetSetting;
+	settings: IWidgetSetting;
 }
 
 @observer
 export default class Progress extends React.Component<IProps, {}> {
-    @observable accessor currentDifference = INVALID;
-    lastDifference = INVALID;
-    differences : number[] = [];
+	@observable accessor currentDifference = INVALID;
+	lastDifference = INVALID;
+	differences: number[] = [];
 
-    @observable accessor lapDistanceFraction = 0;
+	@observable accessor lapDistanceFraction = 0;
 
-    @observable accessor lapDistance = -1;
+	@observable accessor lapDistance = -1;
 
-    @observable accessor isImproving = 0;
+	@observable accessor isImproving = 0;
 
-    @observable accessor showDeltaOnLaptime = false;
+	@observable accessor showDeltaOnLaptime = false;
 
-    @observable accessor isLeading = false;
+	@observable accessor isLeading = false;
 
-    @observable accessor sessionType = INVALID;
+	@observable accessor sessionType = INVALID;
 
-    @observable accessor sessionPhase = -1;
+	@observable accessor sessionPhase = -1;
 
-    @observable accessor estimatedPosition = 0;
+	@observable accessor estimatedPosition = 0;
 
-    @observable accessor estimatedLaptime = 10000;
+	@observable accessor estimatedLaptime = 10000;
 
-    @observable accessor estimatedDeltaNext = INVALID;
+	@observable accessor estimatedDeltaNext = INVALID;
 
-    @observable accessor lapTimeCurrentSelf = INVALID;
+	@observable accessor lapTimeCurrentSelf = INVALID;
 
-    @observable accessor lapTimePreviousSelf = INVALID;
+	@observable accessor lapTimePreviousSelf = INVALID;
 
-    @observable accessor startLights = INVALID;
+	@observable accessor startLights = INVALID;
 
-    @observable accessor sectorStartFactors = {
-        Sector1: 0,
-        Sector2: 0,
-        Sector3: 0
-    };
+	@observable accessor sectorStartFactors = {
+		Sector1: 0,
+		Sector2: 0,
+		Sector3: 0
+	};
 
-    @observable accessor sectorTimesBestSelf = {
-        Sector1: INVALID,
-        Sector2: INVALID,
-        Sector3: INVALID
-    };
+	@observable accessor sectorTimesBestSelf = {
+		Sector1: INVALID,
+		Sector2: INVALID,
+		Sector3: INVALID
+	};
 
-    @observable accessor currentSectors = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor currentSectors = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor bestSectorsOverall = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor bestSectorsOverall = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor bestSectorsClass = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor bestSectorsClass = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor bestSectorsSelf = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor bestSectorsSelf = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor sectorStatus = {
-        Sector1: 0,
-        Sector2: 0,
-        Sector3: 0
-    };
+	@observable accessor sectorStatus = {
+		Sector1: 0,
+		Sector2: 0,
+		Sector3: 0
+	};
 
-    @observable accessor sectorReset = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor sectorReset = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor toCheckCurrent = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor toCheckCurrent = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor toCheckBest = {
-        Sector1: -1,
-        Sector2: -1,
-        Sector3: -1
-    };
+	@observable accessor toCheckBest = {
+		Sector1: -1,
+		Sector2: -1,
+		Sector3: -1
+	};
 
-    @observable accessor laptimeBest = -1;
+	@observable accessor laptimeBest = -1;
 
-    @observable accessor laptimeBestClass = -1;
+	@observable accessor laptimeBestClass = -1;
 
-    @observable accessor laptimeStatus = 0;
+	@observable accessor laptimeStatus = 0;
 
-    @observable accessor resetSectors = false;
+	@observable accessor resetSectors = false;
 
-    @observable accessor pitState = INVALID;
+	@observable accessor pitState = INVALID;
 
-    @observable accessor lastCheck = 0;
-
-    @observable accessor gotLapped = false;
-
-    @observable accessor completedLaps = -1;
-
-    @observable accessor lappedAmount = 0;
-
-    @observable accessor pbTime = personalBestTime;
-
-    @observable accessor lapTimeBestSelf = -1;
-
-    @observable accessor timeDeltaBestSelf = -1;
-
-    @observable accessor lapTimeBestLeaderClass = -1;
-
-    @observable accessor lapTimeBestLeader = -1;
-
-    @observable accessor classPerformanceIndex = -1;
-
-    previousDeltaInfront = 0;
-
-    lastSessionType : number | null = null;
-
-    // seconds
-    maxImprovingValue = 0.003;
-    improvingSmoothness = 100;
-
-    @observable accessor playerIsFocus = false;
-
-    @observable accessor currentSlotId = -1;
-
-    @observable accessor isLeaderboard = false;
-
-    @observable accessor isHillClimb = false;
-
-    constructor(props : IProps) {
-        super(props);
-
-        registerUpdate(this.update);
-    }
-
-    componentWillUnmount() {
-        unregisterUpdate(this.update);
-    }
-
-    @action private updateDifferences = () => {
-        if (this.lastDifference) {
-            const difference = this.lastDifference - this.currentDifference;
-            this.differences.push(difference);
-            if (this.differences.length > 10) {
-                this.differences = this.differences.slice(1);
-                const averageDifference = this.differences.reduce((p, c) => p + c, 0) / this.differences.length;
-
-                const deltaTarget = averageDifference - this.isImproving;
-
-                this.isImproving += deltaTarget / this.improvingSmoothness || 0;
-            }
-        }
-        this.lastDifference = this.currentDifference;
-        if (showAllMode) {
-            this.isImproving = 5;
-        }
-    };
-
-    @action private update = () => {
-        this.pbTime = personalBestTime;
-        if ((highPerformanceMode && nowCheck - this.lastCheck >= 33) || (lowPerformanceMode && nowCheck - this.lastCheck >= 133) || (!lowPerformanceMode && !highPerformanceMode && nowCheck - this.lastCheck >= 66)) {
-            this.lastCheck = nowCheck;
-            this.playerIsFocus = ePlayerIsFocus;
-            this.currentSlotId = eCurrentSlotId;
-            this.pitState = r3e.data.PitState;
-            this.sessionType = r3e.data.SessionType;
-            this.sessionPhase = r3e.data.SessionPhase;
-            this.sectorStartFactors = r3e.data.SectorStartFactors;
-            this.startLights = r3e.data.StartLights;
-            this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
-            this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
-            this.lapDistance = r3e.data.LapDistance;
-            this.completedLaps = r3e.data.CompletedLaps;
-            this.timeDeltaBestSelf = r3e.data.TimeDeltaBestSelf;
-            this.lapTimeBestLeaderClass = r3e.data.LapTimeBestLeaderClass;
-            this.lapTimeBestLeader = r3e.data.LapTimeBestLeader;
-            this.classPerformanceIndex = r3e.data.VehicleInfo.ClassPerformanceIndex;
-            this.isLeaderboard = eIsLeaderboard;
-            this.isHillClimb = eIsHillClimb;
-            this.isLeading = showAllMode ? false : r3e.data.PositionClass === 1;
-            this.showDeltaOnLaptime = ((this.sessionType === ESession.Race && (this.props.settings.subSettings.deltaInRace.enabled || this.isLeading) && r3e.data.CurrentLapValid === 1) || (this.sessionType !== ESession.Race && r3e.data.CurrentLapValid === 1) || showAllMode);
-            if (this.lastSessionType != null && this.lastSessionType !== ESession.Race && this.sessionType === ESession.Race) {
-                this.resetSectors = true;
-            }
-            if (!this.showDeltaOnLaptime) {
-                this.updateRace();
-            } else {
-                this.updatePracticeQualify();
-            }
-            this.updateSectorTimes();
-
-            if (this.sessionType === ESession.Race && !showAllMode) {
-                this.gotLapped = false;
-                this.lappedAmount = 0;
-                let beenLapped = false;
-                for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
-                    const driver = r3e.data.DriverData[i];
-                    const isSameClass = driver.DriverInfo.ClassPerformanceIndex === r3e.data.VehicleInfo.ClassPerformanceIndex;
-
-                    if (isSameClass) {
-                        const lapDiff = driver.CompletedLaps - this.completedLaps;
-                        if (lapDiff === 1 && driver.LapDistance > this.lapDistance) {
-                            beenLapped = true;
-                            this.lappedAmount = Math.abs(lapDiff);
-                        }
-                        if (lapDiff > 1) {
-                            beenLapped = true;
-                            this.lappedAmount = driver.LapDistance > this.lapDistance ? Math.abs(lapDiff) : Math.abs(lapDiff - 1);
-                        }
-                        break;
-                    }
-                }
-                if (beenLapped) {
-                    this.gotLapped = true;
-                }
-            }
-        }
-    };
-
-    private getClassTimeDeltaInfront() {
-        let classTimeDelta = 0;
-        let hasFoundOpponent = false;
-        if (showAllMode) {
-            return 55;
-        }
-        if (this.gotLapped) {
-            return classTimeDelta;
-        }
-        // Iterate backwards from the opponent infront of the driver
-        // and append their timeDeltas to get the total
-        for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
-            const driver = r3e.data.DriverData[i];
-            classTimeDelta += driver.TimeDeltaBehind;
-
-            const isSameClass = driver.DriverInfo.ClassPerformanceIndex === r3e.data.VehicleInfo.ClassPerformanceIndex;
-            if (isSameClass) {
-                hasFoundOpponent = true;
-                break;
-            }
-        }
-
-        if (! hasFoundOpponent) {
-            return INVALID;
-        }
-
-        return classTimeDelta;
-    }
-
-    @action private updateSectorTimes() {
-        this.currentSectors.Sector1 = -1;
-        this.currentSectors.Sector2 = -1;
-        this.currentSectors.Sector3 = -1;
-        this.bestSectorsSelf.Sector1 = -1;
-        this.bestSectorsSelf.Sector2 = -1;
-        this.bestSectorsSelf.Sector3 = -1;
-        this.bestSectorsClass.Sector1 = -1;
-        this.bestSectorsClass.Sector2 = -1;
-        this.bestSectorsClass.Sector3 = -1;
-        this.bestSectorsOverall.Sector1 = -1;
-        this.bestSectorsOverall.Sector2 = -1;
-        this.bestSectorsOverall.Sector3 = -1;
-        this.laptimeBest = -1;
-        this.laptimeBestClass = -1;
-
-        const myBestTime = this.lapTimeBestSelf > 0 ? Math.round(this.lapTimeBestSelf * 1e3) / 1e3 : -1;
-        const myLastTime = this.lapTimePreviousSelf > 0 ? Math.round(this.lapTimePreviousSelf * 1e3) / 1e3 : -1;
-        this.bestSectorsSelf.Sector1 = r3e.data.BestIndividualSectorTimeSelf.Sector1 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector1 * 1e3) / 1e3 : -1;
-        this.bestSectorsSelf.Sector2 = r3e.data.BestIndividualSectorTimeSelf.Sector2 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector2 * 1e3) / 1e3 : -1;
-        this.bestSectorsSelf.Sector3 = r3e.data.BestIndividualSectorTimeSelf.Sector3 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector3 * 1e3) / 1e3 : -1;
-
-        this.currentSectors.Sector1 = r3e.data.SectorTimesCurrentSelf.Sector1 > 0 ? Math.round(r3e.data.SectorTimesCurrentSelf.Sector1 * 1e3) / 1e3 : -1;
-        this.currentSectors.Sector2 = r3e.data.SectorTimesCurrentSelf.Sector2 > 0 ? Math.round((r3e.data.SectorTimesCurrentSelf.Sector2 - r3e.data.SectorTimesCurrentSelf.Sector1) * 1e3) / 1e3 : -1;
-        this.currentSectors.Sector3 = r3e.data.SectorTimesCurrentSelf.Sector3 > 0 ? Math.round((r3e.data.SectorTimesCurrentSelf.Sector3 - r3e.data.SectorTimesCurrentSelf.Sector2) * 1e3) / 1e3 : -1;
-
-        r3e.data.DriverData.forEach((driver) => {
-            const isUser = this.currentSlotId === driver.DriverInfo.SlotId;
-            const isSameClass = driver.DriverInfo.ClassPerformanceIndex === r3e.data.VehicleInfo.ClassPerformanceIndex;
-            const toCheckTime = driver.SectorTimeBestSelf.Sector3 > 0 ? Math.round(driver.SectorTimeBestSelf.Sector3 * 1e3) / 1e3 : -1;
-
-            this.toCheckCurrent.Sector1 = driver.SectorTimeCurrentSelf.Sector1 > 0 ? Math.round(driver.SectorTimeCurrentSelf.Sector1 * 1e3) / 1e3 : -1;
-            this.toCheckCurrent.Sector2 = driver.SectorTimeCurrentSelf.Sector2 > 0 ? Math.round((driver.SectorTimeCurrentSelf.Sector2 - driver.SectorTimeCurrentSelf.Sector1) * 1e3) / 1e3 : -1;
-            this.toCheckCurrent.Sector3 = driver.SectorTimeCurrentSelf.Sector3 > 0 ? Math.round((driver.SectorTimeCurrentSelf.Sector3 - driver.SectorTimeCurrentSelf.Sector2) * 1e3) / 1e3 : -1;
-
-            this.toCheckBest.Sector1 = -1;
-            this.toCheckBest.Sector2 = -1;
-            this.toCheckBest.Sector3 = -1;
-
-            if (driver.SectorTimeBestSelf.Sector3 > 0) {
-                this.toCheckBest.Sector1 = isUser ? r3e.data.BestIndividualSectorTimeSelf.Sector1 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector1 * 1e3) / 1e3 : -1 : driver.SectorTimeBestSelf.Sector1 > 0 ? Math.round(driver.SectorTimeBestSelf.Sector1 * 1e3) / 1e3 : -1;
-                this.toCheckBest.Sector2 = isUser ? r3e.data.BestIndividualSectorTimeSelf.Sector2 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector2 * 1e3) / 1e3 : -1 : driver.SectorTimeBestSelf.Sector2 > 0 ? Math.round((driver.SectorTimeBestSelf.Sector2 - driver.SectorTimeBestSelf.Sector1) * 1e3) / 1e3 : -1;
-                this.toCheckBest.Sector3 = isUser ? r3e.data.BestIndividualSectorTimeSelf.Sector3 > 0 ? Math.round(r3e.data.BestIndividualSectorTimeSelf.Sector3 * 1e3) / 1e3 : -1 : driver.SectorTimeBestSelf.Sector3 > 0 ? Math.round((driver.SectorTimeBestSelf.Sector3 - driver.SectorTimeBestSelf.Sector2) * 1e3) / 1e3 : -1;
-            }
-
-            if (this.toCheckBest.Sector1 > 0 && (this.bestSectorsOverall.Sector1 < 0 || this.toCheckBest.Sector1<= this.bestSectorsOverall.Sector1
+	@observable accessor lastCheck = 0;
+
+	@observable accessor gotLapped = false;
+
+	@observable accessor completedLaps = -1;
+
+	@observable accessor lappedAmount = 0;
+
+	@observable accessor pbTime = personalBestTime;
+
+	@observable accessor lapTimeBestSelf = -1;
+
+	@observable accessor timeDeltaBestSelf = -1;
+
+	@observable accessor lapTimeBestLeaderClass = -1;
+
+	@observable accessor lapTimeBestLeader = -1;
+
+	@observable accessor classPerformanceIndex = -1;
+
+	previousDeltaInfront = 0;
+
+	lastSessionType: number | null = null;
+
+	// seconds
+	maxImprovingValue = 0.003;
+	improvingSmoothness = 100;
+
+	@observable accessor playerIsFocus = false;
+
+	@observable accessor currentSlotId = -1;
+
+	@observable accessor isLeaderboard = false;
+
+	@observable accessor isHillClimb = false;
+
+	constructor(props: IProps) {
+		super(props);
+
+		registerUpdate(this.update);
+	}
+
+	componentWillUnmount() {
+		unregisterUpdate(this.update);
+	}
+
+	@action
+	private updateDifferences = () => {
+		if (this.lastDifference) {
+			const difference = this.lastDifference - this.currentDifference;
+			this.differences.push(difference);
+			if (this.differences.length > 10) {
+				this.differences = this.differences.slice(1);
+				const averageDifference =
+					this.differences.reduce((p, c) => p + c, 0) /
+					this.differences.length;
+
+				const deltaTarget = averageDifference - this.isImproving;
+
+				this.isImproving += deltaTarget / this.improvingSmoothness || 0;
+			}
+		}
+		this.lastDifference = this.currentDifference;
+		if	(showAllMode) {
+			this.isImproving = 5;
+		}
+	};
+
+	@action
+	private update = () => {
+		this.pbTime = personalBestTime;
+		if (
+			(
+				highPerformanceMode &&
+				nowCheck - this.lastCheck >= 33
+			) ||
+			(
+				lowPerformanceMode &&
+				nowCheck - this.lastCheck >= 133
+			) ||
+			(
+				!lowPerformanceMode &&
+				!highPerformanceMode &&
+				nowCheck - this.lastCheck >= 66
+			)
+		) {
+			this.lastCheck = nowCheck;
+			this.playerIsFocus = ePlayerIsFocus;
+			this.currentSlotId = eCurrentSlotId;
+			this.pitState = r3e.data.PitState;
+			this.sessionType = r3e.data.SessionType;
+			this.sessionPhase = r3e.data.SessionPhase;
+			this.sectorStartFactors = r3e.data.SectorStartFactors;
+			this.startLights = r3e.data.StartLights;
+			this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
+			this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
+			this.lapDistance = r3e.data.LapDistance;
+			this.completedLaps = r3e.data.CompletedLaps;
+			this.timeDeltaBestSelf = r3e.data.TimeDeltaBestSelf;
+			this.lapTimeBestLeaderClass = r3e.data.LapTimeBestLeaderClass;
+			this.lapTimeBestLeader = r3e.data.LapTimeBestLeader;
+			this.classPerformanceIndex = r3e.data.VehicleInfo.ClassPerformanceIndex;
+			this.isLeaderboard = eIsLeaderboard;
+			this.isHillClimb = eIsHillClimb;
+			this.isLeading = showAllMode
+				?	false
+				:	r3e.data.PositionClass === 1;
+			this.showDeltaOnLaptime = (
+				(
+					this.sessionType === ESession.Race &&
+					(
+						this.props.settings.subSettings.deltaInRace.enabled ||
+						this.isLeading
+					) &&
+					r3e.data.CurrentLapValid === 1
+				) ||
+				(
+					this.sessionType !== ESession.Race &&
+					r3e.data.CurrentLapValid === 1
+				) ||
+				showAllMode
+			);
+			if (
+				this.lastSessionType != null &&
+				this.lastSessionType !== ESession.Race &&
+				this.sessionType === ESession.Race
+			) {
+				this.resetSectors = true;
+			}
+			if (!this.showDeltaOnLaptime) {
+					this.updateRace();
+			} else {
+				this.updatePracticeQualify();
+			}
+			this.updateSectorTimes();
+
+			if (this.sessionType === ESession.Race && !showAllMode) {
+				this.gotLapped = false;
+				this.lappedAmount = 0;
+				let beenLapped = false;
+				for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
+					const driver = r3e.data.DriverData[i];
+					const isSameClass =
+						driver.DriverInfo.ClassPerformanceIndex ===
+						r3e.data.VehicleInfo.ClassPerformanceIndex;
+
+					if (isSameClass) {
+						const lapDiff = driver.CompletedLaps - this.completedLaps;
+						if (
+							lapDiff === 1 &&
+							driver.LapDistance > this.lapDistance
+						) {
+							beenLapped = true;
+							this.lappedAmount = Math.abs(lapDiff);
+						}
+						if (
+							lapDiff > 1
+						) {
+							beenLapped = true;
+							this.lappedAmount =
+								driver.LapDistance > this.lapDistance
+									?	Math.abs(lapDiff)
+									:	Math.abs(lapDiff - 1);
+						}
+						break;
+					}
+				}
+				if (beenLapped) {
+					this.gotLapped = true;
+				}
+			}
+		}
+	};
+
+	private getClassTimeDeltaInfront() {
+		let classTimeDelta = 0;
+		let hasFoundOpponent = false;
+		if (showAllMode) {
+			return 55;
+		}
+		if (this.gotLapped) {
+			return classTimeDelta;
+		}
+		// Iterate backwards from the opponent infront of the driver
+		// and append their timeDeltas to get the total
+		for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
+			const driver = r3e.data.DriverData[i];
+			classTimeDelta += driver.TimeDeltaBehind;
+
+			const isSameClass =
+				driver.DriverInfo.ClassPerformanceIndex ===
+				r3e.data.VehicleInfo.ClassPerformanceIndex;
+			if (isSameClass) {
+				hasFoundOpponent = true;
+				break;
+			}
+		}
+
+		if (!hasFoundOpponent) {
+			return INVALID;
+		}
+
+		return classTimeDelta;
+	}
+
+	@action
+	private updateSectorTimes() {
+		this.currentSectors.Sector1 = -1;
+		this.currentSectors.Sector2 = -1;
+		this.currentSectors.Sector3 = -1;
+		this.bestSectorsSelf.Sector1 = -1;
+		this.bestSectorsSelf.Sector2 = -1;
+		this.bestSectorsSelf.Sector3 = -1;
+		this.bestSectorsClass.Sector1 = -1;
+		this.bestSectorsClass.Sector2 = -1;
+		this.bestSectorsClass.Sector3 = -1;
+		this.bestSectorsOverall.Sector1 = -1;
+		this.bestSectorsOverall.Sector2 = -1;
+		this.bestSectorsOverall.Sector3 = -1;
+		this.laptimeBest = -1;
+		this.laptimeBestClass = -1;
+
+		const myBestTime =
+			this.lapTimeBestSelf > 0
+				?	Math.round(this.lapTimeBestSelf * 1e3) / 1e3
+				:	-1;
+		const myLastTime =
+			this.lapTimePreviousSelf > 0
+				?	Math.round(this.lapTimePreviousSelf * 1e3) / 1e3
+				:	-1;
+		this.bestSectorsSelf.Sector1 =
+			r3e.data.BestIndividualSectorTimeSelf.Sector1 > 0
+				?	Math.round(
+						r3e.data.BestIndividualSectorTimeSelf.Sector1 * 1e3
+					) / 1e3
+				:	-1;
+		this.bestSectorsSelf.Sector2 =
+			r3e.data.BestIndividualSectorTimeSelf.Sector2 > 0
+				?	Math.round(
+						r3e.data.BestIndividualSectorTimeSelf.Sector2 * 1e3
+					) / 1e3
+				:	-1;
+		this.bestSectorsSelf.Sector3 =
+			r3e.data.BestIndividualSectorTimeSelf.Sector3 > 0
+				?	Math.round(
+						r3e.data.BestIndividualSectorTimeSelf.Sector3 * 1e3
+					) / 1e3
+				:	-1;
+
+		this.currentSectors.Sector1 =
+			r3e.data.SectorTimesCurrentSelf.Sector1 > 0
+				?	Math.round(
+						r3e.data.SectorTimesCurrentSelf.Sector1 * 1e3
+					) / 1e3
+				:	-1;
+		this.currentSectors.Sector2 =
+			r3e.data.SectorTimesCurrentSelf.Sector2 > 0
+				?	Math.round(
+						(
+							r3e.data.SectorTimesCurrentSelf.Sector2
+							- r3e.data.SectorTimesCurrentSelf.Sector1
+						) * 1e3
+					) / 1e3
+				:	-1;
+		this.currentSectors.Sector3 =
+			r3e.data.SectorTimesCurrentSelf.Sector3 > 0
+				?	Math.round(
+						(
+							r3e.data.SectorTimesCurrentSelf.Sector3
+							- r3e.data.SectorTimesCurrentSelf.Sector2
+						) * 1e3
+					) / 1e3
+				:	-1;
+
+		r3e.data.DriverData.forEach((driver) => {
+			const isUser =
+				this.currentSlotId === driver.DriverInfo.SlotId;
+			const isSameClass =
+				driver.DriverInfo.ClassPerformanceIndex ===
+				r3e.data.VehicleInfo.ClassPerformanceIndex;
+			const toCheckTime =
+				driver.SectorTimeBestSelf.Sector3 > 0
+					?	Math.round(driver.SectorTimeBestSelf.Sector3 * 1e3) / 1e3
+					:	-1;
+
+			this.toCheckCurrent.Sector1 =
+				driver.SectorTimeCurrentSelf.Sector1 > 0
+					?	Math.round(
+							driver.SectorTimeCurrentSelf.Sector1 * 1e3
+						) / 1e3
+					:	-1;
+			this.toCheckCurrent.Sector2 =
+				driver.SectorTimeCurrentSelf.Sector2 > 0
+					?	Math.round(
+							(
+								driver.SectorTimeCurrentSelf.Sector2
+								- driver.SectorTimeCurrentSelf.Sector1
+							) * 1e3
+						) / 1e3
+					:	-1;
+			this.toCheckCurrent.Sector3 =
+				driver.SectorTimeCurrentSelf.Sector3 > 0
+					?	Math.round(
+							(
+								driver.SectorTimeCurrentSelf.Sector3
+								- driver.SectorTimeCurrentSelf.Sector2
+							) * 1e3
+						) / 1e3
+					:	-1;
+
+			this.toCheckBest.Sector1 = -1;
+			this.toCheckBest.Sector2 = -1;
+			this.toCheckBest.Sector3 = -1;
+
+			if (driver.SectorTimeBestSelf.Sector3 > 0) {
+				this.toCheckBest.Sector1 =
+					isUser
+					?	r3e.data.BestIndividualSectorTimeSelf.Sector1 > 0
+						?	Math.round(
+								r3e.data.BestIndividualSectorTimeSelf.Sector1 * 1e3
+							) / 1e3
+						:	-1
+					:	driver.SectorTimeBestSelf.Sector1 > 0
+						?	Math.round(
+								driver.SectorTimeBestSelf.Sector1 * 1e3
+							) / 1e3
+						:	-1;
+				this.toCheckBest.Sector2 =
+					isUser
+					?	r3e.data.BestIndividualSectorTimeSelf.Sector2 > 0
+						?	Math.round(
+								r3e.data.BestIndividualSectorTimeSelf.Sector2 * 1e3
+							) / 1e3
+						:	-1
+					:	driver.SectorTimeBestSelf.Sector2 > 0
+						?	Math.round(
+								(
+									driver.SectorTimeBestSelf.Sector2
+									- driver.SectorTimeBestSelf.Sector1
+								) * 1e3
+							) / 1e3
+						:	-1;
+				this.toCheckBest.Sector3 =
+					isUser
+					?	r3e.data.BestIndividualSectorTimeSelf.Sector3 > 0
+						?	Math.round(
+								r3e.data.BestIndividualSectorTimeSelf.Sector3 * 1e3
+							) / 1e3
+						:	-1
+					:	driver.SectorTimeBestSelf.Sector3 > 0
+						?	Math.round(
+								(
+									driver.SectorTimeBestSelf.Sector3
+									- driver.SectorTimeBestSelf.Sector2
+								) * 1e3
+							) / 1e3
+						:	-1;
+			}
+
+			if (
+				this.toCheckBest.Sector1 > 0 &&
+				(
+					this.bestSectorsOverall.Sector1 < 0 ||
+					this.toCheckBest.Sector1 <= this.bestSectorsOverall.Sector1
 				)
 			) {
 				this.bestSectorsOverall.Sector1 = this.toCheckBest.Sector1;
 			}
 			if (
-				this.toCheckBest.Sector2> 0 && (this.bestSectorsOverall.Sector2 < 0 || this.toCheckBest.Sector2<= this.bestSectorsOverall.Sector2
+				this.toCheckBest.Sector2 > 0 &&
+				(
+					this.bestSectorsOverall.Sector2 < 0 ||
+					this.toCheckBest.Sector2 <= this.bestSectorsOverall.Sector2
 				)
 			) {
 				this.bestSectorsOverall.Sector2 = this.toCheckBest.Sector2;
 			}
 			if (
-				this.toCheckBest.Sector3> 0 && (this.bestSectorsOverall.Sector3 < 0 || this.toCheckBest.Sector3<= this.bestSectorsOverall.Sector3
+				this.toCheckBest.Sector3 > 0 &&
+				(
+					this.bestSectorsOverall.Sector3 < 0 ||
+					this.toCheckBest.Sector3 <= this.bestSectorsOverall.Sector3
 				)
 			) {
 				this.bestSectorsOverall.Sector3 = this.toCheckBest.Sector3;
@@ -352,23 +525,38 @@ export default class Progress extends React.Component<IProps, {}> {
 
 			if (isSameClass) {
 				if (
-					toCheckTime> 0 && (this.laptimeBestClass < 0 || toCheckTime <= this.laptimeBestClass)) {
-                this.laptimeBestClass = toCheckTime;
-            }
+					toCheckTime > 0 &&
+					(
+						this.laptimeBestClass < 0 ||
+						toCheckTime <= this.laptimeBestClass
+					)
+				) {
+					this.laptimeBestClass = toCheckTime;
+				}
 
-            if (this.toCheckBest.Sector1 > 0 && (this.bestSectorsClass.Sector1 < 0 || this.toCheckBest.Sector1<= this.bestSectorsClass.Sector1
+				if (
+					this.toCheckBest.Sector1 > 0 &&
+					(
+						this.bestSectorsClass.Sector1 < 0 ||
+						this.toCheckBest.Sector1 <= this.bestSectorsClass.Sector1
 					)
 				) {
 					this.bestSectorsClass.Sector1 = this.toCheckBest.Sector1;
 				}
 				if (
-					this.toCheckBest.Sector2> 0 && (this.bestSectorsClass.Sector2 < 0 || this.toCheckBest.Sector2<= this.bestSectorsClass.Sector2
+					this.toCheckBest.Sector2 > 0 &&
+					(
+						this.bestSectorsClass.Sector2 < 0 ||
+						this.toCheckBest.Sector2 <= this.bestSectorsClass.Sector2
 					)
 				) {
 					this.bestSectorsClass.Sector2 = this.toCheckBest.Sector2;
 				}
 				if (
-					this.toCheckBest.Sector3> 0 && (this.bestSectorsClass.Sector3 < 0 || this.toCheckBest.Sector3<= this.bestSectorsClass.Sector3
+					this.toCheckBest.Sector3 > 0 &&
+					(
+						this.bestSectorsClass.Sector3 < 0 ||
+						this.toCheckBest.Sector3 <= this.bestSectorsClass.Sector3
 					)
 				) {
 						this.bestSectorsClass.Sector3 = this.toCheckBest.Sector3;
@@ -376,23 +564,38 @@ export default class Progress extends React.Component<IProps, {}> {
 			}
 
 			if (
-				toCheckTime> 0 && (this.laptimeBest < 0 || toCheckTime <= this.laptimeBest)) {
-                this.laptimeBest = toCheckTime;
-            }
+				toCheckTime > 0 &&
+				(
+					this.laptimeBest < 0 ||
+					toCheckTime <= this.laptimeBest
+				)
+			) {
+				this.laptimeBest = toCheckTime;
+			}
 
-            if (this.toCheckCurrent.Sector1 > 0 && (this.bestSectorsOverall.Sector1 < 0 || this.toCheckCurrent.Sector1<= this.bestSectorsOverall.Sector1
+			if (
+				this.toCheckCurrent.Sector1 > 0 &&
+				(
+					this.bestSectorsOverall.Sector1 < 0 ||
+					this.toCheckCurrent.Sector1 <= this.bestSectorsOverall.Sector1
 				)
 			) {
 				this.bestSectorsOverall.Sector1 = this.toCheckCurrent.Sector1;
 			}
 			if (
-				this.toCheckCurrent.Sector2> 0 && (this.bestSectorsOverall.Sector2 < 0 || this.toCheckCurrent.Sector2<= this.bestSectorsOverall.Sector2
+				this.toCheckCurrent.Sector2 > 0 &&
+				(
+					this.bestSectorsOverall.Sector2 < 0 ||
+					this.toCheckCurrent.Sector2 <= this.bestSectorsOverall.Sector2
 				)
 			) {
 				this.bestSectorsOverall.Sector2 = this.toCheckCurrent.Sector2;
 			}
 			if (
-				this.toCheckCurrent.Sector3> 0 && (this.bestSectorsOverall.Sector3 < 0 || this.toCheckCurrent.Sector3<= this.bestSectorsOverall.Sector3
+				this.toCheckCurrent.Sector3 > 0 &&
+				(
+					this.bestSectorsOverall.Sector3 < 0 ||
+					this.toCheckCurrent.Sector3 <= this.bestSectorsOverall.Sector3
 				)
 			) {
 				this.bestSectorsOverall.Sector3 = this.toCheckCurrent.Sector3;
@@ -400,19 +603,28 @@ export default class Progress extends React.Component<IProps, {}> {
 
 			if (isSameClass) {
 				if (
-					this.toCheckCurrent.Sector1> 0 && (this.bestSectorsClass.Sector1 < 0 || this.toCheckCurrent.Sector1<= this.bestSectorsClass.Sector1
+					this.toCheckCurrent.Sector1 > 0 &&
+					(
+						this.bestSectorsClass.Sector1 < 0 ||
+						this.toCheckCurrent.Sector1 <= this.bestSectorsClass.Sector1
 					)
 				) {
 					this.bestSectorsClass.Sector1 = this.toCheckCurrent.Sector1;
 				}
 				if (
-					this.toCheckCurrent.Sector2> 0 && (this.bestSectorsClass.Sector2 < 0 || this.toCheckCurrent.Sector2<= this.bestSectorsClass.Sector2
+					this.toCheckCurrent.Sector2 > 0 &&
+					(
+						this.bestSectorsClass.Sector2 < 0 ||
+						this.toCheckCurrent.Sector2 <= this.bestSectorsClass.Sector2
 					)
 				) {
 					this.bestSectorsClass.Sector2 = this.toCheckCurrent.Sector2;
 				}
 				if (
-					this.toCheckCurrent.Sector3> 0 && (this.bestSectorsClass.Sector3 < 0 || this.toCheckCurrent.Sector3<= this.bestSectorsClass.Sector3
+					this.toCheckCurrent.Sector3 > 0 &&
+					(
+						this.bestSectorsClass.Sector3 < 0 ||
+						this.toCheckCurrent.Sector3 <= this.bestSectorsClass.Sector3
 					)
 				) {
 					this.bestSectorsClass.Sector3 = this.toCheckCurrent.Sector3;
@@ -449,83 +661,142 @@ export default class Progress extends React.Component<IProps, {}> {
 			Math.round(this.bestSectorsOverall.Sector3 * 1e3)  / 1e3; */
 
 		if (
-			this.currentSectors.Sector1> 0 && (this.bestSectorsOverall.Sector1 < 0 || this.currentSectors.Sector1<= this.bestSectorsOverall.Sector1
+			this.currentSectors.Sector1 > 0 &&
+			(
+				this.bestSectorsOverall.Sector1 < 0 ||
+				this.currentSectors.Sector1 <= this.bestSectorsOverall.Sector1
 			)
 		) {
 			this.bestSectorsOverall.Sector1 = this.currentSectors.Sector1;
 		}
 		if (
-			this.currentSectors.Sector2> 0 && (this.bestSectorsOverall.Sector2 < 0 || this.currentSectors.Sector2<= this.bestSectorsOverall.Sector2
+			this.currentSectors.Sector2 > 0 &&
+			(
+				this.bestSectorsOverall.Sector2 < 0 ||
+				this.currentSectors.Sector2 <= this.bestSectorsOverall.Sector2
 			)
 		) {
 			this.bestSectorsOverall.Sector2 = this.currentSectors.Sector2;
 		}
 		if (
-			this.currentSectors.Sector3> 0 && (this.bestSectorsOverall.Sector3 < 0 || this.currentSectors.Sector3<= this.bestSectorsOverall.Sector3
+			this.currentSectors.Sector3 > 0 &&
+			(
+				this.bestSectorsOverall.Sector3 < 0 ||
+				this.currentSectors.Sector3 <= this.bestSectorsOverall.Sector3
 			)
 		) {
 			this.bestSectorsOverall.Sector3 = this.currentSectors.Sector3;
 		}
 		if (
-			this.currentSectors.Sector1> 0 && (this.bestSectorsClass.Sector1 < 0 || this.currentSectors.Sector1<= this.bestSectorsClass.Sector1
+			this.currentSectors.Sector1 > 0 &&
+			(
+				this.bestSectorsClass.Sector1 < 0 ||
+				this.currentSectors.Sector1 <= this.bestSectorsClass.Sector1
 			)
 		) {
 			this.bestSectorsClass.Sector1 = this.currentSectors.Sector1;
 		}
 		if (
-			this.currentSectors.Sector2> 0 && (this.bestSectorsClass.Sector2 < 0 || this.currentSectors.Sector2<= this.bestSectorsClass.Sector2
+			this.currentSectors.Sector2 > 0 &&
+			(
+				this.bestSectorsClass.Sector2 < 0 ||
+				this.currentSectors.Sector2 <= this.bestSectorsClass.Sector2
 			)
 		) {
 			this.bestSectorsClass.Sector2 = this.currentSectors.Sector2;
 		}
 		if (
-			this.currentSectors.Sector3> 0 && (this.bestSectorsClass.Sector3 < 0 || this.currentSectors.Sector3<= this.bestSectorsClass.Sector3
+			this.currentSectors.Sector3 > 0 &&
+			(
+				this.bestSectorsClass.Sector3 < 0 ||
+				this.currentSectors.Sector3 <= this.bestSectorsClass.Sector3
 			)
 		) {
 			this.bestSectorsClass.Sector3 = this.currentSectors.Sector3;
 		}
 
 		this.laptimeStatus = 0;
-		if (myLastTime> 0) {
-                if (
-                    (myLastTime > myBestTime) || myBestTime < 0
-                ) {
-                    this.laptimeStatus = 1;
-                }
-                if (
-                    (myLastTime <= myBestTime) || myBestTime < 0
-                ) {
-                    this.laptimeStatus = 2;
-                }
-                if (
-                    (myLastTime <= this.laptimeBestClass) || this.laptimeBestClass < 0
-                ) {
-                    this.laptimeStatus = 3;
-                }
-                if (
-                    (myLastTime <= this.laptimeBest) || this.laptimeBest < 0
-                ) {
-                    this.laptimeStatus = 4;
-                }
-            }
-            if (myLastTime < 0 || (this.lapDistance > 400)) {
-                this.laptimeStatus = 0;
-            }
+		if (myLastTime > 0) {
+			if (
+				(
+					myLastTime >
+					myBestTime
+				) ||
+				myBestTime < 0
+			) {
+				this.laptimeStatus = 1;
+			}
+			if (
+				(
+					myLastTime <=
+					myBestTime
+				) ||
+				myBestTime < 0
+			) {
+				this.laptimeStatus = 2;
+			}
+			if (
+				(
+					myLastTime <=
+					this.laptimeBestClass
+				) ||
+				this.laptimeBestClass < 0
+			) {
+				this.laptimeStatus = 3;
+			}
+			if (
+				(
+					myLastTime <=
+					this.laptimeBest
+				) ||
+				this.laptimeBest < 0
+			) {
+				this.laptimeStatus = 4;
+			}
+		}
+		if (
+			myLastTime < 0 ||
+			(
+				this.lapDistance > 400
+			)
+		) {
+			this.laptimeStatus = 0;
+		}
 
-            this.sectorStatus.Sector1 = 0;
-            this.sectorStatus.Sector2 = 0;
-            this.sectorStatus.Sector3 = 0;
-            if (this.currentSectors.Sector1 > 0) {
-                if ((this.currentSectors.Sector1 > this.bestSectorsSelf.Sector1) || this.bestSectorsSelf.Sector1 < 0) {
-                    this.sectorStatus.Sector1 = 1;
-                }
-                if ((this.currentSectors.Sector1 <= this.bestSectorsSelf.Sector1) || this.bestSectorsSelf.Sector1 < 0) {
-                    this.sectorStatus.Sector1 = 2;
-                }
-                if ((this.currentSectors.Sector1 <= this.bestSectorsClass.Sector1) || this.bestSectorsClass.Sector1 < 0) {
-                    this.sectorStatus.Sector1 = 3;
-                }
-                if ((this.currentSectors.Sector1<=
+		this.sectorStatus.Sector1 = 0;
+		this.sectorStatus.Sector2 = 0;
+		this.sectorStatus.Sector3 = 0;
+		if (this.currentSectors.Sector1 > 0) {
+			if (
+				(
+					this.currentSectors.Sector1 >
+					this.bestSectorsSelf.Sector1
+				) ||
+				this.bestSectorsSelf.Sector1 < 0
+			) {
+				this.sectorStatus.Sector1 = 1;
+			}
+			if (
+				(
+					this.currentSectors.Sector1 <=
+					this.bestSectorsSelf.Sector1
+				) ||
+				this.bestSectorsSelf.Sector1 < 0
+			) {
+				this.sectorStatus.Sector1 = 2;
+			}
+			if (
+				(
+					this.currentSectors.Sector1 <=
+					this.bestSectorsClass.Sector1
+				) ||
+				this.bestSectorsClass.Sector1 < 0
+			) {
+				this.sectorStatus.Sector1 = 3;
+			}
+			if (
+				(
+					this.currentSectors.Sector1 <=
 					this.bestSectorsOverall.Sector1
 				) ||
 				this.bestSectorsOverall.Sector1 < 0
@@ -537,16 +808,34 @@ export default class Progress extends React.Component<IProps, {}> {
 		if (this.currentSectors.Sector2 > 0) {
 			if (
 				(
-					this.currentSectors.Sector2> this.bestSectorsSelf.Sector2) || this.bestSectorsSelf.Sector2 < 0) {
-                    this.sectorStatus.Sector2 = 1;
-                }
-                if ((this.currentSectors.Sector2 <= this.bestSectorsSelf.Sector2) || this.bestSectorsSelf.Sector2 < 0) {
-                    this.sectorStatus.Sector2 = 2;
-                }
-                if ((this.currentSectors.Sector2 <= this.bestSectorsClass.Sector2) || this.bestSectorsClass.Sector2 < 0) {
-                    this.sectorStatus.Sector2 = 3;
-                }
-                if ((this.currentSectors.Sector2<=
+					this.currentSectors.Sector2 >
+					this.bestSectorsSelf.Sector2
+				) ||
+				this.bestSectorsSelf.Sector2 < 0
+			) {
+				this.sectorStatus.Sector2 = 1;
+			}
+			if (
+				(
+					this.currentSectors.Sector2 <=
+					this.bestSectorsSelf.Sector2
+				) ||
+				this.bestSectorsSelf.Sector2 < 0
+			) {
+				this.sectorStatus.Sector2 = 2;
+			}
+			if (
+				(
+					this.currentSectors.Sector2 <=
+					this.bestSectorsClass.Sector2
+				) ||
+				this.bestSectorsClass.Sector2 < 0
+			) {
+				this.sectorStatus.Sector2 = 3;
+			}
+			if (
+				(
+					this.currentSectors.Sector2 <=
 					this.bestSectorsOverall.Sector2
 				) ||
 				this.bestSectorsOverall.Sector2 < 0
@@ -558,10 +847,16 @@ export default class Progress extends React.Component<IProps, {}> {
 		if (this.currentSectors.Sector3 > 0) {
 			if (
 				(
-					this.currentSectors.Sector3> this.bestSectorsSelf.Sector3) || this.bestSectorsSelf.Sector3 < 0) {
-                    this.sectorStatus.Sector3 = 1;
-                }
-                if ((this.currentSectors.Sector3<=
+					this.currentSectors.Sector3 >
+					this.bestSectorsSelf.Sector3
+				) ||
+				this.bestSectorsSelf.Sector3 < 0
+			) {
+				this.sectorStatus.Sector3 = 1;
+			}
+			if (
+				(
+					this.currentSectors.Sector3 <=
 					this.bestSectorsSelf.Sector3
 				) ||
 				this.bestSectorsSelf.Sector3 < 0
@@ -709,7 +1004,8 @@ export default class Progress extends React.Component<IProps, {}> {
 				break;
 			}
 			this.estimatedDeltaNext = Math.min(
-				1, this.estimatedLaptime - driver.SectorTimeBestSelf.Sector3
+				1,
+				this.estimatedLaptime - driver.SectorTimeBestSelf.Sector3
 			);
 			estimatedPosition = driver.PlaceClass + 1;
 		}
@@ -726,7 +1022,8 @@ export default class Progress extends React.Component<IProps, {}> {
 	getBarWidth = (direction: number) => {
 		// this.currentDifference
 		const proc = Math.min(
-			(this.isImproving / this.maxImprovingValue) * direction * 50, 50
+			(this.isImproving / this.maxImprovingValue) * direction * 50,
+			50
 		);
 		return `${showAllMode
 			?	90
@@ -797,27 +1094,41 @@ export default class Progress extends React.Component<IProps, {}> {
 					shouldShow:
 						this.lapTimeCurrentSelf !== INVALID ||
 						this.sessionType === ESession.Race ||
-						showAllMode, race: showAllMode
+						showAllMode,
+					race: showAllMode
 						?	false
-						:	this.sessionType === ESession.Race, qualify: showAllMode
+						:	this.sessionType === ESession.Race,
+					qualify: showAllMode
 						?	true
-						:	this.sessionType !== ESession.Race, loosing: !showAllMode && this.isImproving < -0.001, gaining: showAllMode || this.isImproving > 0.001, overallLoosing:
-						!showAllMode && this.currentDifference > 0 && this.playerIsFocus, overallGaining:
-						showAllMode || this.currentDifference < 0 && this.playerIsFocus, showAsTime: this.props.settings.subSettings.sectorsAsTime.enabled ||
-						!this.playerIsFocus, lastValid: showAllMode || this.lapTimePreviousSelf > 0, pbl:
+						:	this.sessionType !== ESession.Race,
+					loosing: !showAllMode && this.isImproving < -0.001,
+					gaining: showAllMode || this.isImproving > 0.001,
+					overallLoosing:
+						!showAllMode && this.currentDifference > 0 && this.playerIsFocus,
+					overallGaining:
+						showAllMode || this.currentDifference < 0 && this.playerIsFocus,
+					showAsTime: this.props.settings.subSettings.sectorsAsTime.enabled ||
+						!this.playerIsFocus,
+					lastValid: showAllMode || this.lapTimePreviousSelf > 0,
+					pbl:
 						this.lapTimePreviousSelf <=
-						this.lapTimeBestSelf, cbl:
+						this.lapTimeBestSelf,
+					cbl:
 						this.lapTimePreviousSelf <=
-						this.lapTimeBestLeaderClass, gbl:
+						this.lapTimeBestLeaderClass,
+					gbl:
 						showAllMode ||
 						this.lapTimePreviousSelf <=
-						this.lapTimeBestLeader, estims:
+						this.lapTimeBestLeader,
+					estims:
 						this.sessionType === ESession.Race &&
 						!showAllMode
 						?	false
 						:	this.props.settings.subSettings.estimatedLapTime.enabled &&
-							(showAllMode || this.playerIsFocus), deltaTextOn: this.props.settings.subSettings.deltaText.enabled &&
-						(this.playerIsFocus || showAllMode), notDelta: !this.showDeltaOnLaptime
+							(showAllMode || this.playerIsFocus),
+					deltaTextOn: this.props.settings.subSettings.deltaText.enabled &&
+						(this.playerIsFocus || showAllMode),
+					notDelta: !this.showDeltaOnLaptime
 				})}
 			>
 				<div className="estimateContainer">
@@ -843,10 +1154,12 @@ export default class Progress extends React.Component<IProps, {}> {
 																this.sessionType !== ESession.Race ||
 																this.showDeltaOnLaptime
 																	?	this.currentDifference
-																	:	-this.currentDifference, this.currentDifference >= 60 ||
+																	:	-this.currentDifference,
+																this.currentDifference >= 60 ||
 																this.currentDifference <= -60
 																	?	'm:ss.SSS'
-																	:	's.SSS', true
+																	:	's.SSS',
+																true
 															)
 													}
 												</span>
@@ -903,14 +1216,20 @@ export default class Progress extends React.Component<IProps, {}> {
 												{_('Est. Time')}:{' '}
 												<span
 													className={classNames('Estmono', {
-														isGerman: localStorage.language === 'de', isFrench: localStorage.language === 'fr', isPortuguese: localStorage.language === 'pt', isSpanish: localStorage.language === 'es', isItalian: localStorage.language === 'it', isPolish: localStorage.language === 'pl'
+														isGerman: localStorage.language === 'de',
+														isFrench: localStorage.language === 'fr',
+														isPortuguese: localStorage.language === 'pt',
+														isSpanish: localStorage.language === 'es',
+														isItalian: localStorage.language === 'it',
+														isPolish: localStorage.language === 'pl'
 													})}
 												>
 												{
 													showAllMode
 													?	`1:46.789`
 													:	formatTime(
-															this.estimatedLaptime, 'm:ss.SSS'
+															this.estimatedLaptime,
+															'm:ss.SSS'
 														)
 												}
 												</span>
@@ -965,7 +1284,12 @@ export default class Progress extends React.Component<IProps, {}> {
 											</div>
 											<div
 												className={classNames('lastLap', {
-													isGerman: localStorage.language === 'de', isFrench: localStorage.language === 'fr', isPortuguese: localStorage.language === 'pt', isSpanish: localStorage.language === 'es', isItalian: localStorage.language === 'it', isPolish: localStorage.language === 'pl'
+													isGerman: localStorage.language === 'de',
+													isFrench: localStorage.language === 'fr',
+													isPortuguese: localStorage.language === 'pt',
+													isSpanish: localStorage.language === 'es',
+													isItalian: localStorage.language === 'it',
+													isPolish: localStorage.language === 'pl'
 												})}
 												style={{
 													color: (showAllMode || this.laptimeStatus) === 4
@@ -1032,16 +1356,23 @@ export default class Progress extends React.Component<IProps, {}> {
 										firstRoundInRace
 									) &&
 									this.lapTimeCurrentSelf > 0 &&
-									this.currentSectors.Sector1> 0) || !firstRoundInQualy && !firstRoundInRace)  || showAllMode) && (
-                        < div className = "sectors" > {
-                            this.sectorStatus.Sector1 !== 0 && (< div className =
-                                { classNames('sector', {
-                                    pb: this.sectorStatus.Sector1 === 2,
-                                    cb: this.sectorStatus.Sector1 === 3,
-                                    gb: this.sectorStatus.Sector1 === 4
-                                })
-                            }
-                            style ={{
+									this.currentSectors.Sector1 > 0
+								) ||
+								!firstRoundInQualy &&
+								!firstRoundInRace
+							) ||
+							showAllMode
+						) && (
+							<div className="sectors">
+								{
+									this.sectorStatus.Sector1 !== 0 && (
+										<div
+											className={classNames('sector', {
+												pb:			this.sectorStatus.Sector1 === 2,
+												cb: 		this.sectorStatus.Sector1 === 3,
+												gb: 		this.sectorStatus.Sector1 === 4
+											})}
+											style={{
 												background: this.sectorStatus.Sector1 === 4
 													?	'purple'
 													:	this.sectorStatus.Sector1 === 3
@@ -1051,9 +1382,14 @@ export default class Progress extends React.Component<IProps, {}> {
 																	:	this.sectorStatus.Sector1 === 1
 																			?	'gray'
 																			:	'transparent'
-											}} > {
-                                showTimes ? 'S1: ' + fancyTimeFormatGap(this.currentSectors.Sector1, 1, 0) : ''
-                            } < /div>
+											}}
+										> {
+											showTimes
+												?	'S1: '
+													+ fancyTimeFormatGap(this.currentSectors.Sector1, 1, 0)
+												: ''
+										}
+										</div>
 									)
 								}
 								{
@@ -1081,16 +1417,18 @@ export default class Progress extends React.Component<IProps, {}> {
 													+ fancyTimeFormatGap(this.currentSectors.Sector2, 1, 0)
 												: ''
 										}
-										</div >)
-                        } {
-                            this.sectorStatus.Sector3 !== 0 && (< div className =
-                                { classNames('sector', {
-                                    pb: this.sectorStatus.Sector3 === 2,
-                                    cb: this.sectorStatus.Sector3 === 3,
-                                    gb: this.sectorStatus.Sector3 === 4
-                                })
-                            }
-                            style ={{
+										</div>
+									)
+								}
+								{
+									this.sectorStatus.Sector3 !== 0 && (
+										<div
+											className={classNames('sector', {
+												pb:			this.sectorStatus.Sector3 === 2,
+												cb: 		this.sectorStatus.Sector3 === 3,
+												gb: 		this.sectorStatus.Sector3 === 4
+											})}
+											style={{
 												background:
 													this.sectorStatus.Sector3 === 4
 														?	'purple'
@@ -1101,14 +1439,21 @@ export default class Progress extends React.Component<IProps, {}> {
 																		:	this.sectorStatus.Sector3 === 1
 																				?	'gray'
 																				:	'transparent'
-											}} > {
-                                showTimes ? 'S3: ' + fancyTimeFormatGap(this.currentSectors.Sector3, 1, 0) : ''
-                            } < /div>
+											}}
+										> {
+											showTimes
+												?	'S3: '
+													+ fancyTimeFormatGap(this.currentSectors.Sector3, 1, 0)
+												: ''
+										}
+										</div>
 									)
 								}
-							</div >)
-                        } < /div>
-			</div >
-                    );
-                }
-            }
+							</div>
+						)
+					}
+				</div>
+			</div>
+		);
+	}
+}
