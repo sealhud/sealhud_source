@@ -545,7 +545,7 @@ export default class Info extends React.Component<IProps, {}> {
 				}
 				// Mostra o temporizador de 60s
 				if (this.slowDownStartTime) {
-				reasonText += `${_('Serve within')}${this.slowDownRemaining.toFixed(0)}s.`;
+				reasonText += `${_('Serve within')}' '${this.slowDownRemaining.toFixed(0)}s.`;
 				}
 				break;
 			case 'Disqualify':
