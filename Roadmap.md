@@ -12,3 +12,4 @@
 - (Diego) - Inputs graph: controle de segundos
 - (Diego) - Inputs graph: adicionar as barras de inputs e wheel
 - (Pedro) - Tempo Relativo GAP - Relative-Times Branch
+- Tempo de volta que está sendo exibido quando um piloto completa uma volta, parece não corresponder de fato à volta recém completada. Parece estar exibindo o tempo da volta anterior (isso pode ter relação com a forma com que o Otter criou para fazer os cálculos).
