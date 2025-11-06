@@ -1,8 +1,8 @@
 	0.8
 	----------		
 	GENERAL
-	- Inputs Graph Widget: Now user can change the duration of telemetry data.
-	- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel.
+	- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
+	- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
 	- Translations: Added and fixed a bunch of things.
 	
 	0.7

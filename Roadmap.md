@@ -9,7 +9,6 @@
 - Marcar o piloto em bandeira amarela
 - (Diego) - so for example i would like to see tyre wear instead 99% to be 99,11% this way i can see on which corner i have the most wear and so i can try how to dave tyre
 - Something else for suggestions.TXT: could you make the “all widgets off” setting an option when cycling through views 1,2,3? I’d like to have just one button bound to cycle through all the views, but don’t want to sacrifice one of the three layouts. Thanks!
-- (Diego) - Inputs graph: controle de segundos
-- (Diego) - Inputs graph: adicionar as barras de inputs e wheel
 - (Pedro) - Tempo Relativo GAP - Relative-Times Branch
 - Tempo de volta que está sendo exibido quando um piloto completa uma volta, parece não corresponder de fato à volta recém completada. Parece estar exibindo o tempo da volta anterior (isso pode ter relação com a forma com que o Otter criou para fazer os cálculos).
+- Verificar glitch relatado com overlay discord. (Relatado no canal por vipersonix: Dear Sealhudders, is there a way to fix discord glitching when focused on the game? i have a great time when focused on the game but then on 2nd screen discord visually glitches out to black or gray, until certain amount of time passed or i focus on it.) Pode ser comportamento causado pelo webhud em si (raceroom browser), e não pelo sealhud.
