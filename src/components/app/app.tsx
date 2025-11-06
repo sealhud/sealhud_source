@@ -185,6 +185,7 @@ export interface IWidgetSetting {
 	id: string;
 	enabled: boolean;
 	volume: number;
+	duration: number;
 	resetIt: boolean;
 	zoom: number;
 	position: {
@@ -421,6 +422,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('Position bar'),
 			subSettings: {
@@ -495,6 +497,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.97,
 			name: __('Relative'),
 			subSettings: {
@@ -545,6 +548,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.6999999999999997,
 			name: __('TV Tower'),
 			subSettings: {
@@ -623,6 +627,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.9099999999999999,
 			name: __('Delta'),
 			subSettings: {
@@ -673,6 +678,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.06,
 			name: __('Tires'),
 			subSettings: {
@@ -719,6 +725,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.5999999999999996,
 			name: __('Fuel & Lap Details'),
 			subSettings: {
@@ -757,6 +764,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.6899999999999997,
 			name: __('Pitstop'),
 			subSettings: {
@@ -779,6 +787,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0.5,
+			duration: 0,
 			zoom: 1.9400000000000008,
 			name: __('Spotting / Radar'),
 			subSettings: {
@@ -813,6 +822,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Motec'),
 			subSettings: {
@@ -881,6 +891,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.5299999999999998,
 			name: __('Track Info'),
 			subSettings: {
@@ -907,6 +918,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Inputs'),
 			subSettings: {
@@ -929,6 +941,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 6,
 			zoom: 1.6300000000000006,
 			name: __('Inputs Graph'),
 			subSettings: {
@@ -943,6 +956,10 @@ export default class App extends React.Component<IProps> {
 				showInputClutch: {
 					text: __('Clutch'),
 					enabled: false
+				},
+				showInputMeters: {
+					text: __('Input Meters'),
+					enabled: false
 				}
 			},
 			position: {
@@ -955,6 +972,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Fuel'),
 			subSettings: {},
@@ -968,6 +986,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.1800000000000002,
 			name: __('G-Force'),
 			subSettings: {},
@@ -981,6 +1000,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.95,
 			name: __('Car assists'),
 			subSettings: {},
@@ -994,6 +1014,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('P2P/DRS'),
 			subSettings: {},
@@ -1007,6 +1028,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.95,
 			name: __('Race start lights'),
 			subSettings: {},
@@ -1020,6 +1042,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.3600000000000003,
 			name: __('Race info'),
 			subSettings: {},
@@ -1033,6 +1056,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6800000000000006,
 			name: __('Pit limiter'),
 			subSettings: {},
@@ -1046,6 +1070,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.1500000000000001,
 			name: __('Damage'),
 			subSettings: {},
@@ -1059,6 +1084,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.4400000000000004,
 			name: __('Flags'),
 			subSettings: {},
@@ -1072,6 +1098,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.03,
 			name: __('Crew Chief'),
 			subSettings: {},
@@ -1085,6 +1112,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('Telemetry'),
 			subSettings: {},
@@ -1098,6 +1126,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.5000000000000004,
 			name: __('Clock'),
 			subSettings: {},
@@ -1114,6 +1143,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('Position bar'),
 			subSettings: {
@@ -1188,6 +1218,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.97,
 			name: __('Relative'),
 			subSettings: {
@@ -1238,6 +1269,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.6999999999999997,
 			name: __('TV Tower'),
 			subSettings: {
@@ -1316,6 +1348,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.9099999999999999,
 			name: __('Delta'),
 			subSettings: {
@@ -1366,6 +1399,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.06,
 			name: __('Tires'),
 			subSettings: {
@@ -1412,6 +1446,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.5999999999999996,
 			name: __('Fuel & Lap Details'),
 			subSettings: {
@@ -1450,6 +1485,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.6899999999999997,
 			name: __('Pitstop'),
 			subSettings: {
@@ -1472,6 +1508,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0.5,
+			duration: 0,
 			zoom: 1.9400000000000008,
 			name: __('Spotting / Radar'),
 			subSettings: {
@@ -1506,6 +1543,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Motec'),
 			subSettings: {
@@ -1574,6 +1612,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.5299999999999998,
 			name: __('Track Info'),
 			subSettings: {
@@ -1600,6 +1639,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Inputs'),
 			subSettings: {
@@ -1622,6 +1662,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 6,
 			zoom: 1.6300000000000006,
 			name: __('Inputs Graph'),
 			subSettings: {
@@ -1636,6 +1677,10 @@ export default class App extends React.Component<IProps> {
 				showInputClutch: {
 					text: __('Clutch'),
 					enabled: false
+				},
+				showInputMeters: {
+					text: __('Input Meters'),
+					enabled: false
 				}
 			},
 			position: {
@@ -1648,6 +1693,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6300000000000006,
 			name: __('Fuel'),
 			subSettings: {},
@@ -1661,6 +1707,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.1800000000000002,
 			name: __('G-Force'),
 			subSettings: {},
@@ -1674,6 +1721,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.95,
 			name: __('Car assists'),
 			subSettings: {},
@@ -1687,6 +1735,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('P2P/DRS'),
 			subSettings: {},
@@ -1700,6 +1749,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 0.95,
 			name: __('Race start lights'),
 			subSettings: {},
@@ -1713,6 +1763,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.3600000000000003,
 			name: __('Race info'),
 			subSettings: {},
@@ -1726,6 +1777,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.6800000000000006,
 			name: __('Pit limiter'),
 			subSettings: {},
@@ -1739,6 +1791,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.1500000000000001,
 			name: __('Damage'),
 			subSettings: {},
@@ -1752,6 +1805,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.4400000000000004,
 			name: __('Flags'),
 			subSettings: {},
@@ -1765,6 +1819,7 @@ export default class App extends React.Component<IProps> {
 			enabled: true,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.03,
 			name: __('Crew Chief'),
 			subSettings: {},
@@ -1778,6 +1833,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1,
 			name: __('Telemetry'),
 			subSettings: {},
@@ -1791,6 +1847,7 @@ export default class App extends React.Component<IProps> {
 			enabled: false,
 			resetIt: false,
 			volume: 0,
+			duration: 0,
 			zoom: 1.5000000000000004,
 			name: __('Clock'),
 			subSettings: {},
@@ -3704,11 +3761,16 @@ export default class App extends React.Component<IProps> {
 	@action
 	private changeBeepVolume = (e: ChangeEvent<HTMLInputElement>) => {
 		this.settings.spotting.volume = parseFloat(e.target.value);
-
 		this.saveSettings();
 	};
 
-		@action
+	@action
+	private changeGraphDuration = (e: ChangeEvent<HTMLInputElement>) => {
+		this.settings.inputsGraph.duration = parseFloat(e.target.value);
+		this.saveSettings();
+	};
+
+	@action
 	private changeResetText = () => {
 		if (this.resetString === `${_('Reset Settings')}`) {
 			clearInterval(this.resetInterval!);
@@ -4640,7 +4702,7 @@ export default class App extends React.Component<IProps> {
 											onChange={this.changeBeepVolume}
 										/>
 										<div
-											className="volValue"
+											className="barValue"
 											style={{
 												marginLeft:	this.settings.spotting.volume === 1
 													?	'1px'
@@ -4682,6 +4744,40 @@ export default class App extends React.Component<IProps> {
 							</div>
 						);
 					})}
+
+				{/*Slider de ajuste de duração Inputs Graph*/}
+				{widgetId === 'inputsGraph' && this.settings.inputsGraph.enabled && (
+					<div key="graphDuration" className="subWidget">
+						<label
+						className="sub"
+						style={{
+							border: '2px solid rgba(90, 90, 90, 0)',
+							color: 'white'
+						}}
+						>
+						{`Time:`}
+						<input
+							type="range"
+							min="3"
+							max="15"
+							step="1"
+							value={this.settings.inputsGraph.duration}
+							data-name="inputsGraph"
+							onChange={this.changeGraphDuration}
+						/>
+						<div
+							className="barValue"
+							style={{
+							marginLeft:
+								this.settings.inputsGraph.duration === 1 ? '1px' : '5px'
+							}}
+						>
+							{`${this.settings.inputsGraph.duration} s`}
+						</div>
+						</label>
+					</div>
+				)}		
+				{/*---*/}
 				{widgetId === 'positionBarRelative' &&
 					subSettings &&
 					Object.keys(subSettings).map((subId) => {

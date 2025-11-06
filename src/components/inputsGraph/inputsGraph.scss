@@ -1,9 +1,118 @@
 .inputsGraph {
 	position: relative;
-	//outline: 1px solid #333;
 	padding: 1px;
 	background: rgba(0,0,0,0.8);
-	width: 160px;
-	height: 52px;	
+	width: 160px;  // padrão sem meters
+	height: 52px;
 	overflow: hidden;
+	display: flex;
+	align-items: center;
+	transition: width 0.15s ease-out; // suavidade opcional
+}
+
+.inputsGraph.withMeters {
+	width: 210px; // expande quando os meters estão ativados
+}
+
+.graphAndMeters {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.inputsMetersBox {
+	display: flex;
+	flex-direction: column; /* empilha vertical */
+	justify-content: space-between; /* pedais em cima / steering em baixo */
+	align-items: center;
+	height: 100%;
+	padding: 2px;
+}
+
+.meter {
+	width: 8px;
+	margin: 0px 2px 0px 2px;
+	transition: height 0.08s linear; // suavidade rápida
+}
+
+.meter.throttle {
+	background: #30b65d;
+}
+
+.meter.brake {
+	background: #cd5c5c;
+}
+
+.meter.clutch {
+	background: #707070;
+}
+
+.meterGroup {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	height: 100%;
+}
+
+.meterLabel {
+	color: white;
+	font-size: 7px;
+	margin-top: 2px;
+	white-space: nowrap;
+	width: 100%;
+	text-align: center;
+	opacity: 0.85;
+	pointer-events: none; // não interfere no drag
+}
+
+.pedalsGroup {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	width: 100%;
+	height: 80%;
+	gap: 4px;
+}
+
+.steeringContainer {
+	position: relative;
+	width: 100%;
+	height: 10%;
+	margin-top: 1px;
+	background: rgba(255, 255, 255, 0.08);
+	overflow: hidden;
+}
+
+/* fill genérico */
+.steeringFill {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	transition: width 0.05s linear;
+}
+
+/* esquerda (cresce da direita p/ esquerda) */
+.steeringFill.left {
+	left: 50%;
+	transform: translateX(-100%); /* gruda no centro */
+	background: #707070ff;
+}
+
+/* direita (cresce da esquerda p/ direita) */
+.steeringFill.right {
+	left: 50%;
+	background: #707070ff;
+}
+
+/* marca central */
+.steeringCenterMark {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 2px;
+	height: 100%;
+	background: white;
+	opacity: 0.7;
+	transform: translateX(-50%);
 }

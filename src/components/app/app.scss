@@ -334,7 +334,7 @@ html.debug .viewport {
 }
 .settings .versionNumber {
   color: #fff;
-  width: 243px;
+  width: 244px;
   text-align: center;
   height: 14px;
   line-height: 14px;
@@ -488,7 +488,10 @@ html.debug .viewport {
   background: transparent;
   border: 2px solid #5a5a5a;
   margin-right: 10px;
+  align-items: center;
+  white-space: nowrap; /* evita quebra de linha */
 }
+
 .settings .widget .subWidget .sub.active {
   border: 2px solid rgba(0, 178, 70, 0.8);
   color: #fff;
@@ -497,10 +500,11 @@ html.debug .viewport {
 .settings .widget .subWidget .sub.active:hover {
   color: #ffa;
 }
-.settings .widget .subWidget .sub .volValue {
+.settings .widget .subWidget .sub .barValue {
   display: inline-block;
   margin-left: 10px;
 }
+
 .settings .widget .rankInvert {
   border: 1px solid #fff;
   background: #000;

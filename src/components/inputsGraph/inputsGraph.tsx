@@ -4,7 +4,7 @@ import {
 	IWidgetSetting,
 	// lowPerformanceMode,
 	// highPerformanceMode,
-	showAllMode
+	// showAllMode
 } from '../app/app';
 import r3e, { registerUpdate, unregisterUpdate, nowCheck } from "../../lib/r3e";
 import { widgetSettings } from "../../lib/utils";
@@ -17,7 +17,10 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 @observer
 export default class InputsGraph extends React.Component<IProps> {
-	private maxHistoryMs = 6000; // duração do histórico em milisegundos
+	private get maxHistoryMs() {
+		return (this.props.settings.duration ?? 6) * 1000;
+	}
+
 	private canvasWidth = 160;
 	private canvasHeight = 50;
 
@@ -34,7 +37,6 @@ export default class InputsGraph extends React.Component<IProps> {
 		unregisterUpdate(this.update);
 	}
 
-	@action
 	@action
 	private update = () => {
 		const now = nowCheck;
@@ -83,79 +85,130 @@ export default class InputsGraph extends React.Component<IProps> {
 
 	render() {
 		return (
-			<div {...widgetSettings(this.props)} className="inputsGraph">
-				<svg
-					width={this.canvasWidth}
-					height={this.canvasHeight}
-					style={{ overflow: "visible" }}
-				>
-					{/* Linha 75% (mais próxima do topo) */}
-					<line
-						x1={0}
-						y1={this.canvasHeight * 0.25}
-						x2={this.canvasWidth}
-						y2={this.canvasHeight * 0.25}
-						stroke="rgba(255,255,255,0.4)"
-						strokeWidth="0.3"
-						strokeDasharray="2 3"
-					/>
+			<div {...widgetSettings(this.props)} className={`inputsGraph ${this.props.settings.subSettings.showInputMeters?.enabled ? "withMeters" : ""}`}>
+				<div className="graphAndMeters">
+					<svg
+						width={this.canvasWidth}
+						height={this.canvasHeight}
+						style={{ overflow: "visible" }}
+					>
+						{/* Linha 75% (mais próxima do topo) */}
+						<line
+							x1={0}
+							y1={this.canvasHeight * 0.25}
+							x2={this.canvasWidth}
+							y2={this.canvasHeight * 0.25}
+							stroke="rgba(255,255,255,0.4)"
+							strokeWidth="0.3"
+							strokeDasharray="2 3"
+						/>
 
-					{/* Linha 50% */}
-					<line
-						x1={0}
-						y1={this.canvasHeight / 2}
-						x2={this.canvasWidth}
-						y2={this.canvasHeight / 2}
-						stroke="rgba(255,255,255,0.5)"
-						strokeWidth="0.4"
-						strokeDasharray="2 3"
-					/>
+						{/* Linha 50% */}
+						<line
+							x1={0}
+							y1={this.canvasHeight / 2}
+							x2={this.canvasWidth}
+							y2={this.canvasHeight / 2}
+							stroke="rgba(255,255,255,0.5)"
+							strokeWidth="0.4"
+							strokeDasharray="2 3"
+						/>
 
-					{/* Linha 25% (mais próxima do fundo) */}
-					<line
-						x1={0}
-						y1={this.canvasHeight * 0.75}
-						x2={this.canvasWidth}
-						y2={this.canvasHeight * 0.75}
-						stroke="rgba(255,255,255,0.4)"
-						strokeWidth="0.3"
-						strokeDasharray="2 3"
-					/>
+						{/* Linha 25% (mais próxima do fundo) */}
+						<line
+							x1={0}
+							y1={this.canvasHeight * 0.75}
+							x2={this.canvasWidth}
+							y2={this.canvasHeight * 0.75}
+							stroke="rgba(255,255,255,0.4)"
+							strokeWidth="0.3"
+							strokeDasharray="2 3"
+						/>
 
-					{/* Brake RED */}
-					{
-						this.props.settings.subSettings.showInputBrake.enabled && (
-							<polyline
-								fill="none"
-								stroke="#cd5c5c"
-								strokeWidth="1.5"
-								points={this.renderPath(this.brakeHistory, "red")}
-							/>
-						)
-					}
-					{/* Throttle GREEN */}
-					{
-						this.props.settings.subSettings.showInputThrottle.enabled && (
-							<polyline
-								fill="none"
-								stroke="#30b65dff"
-								strokeWidth="1.5"
-								points={this.renderPath(this.throttleHistory, "green")}
-							/>
-						)
-					}
-					{/* Clutch GRAY */}
-					{
-						this.props.settings.subSettings.showInputClutch.enabled && (
-							<polyline
-								fill="none"
-								stroke="#707070ff"
-								strokeWidth="1.5"
-								points={this.renderPath(this.clutchHistory, "gray")}
-							/>
-						)
-					}
-				</svg>
+						{/* Brake RED */}
+						{
+							this.props.settings.subSettings.showInputBrake.enabled && (
+								<polyline
+									fill="none"
+									stroke="#cd5c5c"
+									strokeWidth="1.5"
+									points={this.renderPath(this.brakeHistory, "red")}
+								/>
+							)
+						}
+						{/* Throttle GREEN */}
+						{
+							this.props.settings.subSettings.showInputThrottle.enabled && (
+								<polyline
+									fill="none"
+									stroke="#30b65dff"
+									strokeWidth="1.5"
+									points={this.renderPath(this.throttleHistory, "green")}
+								/>
+							)
+						}
+						{/* Clutch GRAY */}
+						{
+							this.props.settings.subSettings.showInputClutch.enabled && (
+								<polyline
+									fill="none"
+									stroke="#707070ff"
+									strokeWidth="1.5"
+									points={this.renderPath(this.clutchHistory, "gray")}
+								/>
+							)
+						}
+					</svg>
+				
+					{/* Input Meters */}
+					{this.props.settings.subSettings.showInputMeters?.enabled && (
+					<div className="inputsMetersBox" style={{ height: this.canvasHeight }}>
+						
+						{/* Vertical Pedals (Clutch / Brake / Throttle) */}
+						<div className="pedalsGroup">
+							<div className="meterGroup">
+								<div className="meter clutch" style={{ height: `${r3e.data.ClutchRaw * 100}%` }} />
+								<div className="meterLabel">{Math.round(r3e.data.ClutchRaw * 100)}</div>
+							</div>							
+
+							<div className="meterGroup">
+								<div className="meter brake" style={{ height: `${r3e.data.BrakeRaw * 100}%` }} />
+								<div className="meterLabel">{Math.round(r3e.data.BrakeRaw * 100)}</div>
+							</div>
+
+							<div className="meterGroup">
+								<div className="meter throttle" style={{ height: `${r3e.data.ThrottleRaw * 100}%` }} />
+								<div className="meterLabel">{Math.round(r3e.data.ThrottleRaw * 100)}</div>
+							</div>
+						</div>
+
+						{/* Horizontal Steering Meter */}
+							<div className="steeringContainer">
+								{/* Left Fill */}
+								<div
+									className="steeringFill left"
+									style={{
+										width: r3e.data.SteerInputRaw < 0 
+											? `${Math.abs(r3e.data.SteerInputRaw) * 50}%` 
+											: "0%"
+									}}
+								/>
+								{/* Right Fill */}
+								<div
+									className="steeringFill right"
+									style={{
+										width: r3e.data.SteerInputRaw > 0 
+											? `${r3e.data.SteerInputRaw * 50}%` 
+											: "0%"
+									}}
+								/>
+								{/* Center Marker */}
+								<div className="steeringCenterMark" />
+							</div>
+						</div>
+					)
+				}
+				</div>
 			</div>
 		);
 	}
