@@ -204,6 +204,8 @@ let hideWidgets = false;
 let blockFuelCalc = false;
 let speedInMPH = false;
 let eDriverNum = 3;
+let eGainLossPermanentTower = false;
+let eGainLossPermanentBar = false;
 let eRankInvert = false;
 let eRankInvertRelative = false;
 let eLogoUrl = './../../img/logo.png';
@@ -225,6 +227,8 @@ export {
 	blockFuelCalc,
 	speedInMPH,
 	eDriverNum,
+	eGainLossPermanentTower,
+	eGainLossPermanentBar,
 	eRankInvert,
 	eRankInvertRelative,
 	eLogoUrl,
@@ -429,6 +433,14 @@ export default class App extends React.Component<IProps> {
 				showStandings: {
 					text: __('Show Standings'),
 					enabled: true
+				},				
+				showPosGainLoss: {
+					text: __('Show Positions Gain/Loss'),
+					enabled: true
+				},
+				showPitStatus: {
+					text: __('Show Pit-Status'),
+					enabled: true
 				},
 				showPitTime: {
 					text: __('Show Pit-Times'),
@@ -436,6 +448,10 @@ export default class App extends React.Component<IProps> {
 				},
 				autoHidePitTime: {
 					text: __('Auto-Hide Pit-Times'),
+					enabled: true
+				},
+				showPenalties: {
+					text: __('Show Penalties'),
 					enabled: true
 				},
 				showLastLaps: {
@@ -586,6 +602,10 @@ export default class App extends React.Component<IProps> {
 				},
 				autoHidePitTime: {
 					text: __('Auto-Hide Pit-Times'),
+					enabled: true
+				},
+				showPenalties: {
+					text: __('Show Penalties'),
 					enabled: true
 				},
 				showLastLaps: {
@@ -1151,12 +1171,24 @@ export default class App extends React.Component<IProps> {
 					text: __('Show Standings'),
 					enabled: true
 				},
+				showPosGainLoss: {
+					text: __('Show Positions Gain/Loss'),
+					enabled: true
+				},
+				showPitStatus: {
+					text: __('Show Pit-Status'),
+					enabled: true
+				},
 				showPitTime: {
 					text: __('Show Pit-Times'),
 					enabled: true
 				},
 				autoHidePitTime: {
 					text: __('Auto-Hide Pit-Times'),
+					enabled: true
+				},
+				showPenalties: {
+					text: __('Show Penalties'),
 					enabled: true
 				},
 				showLastLaps: {
@@ -1307,6 +1339,10 @@ export default class App extends React.Component<IProps> {
 				},
 				autoHidePitTime: {
 					text: __('Auto-Hide Pit-Times'),
+					enabled: true
+				},
+				showPenalties: {
+					text: __('Show Penalties'),
 					enabled: true
 				},
 				showLastLaps: {

@@ -3,6 +3,9 @@
 	GENERAL
 	- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
 	- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
+	- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.
+	- Position Bar: "Show Positions Gain/Loss" option included. 
+	- Position Bar: "Show Pit-Status" option included. This will show the number of pit stops for all drivers.
 	- Translations: Added and fixed a bunch of things.
 	
 	0.7

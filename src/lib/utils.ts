@@ -716,6 +716,67 @@ export function showDebugMessageSmall(
 	}, theTimeout);
 }
 
+export function getRoundsLeft(fastestLapGiven: number) {
+	const secsRemain = r3e.data.SessionTimeRemaining;
+	const fastestLapLeader = r3e.data.LapTimeBestLeader;
+	const fastestLap =
+		fastestLapGiven > 0 ?
+			fastestLapGiven
+			: r3e.data.LapTimeBestSelf > 0 ?
+				r3e.data.LapTimeBestSelf
+				: fastestLapLeader > 0 ?
+					fastestLapLeader
+					: -1;
+	if (fastestLap <= 0) {
+		return -1;
+	}
+	let roundsLeft = 0;
+	let roundsLeftFloat = 0.0;
+	let leaderLaps = -1;
+	const playerLaps = r3e.data.CompletedLaps;
+	let leaderPercent = 0;
+	const playerPercent = r3e.data.LapDistanceFraction;
+	let timeLeft = 0;
+
+	if (r3e.data.SessionLengthFormat >= 0) {
+		if (r3e.data.SessionLengthFormat === 1) {
+			const blob = r3e.data.DriverData[0].CompletedLaps + 1;
+			roundsLeft = r3e.data.SessionPhase === 6
+				? 0
+				: r3e.data.NumberOfLaps - blob;
+			roundsLeftFloat = roundsLeft + (1 - playerPercent);
+		} else if (r3e.data.SessionType !== -1) {
+			if (r3e.data.SessionType < 2) {
+				roundsLeft = r3e.data.SessionPhase === 6
+					? 0
+					: Math.floor(secsRemain / fastestLap);
+				roundsLeftFloat = roundsLeft + (1 - playerPercent);
+			} else if (r3e.data.SessionType === 2) {
+				if (r3e.data.SessionPhase === 6) {
+					roundsLeft = 0;
+					roundsLeftFloat = roundsLeft + (1 - playerPercent);
+				} else {
+					leaderLaps = r3e.data.DriverData[0].CompletedLaps;
+					leaderPercent = r3e.data.DriverData[0].LapDistance / r3e.data.LayoutLength;
+					roundsLeft = Math.floor(secsRemain / fastestLap);
+					timeLeft = secsRemain - (fastestLap * roundsLeft);
+					if (
+						leaderLaps > playerLaps &&
+						leaderPercent < playerPercent
+					) {
+						roundsLeft++;
+					}
+					if (timeLeft > (fastestLapLeader * (1 - leaderPercent))) {
+						roundsLeft++;
+					}
+					roundsLeftFloat = roundsLeft + (1 - playerPercent);
+				}
+			}
+		}
+	}
+	return Math.round(roundsLeftFloat * 10) / 10;
+}
+
 export function getFuelNeeded(toEnd: boolean) {
 	const perLap = r3e.data.FuelPerLap;
 	if (perLap === -1) {
