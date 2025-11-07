@@ -527,6 +527,35 @@ html.debug .viewport {
   color: #000;
   font-weight: 700;
 }
+
+.settings .widget .gainLossPermanentBar,
+.settings .widget .gainLossPermanentTower,
+.settings .widget .motecBottom {
+	border: 1px solid #fff;
+	background: #000;
+	color: #fff;
+	font-size: 12px;
+	position: relative;
+	width: 40px;
+	height: 11px;
+	line-height: 14px;
+	float: right;
+	right: -2px;
+	top: -1px;
+	text-align: center;
+	margin-top: 0;
+	padding: 0 0 15px
+}
+
+.settings .widget .gainLossPermanentBar.active,
+.settings .widget .gainLossPermanentTower.active,
+.settings .widget .motecBottom.active {
+	background: #fff;
+	border: 1px solid #90ee90;
+	color: #000;
+	font-weight: 700
+}
+
 .settings .widget .num1 {
   border: 1px solid #fff;
   background: #000;

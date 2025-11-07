@@ -141,7 +141,7 @@ export default class InputsGraph extends React.Component<IProps> {
 							this.props.settings.subSettings.showInputThrottle.enabled && (
 								<polyline
 									fill="none"
-									stroke="#30b65dff"
+									stroke="#30b65d"
 									strokeWidth="1.5"
 									points={this.renderPath(this.throttleHistory, "green")}
 								/>
@@ -152,7 +152,7 @@ export default class InputsGraph extends React.Component<IProps> {
 							this.props.settings.subSettings.showInputClutch.enabled && (
 								<polyline
 									fill="none"
-									stroke="#707070ff"
+									stroke="#707070"
 									strokeWidth="1.5"
 									points={this.renderPath(this.clutchHistory, "gray")}
 								/>

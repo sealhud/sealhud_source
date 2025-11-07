@@ -6,6 +6,8 @@
 	- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.
 	- Position Bar: "Show Positions Gain/Loss" option included. 
 	- Position Bar: "Show Pit-Status" option included. This will show the number of pit stops for all drivers.
+	- TV Tower: "Show penalties" option included. This will show penalties for all drivers in the field.
+	- TV Tower: "Show Positions Gain/Loss" option included.
 	- Translations: Added and fixed a bunch of things.
 	
 	0.7

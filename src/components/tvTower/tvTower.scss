@@ -2,1067 +2,1011 @@
 // module.exports = {"tvTowerContainer":"tvTowerContainer","tvTower":"tvTower","header":"header","headerIcon":"headerIcon","standingsSessionInfo":"standingsSessionInfo","standingsSessionInfoText":"standingsSessionInfoText","sessionNameText":"sessionNameText","sessionRemainHours":"sessionRemainHours","sessionRemainHoursText":"sessionRemainHoursText","sessionRemainMinutes":"sessionRemainMinutes","sessionRemainMinutesText":"sessionRemainMinutesText","sessionRemainSeconds":"sessionRemainSeconds","sessionRemainSecondsText":"sessionRemainSecondsText","sessionFlags":"sessionFlags","mandatoryPitHeader":"mandatoryPitHeader","mandatoryPitHeaderText":"mandatoryPitHeaderText","player":"player","position":"position","name":"name","rankData":"rankData","tyreChoiceContainer":"tyreChoiceContainer","tyreChoice":"tyreChoice","manufacturerIcon":"manufacturerIcon","diff":"diff","pitting":"pitting","noShadow":"noShadow","cheqFlag":"cheqFlag","pittime":"pittime","pittimea":"pittimea","notFinishBlock":"notFinishBlock","podiumSeparator":"podiumSeparator","lapping":"lapping","sameLap":"sameLap","lapped":"lapped","isUser":"isUser","classStyle":"classStyle","bestLap":"bestLap","sessionTime":"sessionTime","currentLap":"currentLap","currentPosition":"currentPosition","carLogosCont":"carLogosCont","tireInfoCont":"tireInfoCont","showRankCont":"showRankCont","longNamesCont":"longNamesCont","multiClassCont":"multiClassCont"};
 
 .tvTowerContainer {
-  position: absolute;
-  top: 50px;
-  left: 15px;
-  width: 155px;
-  height: 39px;
-  transform-origin: bottom right;
+	position: absolute;
+	top: 50px;
+	left: 15px;
+	width: 155px;
+	height: 39px;
+	transform-origin: bottom right
 }
+
 .tvTowerContainer .tvTower .header {
-  background-color: rgba(0, 0, 0, 0.8);
-  text-align: center;
+	background-color: rgba(0, 0, 0, .8);
+	text-align: center
 }
+
 .tvTowerContainer .tvTower .headerIcon {
-  height: 37px;
-  width: 153px;
+	height: 37px;
+	width: 153px
 }
+
 .tvTowerContainer .tvTower .standingsSessionInfo {
-  background: rgba(0, 0, 0, 0.8);
-  width: 155px;
-  height: 28px;
+	background: rgba(0, 0, 0, .8);
+	width: 155px;
+	height: 28px
 }
+
 .tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText {
-  position: relative;
-  font-size: 16px;
-  color: #fff;
-  left: 7px;
-  bottom: -7px;
-  height: 0;
+	position: relative;
+	font-size: 16px;
+	color: #fff;
+	left: 7px;
+	bottom: -7px;
+	height: 0
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionNameText {
-  color: silver;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionNameText {
+	color: silver;
+	font-style: bold
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHours {
-  display: inline-block;
-  color: #fff;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHours {
+	display: inline-block;
+	color: #fff
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText {
-  display: inline-block;
-  font-size: 8px;
-  color: silver;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText {
+	display: inline-block;
+	font-size: 8px;
+	color: silver;
+	font-style: bold
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutes {
-  display: inline-block;
-  color: #fff;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutes {
+	display: inline-block;
+	color: #fff;
+	font-style: bold
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText {
-  display: inline-block;
-  font-size: 8px;
-  color: silver;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText {
+	display: inline-block;
+	font-size: 8px;
+	color: silver;
+	font-style: bold
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSeconds {
-  display: inline-block;
-  color: #fff;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSeconds {
+	display: inline-block;
+	color: #fff;
+	font-style: bold
 }
-.tvTowerContainer
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  display: inline-block;
-  font-size: 8px;
-  color: silver;
-  font-style: bold;
+
+.tvTowerContainer .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	display: inline-block;
+	font-size: 8px;
+	color: silver;
+	font-style: bold
 }
+
 .tvTowerContainer .tvTower .standingsSessionInfo .sessionFlags {
-  transform: skew(-15deg);
-  position: relative;
-  margin: 0 10px 0 0;
-  width: 44px;
-  height: 28px;
-  left: 107px;
+	transform: skew(-15deg);
+	position: relative;
+	margin: 0 10px 0 0;
+	width: 44px;
+	height: 28px;
+	left: 107px
 }
+
 .tvTowerContainer .tvTower .standingsSessionInfo .sessionFlags img {
-  z-index: 10;
-  width: 55px;
-  height: 31px;
+	z-index: 10;
+	width: 55px;
+	height: 31px
 }
+
 .tvTowerContainer .tvTower .mandatoryPitHeader {
-  height: 25px;
-  text-align: center;
-  font-size: 12px;
-  padding: 2px;
-  line-height: 20px;
+	height: 25px;
+	text-align: center;
+	font-size: 12px;
+	padding: 2px;
+	line-height: 20px
 }
+
 .tvTowerContainer .tvTower .mandatoryPitHeaderText {
-  color: #fff;
-  z-index: 4;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	color: #fff;
+	z-index: 4;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
+
 .tvTowerContainer .tvTower .player {
-  position: relative;
-  white-space: nowrap;
-  height: 23px;
-  line-height: 23px;
-  background: rgba(0, 0, 0, 0.6);
+	position: relative;
+	white-space: nowrap;
+	height: 23px;
+	line-height: 23px;
+	background: rgba(0, 0, 0, .6)
 }
+
 .tvTowerContainer .tvTower .player:nth-child(odd) {
-  background: rgba(0, 0, 0, 0.65);
+	background: rgba(0, 0, 0, .65)
 }
+
 .tvTowerContainer .tvTower .player .position {
-  background: rgba(0, 0, 0, 0.5);
-  width: 30px;
-  color: #fff;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	background: rgba(0, 0, 0, .5);
+	width: 30px;
+	text-align: center;
+	display: inline-block;
+	vertical-align: top;
+	color: #fff
 }
-.tvTowerContainer .tvTower .player .name,
-.tvTowerContainer .tvTower .player .position {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
-  text-align: center;
-  display: inline-block;
+
+.tvTowerContainer .tvTower .player .gainLossImg {
+	width: 30px;
+	padding-left: 16px;
+	background: rgba(0, 0, 0, .9)
 }
+
+.tvTowerContainer .tvTower .player .gainLossImg,
+.tvTowerContainer .tvTower .player .positionGainLoss {
+	position: absolute;
+	margin-left: -30px;
+	margin-top: -23px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	vertical-align: top
+}
+
+.tvTowerContainer .tvTower .player .positionGainLoss {
+	width: 17px;
+	text-align: right
+}
+
 .tvTowerContainer .tvTower .player .name {
-  padding: 0 12px;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: top;
-  width: 51px;
-  margin-left: -1px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	padding: 0 12px;
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: top;
+	width: 51px;
+	margin-left: -1px
 }
+
 .tvTowerContainer .tvTower .player .rankData {
-  display: inline-block;
-  border-radius: 2px;
-  font-size: 16px;
-  padding: 0 0 0 2px;
-  height: 21px;
-  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
-  background: #000;
-  color: #fff;
-  width: 78px;
-  vertical-align: top;
-  margin: 1px 2px 0 0;
-  line-height: 20px;
+	display: inline-block;
+	position: relative;
+	border-radius: 2px;
+	font-size: 16px;
+	padding: 0 0 0 2px;
+	height: 21px;
+	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+	background: #000;
+	color: #fff;
+	width: 78px;
+	vertical-align: top;
+	margin: 1px 2px 0 0;
+	line-height: 20px
 }
+
 .tvTowerContainer .tvTower .player .tyreChoiceContainer {
-  text-align: center;
-  width: 21px;
-  height: 21px;
-  display: inline-block;
+	text-align: center;
+	width: 21px;
+	height: 21px;
+	display: inline-block;
+	position: relative;
+	vertical-align: top
 }
+
 .tvTowerContainer .tvTower .player .tyreChoice {
-  text-align: center;
-  width: 19px;
-  height: 19px;
-  vertical-align: bottom;
-  display: inline-block;
-  margin-bottom: 2px;
+	text-align: center;
+	width: 19px;
+	height: 19px;
+	vertical-align: bottom;
+	display: inline-block;
+	position: relative;
+	margin-bottom: 2px
 }
+
 .tvTowerContainer .tvTower .player .manufacturerIcon {
-  display: inline-block;
-  position: relative;
-  top: 2px;
-  background: #fff;
-  line-height: 14px;
+	display: inline-block;
+	position: relative;
+	top: 2px;
+	background: #fff;
+	line-height: 14px;
+	vertical-align: top
 }
+
 .tvTowerContainer .tvTower .player .manufacturerIcon img {
-  vertical-align: center;
-  height: 18px;
-  width: 21px;
+	position: relative;
+	vertical-align: middle;
+	height: 18px;
+	width: 21px
 }
+
 .tvTowerContainer .tvTower .player .diff {
-  width: 75px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	display: inline-block;
+	width: 76px;
+	text-align: center;
+	vertical-align: top;
+	position: relative
 }
-.tvTowerContainer .tvTower .player .diff,
+
+.tvTowerContainer .tvTower .player .debug {
+	display: block;
+	position: absolute;
+	width: 300px;
+	height: 50px;
+	top: 150px;
+	left: 1100px;
+	font-size: 40px;
+	background: #000;
+	text-align: center;
+	line-height: 50px
+}
+
+.tvTowerContainer .tvTower .player .penalties {
+	display: inline-block;
+	position: relative;
+	width: 25px;
+	vertical-align: top
+}
+
+.tvTowerContainer .tvTower .player .penalties .penaltiesText {
+	display: inline-block;
+	width: 25px;
+	color: #fff;
+	border-radius: 2px;
+	background: rgba(255, 200, 0, .8);
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	text-align: center;
+	vartical-align: top;
+	position: relative
+}
+
+.tvTowerContainer .tvTower .player .cheqFlag {
+	position: relative;
+	display: inline-block;
+	height: 23px;
+	width: 25px;
+	vertical-align: top
+}
+
+.tvTowerContainer .tvTower .player .cheqFlag .cheqFlagImg {
+	position: relative;
+	display: inline-block;
+	height: 20px;
+	width: 25px;
+	top: 1px;
+	bottom: 1px;
+	vertical-align: top
+}
+
+.tvTowerContainer .tvTower .player .pittinga {
+	display: inline-block;
+	position: relative;
+	width: 25px;
+	height: 23px;
+	text-align: center;
+	vertical-align: top
+}
+
 .tvTowerContainer .tvTower .player .pitting {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
-  display: inline-block;
-  text-align: center;
+	display: inline-block;
+	position: relative;
+	width: 0;
+	text-align: center;
+	vertical-align: top;
+	color: #fff;
+	top: 0;
+	height: 23px;
+	line-height: 23px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
-.tvTowerContainer .tvTower .player .pitting {
-  position: relative;
-  width: 25px;
-  vertical-align: center;
-  color: #fff;
-  top: 0;
-  z-index: -1;
-  height: 23px;
-  line-height: 23px;
-}
+
 .tvTowerContainer .tvTower .player .pitting.noShadow {
-  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
-.tvTowerContainer .tvTower .player .pitting .cheqFlag {
-  position: relative;
-  vertical-align: center;
-  top: 2.5px;
-  height: 18px;
-  width: 21px;
+
+.tvTowerContainer .tvTower .player .pitting .pittinga {
+	display: inline-block;
+	position: relative;
+	width: 25px;
+	height: 23px;
+	text-align: center;
+	vertical-align: top
 }
+
 .tvTowerContainer .tvTower .player .pitting .pittime {
-  display: inline-block;
-  position: relative;
-  width: 45px;
-  padding: 0;
-  text-align: center;
-  color: #fff;
-  background: rgba(0, 100, 255, 0.6);
-  top: 0;
-  z-index: -1;
-  height: 23px;
-  left: 4px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	width: 45px;
+	padding: 0;
+	text-align: center;
+	color: #fff;
+	background: rgba(0, 100, 255, .6);
+	top: 0;
+	height: 23px;
+	left: 0;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
+
 .tvTowerContainer .tvTower .player .pitting .pittime.noShadow {
-  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
+
 .tvTowerContainer .tvTower .player .pitting .pittimea {
-  display: inline-block;
-  position: relative;
-  width: 45px;
-  padding: 0;
-  text-align: center;
-  color: #fff;
-  background: rgba(0, 100, 255, 0.6);
-  top: 0;
-  z-index: -1;
-  height: 23px;
-  left: 4px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	width: 45px;
+	padding: 0;
+	text-align: center;
+	color: #fff;
+	background: rgba(0, 100, 255, .6);
+	top: 0;
+	height: 23px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
+
 .tvTowerContainer .tvTower .player .pitting .pittimea.noShadow {
-  text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
+
 .tvTowerContainer .tvTower .player .notFinishBlock {
-  display: inline-block;
-  position: absolute;
-  left: 0;
-  background: rgba(55, 55, 55, 0.7);
-  color: rgba(55, 55, 55, 0.7);
-  width: 100%;
-  padding: 0 2px;
-  text-align: center;
-  z-index: 5;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	background: rgba(55, 55, 55, .7);
+	color: rgba(55, 55, 55, .7);
+	width: 100%;
+	padding: 0 2px;
+	text-align: center;
+	vertical-align: top;
+	z-index: 5
 }
+
 .tvTowerContainer .tvTower .player .podiumSeparator {
-  display: block;
-  position: absolute;
-  height: 2px;
-  left: 0;
-  background: hsla(0, 0%, 100%, 0.7);
-  color: hsla(0, 0%, 100%, 0);
-  width: 100%;
-  padding: 0 2px;
-  font-size: 1px;
-  text-align: center;
-  z-index: 5;
+	display: block;
+	position: absolute;
+	height: 2px;
+	left: 0;
+	background: hsla(0, 0%, 100%, .7);
+	color: hsla(0, 0%, 100%, 0);
+	width: 100%;
+	padding: 0 2px;
+	font-size: 1px;
+	text-align: center;
+	z-index: 5
 }
+
 .tvTowerContainer .tvTower .player.lapped,
 .tvTowerContainer .tvTower .player.lapping,
 .tvTowerContainer .tvTower .player.sameLap {
-  color: #fff;
+	color: #fff
 }
+
 .tvTowerContainer .tvTower .player.isUser {
-  color: #03a9f4;
-  height: 23px;
+	color: #03a9f4;
+	height: 23px
 }
+
 .tvTowerContainer .tvTower .player .classStyle {
-  display: block;
-  content: "";
-  position: absolute;
-  top: 1px;
-  bottom: 0;
-  left: 30px;
-  width: 21px;
-  height: 21px;
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
-  overflow: visible;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+	display: block;
+	content: "";
+	position: absolute;
+	top: 1px;
+	bottom: 0;
+	left: 30px;
+	width: 21px;
+	height: 21px;
+	color: #fff;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	overflow: visible;
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis
 }
+
 .tvTowerContainer .tvTower .player .bestLap {
-  display: block;
-  content: "";
-  position: absolute;
-  bottom: 0;
-  top: 1px;
-  left: 0;
-  width: 3px;
-  height: 21px;
+	display: block;
+	content: "";
+	position: absolute;
+	bottom: 0;
+	top: 1px;
+	left: 0;
+	width: 3px;
+	height: 21px
 }
+
 .tvTowerContainer .tvTower .currentLap,
 .tvTowerContainer .tvTower .currentPosition,
 .tvTowerContainer .tvTower .sessionTime {
-  display: none;
+	display: none
 }
+
 .tvTowerContainer.carLogosCont {
-  width: 176px;
+	width: 176px
 }
+
 .tvTowerContainer.carLogosCont .tvTower .headerIcon {
-  width: 174px;
-  height: 42px;
+	width: 174px;
+	height: 42px
 }
+
 .tvTowerContainer.carLogosCont .tvTower .standingsSessionInfo {
-  width: 176px;
-  height: 32px;
+	width: 176px;
+	height: 32px
 }
-.tvTowerContainer.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 18px;
+
+.tvTowerContainer.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 18px
 }
-.tvTowerContainer.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 10px;
+
+.tvTowerContainer.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 10px
 }
+
 .tvTowerContainer.carLogosCont .tvTower .sessionFlags {
-  left: 122px;
-  width: 50px;
-  height: 32px;
+	left: 122px;
+	width: 50px;
+	height: 32px
 }
+
 .tvTowerContainer.carLogosCont .tvTower .mandatoryPitHeader {
-  height: 28px;
-  font-size: 13.5px;
-  line-height: 24px;
+	height: 28px;
+	font-size: 13.5px;
+	line-height: 24px
 }
+
 .tvTowerContainer.tireInfoCont {
-  width: 176px;
+	width: 176px
 }
+
 .tvTowerContainer.tireInfoCont .tvTower .headerIcon {
-  width: 174px;
-  height: 42px;
+	width: 174px;
+	height: 42px
 }
+
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo {
-  width: 176px;
-  height: 32px;
+	width: 176px;
+	height: 32px
 }
-.tvTowerContainer.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 18px;
+
+.tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 18px
 }
-.tvTowerContainer.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 10px;
+
+.tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 10px
 }
+
 .tvTowerContainer.tireInfoCont .tvTower .sessionFlags {
-  left: 122px;
-  width: 50px;
-  height: 32px;
+	left: 122px;
+	width: 50px;
+	height: 32px
 }
+
 .tvTowerContainer.tireInfoCont .tvTower .mandatoryPitHeader {
-  height: 28px;
-  font-size: 13.5px;
-  line-height: 24px;
+	height: 28px;
+	font-size: 13.5px;
+	line-height: 24px
 }
+
 .tvTowerContainer.carLogosCont.tireInfoCont {
-  width: 197px;
+	width: 197px
 }
+
 .tvTowerContainer.carLogosCont.tireInfoCont .tvTower .headerIcon {
-  width: 195px;
-  height: 47px;
+	width: 195px;
+	height: 47px
 }
+
 .tvTowerContainer.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo {
-  width: 197px;
-  height: 36px;
+	width: 197px;
+	height: 36px
 }
-.tvTowerContainer.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 22px;
+
+.tvTowerContainer.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 22px
 }
-.tvTowerContainer.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.carLogosCont.tireInfoCont .tvTower .sessionFlags {
-  left: 136px;
-  width: 57px;
-  height: 36px;
+	left: 136px;
+	width: 57px;
+	height: 36px
 }
+
 .tvTowerContainer.carLogosCont.tireInfoCont .tvTower .mandatoryPitHeader {
-  height: 32px;
-  font-size: 15.5px;
-  line-height: 25px;
+	height: 32px;
+	font-size: 15.5px;
+	line-height: 25px
 }
-.tvTowerContainer.carLogosCont.tireInfoCont
-  .tvTower
-  .player
-  .tyreChoiceContainer {
-  padding: 0 3px;
+
+.tvTowerContainer.carLogosCont.tireInfoCont .tvTower .player .tyreChoiceContainer {
+	padding: 0 3px
 }
+
 .tvTowerContainer.showRankCont {
-  width: 235px;
+	width: 235px
 }
+
 .tvTowerContainer.showRankCont .tvTower .headerIcon {
-  width: 233px;
-  height: 58px;
+	width: 233px;
+	height: 58px
 }
+
 .tvTowerContainer.showRankCont .tvTower .standingsSessionInfo {
-  width: 235px;
-  height: 42px;
+	width: 235px;
+	height: 42px
 }
-.tvTowerContainer.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.showRankCont .tvTower .sessionFlags {
-  left: 162px;
-  height: 42px;
-  width: 67px;
+	left: 162px;
+	height: 42px;
+	width: 67px
 }
+
 .tvTowerContainer.showRankCont .tvTower .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont {
-  width: 256px;
+	width: 256px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont .tvTower .headerIcon {
-  width: 254px;
-  height: 63px;
+	width: 254px;
+	height: 63px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont .tvTower .standingsSessionInfo {
-  width: 256px;
-  height: 42px;
+	width: 256px;
+	height: 42px
 }
-.tvTowerContainer.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont .tvTower .sessionFlags {
-  left: 183px;
-  width: 67px;
-  height: 42px;
+	left: 183px;
+	width: 67px;
+	height: 42px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont .tvTower .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.showRankCont.tireInfoCont {
-  width: 256px;
+	width: 256px
 }
+
 .tvTowerContainer.showRankCont.tireInfoCont .tvTower .headerIcon {
-  width: 254px;
-  height: 63px;
+	width: 254px;
+	height: 63px
 }
+
 .tvTowerContainer.showRankCont.tireInfoCont .tvTower .standingsSessionInfo {
-  width: 256px;
-  height: 42px;
+	width: 256px;
+	height: 42px
 }
-.tvTowerContainer.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.showRankCont.tireInfoCont .tvTower .sessionFlags {
-  left: 183px;
-  width: 67px;
-  height: 42px;
+	left: 183px;
+	width: 67px;
+	height: 42px
 }
+
 .tvTowerContainer.showRankCont.tireInfoCont .tvTower .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont.tireInfoCont {
-  width: 277px;
+	width: 277px
 }
+
 .tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .headerIcon {
-  width: 275px;
-  height: 68px;
+	width: 275px;
+	height: 68px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo {
-  width: 277px;
-  height: 42px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo {
+	width: 277px;
+	height: 42px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .sessionFlags {
-  left: 204px;
-  width: 67px;
-  height: 42px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .sessionFlags {
+	left: 204px;
+	width: 67px;
+	height: 42px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .mandatoryPitHeader {
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
-.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .player
-  .tyreChoiceContainer {
-  padding: 0 3px;
+
+.tvTowerContainer.showRankCont.carLogosCont.tireInfoCont .tvTower .player .tyreChoiceContainer {
+	padding: 0 3px
 }
+
 .tvTowerContainer.longNamesCont {
-  width: 238px;
+	width: 238px
 }
+
 .tvTowerContainer.longNamesCont .tvTower .headerIcon {
-  width: 236px;
-  height: 57px;
+	width: 236px;
+	height: 57px
 }
+
 .tvTowerContainer.longNamesCont .tvTower .standingsSessionInfo {
-  width: 238px;
-  height: 42px;
+	width: 238px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.longNamesCont .tvTower .sessionFlags {
-  left: 165px;
-  height: 42px;
-  width: 68px;
+	left: 165px;
+	height: 42px;
+	width: 68px
 }
+
 .tvTowerContainer.longNamesCont .tvTower .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.longNamesCont .tvTower .player .name {
-  text-align: left;
-  padding: 0 2px;
-  width: 133px;
+	text-align: left;
+	padding: 0 2px;
+	width: 133px
 }
+
 .tvTowerContainer.longNamesCont.multiClassCont .tvTower .player .name {
-  text-align: left;
-  padding: 0 12px;
-  width: 133px;
+	text-align: left;
+	padding: 0 12px;
+	width: 133px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont {
-  width: 318px;
+	width: 318px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont .tvTower .headerIcon {
-  width: 316px;
-  height: 78px;
+	width: 316px;
+	height: 78px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont .tvTower .standingsSessionInfo {
-  width: 318px;
-  height: 42px;
+	width: 318px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.showRankCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.showRankCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont .tvTower .sessionFlags {
-  left: 245px;
-  height: 42px;
-  width: 68px;
+	left: 245px;
+	height: 42px;
+	width: 68px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont .tvTower .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont.carLogosCont {
-  width: 339px;
+	width: 339px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .headerIcon {
-  width: 337px;
-  height: 83px;
+	width: 337px;
+	height: 83px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo {
-  width: 339px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .standingsSessionInfo {
+	width: 339px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .sessionFlags {
-  left: 266px;
-  width: 68px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .sessionFlags {
+	left: 266px;
+	width: 68px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont
-  .tvTower
-  .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont .tvTower .mandatoryPitHeader {
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont.tireInfoCont {
-  width: 339px;
+	width: 339px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .headerIcon {
-  width: 337px;
-  height: 83px;
+	width: 337px;
+	height: 83px
 }
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo {
-  width: 339px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .standingsSessionInfo {
+	width: 339px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .sessionFlags {
-  left: 266px;
-  width: 68px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .sessionFlags {
+	left: 266px;
+	width: 68px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont
-  .tvTower
-  .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+
+.tvTowerContainer.longNamesCont.showRankCont.tireInfoCont .tvTower .mandatoryPitHeader {
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
+
 .tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont {
-  width: 360px;
+	width: 360px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .headerIcon {
-  width: 358px;
-  height: 89px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .headerIcon {
+	width: 358px;
+	height: 89px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo {
-  width: 360px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo {
+	width: 360px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .sessionFlags {
-  left: 287px;
-  width: 68px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .sessionFlags {
+	left: 287px;
+	width: 68px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .mandatoryPitHeader {
-  height: 38px;
-  font-size: 18.5px;
-  line-height: 29px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .mandatoryPitHeader {
+	height: 38px;
+	font-size: 18.5px;
+	line-height: 29px
 }
-.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont
-  .tvTower
-  .player
-  .tyreChoiceContainer {
-  padding: 0 3px;
+
+.tvTowerContainer.longNamesCont.showRankCont.carLogosCont.tireInfoCont .tvTower .player .tyreChoiceContainer {
+	padding: 0 3px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont {
-  width: 259px;
+	width: 259px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont .tvTower .headerIcon {
-  width: 257px;
-  height: 62px;
+	width: 257px;
+	height: 62px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont .tvTower .standingsSessionInfo {
-  width: 259px;
-  height: 42px;
+	width: 259px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.carLogosCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.carLogosCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont .tvTower .sessionFlags {
-  left: 186px;
-  width: 68px;
-  height: 42px;
+	left: 186px;
+	width: 68px;
+	height: 42px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont .tvTower .mandatoryPitHeader {
-  height: 42px;
-  font-size: 20px;
-  line-height: 36px;
+	height: 42px;
+	font-size: 20px;
+	line-height: 36px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont .tvTower .player .name {
-  width: 133px;
+	width: 133px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont {
-  width: 259px;
+	width: 259px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont .tvTower .headerIcon {
-  width: 257px;
-  height: 62px;
+	width: 257px;
+	height: 62px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont .tvTower .standingsSessionInfo {
-  width: 259px;
-  height: 42px;
+	width: 259px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont .tvTower .sessionFlags {
-  left: 186px;
-  width: 68px;
-  height: 42px;
+	left: 186px;
+	width: 68px;
+	height: 42px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont .tvTower .mandatoryPitHeader {
-  height: 42px;
-  font-size: 20px;
-  line-height: 36px;
+	height: 42px;
+	font-size: 20px;
+	line-height: 36px
 }
+
 .tvTowerContainer.longNamesCont.tireInfoCont .tvTower .player .name {
-  width: 133px;
+	width: 133px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont {
-  width: 280px;
+	width: 280px
 }
+
 .tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .headerIcon {
-  width: 278px;
-  height: 68px;
+	width: 278px;
+	height: 68px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo {
-  width: 280px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo {
+	width: 280px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText {
-  font-size: 25px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
+	font-size: 25px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainHoursText,
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainMinutesText,
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .standingsSessionInfo
-  .standingsSessionInfoText
-  .sessionRemainSecondsText {
-  font-size: 12px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
+	font-size: 12px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .sessionFlags {
-  left: 207px;
-  width: 68px;
-  height: 42px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .sessionFlags {
+	left: 207px;
+	width: 68px;
+	height: 42px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .mandatoryPitHeader {
-  height: 45px;
-  font-size: 22px;
-  line-height: 38px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .mandatoryPitHeader {
+	height: 45px;
+	font-size: 22px;
+	line-height: 38px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .player
-  .name {
-  width: 133px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .player .name {
+	width: 133px
 }
-.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont
-  .tvTower
-  .player
-  .tyreChoiceContainer {
-  padding: 0 3px;
+
+.tvTowerContainer.longNamesCont.carLogosCont.tireInfoCont .tvTower .player .tyreChoiceContainer {
+	padding: 0 3px
 }
+
 .podiumSeparator {
-  display: block;
-  position: absolute;
-  height: 2px;
-  left: 0;
-  background: hsla(0, 0%, 100%, 0.7);
-  color: hsla(0, 0%, 100%, 0);
-  width: 100%;
-  padding: 0 2px;
-  font-size: 1px;
-  text-align: center;
-  z-index: 5;
+	display: block;
+	position: absolute;
+	height: 2px;
+	left: 0;
+	background: hsla(0, 0%, 100%, .7);
+	color: hsla(0, 0%, 100%, 0);
+	width: 100%;
+	padding: 0 2px;
+	font-size: 1px;
+	text-align: center;
+	z-index: 5
 }
