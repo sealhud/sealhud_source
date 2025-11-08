@@ -995,7 +995,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 6,
-      zoom: 1.6300000000000006,
+      zoom: 1.85,
       name: __("Inputs Graph"),
       subSettings: {
         showInputThrottle: {
@@ -1748,7 +1748,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 6,
-      zoom: 1.6300000000000006,
+      zoom: 1.85,
       name: __("Inputs Graph"),
       subSettings: {
         showInputThrottle: {
@@ -4509,11 +4509,11 @@ export default class App extends React.Component<IProps> {
           onClick={this.toggleSnap}
         >
           {this.snapOn
-            ? _("Widgets Grid-Snap Enabled")
-            : _("Widgets Grid-Snap Disabled")}
+            ? _("Snap To Grid Enabled")
+            : _("Snap To Grid Disabled")}
         </button>
         <button className="toggleChangeLog" onClick={this.toggleChangeLog}>
-          {_("Show Changelog / Help")}
+          {_("Changelog / Help")}
         </button>
 
         <div className="sealhud_logo">
@@ -5140,7 +5140,6 @@ export default class App extends React.Component<IProps> {
           widgetId !== "tvTower" &&
           widgetId !== "manualStart" &&
           widgetId !== "spotting" &&
-          widgetId !== "motec" &&
           subSettings &&
           Object.keys(subSettings).map((subId) => {
             return (
