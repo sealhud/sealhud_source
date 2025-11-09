@@ -6,7 +6,7 @@
 - Delta a partir da primeira volta
 - (Pedro) - Delta continua quando invalida ((no Rehud existe essa função que é configurada ou não)) - Relative-Times Branch
 - Mudar as bandeiras para sinais eletronicos em gif
-- Marcar o piloto em bandeira amarela
+- (Diego) - Marcar o piloto em bandeira amarela
 - (Diego) - so for example i would like to see tyre wear instead 99% to be 99,11% this way i can see on which corner i have the most wear and so i can try how to dave tyre
 - Something else for suggestions.TXT: could you make the “all widgets off” setting an option when cycling through views 1,2,3? I’d like to have just one button bound to cycle through all the views, but don’t want to sacrifice one of the three layouts. Thanks!
 - (Pedro) - Tempo Relativo GAP - Relative-Times Branch
