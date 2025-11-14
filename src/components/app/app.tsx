@@ -905,40 +905,6 @@ export default class App extends React.Component<IProps> {
         y: 917,
       },
     },
-    /*performanceInfo: {
-			id: 'performanceInfo',
-			enabled: true,
-			resetIt: false,
-			volume: 0,
-			zoom: 1,
-			name: __('Performance Info'),
-			subSettings: {
-				showAllTimeBest: {
-					text: __('Show Alltime Best-Lap'),
-					enabled: true
-				},
-				showSessionBest: {
-					text: __('Show Session Best-Lap'),
-					enabled: true
-				},
-				showSessionAverage: {
-					text: __('Show Session Average-Lap'),
-					enabled: true
-				},
-				showAvgSpeed: {
-					text: __('Show Average Speed'),
-					enabled: true
-				},
-				showPosGain: {
-					text: __('Show Position Gain/Loss'),
-					enabled: true
-				}
-			},
-			position: {
-				x: 960,
-				y: 540
-			}
-		},*/
     cornerNames: {
       id: "cornerNames",
       enabled: true,
@@ -1658,40 +1624,6 @@ export default class App extends React.Component<IProps> {
         y: 917,
       },
     },
-    /*performanceInfo: {
-			id: 'performanceInfo',
-			enabled: true,
-			resetIt: false,
-			volume: 0,
-			zoom: 1,
-			name: __('Performance Info'),
-			subSettings: {
-				showAllTimeBest: {
-					text: __('Show Alltime Best-Lap'),
-					enabled: true
-				},
-				showSessionBest: {
-					text: __('Show Session Best-Lap'),
-					enabled: true
-				},
-				showSessionAverage: {
-					text: __('Show Session Average-Lap'),
-					enabled: true
-				},
-				showAvgSpeed: {
-					text: __('Show Average Speed'),
-					enabled: true
-				},
-				showPosGain: {
-					text: __('Show Position Gain/Loss'),
-					enabled: true
-				}
-			},
-			position: {
-				x: 960,
-				y: 540
-			}
-		},*/
     cornerNames: {
       id: "cornerNames",
       enabled: true,
@@ -2782,7 +2714,7 @@ export default class App extends React.Component<IProps> {
     }
     return 0;
   }
-
+  
   private getGapToPlayer(lapDist: number): number {
     if (lapDist === INVALID) {
       return 0;
@@ -2822,7 +2754,7 @@ export default class App extends React.Component<IProps> {
       }
     });
   };
-
+  
   private getBestLapClass = (driverData: IDriverInfo[], classId: number) => {
     let bestLap = 99999;
     driverData.forEach((driver) => {
@@ -3205,6 +3137,7 @@ export default class App extends React.Component<IProps> {
     }
   };
 
+  /* EXCLUIR
   private goStandardLogo() {
     this.hLogoUrl = "./../../img/logo.png";
     eLogoUrl = this.hLogoUrl;
@@ -3220,6 +3153,7 @@ export default class App extends React.Component<IProps> {
     // this.logoUrlEdit = false;
     return;
   }
+  */
 
   private shiftKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Shift") {
@@ -3360,7 +3294,6 @@ export default class App extends React.Component<IProps> {
     if (!widgetId) {
       return;
     }
-
     const diff =
       e.deltaY < 0
         ? this.shiftModifier
@@ -3369,9 +3302,7 @@ export default class App extends React.Component<IProps> {
         : this.shiftModifier
         ? -0.2
         : -0.01;
-
     this.settings[widgetId].zoom = this.settings[widgetId].zoom + diff;
-
     this.settings[widgetId].zoom = Math.max(
       0.1,
       Math.min(3, this.settings[widgetId].zoom)
@@ -3921,12 +3852,12 @@ export default class App extends React.Component<IProps> {
     localStorage.hideWidgets = hideWidgets ? "1" : "0";
     this.saveSettings();
   };
-
+  /* EXCLUIR
   @action
   private openDownload = () => {
     window.open("https://sealhud.github.io/dash.zip", "_blank");
   };
-
+  */
   @action
   private toggleLockHud = () => {
     this.lockHud = !this.lockHud;

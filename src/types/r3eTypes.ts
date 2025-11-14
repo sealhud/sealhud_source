@@ -538,10 +538,8 @@ export interface IDriverData {
 	TireTypeRear: ETireType;
 	TireSubtypeFront: ETireSubtype;
 	TireSubtypeRear: ETireSubtype;
-
 	BasePenaltyWeight: number;
 	AidPenaltyWeight: number;
-
 	DrsState: EOvertakingAid;
 	PtpState: EOvertakingAid;
 	PenaltyType: EPenaltyType;
