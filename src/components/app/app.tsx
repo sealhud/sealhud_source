@@ -2452,7 +2452,12 @@ export default class App extends React.Component<IProps> {
         r3e.data.LayoutId === 1682 ||
         r3e.data.LayoutId === 1709 ||
         r3e.data.LayoutId === 2181 ||
-        r3e.data.LayoutId === 2214;
+        r3e.data.LayoutId === 2214 ||
+        r3e.data.LayoutId === 9321 ||
+        r3e.data.LayoutId === 9360 ||
+        r3e.data.LayoutId === 11859 ||
+        r3e.data.LayoutId === 11861    
+        ;
 
       // this.runBooboo();
       this.getClassBestLaps(this.drivers);
@@ -4785,8 +4790,6 @@ export default class App extends React.Component<IProps> {
             </label>
           </div>
         )}
-        {/*---*/}
-
         {widgetId === "positionBarRelative" &&
           subSettings &&
           Object.keys(subSettings).map((subId) => {
@@ -5021,7 +5024,6 @@ export default class App extends React.Component<IProps> {
                 </div>
               );
             }
-            //-----
             if (
               subId === "showPosGainLoss" &&
               this.settings.tvTower.enabled &&
