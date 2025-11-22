@@ -496,6 +496,7 @@ export interface IDriverInfo {
 	SlotId: number;
 	ClassPerformanceIndex: number;
 	EngineType: EEngineType;
+	Position: number;
 
 	Unused1: number;
 	Unused2: number;

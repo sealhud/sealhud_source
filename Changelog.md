@@ -1,6 +1,7 @@
 	0.8
 	----------		
 	GENERAL
+	- Position Bar and Relative timings: HUGE amount of work went into getting this to work correctly. Now, the gaps are identical to those in RaceRoom telemetry. Furthermore, there's no more delay in generating times, as everything is done in "live mode". We also no longer need to collect track data! \õ/
 	- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
 	- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
 	- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.

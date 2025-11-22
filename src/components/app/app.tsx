@@ -3,6 +3,7 @@ declare global {
     version?: string;
   }
 }
+import { LapEvents } from "../../lib/LapEvents";
 import {
   classNames,
   base64ToString,
@@ -249,117 +250,73 @@ export default class App extends React.Component<IProps> {
   appRef = React.createRef<HTMLDivElement>();
 
   @observable accessor playerSlotId = -1;
-
   @observable accessor playerDriverDataIndex = -1;
-
   @observable accessor playerIsFocus = false;
-
   @observable accessor currentSlotId = -1;
-
   @observable accessor storedVersion = -1;
-
   @observable accessor replayCheck = true;
-
   @observable accessor replayReloadDone = false;
-
   @observable accessor badReplay = false;
-
   @observable accessor changeLogRead = true;
-
   @observable accessor changeLogToggled = false;
-
   @observable accessor trackingString = "";
-
   @observable accessor tempTrackingString = "";
-
   @observable accessor driverPitInfo: IDriverPitInfo = {};
-
   @observable accessor pitBoxDistances: IPitBoxDistances = {};
-
   @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
-
   @observable accessor lastPosition: ILastPosVector = {};
-
   @observable accessor driverLapInfo: IDriverLapInfo = {};
-
   @observable accessor driverLapRecord: ILapRecords = {};
-
   @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
-
   @observable accessor storedRecordedLaps: ILapData = {};
-
   @observable accessor classBestLap: IClassLaps = {};
-
   @observable accessor currentClassLapData = [[-1], [0], [0], [0]];
-
   @observable accessor tempClassLapData = [[-1], [0], [0], [0]];
-
   @observable accessor drivers: IDriverInfo[] = [];
-
   // loadTime = Date.now();
   @observable accessor loadTime = Date.now();
-
   // Deal with centering the main ui so it is always stays 16:9
   @observable accessor aspectHeight: number | null = null;
-
   @observable accessor hide = localStorage.hideWidgets
     ? localStorage.hideWidgets === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor resetInterval: ReturnType<typeof setInterval> | null =
     null;
-
   @observable accessor showEditGrid = false;
-
   @observable accessor enterPressed = false;
-
   @observable accessor somethingResetted = false;
-
   @observable accessor language: string = localStorage.language || "en";
-
   @observable accessor lowPerfo = localStorage.lowPerformanceMode
     ? localStorage.lowPerformanceMode === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor highPerfo = localStorage.highPerformanceMode
     ? localStorage.highPerformanceMode === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor snapOn = localStorage.snapOn
     ? localStorage.snapOn === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor elBlocko = blockFuelCalc || false;
-
   @observable accessor mphSpeed = speedInMPH || false;
-
   @observable accessor showAll = localStorage.showAllMode
     ? localStorage.showAllMode === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor mouseTimeout: number | null = null;
-
   @observable accessor clearDataTimer = INVALID;
-
   @observable accessor hideMouse = false;
   mouseOnTheMove = false;
-
   @observable accessor lastMousemovement = 0;
-
   @observable accessor nowMousemovement = 0;
-
   @observable accessor shiftModifier = false;
-
   @observable accessor driverNum = localStorage.driverNum
     ? localStorage.driverNum === "1"
       ? 1
@@ -369,32 +326,27 @@ export default class App extends React.Component<IProps> {
       ? 3
       : 3
     : 3;
-
   @observable accessor gainLossPermanentTower =
     localStorage.gainLossPermanentTower
       ? localStorage.gainLossPermanentTower === "1"
         ? true
         : false
       : false || false;
-
   @observable accessor gainLossPermanentBar = localStorage.gainLossPermanentBar
     ? localStorage.gainLossPermanentBar === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor rankInvert = localStorage.rankInvert
     ? localStorage.rankInvert === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor rankInvertRelative = localStorage.rankInvertRelative
     ? localStorage.rankInvertRelative === "1"
       ? true
       : false
     : false || false;
-
   @observable accessor currentLayout = localStorage.currentLayout
     ? localStorage.currentLayout === "1"
       ? 1
@@ -404,13 +356,11 @@ export default class App extends React.Component<IProps> {
       ? 3
       : 1
     : 1 || 1;
-
   @observable accessor lockHud = localStorage.lockHudStatus
     ? localStorage.lockHudStatus === "1"
       ? true
       : false
     : false;
-
   @observable accessor hLogoUrl =
     this.currentLayout === 1
       ? localStorage.currentLogo || "./../../img/logo.png"
@@ -419,19 +369,12 @@ export default class App extends React.Component<IProps> {
       : this.currentLayout === 3
       ? localStorage.currentLogo3 || "./../../img/logo.png"
       : "./../../img/logo.png";
-
   @observable accessor currentNumDrivers = 0;
-
   @observable accessor lastNumDrivers = 0;
-
   @observable accessor throttlePedal = 0;
-
   @observable accessor brakePedal = 0;
-
   @observable accessor clutchPedal = 0;
-
   @observable accessor gameInMenus = false;
-
   @observable accessor gameInReplay = false;
 
   // @observable
@@ -445,7 +388,7 @@ export default class App extends React.Component<IProps> {
       volume: 0,
       duration: 0,
       zoom: 1,
-      name: __("Position bar"),
+      name: __("Position Bar"),
       subSettings: {
         showStandings: {
           text: __("Show Standings"),
@@ -479,14 +422,14 @@ export default class App extends React.Component<IProps> {
           text: __("Show Last-Lap-Times"),
           enabled: true,
         },
-        lapTime: {
-          text: __("Show Lap-Time"),
-          enabled: true,
-        },
-        currentPosition: {
-          text: __("Show Current Position"),
-          enabled: true,
-        },
+				lapTime: {
+					text: __('Show Lap-Time'),
+					enabled: true
+				},
+				currentPosition: {
+					text: __('Show Current Position'),
+					enabled: true
+				},
         sessionLaps: {
           text: __("Show Completed Laps"),
           enabled: true,
@@ -510,34 +453,30 @@ export default class App extends React.Component<IProps> {
         showBestLap: {
           text: __("Show Best-Lap"),
           enabled: true,
-        },
+        },        
         showIncidentPoints: {
           text: __("Show Incident Points"),
           enabled: true,
         },
-        sessionTime: {
-          text: __("Show Session-Time"),
-          enabled: true,
-        },
-        shortBar: {
-          text: __("Only show 5 Ahead/Behind"),
-          enabled: false,
-        },
-      },
+				sessionTime: {
+					text: __("Show Session-Time"),
+					enabled: true,
+				}
+			},
       position: {
         x: INVALID,
         y: INVALID,
       },
     },
     positionBarRelative: {
-      id: "positionBarRelative",
+			id: "positionBarRelative",
       enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
       zoom: 0.97,
       name: __("Relative"),
-      subSettings: {
+			subSettings: {
         showAllSessions: {
           text: __("Show in all Sessions"),
           enabled: true,
@@ -570,20 +509,16 @@ export default class App extends React.Component<IProps> {
           text: __("Show Ranking Data"),
           enabled: true,
         },
-        showUserId: {
-          text: __("Show Drivers UserId"),
-          enabled: false,
-        },
         numberDrivers: {
           text: __("Drivers Ahead/Behind"),
           enabled: true,
-        },
+        }
       },
-      position: {
-        x: 1324,
-        y: 917,
-      },
-    },
+			position: {
+				x: 1324,
+				y: 917,
+			}
+		},
     tvTower: {
       id: "tvTower",
       enabled: false,
@@ -1164,7 +1099,7 @@ export default class App extends React.Component<IProps> {
       volume: 0,
       duration: 0,
       zoom: 1,
-      name: __("Position bar"),
+      name: __("Position Bar"),
       subSettings: {
         showStandings: {
           text: __("Show Standings"),
@@ -1173,7 +1108,7 @@ export default class App extends React.Component<IProps> {
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
-        },
+        },        
         showPosGainLoss: {
           text: __("Show Positions Gain/Loss"),
           enabled: true,
@@ -1198,14 +1133,14 @@ export default class App extends React.Component<IProps> {
           text: __("Show Last-Lap-Times"),
           enabled: true,
         },
-        lapTime: {
-          text: __("Show Lap-Time"),
-          enabled: true,
-        },
-        currentPosition: {
-          text: __("Show Current Position"),
-          enabled: true,
-        },
+				lapTime: {
+					text: __('Show Lap-Time'),
+					enabled: true
+				},
+				currentPosition: {
+					text: __('Show Current Position'),
+					enabled: true
+				},
         sessionLaps: {
           text: __("Show Completed Laps"),
           enabled: true,
@@ -1234,33 +1169,29 @@ export default class App extends React.Component<IProps> {
           text: __("Show Incident Points"),
           enabled: true,
         },
-        sessionTime: {
-          text: __("Show Session-Time"),
-          enabled: true,
-        },
-        shortBar: {
-          text: __("Only show 5 Ahead/Behind"),
-          enabled: false,
-        },
-      },
+				sessionTime: {
+					text: __("Show Session-Time"),
+					enabled: true,
+				}
+			},
       position: {
         x: INVALID,
         y: INVALID,
       },
     },
     positionBarRelative: {
-      id: "positionBarRelative",
+			id: "positionBarRelative",
       enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
       zoom: 0.97,
       name: __("Relative"),
-      subSettings: {
+			subSettings: {   
         showAllSessions: {
           text: __("Show in all Sessions"),
           enabled: true,
-        },
+        },     
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
@@ -1268,7 +1199,7 @@ export default class App extends React.Component<IProps> {
         showGapsInSeconds: {
           text: __("Show Gaps in Seconds"),
           enabled: true,
-        },
+        },    
         showCarNames: {
           text: __("Show Car Names"),
           enabled: true,
@@ -1289,20 +1220,16 @@ export default class App extends React.Component<IProps> {
           text: __("Show Ranking Data"),
           enabled: true,
         },
-        showUserId: {
-          text: __("Show Drivers UserId"),
-          enabled: false,
-        },
         numberDrivers: {
           text: __("Drivers Ahead/Behind"),
           enabled: true,
-        },
+        }
       },
-      position: {
-        x: 1324,
-        y: 917,
-      },
-    },
+			position: {
+				x: 1324,
+				y: 917,
+			}
+		},
     tvTower: {
       id: "tvTower",
       enabled: false,
@@ -1876,58 +1803,32 @@ export default class App extends React.Component<IProps> {
   };
 
   @observable accessor logoUrlEdit = false;
-
   @observable accessor settingsOpacity = 0;
-
   @observable accessor showSettings = false;
-
-  // Remover
-  // @observable accessor showRanking = false;
-
+  @observable accessor showRanking = false;
   @observable accessor tempHide = false;
-
   @observable accessor debugFilter = "";
-
   @observable accessor appZoom = 1;
-
   @observable accessor performanceTime = -1;
-
   @observable accessor performance = -1;
-
   @observable accessor performanceTick: number[] = [];
-
   @observable accessor lastPerformance = -1;
-
   @observable accessor lastRecordUpdate = 0;
-
   @observable accessor nowTrackId = -1;
-
   @observable accessor nowLayoutId = -1;
-
   @observable accessor lastCheck = -1;
-
   @observable accessor lastDiffCheck = 0;
-
   @observable accessor updateDiffs = true;
-
   @observable accessor tempLowPerfo = false;
   @observable accessor tempHighPerfo = false;
   @observable accessor tempSavePerfo: boolean[] = [];
-
   @observable accessor debugData: IShared | null = null;
-
   @observable accessor resetString = _("Reset Settings");
-
   @observable accessor nowDriverDataSize = -1;
-
   @observable accessor forceCheck = false;
-
   @observable accessor lastDriverDataSize = -1;
-
   @observable accessor slowDiff = -1;
-
   @observable accessor lapStartTime = -1;
-
   @observable accessor oneRefresh = false;
 
   currentCursorWidgetOffset: null | {
@@ -1939,25 +1840,15 @@ export default class App extends React.Component<IProps> {
   @observable accessor parseRankingDataTimeout: ReturnType<
     typeof setTimeout
   > | null = null;
-
   @observable accessor sessionType = -1;
-
   @observable accessor sessionPhase = -1;
-
   @observable accessor singleplayerRace = false;
-
   @observable accessor bestLapTimeLeader = -1;
-
   @observable accessor lapTimeCurrentSelf = -1;
-
   @observable accessor lapDistance = -1;
-
   @observable accessor layoutLength = -1;
-
   @observable accessor lapTimePreviousSelf = -1;
-
   @observable accessor tractionControlPercentUndefined = true;
-
   @observable accessor pitStoppedTime = -1;
 
   updateFunction: Function | null = null;
@@ -2088,11 +1979,14 @@ export default class App extends React.Component<IProps> {
       }
     }
   };
-
+  
   @action
   private updatePerformance = () => {
     this.gameInReplay = r3e.data.GameInReplay > 0;
     this.gameInMenus = r3e.data.GameInMenus > 0;
+    if (this.gameInMenus) {
+      return; // não atualiza nada quando está no menu
+    }
     const showAtAll =
       r3e.data && !this.gameInMenus && r3e.data.DriverData.length > 0;
     const driverDataPlace = r3e.data
@@ -2102,7 +1996,6 @@ export default class App extends React.Component<IProps> {
           : -1
         : -1
       : -1;
-
     getSlotIds();
     if (localStorage.gainLossPermanentTower === undefined) {
       this.toggleGainLossPermanentTower();
@@ -2117,6 +2010,7 @@ export default class App extends React.Component<IProps> {
     this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
     this.lapDistance = r3e.data.LapDistance;
     this.layoutLength = r3e.data.LayoutLength;
+    LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
     this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;
@@ -4261,6 +4155,7 @@ export default class App extends React.Component<IProps> {
             relative={true}
           />
         )}
+
         {this.settings.motec.enabled && (
           <Motec
             settings={this.settings.motec}

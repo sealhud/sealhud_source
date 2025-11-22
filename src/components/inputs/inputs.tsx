@@ -195,7 +195,7 @@ export default class Inputs extends React.Component<IProps, {}> {
 					(
 						<SvgIcon
 							className="steeringWheel"
-							src={require('./../../img/icons/wheel3.svg')}
+							src={require('./../../img/icons/wheel.svg')}
 							style={{
 								transform: `rotate(${showAllMode
 									?	30
