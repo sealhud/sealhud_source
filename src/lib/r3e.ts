@@ -51,20 +51,20 @@ const address = overrideAddress ? overrideAddress : 'localhost:8070';
 const ws = new ReconnectingWebSocket(`ws://${address}/r3e`);
 
 let upper = lowPerformanceMode
-		?	15
-		:	highPerformanceMode
-			?	15
-			:	supremePerformance
-				?	1
-				:	15;
+    ? 66  // low performance
+    : highPerformanceMode
+        ? 16  // high performance
+        : supremePerformance
+            ? 2   // Ultra
+            : 33; // Normal → 30 FPS
 function upDat() {
 	upper = lowPerformanceMode
-		?	15
+		?	66
 		:	highPerformanceMode
-			?	15
+			?	16
 			:	supremePerformance
-				?	1
-				:	15;
+				?	2
+				:	33;
 	if (ws.readyState === WebSocket.OPEN) {
 		ws.send('');
 	}

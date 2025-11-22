@@ -2,7 +2,6 @@ import { configure as mobxConfigure } from 'mobx';
 import { isDev /*, setupGoogleAnalytics, setupSentry*/ } from './lib/utils';
 import App from './components/app/app';
 import quickDebugCssReload from './lib/quickDebugCssReload';
-import React from 'react';
 import { createRoot } from 'react-dom/client'; // novo import
 
 mobxConfigure({

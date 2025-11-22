@@ -676,7 +676,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		});
 	}
 
-
 	private getStrengthOfField() {
 		let sumUp = 0;
 		let count = 0;
@@ -1294,11 +1293,11 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				!this.props.settings.subSettings.showRanking.enabled)) &&
 			!this.props.settings.subSettings.showCarLogos.enabled;
 		const showCL =
-		this.props.relative &&
-		(this.props.settings.subSettings.showCarLogos.enabled ||
-		(this.props.settings.subSettings.showRanking.enabled &&
-		(!singleplayerRace || showAllMode) &&
-		this.props.settings.subSettings.showCarNames.enabled));
+			this.props.relative &&
+			(this.props.settings.subSettings.showCarLogos.enabled ||
+			(this.props.settings.subSettings.showRanking.enabled &&
+			(!singleplayerRace || showAllMode) &&
+			this.props.settings.subSettings.showCarNames.enabled));
 		let returnWidth = 288;
 		if (this.props.relative) {
 			if (this.props.settings.subSettings.showGapsInSeconds.enabled) {

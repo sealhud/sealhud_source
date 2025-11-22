@@ -42,7 +42,7 @@ import Damage from "../damage/damage";
 import Flags from "../flags/flags";
 import Fuel from "../fuel/fuel";
 import FuelDetail from "../fuelDetail/fuelDetail";
-import getRecordedLapsData from "./../../lib/trackData";
+// import getRecordedLapsData from "./../../lib/trackData";
 import Gforce from "../gforce/gforce";
 import Graphs from "../graphs/graphs";
 import Info from "../info/info";
@@ -104,7 +104,6 @@ interface IDriverInfo {
   speed: number;
   lapPrevious: number;
   distDiff: number;
-  timeDiff: number;
   dPos: {
     X: number;
     Y: number;
@@ -243,7 +242,7 @@ export {
   eIsHillClimb,
 };
 // Hud Version
-const currentVersion = 0.7;
+const currentVersion = 0.8;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -1817,8 +1816,8 @@ export default class App extends React.Component<IProps> {
   @observable accessor nowTrackId = -1;
   @observable accessor nowLayoutId = -1;
   @observable accessor lastCheck = -1;
-  @observable accessor lastDiffCheck = 0;
-  @observable accessor updateDiffs = true;
+  // @observable accessor lastDiffCheck = 0;
+  // @observable accessor updateDiffs = true;
   @observable accessor tempLowPerfo = false;
   @observable accessor tempHighPerfo = false;
   @observable accessor tempSavePerfo: boolean[] = [];
@@ -2220,25 +2219,24 @@ export default class App extends React.Component<IProps> {
         this.nowTrackId = r3e.data.TrackId;
         this.nowLayoutId = r3e.data.LayoutId;
         this.tempTrackingString = `${r3e.data.TrackId}_${r3e.data.LayoutId}_7982`;
-        this.tempClassLapData = getRecordedLapsData(this.tempTrackingString);
-        this.driverRecordedLaps = getRecordedLapsData(this.tempTrackingString);
+        //this.tempClassLapData = getRecordedLapsData(this.tempTrackingString);
+        //this.driverRecordedLaps = getRecordedLapsData(this.tempTrackingString);
         this.forceCheck = true;
       }
     }
-
+    /*
     this.updateDiffs = false;
     if (nowCheck - this.lastDiffCheck >= 500 || this.forceCheck) {
       this.updateDiffs = true;
       this.lastDiffCheck = nowCheck;
-    }
+    }*/
 
     if (
       (highPerformanceMode && nowCheck - this.lastCheck >= 16) ||
       (lowPerformanceMode && nowCheck - this.lastCheck >= 66) ||
       (!lowPerformanceMode &&
         !highPerformanceMode &&
-        nowCheck - this.lastCheck >= 33) ||
-      this.updateDiffs
+        nowCheck - this.lastCheck >= 33) // || this.updateDiffs
     ) {
       // showDebugMessageSmall(`${this.trackingString}`);
       this.singleplayerRace = false;
@@ -2288,122 +2286,9 @@ export default class App extends React.Component<IProps> {
       // this.runBooboo();
       this.getClassBestLaps(this.drivers);
       this.updateDriverTimes();
-      this.updateLapRecordTimes();
+      // this.updateLapRecordTimes();
     }
-    /* showDebugMessage(
-			`StartIndexPlayer: ${this.startIndexPlayer}
-			HigherThenHalf: ${isHigherThenHalf ? 'yes' : 'no'}
-			StartIndex: ${startIndex}
-			`
-		);*/
   };
-
-  private runBooboo() {
-    if (
-      !r3e.data ||
-      !this.drivers.length ||
-      r3e.data.NumCars !== this.drivers.length ||
-      this.sessionType !== 2 ||
-      (this.sessionType === 2 && this.sessionPhase !== 5)
-    ) {
-      return;
-    }
-    const lId = r3e.data.LayoutId.toString();
-    if (this.pitBoxDistances[lId] === undefined) {
-      let newSet = false;
-      let storedData: IPitBoxDistances = {};
-      if (localStorage.PitBoxDistances) {
-        storedData = JSON.parse(localStorage.PitBoxDistances);
-      }
-      if (storedData[lId] === undefined) {
-        newSet = true;
-        storedData[lId] = {};
-      }
-      this.pitBoxDistances = merge(this.pitBoxDistances, storedData);
-      if (newSet) {
-        localStorage.PitBoxDistances = JSON.stringify(
-          this.pitBoxDistances,
-          null,
-          "  "
-        );
-      }
-    }
-    if (this.pitBoxEntrances[lId] === undefined) {
-      let newSet = false;
-      let storedData: IPitBoxEntrances = {};
-      if (localStorage.PitBoxEntrances) {
-        storedData = JSON.parse(localStorage.PitBoxEntrances);
-      }
-      if (storedData[lId] === undefined) {
-        newSet = true;
-        storedData[lId] = -1;
-      }
-      this.pitBoxEntrances = merge(this.pitBoxEntrances, storedData);
-      if (newSet) {
-        localStorage.PitBoxEntrances = JSON.stringify(
-          this.pitBoxEntrances,
-          null,
-          "  "
-        );
-      }
-    }
-    if (this.pitBoxDistances[lId] !== undefined) {
-      let needStoring = false;
-      let needStoringA = false;
-      const checkNow = nowCheck - this.pitStoppedTime >= 1000;
-      if (checkNow) {
-        this.pitStoppedTime = nowCheck;
-      }
-      this.drivers.forEach((driver) => {
-        if (
-          driver.pitting &&
-          driver.finishStatus === 0 &&
-          this.pitBoxEntrances[lId] === -1
-        ) {
-          this.pitBoxEntrances[lId] = driver.lapDistance;
-          needStoringA = true;
-        }
-        const dId = driver.id.toString();
-        if (checkNow) {
-          if (this.lastPosition[dId] === undefined) {
-            this.lastPosition[dId] = {
-              X: -1,
-              Y: -1,
-              Z: -1,
-            };
-          }
-          const lastPos = this.lastPosition[dId].X + this.lastPosition[dId].Z;
-          const nowPos = driver.dPos.X + driver.dPos.Z;
-          const stillGoing = Math.abs(lastPos - nowPos) > 0.002;
-          if (
-            !stillGoing &&
-            this.pitBoxDistances[lId][dId] === undefined &&
-            driver.pitting &&
-            driver.finishStatus === 0
-          ) {
-            showDebugMessageSmall(`Saved Spot for: ${driver.id}`, 1000);
-            needStoring = true;
-            this.pitBoxDistances[lId][dId] = driver.dPos;
-          }
-          this.lastPosition[dId] = driver.dPos;
-        }
-      });
-      if (needStoring) {
-        localStorage.PitBoxDistances = JSON.stringify(
-          this.pitBoxDistances,
-          null,
-          "  "
-        );
-      }
-      if (needStoringA) {
-        localStorage.PitBoxEntrances = JSON.stringify(
-          this.pitBoxEntrances,
-          null,
-          "  "
-        );
-      }
-    }
-  }
 
   private formatDriverData = (driver: IDriverData): IDriverInfo => {
     const isUser = this.currentSlotId === driver.DriverInfo.SlotId;
@@ -2426,10 +2311,6 @@ export default class App extends React.Component<IProps> {
         this.classBestLap[driver.DriverInfo.ClassPerformanceIndex] !== undefined
           ? this.classBestLap[driver.DriverInfo.ClassPerformanceIndex]
           : 9999,
-      /* this.getBestLapClass(
-					this.drivers,
-					driver.DriverInfo.ClassPerformanceIndex
-				), */
       pitting: driver.InPitlane,
       classId: driver.DriverInfo.ClassId,
       classColor: getClassColor(driver.DriverInfo.ClassPerformanceIndex),
@@ -2448,7 +2329,7 @@ export default class App extends React.Component<IProps> {
       speed: driver.CarSpeed,
       lapPrevious: driver.SectorTimePreviousSelf.Sector3,
       distDiff: isUser ? 0 : driver.InPitlane ? 0 : 0, // this.getGapToPlayer(driver.LapDistance),
-      timeDiff: isUser
+      /*timeDiff: isUser
         ? 0
         : this.driverRecordedLaps !== undefined
         ? this.driverRecordedLaps[0][0] !== -1
@@ -2457,183 +2338,10 @@ export default class App extends React.Component<IProps> {
             : this.getLastTimeDiff(this.drivers, driver.DriverInfo.SlotId)
           : 0
         : 0,
+        */
       dPos: driver.Position,
     };
     return driverData;
-  };
-
-  private getLapDiff(lapDist: number): number {
-    if (lapDist === INVALID || this.lapStartTime === -1) {
-      return -1;
-    }
-    let startIndexPlayer = -1;
-    const userLapDistance = lapDist;
-    this.driverRecordedLaps[2].forEach((dist, i) => {
-      if (dist >= userLapDistance && startIndexPlayer === -1) {
-        startIndexPlayer = i - 1;
-      }
-    });
-    const lapTime =
-      this.lapTimeCurrentSelf !== -1
-        ? this.lapTimeCurrentSelf * 1000
-        : nowCheck - this.lapStartTime;
-    const diff = this.driverRecordedLaps[3][startIndexPlayer] - lapTime / 1000;
-    const rounded = Math.round(diff * 10) / 10;
-    showDebugMessageSmall(`${diff} / ${rounded}`);
-    return rounded;
-  }
-
-  private getTimeToPlayer(lapDist: number): number {
-    if (lapDist === INVALID) {
-      return 0;
-    }
-    let startIndexTarget = -1;
-    let startIndexPlayer = -1;
-    const userLapDistance = this.lapDistance;
-    const aLength = this.playerIsFocus
-      ? this.driverRecordedLaps[3].length
-      : this.tempClassLapData[3].length;
-    if (this.playerIsFocus) {
-      this.driverRecordedLaps[2].forEach((dist, i) => {
-        if (dist >= lapDist && startIndexTarget === -1) {
-          startIndexTarget = i - 1;
-        }
-        if (dist >= userLapDistance && startIndexPlayer === -1) {
-          startIndexPlayer = i - 1;
-        }
-      });
-      if (startIndexTarget > -1) {
-        const lapTime = this.driverRecordedLaps[3][aLength - 1];
-        /*let diff = userLapDistance - lapDist;
-				if (diff < -(this.layoutLength / 2)) {
-					diff = diff + this.layoutLength;
-				}
-				if (diff > (this.layoutLength / 2)) {
-					diff = diff - this.layoutLength;
-				}*/
-        let diff =
-          this.driverRecordedLaps[3][startIndexPlayer] -
-          this.driverRecordedLaps[3][startIndexTarget];
-        if (diff < -(lapTime / 2)) {
-          diff = diff + lapTime;
-        }
-        if (diff > lapTime / 2) {
-          diff = diff - lapTime;
-        }
-        if (diff < 0) {
-          if (startIndexTarget < startIndexPlayer) {
-            return (
-              0 -
-              (lapTime -
-                this.driverRecordedLaps[3][startIndexPlayer] +
-                this.driverRecordedLaps[3][startIndexTarget])
-            );
-          }
-          return (
-            0 -
-            (this.driverRecordedLaps[3][startIndexTarget] -
-              this.driverRecordedLaps[3][startIndexPlayer])
-          );
-        }
-        if (diff > 0) {
-          if (startIndexPlayer < startIndexTarget) {
-            return (
-              lapTime -
-              this.driverRecordedLaps[3][startIndexTarget] +
-              this.driverRecordedLaps[3][startIndexPlayer]
-            );
-          }
-          return (
-            this.driverRecordedLaps[3][startIndexPlayer] -
-            this.driverRecordedLaps[3][startIndexTarget]
-          );
-        }
-      }
-    } else {
-      this.tempClassLapData[2].forEach((dist, i) => {
-        if (dist >= lapDist && startIndexTarget === -1) {
-          startIndexTarget = i - 1;
-        }
-        if (dist >= userLapDistance && startIndexPlayer === -1) {
-          startIndexPlayer = i - 1;
-        }
-      });
-      if (startIndexTarget > -1) {
-        const lapTime = this.tempClassLapData[3][aLength - 1];
-        /*let diff = userLapDistance - lapDist;
-				if (diff < -(this.layoutLength / 2)) {
-					diff = diff + this.layoutLength;
-				}
-				if (diff > (this.layoutLength / 2)) {
-					diff = diff - this.layoutLength;
-				}*/
-        let diff =
-          this.tempClassLapData[3][startIndexPlayer] -
-          this.tempClassLapData[3][startIndexTarget];
-        if (diff < -(lapTime / 2)) {
-          diff = diff + lapTime;
-        }
-        if (diff > lapTime / 2) {
-          diff = diff - lapTime;
-        }
-        if (diff < 0) {
-          if (startIndexTarget < startIndexPlayer) {
-            return (
-              0 -
-              (lapTime -
-                this.tempClassLapData[3][startIndexPlayer] +
-                this.tempClassLapData[3][startIndexTarget])
-            );
-          }
-          return (
-            0 -
-            (this.tempClassLapData[3][startIndexTarget] -
-              this.tempClassLapData[3][startIndexPlayer])
-          );
-        }
-        if (diff > 0) {
-          if (startIndexPlayer < startIndexTarget) {
-            return (
-              lapTime -
-              this.tempClassLapData[3][startIndexTarget] +
-              this.tempClassLapData[3][startIndexPlayer]
-            );
-          }
-          return (
-            this.tempClassLapData[3][startIndexPlayer] -
-            this.tempClassLapData[3][startIndexTarget]
-          );
-        }
-      }
-    }
-    return 0;
-  }
-  
-  private getGapToPlayer(lapDist: number): number {
-    if (lapDist === INVALID) {
-      return 0;
-    }
-    const trackDist = this.layoutLength;
-    const playerDist = this.lapDistance;
-    let distToPlayer = playerDist - lapDist;
-
-    if (distToPlayer < -(trackDist / 2)) {
-      distToPlayer = distToPlayer + trackDist;
-    }
-    if (distToPlayer > trackDist / 2) {
-      distToPlayer = distToPlayer - trackDist;
-    }
-    return parseInt((distToPlayer * -1).toFixed(0), 10);
-  }
-
-  private getLastTimeDiff = (driverData: IDriverInfo[], searchId: number) => {
-    let blob = -100;
-    driverData.forEach((driver) => {
-      if (driver.id === searchId) {
-        blob = driver.timeDiff;
-      }
-    });
-    return blob;
   };
 
   private getClassBestLaps = (driverData: IDriverInfo[]) => {
@@ -2648,150 +2356,122 @@ export default class App extends React.Component<IProps> {
       }
     });
   };
-  
-  private getBestLapClass = (driverData: IDriverInfo[], classId: number) => {
-    let bestLap = 99999;
-    driverData.forEach((driver) => {
-      if (
-        driver.performanceIndex === classId &&
-        driver.bestLapTime > 0 &&
-        driver.bestLapTime <= bestLap
-      ) {
-        bestLap = driver.bestLapTime;
-      }
-    });
-    return bestLap;
-  };
-
+    
   private updateDriverTimes() {
-    if (!this.drivers.length) {
-      return;
-    }
-    const newDiffs: IDriverDiffs = {};
-    this.drivers.forEach((driver) => {
-      newDiffs[driver.id] = [
-        [this.driverRecordedLaps[0][0]],
-        [driver.timeDiff],
-        [-1], // this.getLapDiff(driver.lapDistance)
-      ];
-      if (
-        this.sessionType === ESession.Race &&
-        this.driverPitInfo[driver.id] !== undefined
-      ) {
-        // Was in Pits on Start
-        if (this.driverPitInfo[driver.id][1] < 0 && driver.pitting === 0) {
-          this.driverPitInfo[driver.id][1] = 0;
-          this.driverPitInfo[driver.id][0] = 0;
-          return;
-        }
+  if (!this.drivers.length) return;
+  this.drivers.forEach((driver) => {
+    // --- PIT INFO -----------------------------------------------------
+    if (this.sessionType === ESession.Race && this.driverPitInfo[driver.id] !== undefined) {
 
-        // Re-Enters pits
-        if (
-          this.driverPitInfo[driver.id][1] > 0 &&
-          this.driverPitInfo[driver.id][0] === 0 &&
-          driver.pitting
-        ) {
-          this.driverPitInfo[driver.id][2] = nowCheck;
-          this.driverPitInfo[driver.id][3] = -1;
-          this.driverPitInfo[driver.id][4] = -1;
-          this.driverPitInfo[driver.id][5] = -1;
-        }
-        // Enters the Pit
-        if (
-          this.driverPitInfo[driver.id][0] === 0 &&
-          this.driverPitInfo[driver.id][1] !== -1 &&
-          driver.pitting &&
-          driver.finishStatus === 0
-        ) {
-          this.driverPitInfo[driver.id][0] = 1;
-          this.driverPitInfo[driver.id][2] = nowCheck;
-        }
-
-        // Stops on Spot
-        if (
-          this.driverPitInfo[driver.id][0] > 0 &&
-          this.driverPitInfo[driver.id][3] < 0 &&
-          driver.pitting &&
-          driver.finishStatus === 0 &&
-          (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
-        ) {
-          this.driverPitInfo[driver.id][3] = nowCheck;
-        }
-
-        // Starts from Spot
-        if (
-          this.driverPitInfo[driver.id][0] > 0 &&
-          this.driverPitInfo[driver.id][3] > 0 &&
-          this.driverPitInfo[driver.id][4] < 0 &&
-          driver.pitting &&
-          driver.finishStatus === 0 &&
-          driver.speed >= 1 &&
-          driver.speed.toString().indexOf("E") < 0
-        ) {
-          this.driverPitInfo[driver.id][4] = nowCheck;
-        }
-
-        // Stops again before exit! Miss-Spot?
-        if (
-          this.driverPitInfo[driver.id][0] > 0 &&
-          this.driverPitInfo[driver.id][3] > 0 &&
-          this.driverPitInfo[driver.id][4] > 0 &&
-          driver.pitting &&
-          driver.finishStatus === 0 &&
-          (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
-        ) {
-          this.driverPitInfo[driver.id][4] = -1;
-        }
-
-        // Exits Pits
-        if (
-          this.driverPitInfo[driver.id][0] > 0 &&
-          !driver.pitting &&
-          this.driverPitInfo[driver.id][5] < 0 &&
-          driver.finishStatus === 0
-        ) {
-          this.driverPitInfo[driver.id][0] = 0;
-          this.driverPitInfo[driver.id][5] = nowCheck;
-          this.driverPitInfo[driver.id][1]++;
-        }
-      } else {
-        this.driverPitInfo[driver.id] = [0, -1, -1, -1, -1, -1];
+      // Was in Pits on Start
+      if (this.driverPitInfo[driver.id][1] < 0 && driver.pitting === 0) {
+        this.driverPitInfo[driver.id][1] = 0;
+        this.driverPitInfo[driver.id][0] = 0;
+        return;
       }
-      if (this.driverLapInfo[driver.id] !== undefined) {
-        if (driver.finishStatus < 1) {
-          if (
-            nowCheck - this.driverLapInfo[driver.id][2] > 10500 &&
-            driver.lapDistance < 101 &&
-            driver.lapDistance > 5
-          ) {
-            this.driverLapInfo[driver.id][0] = driver.lapPrevious;
-            this.driverLapInfo[driver.id][1] =
-              driver.lapPrevious <= 0 ? -999 : driver.lapPrevious;
-            this.driverLapInfo[driver.id][2] = nowCheck + 10000;
-          }
-          if (
-            driver.lapPrevious <= 0 ||
-            this.driverLapInfo[driver.id][1] === -999
-          ) {
-            this.driverLapInfo[driver.id][3] = 255;
-            this.driverLapInfo[driver.id][4] = 60;
-            this.driverLapInfo[driver.id][5] = 0;
-            this.driverLapInfo[driver.id][6] = 1;
-          } else if (
-            driver.lapPrevious <= driver.bestLapTimeLeader &&
-            !this.gameInReplay
-          ) {
-            this.driverLapInfo[driver.id][3] = 179;
-            this.driverLapInfo[driver.id][4] = 102;
-            this.driverLapInfo[driver.id][5] = 179;
-            this.driverLapInfo[driver.id][6] = 1;
-          } else if (
-            driver.lapPrevious <= driver.bestLapTimeClass &&
-            !this.gameInReplay
-          ) {
-            const classColor = hSLToRGB(driver.classColor, 1, 1); // type=1 → retorna objeto {r,g,b}
+      // Re-Enters pits
+      if (
+        this.driverPitInfo[driver.id][1] > 0 &&
+        this.driverPitInfo[driver.id][0] === 0 &&
+        driver.pitting
+      ) {
+        this.driverPitInfo[driver.id][2] = nowCheck;
+        this.driverPitInfo[driver.id][3] = -1;
+        this.driverPitInfo[driver.id][4] = -1;
+        this.driverPitInfo[driver.id][5] = -1;
+      }
 
-            if (
+      // Enters the Pit
+      if (
+        this.driverPitInfo[driver.id][0] === 0 &&
+        this.driverPitInfo[driver.id][1] !== -1 &&
+        driver.pitting &&
+        driver.finishStatus === 0
+      ) {
+        this.driverPitInfo[driver.id][0] = 1;
+        this.driverPitInfo[driver.id][2] = nowCheck;
+      }
+      // Stops on Spot
+      if (
+        this.driverPitInfo[driver.id][0] > 0 &&
+        this.driverPitInfo[driver.id][3] < 0 &&
+        driver.pitting &&
+        driver.finishStatus === 0 &&
+        (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
+      ) {
+        this.driverPitInfo[driver.id][3] = nowCheck;
+      }
+      // Starts from Spot
+      if (
+        this.driverPitInfo[driver.id][0] > 0 &&
+        this.driverPitInfo[driver.id][3] > 0 &&
+        this.driverPitInfo[driver.id][4] < 0 &&
+        driver.pitting &&
+        driver.finishStatus === 0 &&
+        driver.speed >= 1 &&
+        driver.speed.toString().indexOf("E") < 0
+      ) {
+        this.driverPitInfo[driver.id][4] = nowCheck;
+      }
+      // Stops again before exit (Miss-Spot)
+      if (
+        this.driverPitInfo[driver.id][0] > 0 &&
+        this.driverPitInfo[driver.id][3] > 0 &&
+        this.driverPitInfo[driver.id][4] > 0 &&
+        driver.pitting &&
+        driver.finishStatus === 0 &&
+        (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
+      ) {
+        this.driverPitInfo[driver.id][4] = -1;
+      }
+      // Exits Pits
+      if (
+        this.driverPitInfo[driver.id][0] > 0 &&
+        !driver.pitting &&
+        this.driverPitInfo[driver.id][5] < 0 &&
+        driver.finishStatus === 0
+      ) {
+        this.driverPitInfo[driver.id][0] = 0;
+        this.driverPitInfo[driver.id][5] = nowCheck;
+        this.driverPitInfo[driver.id][1]++;
+      }
+    } else {
+      this.driverPitInfo[driver.id] = [0, -1, -1, -1, -1, -1];
+    }
+    // --- LAP INFO -----------------------------------------------------
+    if (this.driverLapInfo[driver.id] !== undefined) {
+      if (driver.finishStatus < 1) {
+        // Lap timing refresh
+        if (
+          nowCheck - this.driverLapInfo[driver.id][2] > 10500 &&
+          driver.lapDistance < 101 &&
+          driver.lapDistance > 5
+        ) {
+          this.driverLapInfo[driver.id][0] = driver.lapPrevious;
+          this.driverLapInfo[driver.id][1] =
+            driver.lapPrevious <= 0 ? -999 : driver.lapPrevious;
+          this.driverLapInfo[driver.id][2] = nowCheck + 10000;
+        }
+        // Lap color logic
+        if (driver.lapPrevious <= 0 || this.driverLapInfo[driver.id][1] === -999) {
+          this.driverLapInfo[driver.id][3] = 255;
+          this.driverLapInfo[driver.id][4] = 60;
+          this.driverLapInfo[driver.id][5] = 0;
+          this.driverLapInfo[driver.id][6] = 1;
+        } else if (
+          driver.lapPrevious <= driver.bestLapTimeLeader &&
+          !this.gameInReplay
+        ) {
+          this.driverLapInfo[driver.id][3] = 179;
+          this.driverLapInfo[driver.id][4] = 102;
+          this.driverLapInfo[driver.id][5] = 179;
+          this.driverLapInfo[driver.id][6] = 1;
+        } else if (
+          driver.lapPrevious <= driver.bestLapTimeClass &&
+          !this.gameInReplay
+        ) {
+          const classColor = hSLToRGB(driver.classColor, 1, 1);
+          if (
               classColor &&
               typeof classColor !== "string" &&
               !Array.isArray(classColor)
@@ -2808,33 +2488,36 @@ export default class App extends React.Component<IProps> {
               this.driverLapInfo[driver.id][5] = 0;
               this.driverLapInfo[driver.id][6] = 1;
             }
-          } else if (
-            driver.lapPrevious <= driver.bestLapTime &&
-            driver.bestLapTime > 0 &&
-            !this.gameInReplay
-          ) {
-            this.driverLapInfo[driver.id][3] = 0;
-            this.driverLapInfo[driver.id][4] = 190;
-            this.driverLapInfo[driver.id][5] = 60;
-            this.driverLapInfo[driver.id][6] = 1;
-          } else {
-            this.driverLapInfo[driver.id][3] = 0;
-            this.driverLapInfo[driver.id][4] = 150;
-            this.driverLapInfo[driver.id][5] = 190;
-            this.driverLapInfo[driver.id][6] = 1;
-          }
+        } else if (
+          driver.lapPrevious <= driver.bestLapTime &&
+          driver.bestLapTime > 0 &&
+          !this.gameInReplay
+        ) {
+          this.driverLapInfo[driver.id][3] = 0;
+          this.driverLapInfo[driver.id][4] = 190;
+          this.driverLapInfo[driver.id][5] = 60;
+          this.driverLapInfo[driver.id][6] = 1;
         } else {
-          this.driverLapInfo[driver.id] = [-1, -1, -1, -1, 190, 60, 1];
+          this.driverLapInfo[driver.id][3] = 0;
+          this.driverLapInfo[driver.id][4] = 150;
+          this.driverLapInfo[driver.id][5] = 190;
+          this.driverLapInfo[driver.id][6] = 1;
         }
+
       } else {
         this.driverLapInfo[driver.id] = [-1, -1, -1, -1, 190, 60, 1];
       }
-    });
-    eDriverLapInfo = this.driverLapInfo;
-    eDriverPitInfo = this.driverPitInfo;
-    eDriverDiffs = newDiffs;
-  }
 
+    } else {
+      this.driverLapInfo[driver.id] = [-1, -1, -1, -1, 190, 60, 1];
+    }
+  });
+  // Mantém somente o que ainda é consumido
+  eDriverLapInfo = this.driverLapInfo;
+  eDriverPitInfo = this.driverPitInfo;
+}
+  
+  /*
   private updateLapRecordTimes() {
     let checkNeeded = false;
     if (
@@ -2946,6 +2629,8 @@ export default class App extends React.Component<IProps> {
       );
     }
   }
+  */
+
   // Shortcut keys
   private showKey = (e: KeyboardEvent) => {
     if (!this.lockHud) {
@@ -3030,24 +2715,6 @@ export default class App extends React.Component<IProps> {
       this.mouseTimeout = window.setTimeout(this.checkMouseMove, 3000);
     }
   };
-
-  /* EXCLUIR
-  private goStandardLogo() {
-    this.hLogoUrl = "./../../img/logo.png";
-    eLogoUrl = this.hLogoUrl;
-    if (this.currentLayout === 1) {
-      localStorage.currentLogo = this.hLogoUrl;
-    } else if (this.currentLayout === 2) {
-      localStorage.currentLogo2 = this.hLogoUrl;
-    } else if (this.currentLayout === 3) {
-      localStorage.currentLogo3 = this.hLogoUrl;
-    }
-    this.saveSettings();
-    // this.settings.tvTower.subSettings.hLogoUrl.enabled = false;
-    // this.logoUrlEdit = false;
-    return;
-  }
-  */
 
   private shiftKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Shift") {
@@ -3918,31 +3585,67 @@ export default class App extends React.Component<IProps> {
                     fontSize: "26px",
                   }}
                 >
-                  {`${"November 02, 2025"}`}
+                  {`${"November 26, 2025"}`}
                 </span>
               </b>
               <br />
               <ul>
+
                 <li>
-                  {`${"Relative timings:"}`}
+                  {`${"Position Bar, TV Tower and Relative timings:"}`}
                   <br />
-                  {`${"Added track relative timmings for: Circuit Zandvoort 2025 (all layouts). This is used to calculate gaps between drivers in TvTower and Relative widgets."}`}
+                  {`${"HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry. Furthermore, there's no more delay in generating times, as everything is done in 'live mode'. We also no longer need to collect track data for this! \õ/"}`}
                   <br />
                 </li>
                 <br />
+
                 <li>
-                  {`${"RaceInfo Widget:"}`}
+                  {`${"Performance modes:"}`}
                   <br />
-                  {`${"Now shows ´Pit limiter´ status info."}`}
+                  {`${"Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: Low Performance (10 fps), Normal (30 fps) and High Performance (60 fps)."}`}
                   <br />
                 </li>
                 <br />
+
                 <li>
-                  {`${"New Widget: INPUTS GRAPH"}`}
+                  {`${"Inputs Graph Widget:"}`}
                   <br />
-                  {`${"Realtime graphic telemetry for throttle, brake and clutch inputs."}`}
+                  {`${"Now user can change the duration time telemetry data will be kept."}`}
+                  <br />
+                  {`${"Included 'input meters' option, for clutch, brake, throttle and steering wheel. This option extends the widget."}`}
                   <br />
                 </li>
+                <br />
+
+                <li>
+                  {`${"Position Bar:"}`}
+                  <br />
+                  {`${"'Show penalties' option included. This will show penalties for all drivers in the field."}`}
+                  <br />
+                  {`${"'Show Positions Gain/Loss' option included. "}`}
+                  <br />
+                  {`${"'Show Pit-Status' option included. This will show the number of pit stops for all drivers."}`}
+                  <br />
+                </li>
+                <br />
+
+                <li>
+                  {`${"TV Tower:"}`}
+                  <br />
+                  {`${"'Show penalties' option included. This will show penalties for all drivers in the field."}`}
+                  <br />
+                  {`${"'Show Positions Gain/Loss' option included."}`}
+                  <br />
+                </li>
+                <br />
+
+                <li>
+                  {`${"Translations:"}`}
+                  <br />
+                  {`${"Added and fixed a bunch of things."}`}
+                  <br />
+                </li>
+
               </ul>
               <b>{`${"--------------------------------------------------- CHANGELOG END ---------------------------------------------------"}`}</b>
               <br />

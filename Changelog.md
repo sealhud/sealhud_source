@@ -1,7 +1,8 @@
 	0.8
 	----------		
 	GENERAL
-	- Position Bar and Relative timings: HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry. Furthermore, there's no more delay in generating times, as everything is done in "live mode". We also no longer need to collect track data! \õ/
+	- Position Bar, TV Tower and Relative timings: HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry. Furthermore, there's no more delay in generating times, as everything is done in "live mode". We also no longer need to collect track data for this! \õ/
+	- Performance modes: Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: Low Performance (10 fps), Normal (30 fps) and High Performance (60 fps).
 	- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
 	- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
 	- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.

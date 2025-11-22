@@ -1,3 +1,4 @@
+import { LapEvents } from "../../lib/LapEvents";
 import {
   classNames,
   base64ToString,
@@ -29,12 +30,10 @@ import {
   highPerformanceMode,
   eLogoUrl,
   eDriverPitInfo,
-  eDriverDiffs,
   eIsLeaderboard,
   eIsHillClimb,
   eGainLossPermanentTower,
   eRankInvert,
-  IDriverDiffs,
   IDriverPitInfo,
   eDriverLapInfo,
   IDriverLapInfo,
@@ -93,95 +92,51 @@ interface IDriverInfo {
 @observer
 export default class TvTower extends React.Component<IProps, {}> {
   @observable accessor drivers: IDriverInfo[] = [];
-
   @observable accessor currentLap = INVALID;
-
   @observable accessor maxLaps = INVALID;
-
   @observable accessor pitState = INVALID;
-
   @observable accessor sessionPhase = INVALID;
-
   @observable accessor sessionTimeRemaining = INVALID;
-
   @observable accessor classDriverCount = INVALID;
-
   @observable accessor position = INVALID;
-
   @observable accessor positionClass = INVALID;
-
   @observable accessor sessionType = INVALID;
-
   @observable accessor multiClass = false;
-
   @observable accessor lapTimeCurrentSelf = INVALID;
-
   @observable accessor playerCount = INVALID;
-
   @observable accessor addPrefix = false;
-
   @observable accessor mandatoryServed = false;
-
   @observable accessor mandatoryActive = false;
-
   @observable accessor playerPos = -1;
-
   @observable accessor lastCheck = 0;
-
   @observable accessor notInRacePhase = true;
-
   @observable accessor theLogoUrl = "./../../img/logo.png";
-
   playerPosition = INVALID;
-
   positionBarCount = 15;
-
   entryWidth = 148;
-
   classColorUpdate: number;
-
   @observable accessor actualFirstLap = false;
-
   @observable accessor incidentPoints = -1;
-
   @observable accessor maxIncidentPoints = -1;
-
   @observable accessor lastIncidentPoints = -1;
-
   @observable accessor showIncUntil = -1;
-
   @observable accessor startingLights = -1;
-
   @observable accessor startPositions: IStartPositions = {};
-
   @observable accessor singleplayerRace = false;
-
   @observable accessor classPerformanceIndex = -1;
-
   @observable accessor pitWindowStatus = -1;
-
   logoUrlp1 = "https://game.raceroom.com/store/image_redirect?id=";
   logoUrlp2 = "&size=small";
-
   @observable accessor playerSlotId = -1;
-
   @observable accessor currentSlotId = -1;
-
   @observable accessor isLeaderboard = false;
-
   @observable accessor isHillClimb = false;
-
   @observable accessor driverPitInfo: IDriverPitInfo = {};
-
-  @observable accessor driverDiffs: IDriverDiffs = {};
-
+  // @observable accessor driverDiffs: IDriverDiffs = {};
   @observable accessor gameInReplay = false;
-
   constructor(props: IProps) {
     super(props);
-
     registerUpdate(this.update);
-
     this.forceClassColorUpdate();
     this.classColorUpdate = setInterval(
       this.forceClassColorUpdate,
@@ -195,13 +150,13 @@ export default class TvTower extends React.Component<IProps, {}> {
 
   @action
   private update = () => {
-    if (
+    /*if (
       (highPerformanceMode && nowCheck - this.lastCheck >= 500) ||
       (lowPerformanceMode && nowCheck - this.lastCheck >= 500) ||
       (!lowPerformanceMode &&
         !highPerformanceMode &&
         nowCheck - this.lastCheck >= 500)
-    ) {
+    )*/ {
       this.theLogoUrl = eLogoUrl;
       // showDebugMessage(`${this.theLogoUrl}`);
       this.lastCheck = nowCheck;
@@ -212,7 +167,7 @@ export default class TvTower extends React.Component<IProps, {}> {
       this.isLeaderboard = eIsLeaderboard;
       this.isHillClimb = eIsHillClimb;
       this.driverPitInfo = eDriverPitInfo;
-      this.driverDiffs = eDriverDiffs;
+      // this.driverDiffs = eDriverDiffs;
       this.gameInReplay = r3e.data.GameInReplay > 0;
       if ((!this.isLeaderboard && !this.isHillClimb) || showAllMode) {
         this.pitState = r3e.data.PitState;
@@ -432,16 +387,6 @@ export default class TvTower extends React.Component<IProps, {}> {
     }
   }
 
-  private getStrengthOfField() {
-    let sumUp = 0;
-    let count = 0;
-    this.drivers.forEach((driver) => {
-      sumUp += driver.rankingData.Rating;
-      count += 1;
-    });
-    return `${(sumUp / count / 1000).toFixed(2)}K`;
-  }
-
   private calculateDiffsQualify(drivers: IDriverInfo[]) {
     const userBestSector =
       r3e.data.SectorTimesBestSelf.Sector3 !== INVALID
@@ -463,73 +408,74 @@ export default class TvTower extends React.Component<IProps, {}> {
     });
   }
 
-  private calculateDiffsRace(drivers: IDriverInfo[]) {
-    const driversInfront = drivers.slice(0, this.position - 1);
-    let infrontDiff = 0;
-    driversInfront.reverse().forEach((driver) => {
-      infrontDiff += driver.meta ? driver.meta.TimeDeltaBehind : 0;
-      let gotLapped = false;
-      if (driver.lapDiff === 1 && driver.lapDistance > r3e.data.LapDistance) {
-        gotLapped = true;
-        driver.diff = `-${Math.abs(driver.lapDiff)} ${_("lap")}`;
-      }
-      if (driver.lapDiff > 1) {
-        gotLapped = true;
-        if (driver.lapDistance > r3e.data.LapDistance) {
-          driver.diff = `-${Math.abs(driver.lapDiff)} ${_("laps")}`;
-        } else {
-          const theLapDiff = driver.lapDiff - 1;
-          driver.diff =
-            theLapDiff > 1
-              ? (driver.diff = `-${Math.abs(theLapDiff)} ${_("laps")}`)
-              : (driver.diff = `-${Math.abs(theLapDiff)} ${_("lap")}`);
-        }
-      }
+  // Function used to check if lapDiff is "real"
+	private computeRealLapDiff = (
+			meLaps: number, meDist: number,
+			otherLaps: number, otherDist: number
+		) => {
+			let lapDiff = meLaps - otherLaps;
+			if (lapDiff < 0 && otherDist < meDist) lapDiff++;
+			else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
+			return lapDiff;
+		};
 
-      if (!gotLapped) {
-        driver.diff =
-          // eDriverDiffs[driver.id][1][0] < -60
-          infrontDiff > 60
-            ? formatTime(infrontDiff * -1, "m:ss.SSS")
-            : formatTime(infrontDiff * -1, "s.SSS");
-        // ? formatTime(eDriverDiffs[driver.id][1][0], 'm:ss.SSS')
-        // : formatTime(eDriverDiffs[driver.id][1][0], 's.SSS');
-      }
-    });
-
-    const driversAfter = drivers.slice(
-      this.position,
-      r3e.data.DriverData.length
-    );
-    let afterDiff = 0;
-    driversAfter.forEach((driver) => {
-      afterDiff += driver.meta ? driver.meta.TimeDeltaFront : 0;
-      let gotLapped = false;
-      if (driver.lapDiff === -1 && driver.lapDistance < r3e.data.LapDistance) {
-        gotLapped = true;
-        driver.diff = `+${Math.abs(driver.lapDiff)} ${_("lap")}`;
-      }
-      if (driver.lapDiff < -1) {
-        gotLapped = true;
-        if (driver.lapDistance < r3e.data.LapDistance) {
-          driver.diff = `+${Math.abs(driver.lapDiff)} ${_("laps")}`;
+  // TV Tower: Calculate Gaps Between Drivers (Race)
+	private calculateDiffsRace(drivers: IDriverInfo[]) {
+    const playerPos = this.position;
+    const user = drivers[playerPos - 1];
+    // 1) limpa o diff do jogador
+    if (user) {
+        user.diff = "";
+    }
+    const userLapDist = user?.meta?.LapDistance ?? 0;
+    const userLapsDone = user?.lapsDone ?? 0;
+    // ========= PILOTOS À FRENTE =========
+    const driversInfront = drivers.slice(0, playerPos - 1).reverse();
+    let accumulatedFront = 0;
+    driversInfront.forEach((driver) => {
+        const otherDist = driver.meta?.LapDistance ?? 0;
+        const otherLaps = driver.lapsDone ?? 0;
+        const lapDiff = this.computeRealLapDiff(
+            userLapsDone, userLapDist,
+            otherLaps, otherDist
+        );
+        accumulatedFront += driver.meta?.TimeDeltaBehind ?? 0;
+        const gap = accumulatedFront;
+        if (lapDiff === 0) {
+            driver.diff =
+                gap > 60
+                    ? formatTime(-gap, "m:ss.SSS")
+                    : formatTime(-gap, "s.SSS");
         } else {
-          const theLapDiff = driver.lapDiff + 1;
-          driver.diff =
-            theLapDiff < -1
-              ? `+${Math.abs(theLapDiff)} ${_("laps")}`
-              : `+${Math.abs(theLapDiff)} ${_("lap")}`;
+            const stored = Math.abs(lapDiff);
+            driver.diff = `-${stored} lap${stored > 1 ? "s" : ""}`;
         }
-      }
-      if (!gotLapped) {
-        driver.diff =
-          afterDiff > 60
-            ? "+" + formatTime(afterDiff, "m:ss.SSS")
-            : "+" + formatTime(afterDiff, "s.SSS");
-      }
     });
-    this.playerPosition = this.position;
-  }
+    // ========= PILOTOS ATRÁS =========
+    const driversBehind = drivers.slice(playerPos);
+    let accumulatedBehind = 0;
+    driversBehind.forEach((driver) => {
+        const otherDist = driver.meta?.LapDistance ?? 0;
+        const otherLaps = driver.lapsDone ?? 0;
+        const lapDiff = this.computeRealLapDiff(
+            userLapsDone, userLapDist,
+            otherLaps, otherDist
+        );
+        accumulatedBehind += driver.meta?.TimeDeltaFront ?? 0;
+        const gap = accumulatedBehind;
+        if (lapDiff === 0) {
+            driver.diff =
+                gap > 60
+                    ? formatTime(gap, "m:ss.SSS", true)
+                    : formatTime(gap, "s.SSS", true);
+        } else {
+            const stored = Math.abs(lapDiff);
+            driver.diff = `+${stored} lap${stored > 1 ? "s" : ""}`;
+        }
+    });
+    this.playerPosition = playerPos;
+}
+
 
   private getPlayerPositionText(): string {
     const isntRace = this.sessionType !== ESession.Race;
@@ -813,7 +759,7 @@ export default class TvTower extends React.Component<IProps, {}> {
                   isMulti={this.multiClass}
                   playerPitInfo={eDriverPitInfo}
                   playerLapInfo={eDriverLapInfo}
-                  playerDiffs={this.driverDiffs}
+                  // playerDiffs={this.driverDiffs}
                   showIncUntil={this.showIncUntil}
                   playerSlotId={this.playerSlotId}
                   singleplayerRace={this.singleplayerRace}
@@ -847,7 +793,7 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
   isMulti: boolean;
   playerPitInfo: IDriverPitInfo;
   playerLapInfo: IDriverLapInfo;
-  playerDiffs: IDriverDiffs;
+  // playerDiffs: IDriverDiffs;
   showIncUntil: number;
   playerSlotId: number;
   singleplayerRace: boolean;
@@ -884,25 +830,25 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
   }
   private getTyre(tyreChoice: number) {
     if (showAllMode) {
-      return require("./../../img/hard.png");
+      return require("./../../img/hard.svg");
     }
     /* if (tyreChoice === -1) {
 			return require('./../../img/transparent.png');
 		}*/
     if (tyreChoice <= 0) {
-      return require("./../../img/primary.png");
+      return require("./../../img/primary.svg");
     }
     if (tyreChoice === 1) {
-      return require("./../../img/alternate.png");
+      return require("./../../img/alternate.svg");
     }
     if (tyreChoice === 2) {
-      return require("./../../img/soft.png");
+      return require("./../../img/soft.svg");
     }
     if (tyreChoice === 3) {
-      return require("./../../img/medium.png");
+      return require("./../../img/medium.svg");
     }
     if (tyreChoice === 4) {
-      return require("./../../img/hard.png");
+      return require("./../../img/hard.svg");
     }
     return require("./../../img/transparent.png");
   }
@@ -960,7 +906,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       return null;
     }
     const player = this.props.player;
-    const playerDiffs = this.props.playerDiffs;
+    // const playerDiffs = this.props.playerDiffs;
     const playerPitInfo =
       gameInReplay &&
       ((r3e.data.SessionTimeDuration !== -1 &&
@@ -1151,72 +1097,61 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             />
           </div>
         )}
-        {showIt && (
+        {showIt && (          
           <div
-            className={classNames("diff")}
-            style={{
-              color:
-                this.props.settings.subSettings.showLastLaps.enabled &&
-                playerLapInfo[player.id] !== undefined &&
-                nowCheck <= playerLapInfo[player.id][2] &&
-                !(
-                  (sessionType === 2 && player.lapsDone < 1) ||
-                  (sessionType !== 2 && player.bestLapTime < 0)
-                )
-                  ? `rgba(${playerLapInfo[player.id][3]}, ${
-                      playerLapInfo[player.id][4]
-                    }, ${playerLapInfo[player.id][5]}, 1)`
-                  : warnInc && showIncPoints
-                  ? "rgba(255, 0, 0, 1)"
-                  : "rgba(255, 255, 255, 1)",
-            }}
+          className={classNames("diff")}
+          style={{
+            color:
+              // --- PRIORIDADE 1: Popup de LastLap com cor ----
+              this.props.settings.subSettings.showLastLaps.enabled &&
+              playerLapInfo[player.id] !== undefined &&
+              nowCheck <= playerLapInfo[player.id][2] &&
+              !(
+                (sessionType === ESession.Race && player.lapsDone < 1) ||
+                (sessionType !== ESession.Race && player.bestLapTime < 0)
+              )
+                ? `rgba(${playerLapInfo[player.id][3]}, ${
+                    playerLapInfo[player.id][4]
+                  }, ${playerLapInfo[player.id][5]}, 1)`
+                // --- PRIORIDADE 2: WarneInc Points (mantido igual)
+                : warnInc && showIncPoints
+                ? "rgba(255, 0, 0, 1)"
+                // --- PRIORIDADE 3: Gap normal
+                : "rgba(255, 255, 255, 1)",
+          }}
           >
-            {player.finishStatus > 1
+          {
+            // ==================== TEXTO EXIBIDO ====================
+            player.finishStatus > 1
               ? `Lap ${player.lapsDone + 1}`
               : showIncPoints
               ? maxIncidentPoints > 0
                 ? `${myIncidentPoints}/${maxIncidentPoints}`
                 : myIncidentPoints
-              : `${
+              : (
+                  // ========= PRIORIDADE 1 — Popup de Laptime =========
                   this.props.settings.subSettings.showLastLaps.enabled &&
                   playerLapInfo[player.id] !== undefined &&
                   nowCheck <= playerLapInfo[player.id][2] &&
                   !(
-                    (sessionType === 2 && player.lapsDone < 1) ||
-                    (sessionType !== 2 && player.bestLapTime < 0)
+                    (sessionType === ESession.Race && player.lapsDone < 1) ||
+                    (sessionType !== ESession.Race && player.bestLapTime < 0)
                   )
-                    ? playerLapInfo[player.id][1] !== -999
-                      ? playerLapInfo[player.id][1] >= 60
-                        ? formatTime(playerLapInfo[player.id][1], "m:ss.SSS")
-                        : formatTime(playerLapInfo[player.id][1], "ss.SSS")
-                      : "INVALID"
-                    : player.diff.toString().indexOf(".") <= -1 ||
-                      sessionType !== ESession.Race
-                    ? player.diff
-                    : playerDiffs[player.id] !== undefined
-                    ? player.position < position &&
-                      playerDiffs[player.id][1][0] > 0
-                      ? fancyTimeFormatGap(
-                          0 -
-                            (playerDiffs[player.id][0][0] / 2 +
-                              (playerDiffs[player.id][0][0] / 2 -
-                                playerDiffs[player.id][1][0])),
-                          1,
-                          0
-                        )
-                      : player.position > position &&
-                        playerDiffs[player.id][1][0] < 0
-                      ? fancyTimeFormatGap(
-                          playerDiffs[player.id][0][0] / 2 +
-                            (playerDiffs[player.id][0][0] / 2 +
-                              playerDiffs[player.id][1][0]),
-                          1,
-                          0
-                        )
-                      : fancyTimeFormatGap(playerDiffs[player.id][1][0], 1, 0)
-                    : "-"
-                }`}
+                )
+              ? (
+                  playerLapInfo[player.id][1] !== -999
+                    ? playerLapInfo[player.id][1] >= 60
+                      ? formatTime(playerLapInfo[player.id][1], "m:ss.SSS")
+                      : formatTime(playerLapInfo[player.id][1], "ss.SSS")
+                    : "INVALID"
+                )
+              : (
+                  // ========= PRIORIDADE 2 — Exibir gap / lapDiff =========
+                  player.diff
+                )
+          }
           </div>
+
         )}
         {(showAllMode ||
           (player.finishStatus < 2 &&

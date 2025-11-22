@@ -323,7 +323,8 @@ export default class Progress extends React.Component<IProps, {}> {
 		// and append their timeDeltas to get the total
 		for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
 			const driver = r3e.data.DriverData[i];
-			classTimeDelta += driver.TimeDeltaBehind;
+			if (!driver) continue; // <---- skip se o driver sumiu nesse frame
+			classTimeDelta += driver.TimeDeltaBehind ?? 0;
 
 			const isSameClass =
 				driver.DriverInfo.ClassPerformanceIndex ===
