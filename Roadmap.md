@@ -13,5 +13,6 @@
 - Some Ideas: Is it possible to show the HUD after a race is finished? When i play Multiplayer and finish the race, i sometimes want to check how much fuel is left or tire use, sure could look shortly before finishing but just forget it sometimes :D
 Another thing: Would it be possible to show a widget just when crossing start finish, like the vanilla standings, when you set the HUD to important information only? Maybe as an option to the widgets in general. Would be great if you look for immersion in general and just need info from time to time. Sure could also be made with hiding the HUD manually, but as before, would be just cool to have. Thinking about it, this might get a new visualization. 
 - RaceInfo: Corrigir bug do Driver Through. Está resetando o contador de voltas quando pausa a corrida.
+- RaceInfo (MP): Precisa estar ativo antes da corrida iniciar 
 - Relatives: Desligar manufacturer logos só funciona no single player
 - Corrigir comportamento do Delta na corrida. quando entra no box , aparece 1 Lap
