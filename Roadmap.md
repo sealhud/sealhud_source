@@ -16,3 +16,4 @@ Another thing: Would it be possible to show a widget just when crossing start fi
 - RaceInfo (MP): Precisa estar ativo antes da corrida iniciar 
 - Relatives: Desligar manufacturer logos só funciona no single player
 - Corrigir comportamento do Delta na corrida. quando entra no box , aparece 1 Lap
+- Position Bar: está travada no formato 16:9
