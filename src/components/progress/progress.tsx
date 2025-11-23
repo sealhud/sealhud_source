@@ -207,7 +207,7 @@ export default class Progress extends React.Component<IProps, {}> {
 	@action
 	private update = () => {
 		this.pbTime = personalBestTime;
-		if (
+		/*if (
 			(
 				highPerformanceMode &&
 				nowCheck - this.lastCheck >= 33
@@ -221,7 +221,7 @@ export default class Progress extends React.Component<IProps, {}> {
 				!highPerformanceMode &&
 				nowCheck - this.lastCheck >= 66
 			)
-		) {
+		)*/ {
 			this.lastCheck = nowCheck;
 			this.playerIsFocus = ePlayerIsFocus;
 			this.currentSlotId = eCurrentSlotId;

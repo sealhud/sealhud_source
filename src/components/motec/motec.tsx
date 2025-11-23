@@ -35,45 +35,25 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 @observer
 export default class Motec extends React.Component<IProps, {}> {
 	@observable accessor speed = INVALID;
-
 	@observable accessor rpm = 0;
-
 	@observable accessor maxRpm = 0;
-
 	@observable accessor upshiftRps = 0;
-
 	@observable accessor gear = 0;
-
 	@observable accessor limiter = false;
-
 	@observable accessor engineMap = 0;
-
 	@observable accessor abs = 0;
-
 	@observable accessor tractionLevel = 0;
-
 	@observable accessor brakeBias = 0;
-
 	gearNameLookup : any = {};
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor lastBlinkTime = -1;
-
 	@observable accessor gearColor = 'white';
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor driverDataIndex = -1;
-
 	@observable accessor engineState = -1;
-
 	@observable accessor playerDriverDataIndex = -1;
-
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor currentSlotId = -1;
 
 	constructor(props: IProps) {
@@ -140,7 +120,7 @@ export default class Motec extends React.Component<IProps, {}> {
 			this.lastBlinkTime = nowCheck;
 		}
 
-		if (
+		/*if (
 			(
 				highPerformanceMode &&
 				nowCheck - this.lastCheck >= 16
@@ -154,7 +134,7 @@ export default class Motec extends React.Component<IProps, {}> {
 				!highPerformanceMode &&
 				nowCheck - this.lastCheck >= 16
 			)
-		) {
+		)*/ {
 			this.playerDriverDataIndex = ePlayerDriverDataIndex;
 			this.playerIsFocus = ePlayerIsFocus;
 			this.currentSlotId = eCurrentSlotId;

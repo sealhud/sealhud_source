@@ -131,7 +131,7 @@ export default class Spotting extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		if (
+		/*if (
 			(
 				highPerformanceMode &&
 				nowCheck - this.lastCheck >= 16
@@ -145,7 +145,7 @@ export default class Spotting extends React.Component<IProps, {}> {
 				!highPerformanceMode &&
 				nowCheck - this.lastCheck >= 66
 			)
-		) {
+		)*/ {
 			this.notInRacePhase =
 				(
 					r3e.data.SessionPhase < 4 &&
