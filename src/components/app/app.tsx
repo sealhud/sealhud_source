@@ -3585,7 +3585,7 @@ export default class App extends React.Component<IProps> {
                     fontSize: "26px",
                   }}
                 >
-                  {`${"November 26, 2025"}`}
+                  {`${"November 23, 2025"}`}
                 </span>
               </b>
               <br />
@@ -3602,7 +3602,7 @@ export default class App extends React.Component<IProps> {
                 <li>
                   {`${"Performance modes:"}`}
                   <br />
-                  {`${"Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: Low Performance (10 fps), Normal (30 fps) and High Performance (60 fps)."}`}
+                  {`${"Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: Low Performance (15 fps), Normal (30 fps) and High Performance (60 fps)."}`}
                   <br />
                 </li>
                 <br />
