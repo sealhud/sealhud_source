@@ -1513,7 +1513,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 
 				{/*RELATIVE: Show Car Name & Manufacturer Logo(Car Logo)*/}
 				{this.props.relative && showCN && (
-					<div className="carName">{getCarName(player.modelId)}</div>
+					<div className="carName">{getCarName(player.modelId, player.name)}</div>
 				)}
 				{this.props.relative && showCL && (
 					<div className="carLogo">

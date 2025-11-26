@@ -1,4 +1,3 @@
-import { LapEvents } from "../../lib/LapEvents";
 import {
   classNames,
   base64ToString,
@@ -140,7 +139,7 @@ export default class TvTower extends React.Component<IProps, {}> {
     this.forceClassColorUpdate();
     this.classColorUpdate = setInterval(
       this.forceClassColorUpdate,
-      10 * 1000
+      10 * 1000,
     ) as any;
   }
   componentWillUnmount() {
@@ -192,7 +191,7 @@ export default class TvTower extends React.Component<IProps, {}> {
         this.maxIncidentPoints = r3e.data.MaxIncidentPoints;
 
         const driverData = r3e.data.DriverData.map(
-          this.formatDriverData
+          this.formatDriverData,
         ).filter(this.filterDriverData);
 
         this.calculateDiffs(driverData);
@@ -303,7 +302,7 @@ export default class TvTower extends React.Component<IProps, {}> {
       bestLapTimeLeader: r3e.data.SectorTimesSessionBestLap.Sector3,
       bestLapTimeClass: this.getBestLapClass(
         this.drivers,
-        driver.DriverInfo.ClassPerformanceIndex
+        driver.DriverInfo.ClassPerformanceIndex,
       ),
       pitting: driver.InPitlane,
       currentTime: driver.LapTimeCurrentSelf,
@@ -324,7 +323,7 @@ export default class TvTower extends React.Component<IProps, {}> {
         this.driverPitInfo[driver.DriverInfo.SlotId] !== undefined &&
         Math.abs(
           this.driverPitInfo[driver.DriverInfo.SlotId][2] -
-            this.driverPitInfo[driver.DriverInfo.SlotId][3]
+            this.driverPitInfo[driver.DriverInfo.SlotId][3],
         ) < 2000 &&
         driver.EngineState === 0
           ? 2
@@ -335,23 +334,23 @@ export default class TvTower extends React.Component<IProps, {}> {
         this.driverPitInfo[driver.DriverInfo.SlotId] !== undefined &&
         Math.abs(
           this.driverPitInfo[driver.DriverInfo.SlotId][2] -
-            this.driverPitInfo[driver.DriverInfo.SlotId][3]
+            this.driverPitInfo[driver.DriverInfo.SlotId][3],
         ) < 2000 &&
         driver.EngineState === 0
           ? "DNF"
           : driver.FinishStatus === 0
-          ? "running"
-          : driver.FinishStatus === 1
-          ? "finished"
-          : driver.FinishStatus === 2
-          ? "DNF"
-          : driver.FinishStatus === 3
-          ? "DNQ"
-          : driver.FinishStatus === 4
-          ? "DNS"
-          : driver.FinishStatus === 5
-          ? "DQ"
-          : "none",
+            ? "running"
+            : driver.FinishStatus === 1
+              ? "finished"
+              : driver.FinishStatus === 2
+                ? "DNF"
+                : driver.FinishStatus === 3
+                  ? "DNQ"
+                  : driver.FinishStatus === 4
+                    ? "DNS"
+                    : driver.FinishStatus === 5
+                      ? "DQ"
+                      : "none",
       lapPrevious: driver.SectorTimePreviousSelf.Sector3,
       lapsDone: driver.CompletedLaps,
       rankingData: getRankingData(driver.DriverInfo.UserId),
@@ -409,23 +408,28 @@ export default class TvTower extends React.Component<IProps, {}> {
   }
 
   // Function used to check if lapDiff is "real"
-	private computeRealLapDiff = (
-			meLaps: number, meDist: number,
-			otherLaps: number, otherDist: number
-		) => {
-			let lapDiff = meLaps - otherLaps;
-			if (lapDiff < 0 && otherDist < meDist) lapDiff++;
-			else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
-			return lapDiff;
-		};
+  private computeRealLapDiff = (
+    meLaps: number,
+    meDist: number,
+    otherLaps: number,
+    otherDist: number,
+  ) => {
+    let lapDiff = meLaps - otherLaps;
+    if (lapDiff < 0 && otherDist < meDist) lapDiff++;
+    else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
+    return lapDiff;
+  };
 
   // TV Tower: Calculate Gaps Between Drivers (Race)
-	private calculateDiffsRace(drivers: IDriverInfo[]) {
+  private roundGap(gap: number): number {
+    return Number(gap.toFixed(1)); // arredonda corretamente para 1 decimal
+  }
+  private calculateDiffsRace(drivers: IDriverInfo[]) {
     const playerPos = this.position;
     const user = drivers[playerPos - 1];
-    // 1) limpa o diff do jogador
+    // limpa o diff do jogador
     if (user) {
-        user.diff = "";
+      user.diff = "";
     }
     const userLapDist = user?.meta?.LapDistance ?? 0;
     const userLapsDone = user?.lapsDone ?? 0;
@@ -433,49 +437,52 @@ export default class TvTower extends React.Component<IProps, {}> {
     const driversInfront = drivers.slice(0, playerPos - 1).reverse();
     let accumulatedFront = 0;
     driversInfront.forEach((driver) => {
-        const otherDist = driver.meta?.LapDistance ?? 0;
-        const otherLaps = driver.lapsDone ?? 0;
-        const lapDiff = this.computeRealLapDiff(
-            userLapsDone, userLapDist,
-            otherLaps, otherDist
-        );
-        accumulatedFront += driver.meta?.TimeDeltaBehind ?? 0;
-        const gap = accumulatedFront;
-        if (lapDiff === 0) {
-            driver.diff =
-                gap > 60
-                    ? formatTime(-gap, "m:ss.SSS")
-                    : formatTime(-gap, "s.SSS");
-        } else {
-            const stored = Math.abs(lapDiff);
-            driver.diff = `-${stored} lap${stored > 1 ? "s" : ""}`;
-        }
+      const otherDist = driver.meta?.LapDistance ?? 0;
+      const otherLaps = driver.lapsDone ?? 0;
+      const lapDiff = this.computeRealLapDiff(
+        userLapsDone,
+        userLapDist,
+        otherLaps,
+        otherDist,
+      );
+      accumulatedFront += driver.meta?.TimeDeltaBehind ?? 0;
+      const gapRounded = this.roundGap(accumulatedFront);
+      if (lapDiff === 0) {
+        driver.diff =
+          gapRounded > 60
+            ? formatTime(-gapRounded, "m:ss.S")
+            : formatTime(-gapRounded, "s.S");
+      } else {
+        const stored = Math.abs(lapDiff);
+        driver.diff = `-${stored} lap${stored > 1 ? "s" : ""}`;
+      }
     });
     // ========= PILOTOS ATRÁS =========
     const driversBehind = drivers.slice(playerPos);
     let accumulatedBehind = 0;
     driversBehind.forEach((driver) => {
-        const otherDist = driver.meta?.LapDistance ?? 0;
-        const otherLaps = driver.lapsDone ?? 0;
-        const lapDiff = this.computeRealLapDiff(
-            userLapsDone, userLapDist,
-            otherLaps, otherDist
-        );
-        accumulatedBehind += driver.meta?.TimeDeltaFront ?? 0;
-        const gap = accumulatedBehind;
-        if (lapDiff === 0) {
-            driver.diff =
-                gap > 60
-                    ? formatTime(gap, "m:ss.SSS", true)
-                    : formatTime(gap, "s.SSS", true);
-        } else {
-            const stored = Math.abs(lapDiff);
-            driver.diff = `+${stored} lap${stored > 1 ? "s" : ""}`;
-        }
+      const otherDist = driver.meta?.LapDistance ?? 0;
+      const otherLaps = driver.lapsDone ?? 0;
+      const lapDiff = this.computeRealLapDiff(
+        userLapsDone,
+        userLapDist,
+        otherLaps,
+        otherDist,
+      );
+      accumulatedBehind += driver.meta?.TimeDeltaFront ?? 0;
+      const gapRounded = this.roundGap(accumulatedBehind);
+      if (lapDiff === 0) {
+        driver.diff =
+          gapRounded > 60
+            ? formatTime(gapRounded, "m:ss.S", true)
+            : formatTime(gapRounded, "s.S", true);
+      } else {
+        const stored = Math.abs(lapDiff);
+        driver.diff = `+${stored} lap${stored > 1 ? "s" : ""}`;
+      }
     });
     this.playerPosition = playerPos;
-}
-
+  }
 
   private getPlayerPositionText(): string {
     const isntRace = this.sessionType !== ESession.Race;
@@ -575,6 +582,7 @@ export default class TvTower extends React.Component<IProps, {}> {
             {this.sessionTimeRemaining !== INVALID ||
             this.maxLaps !== INVALID ? (
               <div>
+                {/*Show Logo*/}
                 {this.props.settings.subSettings.showLogo.enabled && (
                   <div
                     className="header"
@@ -594,6 +602,8 @@ export default class TvTower extends React.Component<IProps, {}> {
                     />
                   </div>
                 )}
+
+                {/*Show Session Info*/}
                 {this.props.settings.subSettings.showSessionInfo.enabled &&
                   ((this.maxLaps === INVALID && (
                     <div className="standingsSessionInfo">
@@ -652,6 +662,8 @@ export default class TvTower extends React.Component<IProps, {}> {
                         />
                       </div>
                     )))}
+
+                {/*Show Pit Window*/}
                 {this.props.settings.subSettings.showPitWindow.enabled &&
                 (showAllMode ||
                   (this.mandatoryActive &&
@@ -671,10 +683,10 @@ export default class TvTower extends React.Component<IProps, {}> {
                             ? "rgba(100, 221, 23, 0.6)"
                             : "rgba(213, 0, 0, 0.6)"
                           : isRange(timeUntilPit, 1, 3)
-                          ? "rgba(213, 0, 249, 0.6)"
-                          : this.pitWindowStatus === 3
-                          ? "rgba(0, 176, 255, 0.6)"
-                          : "rgba(213, 0, 0, 0.6)",
+                            ? "rgba(213, 0, 249, 0.6)"
+                            : this.pitWindowStatus === 3
+                              ? "rgba(0, 176, 255, 0.6)"
+                              : "rgba(213, 0, 0, 0.6)",
                     }}
                   >
                     {showAllMode || this.pitWindowStatus === 2 ? (
@@ -686,15 +698,15 @@ export default class TvTower extends React.Component<IProps, {}> {
                                 ? _("laps")
                                 : _("lap")
                               : timeUntilClosed > 1
-                              ? _("minutes")
-                              : _("minute")
+                                ? _("minutes")
+                                : _("minute")
                           }`}
                         </div>
                       ) : (
                         <div className="mandatoryPitHeaderText">
                           {getTimeUntilPitClosed(true) > 1
                             ? `${_(
-                                "Pit-Window closes in"
+                                "Pit-Window closes in",
                               )} ${timeUntilClosed} ${
                                 this.maxLaps !== INVALID
                                   ? _("laps")
@@ -722,8 +734,8 @@ export default class TvTower extends React.Component<IProps, {}> {
                               ? _("laps")
                               : _("lap")
                             : timeUntilPit > 1
-                            ? _("minutes")
-                            : _("minute")
+                              ? _("minutes")
+                              : _("minute")
                         }`}
                       </div>
                     ) : timeUntilPit === 1 ? (
@@ -747,6 +759,8 @@ export default class TvTower extends React.Component<IProps, {}> {
                 ) : null}
               </div>
             ) : null}
+
+            
             {this.drivers.map((player, i) => {
               return (
                 <PositionEntry
@@ -880,12 +894,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       driverPos <= 3
         ? 4
         : driverCount - driverPos >= 3
-        ? driverPos > 5
-          ? driverPos === 6
-            ? driverPos - 2
-            : driverPos - 3
-          : 4
-        : driverPos - (3 - (driverCount - driverPos) + 3);
+          ? driverPos > 5
+            ? driverPos === 6
+              ? driverPos - 2
+              : driverPos - 3
+            : 4
+          : driverPos - (3 - (driverCount - driverPos) + 3);
     const end = start + 6;
     if (theEnd) {
       return end;
@@ -965,8 +979,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
         ? position + 1
         : position - 1
       : startPositions[player.id] === undefined
-      ? -1
-      : startPositions[player.id];
+        ? -1
+        : startPositions[player.id];
     const showGainLoss =
       this.props.settings.subSettings.showPosGainLoss.enabled &&
       ((sessionType === ESession.Race &&
@@ -1018,6 +1032,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       this.props.settings.subSettings.showRanking.enabled;
 
     return showIt ? (
+      // Player Name AND Position
       <div
         className={classNames("player", {
           isUser: player.isUser,
@@ -1031,6 +1046,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             ? player.position
             : player.positionClass}
         </div>
+
+        {/*Show Gained/Lost positions*/}
         {showGainLoss && (
           <div className="gainLossImg">
             {posGainedLost > 0 && (
@@ -1061,6 +1078,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           </div>
         )}
         <div className="name">
+          {/*Show Long Names*/}
           {this.props.settings.subSettings.showLongNames.enabled
             ? player.shortName
             : // ?	this.renderPlayerNameLong(player.name)
@@ -1082,11 +1100,15 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             }`}
           </div>
         )}
+
+        {/*Show Car Logos*/}
         {this.props.settings.subSettings.showCarLogos.enabled && (
           <div className="manufacturerIcon">
             <img src={player.logoUrl} />
           </div>
         )}
+
+        {/*Show Tire Info*/}
         {this.props.settings.subSettings.showTireInfo.enabled && (
           <div className="tyreChoiceContainer">
             <img
@@ -1097,61 +1119,58 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             />
           </div>
         )}
-        {showIt && (          
-          <div
-          className={classNames("diff")}
-          style={{
-            color:
-              // --- PRIORIDADE 1: Popup de LastLap com cor ----
-              this.props.settings.subSettings.showLastLaps.enabled &&
-              playerLapInfo[player.id] !== undefined &&
-              nowCheck <= playerLapInfo[player.id][2] &&
-              !(
-                (sessionType === ESession.Race && player.lapsDone < 1) ||
-                (sessionType !== ESession.Race && player.bestLapTime < 0)
-              )
-                ? `rgba(${playerLapInfo[player.id][3]}, ${
-                    playerLapInfo[player.id][4]
-                  }, ${playerLapInfo[player.id][5]}, 1)`
-                // --- PRIORIDADE 2: WarneInc Points (mantido igual)
-                : warnInc && showIncPoints
-                ? "rgba(255, 0, 0, 1)"
-                // --- PRIORIDADE 3: Gap normal
-                : "rgba(255, 255, 255, 1)",
-          }}
-          >
-          {
-            // ==================== TEXTO EXIBIDO ====================
-            player.finishStatus > 1
-              ? `Lap ${player.lapsDone + 1}`
-              : showIncPoints
-              ? maxIncidentPoints > 0
-                ? `${myIncidentPoints}/${maxIncidentPoints}`
-                : myIncidentPoints
-              : (
-                  // ========= PRIORIDADE 1 — Popup de Laptime =========
-                  this.props.settings.subSettings.showLastLaps.enabled &&
-                  playerLapInfo[player.id] !== undefined &&
-                  nowCheck <= playerLapInfo[player.id][2] &&
-                  !(
-                    (sessionType === ESession.Race && player.lapsDone < 1) ||
-                    (sessionType !== ESession.Race && player.bestLapTime < 0)
-                  )
-                )
-              ? (
-                  playerLapInfo[player.id][1] !== -999
-                    ? playerLapInfo[player.id][1] >= 60
-                      ? formatTime(playerLapInfo[player.id][1], "m:ss.SSS")
-                      : formatTime(playerLapInfo[player.id][1], "ss.SSS")
-                    : "INVALID"
-                )
-              : (
-                  // ========= PRIORIDADE 2 — Exibir gap / lapDiff =========
-                  player.diff
-                )
-          }
-          </div>
 
+        {/*Show Last Laps*/}
+        {showIt && (
+          <div
+            className={classNames("diff")}
+            style={{
+              color:
+                // --- PRIORIDADE 1: Popup de LastLap com cor ----
+                this.props.settings.subSettings.showLastLaps.enabled &&
+                playerLapInfo[player.id] !== undefined &&
+                nowCheck <= playerLapInfo[player.id][2] &&
+                !(
+                  (sessionType === ESession.Race && player.lapsDone < 1) ||
+                  (sessionType !== ESession.Race && player.bestLapTime < 0)
+                )
+                  ? `rgba(${playerLapInfo[player.id][3]}, ${
+                      playerLapInfo[player.id][4]
+                    }, ${playerLapInfo[player.id][5]}, 1)`
+                  : // --- PRIORIDADE 2: WarneInc Points (mantido igual)
+                    warnInc && showIncPoints
+                    ? "rgba(255, 0, 0, 1)"
+                    : // --- PRIORIDADE 3: Gap normal
+                      "rgba(255, 255, 255, 1)",
+            }}
+          >
+            {
+              // ==================== TEXTO EXIBIDO ====================
+              player.finishStatus > 1
+                ? `Lap ${player.lapsDone + 1}`
+                : showIncPoints
+                  ? maxIncidentPoints > 0
+                    ? `${myIncidentPoints}/${maxIncidentPoints}`
+                    : myIncidentPoints
+                  : // ========= PRIORIDADE 1 — Popup de Laptime =========
+                    this.props.settings.subSettings.showLastLaps.enabled &&
+                      playerLapInfo[player.id] !== undefined &&
+                      nowCheck <= playerLapInfo[player.id][2] &&
+                      !(
+                        (sessionType === ESession.Race &&
+                          player.lapsDone < 1) ||
+                        (sessionType !== ESession.Race &&
+                          player.bestLapTime < 0)
+                      )
+                    ? playerLapInfo[player.id][1] !== -999
+                      ? playerLapInfo[player.id][1] >= 60
+                        ? formatTime(playerLapInfo[player.id][1], "m:ss.SSS")
+                        : formatTime(playerLapInfo[player.id][1], "ss.SSS")
+                      : "INVALID"
+                    : // ========= PRIORIDADE 2 — Exibir gap / lapDiff =========
+                      player.diff
+            }
+          </div>
         )}
         {(showAllMode ||
           (player.finishStatus < 2 &&
@@ -1174,6 +1193,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             }}
           />
         )}
+
+        {/*Player Finish Status*/}
         {player.finishStatus === 1 ||
         (sessionType !== ESession.Race &&
           player.pitting &&
@@ -1207,6 +1228,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             {player.finishStatusText}
           </div>
         )}
+
+        {/*Class Only*/}
         {showIt && !classOnly && this.props.isMulti && (
           <div
             className="classStyle"
@@ -1215,6 +1238,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             }}
           />
         )}
+
+        {/*Show Best Lap*/}
         {showIt && sessionType === ESession.Race && (
           <div
             className="bestLap"
@@ -1224,12 +1249,14 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                   ? player.bestLapTimeLeader === player.bestLapTime
                     ? "rgba(213, 0, 249, 0.8) 5px solid"
                     : player.bestLapTime === player.bestLapTimeClass
-                    ? `${player.classColor} 5px solid`
-                    : "rgba(0, 0, 0, 0) 5px solid"
+                      ? `${player.classColor} 5px solid`
+                      : "rgba(0, 0, 0, 0) 5px solid"
                   : "rgba(0, 0, 0, 0) 5px solid",
             }}
           />
         )}
+
+        {/*Show Pit Status / Show Pit Times*/}
         {
           player.finishStatus > 0 ||
           !this.props.settings.subSettings.showPitStatus.enabled ||
@@ -1271,7 +1298,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                           1,
                           1,
                           false,
-                          true
+                          true,
                         ) // .toFixed(1)
                   }`}
                 </div>
@@ -1305,7 +1332,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                                 1,
                                 1,
                                 false,
-                                true
+                                true,
                               ) // .toFixed(1)
                         }`
                       : `${
@@ -1316,7 +1343,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                             1,
                             1,
                             false,
-                            true
+                            true,
                           ) // .toFixed(1)
                         }`
                     : "|"}
@@ -1392,7 +1419,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                         1,
                         1,
                         false,
-                        true
+                        true,
                       ) // .toFixed(1)
                     }`}
                   </div>
@@ -1420,7 +1447,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                             1,
                             1,
                             false,
-                            true
+                            true,
                           ) // .toFixed(1)
                         }`
                       : "|"}
@@ -1451,7 +1478,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                         1,
                         1,
                         false,
-                        true
+                        true,
                       ) // .toFixed(1)
                     }`}
                   </div>
@@ -1479,7 +1506,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                             1,
                             1,
                             false,
-                            true
+                            true,
                           ) // .toFixed(1)
                         }`
                       : "|"}
@@ -1538,7 +1565,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                       1,
                       1,
                       false,
-                      true
+                      true,
                     ) // .toFixed(1)
                   }`}
                 </div>
@@ -1566,7 +1593,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                           1,
                           1,
                           false,
-                          true
+                          true,
                         ) // .toFixed(1)
                       }`
                     : "|"}
@@ -1606,6 +1633,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 												}
 											</div> */
         }
+
+        {/*Show Penalties*/}
         {this.props.settings.subSettings.showPenalties.enabled &&
           (showAllMode ||
             (sessionType === ESession.Race &&
@@ -1639,16 +1668,18 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                     {penaltyKey === "DriveThrough"
                       ? "DT"
                       : penaltyKey === "PitStop"
-                      ? "PS"
-                      : penaltyKey === "SlowDown"
-                      ? "SD"
-                      : penaltyKey === "StopAndGo"
-                      ? "SG"
-                      : "TD"}
+                        ? "PS"
+                        : penaltyKey === "SlowDown"
+                          ? "SD"
+                          : penaltyKey === "StopAndGo"
+                            ? "SG"
+                            : "TD"}
                   </div>
                 </div>
               );
             })}
+
+        {/*Finish Info*/}
         {showIt &&
           (player.finishStatus > 1 ? (
             <div className="notFinishBlock">{"|"}</div>

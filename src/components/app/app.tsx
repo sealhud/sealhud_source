@@ -2232,11 +2232,11 @@ export default class App extends React.Component<IProps> {
     }*/
 
     if (
-      (highPerformanceMode && nowCheck - this.lastCheck >= 16) ||
-      (lowPerformanceMode && nowCheck - this.lastCheck >= 66) ||
+      (highPerformanceMode && nowCheck - this.lastCheck >= 11) ||
+      (lowPerformanceMode && nowCheck - this.lastCheck >= 33) ||
       (!lowPerformanceMode &&
         !highPerformanceMode &&
-        nowCheck - this.lastCheck >= 33) // || this.updateDiffs
+        nowCheck - this.lastCheck >= 66) // || this.updateDiffs
     ) {
       // showDebugMessageSmall(`${this.trackingString}`);
       this.singleplayerRace = false;

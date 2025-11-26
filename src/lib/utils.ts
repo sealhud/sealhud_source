@@ -899,3 +899,11 @@ export function getTimeUntilPitClosed(lapBased = false) {
 				r3e.data.PitWindowEnd
 			) + 1;
 }
+
+// Function to export Driver Name and ModelId (This can be used to collect data for new cars. Shortcut: SHIFT+C)
+export const collectedModelIds: Array<{ driver: string; modelId: number }> = [];
+export function registerCollectedModel(driver: string, modelId: number) {
+	if (!collectedModelIds.some(x => x.modelId === modelId)) {
+		collectedModelIds.push({ driver, modelId });
+	}
+}

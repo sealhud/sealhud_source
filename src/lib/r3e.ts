@@ -19,12 +19,26 @@ import { isObject } from 'lodash-es';
 import _ from './../translate';
 import IShared from './../types/r3eTypes';
 import ReconnectingWebSocket from './reconnecting-websocket';
+import { collectedModelIds } from './utils';
 
 interface ISharedData {
 	data: IShared;
 }
 
 const updateQueue: Function[] = [];
+
+// Function to copy/paste DRIVERNAME and CAR MODEL ID (Useful to map new car models. Shortcut: SHIFT+C)
+function copyCollectedModelsToClipboard() {
+	const json = JSON.stringify(collectedModelIds, null, 2);
+	const copyFrom = document.createElement('textarea');
+	copyFrom.value = json;
+	copyFrom.style.opacity = '0';
+	document.body.appendChild(copyFrom);
+	copyFrom.select();
+	document.execCommand('copy');
+	document.body.removeChild(copyFrom);
+	showDebugMessage(`Model IDs saved to clipboard. (${collectedModelIds.length} entries.)`);
+}
 
 export function registerUpdate(func: Function) {
 	const index = updateQueue.indexOf(func);
@@ -51,20 +65,20 @@ const address = overrideAddress ? overrideAddress : 'localhost:8070';
 const ws = new ReconnectingWebSocket(`ws://${address}/r3e`);
 
 let upper = lowPerformanceMode
-    ? 66  // low performance
+    ? 33  // low performance
     : highPerformanceMode
-        ? 16  // high performance
+        ? 11  // high performance
         : supremePerformance
-            ? 2   // Ultra
-            : 33; // Normal → 30 FPS
+            ? 1   // Ultra
+            : 16; // Normal → 60 FPS
 function upDat() {
 	upper = lowPerformanceMode
-		?	66
+		?	33
 		:	highPerformanceMode
-			?	16
+			?	11
 			:	supremePerformance
-				?	2
-				:	33;
+				?	1
+				:	16;
 	if (ws.readyState === WebSocket.OPEN) {
 		ws.send('');
 	}
@@ -202,6 +216,11 @@ const handleDebug = (e: KeyboardEvent) => {
 			const stateJson = JSON.stringify(container.data || {});
 			setDebugData(stateJson);
 			showDebugMessage(_('Pause UI'));
+		}
+
+		// Press Shift+C to copy collected car models
+		if (e.key === 'C' || e.key === 'c') {
+			copyCollectedModelsToClipboard();
 		}
 	}
 };

@@ -1,3 +1,5 @@
+import { registerCollectedModel } from './utils';
+
 export const carNames = [
 	'Aquila CR1 Sports GT',
 	'134 Judd V8',
@@ -204,12 +206,12 @@ export const carNames = [
 	'Lada Vesta',
 	'Hyundai i30 N TCR',
 	'Lynk & Co 03 TCR',
-	'CUPRA Leon Competición',
-	'CUPRA Leon e-Racer',
+	'Cupra Leon Competición',
+	'Cupra Leon e-Racer',
 	'Honda Civic TCR',
 	'Alfa Romeo Giulietta TCR',
 	'Peugeot 308',
-	'CUPRA Leon Competición',
+	'Cupra Leon Competición',
 	'Porsche 911 GT3 Cup',
 	'Audi R8 LMS GT4 2020',
 	'BMW M6 GT3',
@@ -239,7 +241,57 @@ export const carNames = [
 	'Bentley Continental GT3 EVO',
 	'Mercedes AMG GT3 Evo',
 	'Porsche 911 GT3 R (2019)',
-	'Callaway Corvette C7 GT3-R'
+	'Callaway Corvette C7 GT3-R',
+	'Opel Vectra',
+	'Alfa Romeo 156',
+	'Audi A4',
+	'BMW 320i E36',
+	'Honda Accord',
+	'Renault Laguna',
+	'Volvo 850',
+	'Volvo S40',
+	'Audi R8 LMS GT3 EVO II',
+	'BMW M4 GT3',
+	'Ferrari 296 GT3',
+	'Lamborghini Huracán GT3 EVO II',
+	'McLaren 720S EVO',
+	'Mercedes-AMG GT3 2020',
+	'Porsche 911 GT3-R',
+	'Porsche 911 GT3-R',
+	'Mercedes-AMG GT3 2020',
+	'BMW M4 GT3',
+	'Ferrari 296 GT3',
+	'Audi R8 LMS GT3 EVO II',
+	'Audi R8 LMS GT3 EVO',
+	'BMW M6 GT3',
+	'Mercedes-AMG GT3 2020',
+	'Porsche 911 GT3-R',
+	'Ferrari 488 GT3 EVO',
+	'McLaren 720S GT3',
+	'Alfa Romeo 155 TI',
+	'OpelCalibra V6',
+	'McLaren 720S GT3',
+	'Ferrari 488 GT3 EVO',
+	'Porsche 911 GT3-R',
+	'Audi R8 LMS GT3 EVO II',
+	'Ferrari 296 GT3',
+	'BMW M4 GT3',
+	'Lamborghini Huracán GT3',
+	'McLaren 570S GT4',
+	"BMW M4 GT4",
+	'Mazda RT24 P DPI',
+	'Lynk & Co 03 TCR',
+	'Honda Civic TCR',
+	'Cupra Leon Competición',
+	'Hyundai Elantra TCR',
+	'Hyundai Elantra TCR',
+	'Cupra Leon Competición',
+	'Lynk & Co 03 TCR',
+	'Audi R8 3 LMS',
+	'Audi R8 3 LMS',
+	'Honda Civic TCR',
+	'Lada Vesta TCR',
+	'Mazda MX-5 CUP',
 ];
 
 export const carIds = [
@@ -483,9 +535,61 @@ export const carIds = [
 	10085,
 	10110,
 	10119,
-	10127
+	10127,
+	13065,
+	13049,
+	12561,
+	12556,
+	8645,
+	13183,
+	12652,
+	12829,
+	12788,
+	12790,
+	12792,
+	12795,
+	12815,
+	12800,
+	12807,
+	12197,
+	12240,
+	12237,
+	12421,
+	12352,
+	10541,
+	10546,
+	10556,
+	10564,
+	10387,
+	10552,
+	12850,
+	12839,
+	9575,
+	10890,
+	12090,
+	12319,
+	12405,
+	11536,
+	12771,
+	10744,
+	12509,
+	11342,
+	10368,
+	11320,
+	11323,
+	10397,
+	11318,
+	10371,
+	11328,
+	11325,
+	10345,
+	10401,
+	10674,
+	10914,
 ];
 
+
+/* I think this is not in use anymore ???
 export const carClassNames = [
 	'FRJ Cup',
 	'Aquila CR1 Cup',
@@ -637,13 +741,17 @@ export const carClassNameIDS = [
 	9233,
 	10049
 ];
-
-export default function getCarName(modelID: number) {
+*/
+export default function getCarName(modelID: number, driverName?: string) {
 	const indexNum = carIds.indexOf(modelID);
+	if (indexNum === -1) {
+		if (driverName) registerCollectedModel(driverName, modelID);
+		return String(modelID);
+	}
 	return carNames[indexNum];
 }
 
-export function getCarClassName(classID: number) {
+/*export function getCarClassName(classID: number) {
 	const indexNum = carClassNameIDS.indexOf(classID);
 	return carClassNames[indexNum];
-}
+}*/
