@@ -32,8 +32,6 @@ import {
 	IWidgetSetting,
 	showAllMode,
 	IDriverPitInfo,
-	eDriverLapInfo,
-	IDriverLapInfo,
 	eDriverNum,
 	eDriverPitInfo,
 	eIsLeaderboard,
@@ -108,7 +106,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 	@observable accessor logoUrlp2 = "&size=small";
 	@observable accessor startingLights = -1;
 	@observable accessor singleplayerRace = false;
-	@observable accessor lapInfoData: IDriverLapInfo = [];
 	@observable accessor startPositions: IStartPositions = {};	
 	@observable accessor lapTimePreviousSelf = -1;
 	@observable accessor lapTimeBestSelf = -1;
@@ -187,7 +184,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.lastCheck = nowCheck;
 		this.playerIsFocus = ePlayerIsFocus;
 		this.currentSlotId = eCurrentSlotId;
-		this.lapInfoData = eDriverLapInfo;
 		this.sessionTimeDuration = r3e.data.SessionTimeDuration;
 		this.notInRacePhase =
 			(this.sessionPhase < 4 && r3e.data.CarSpeed < 5) ||
@@ -823,7 +819,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							isLeaderboard={this.isLeaderboard}
 							isHillClimb={this.isHillClimb}
 							startingLights={this.startingLights}
-							playerLapInfo={eDriverLapInfo}
 							startPosition={this.startPositions}
 						/>
 					);
@@ -1106,10 +1101,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: !(
 							(this.sessionType === 2 && this.completedLaps < 1) ||
 							(this.sessionType !== 2 && this.lapTimeBestSelf < 0)
-						) && nowCheck <= this.lapInfoData[this.currentSlotId][2]
-						? `rgba(${this.lapInfoData[this.currentSlotId][3]}, ${
-							this.lapInfoData[this.currentSlotId][4]
-						}, ${this.lapInfoData[this.currentSlotId][5]}, 1)`
+						) && LapEvents.shouldShowLapTime(this.currentSlotId)
+						? LapEvents.getLapTimeColor(this.currentSlotId)
 						: "rgba(255, 255, 255, 1)",
 					right:
 						this.props.settings.subSettings.sessionTime.enabled &&
@@ -1246,7 +1239,6 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
 	relative: boolean;
 	settings: IWidgetSetting;
 	playerPitInfo: IDriverPitInfo;
-	playerLapInfo: IDriverLapInfo;
 	singleplayerRace: boolean;
 	sessionType: number;
 	sessionPhase: number;
@@ -1277,7 +1269,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
 				? {}
 				: this.props.playerPitInfo;
-		const playerLapInfo = this.props.playerLapInfo;
 		const singleplayerRace = this.props.singleplayerRace;
 		const multiClass = this.props.multiClass;
 		const isLeaderboard = this.props.isLeaderboard;
@@ -1336,11 +1327,10 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 			((sessionType === ESession.Race &&
 			startingLights === 6 &&
 			startPosition !== -1 &&
-			((player.lapsDone > 0 &&
-				playerLapInfo[player.id] !== undefined &&
-				nowCheck <= playerLapInfo[player.id][2]) ||
+			(player.lapsDone > 0 &&
+				LapEvents.shouldShowLapTime(player.id) ||
 				gainLossPermanentBar)) ||
-			showAllMode);
+				showAllMode);
 		const posGainedLost =
 		startPosition !== -1 ? Math.abs(startPosition - player.position) : -1;
 

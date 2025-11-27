@@ -169,18 +169,6 @@ export interface IDriverPitInfo {
   // 5 - Pit Exit Time
 }
 
-export interface IDriverLapInfo {
-  // Index = SlotId
-  [index: number]: number[];
-  // Previous Lap
-  // Lap Time To Show
-  // Show Until
-  // color - r
-  // color - g
-  // color - b
-  // color - a
-}
-
 export interface IWidgetSetting {
   id: string;
   enabled: boolean;
@@ -210,7 +198,6 @@ let eRankInvert = false;
 let eRankInvertRelative = false;
 let eLogoUrl = "./../../img/logo.png";
 let eDriverPitInfo: IDriverPitInfo = {};
-let eDriverLapInfo: IDriverLapInfo = {};
 let eDriverDiffs: IDriverDiffs = {};
 let eResetId = "";
 let eIsLeaderboard = false;
@@ -235,7 +222,6 @@ export {
   eRankInvertRelative,
   eLogoUrl,
   eDriverPitInfo,
-  eDriverLapInfo,
   eDriverDiffs,
   eIsIngameBrowser,
   eIsLeaderboard,
@@ -264,7 +250,6 @@ export default class App extends React.Component<IProps> {
   @observable accessor pitBoxDistances: IPitBoxDistances = {};
   @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
   @observable accessor lastPosition: ILastPosVector = {};
-  @observable accessor driverLapInfo: IDriverLapInfo = {};
   @observable accessor driverLapRecord: ILapRecords = {};
   @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
   @observable accessor storedRecordedLaps: ILapData = {};
@@ -2284,7 +2269,7 @@ export default class App extends React.Component<IProps> {
         ;
 
       // this.runBooboo();
-      this.getClassBestLaps(this.drivers);
+      // this.getClassBestLaps(this.drivers);
       this.updateDriverTimes();
       // this.updateLapRecordTimes();
     }
@@ -2343,7 +2328,8 @@ export default class App extends React.Component<IProps> {
     };
     return driverData;
   };
-
+  
+  /*
   private getClassBestLaps = (driverData: IDriverInfo[]) => {
     driverData.forEach((driver) => {
       if (this.classBestLap[driver.performanceIndex] === undefined) {
@@ -2356,6 +2342,7 @@ export default class App extends React.Component<IProps> {
       }
     });
   };
+  */
     
   private updateDriverTimes() {
   if (!this.drivers.length) return;
@@ -2438,82 +2425,8 @@ export default class App extends React.Component<IProps> {
     } else {
       this.driverPitInfo[driver.id] = [0, -1, -1, -1, -1, -1];
     }
-    // --- LAP INFO -----------------------------------------------------
-    if (this.driverLapInfo[driver.id] !== undefined) {
-      if (driver.finishStatus < 1) {
-        // Lap timing refresh
-        if (
-          nowCheck - this.driverLapInfo[driver.id][2] > 10500 &&
-          driver.lapDistance < 101 &&
-          driver.lapDistance > 5
-        ) {
-          this.driverLapInfo[driver.id][0] = driver.lapPrevious;
-          this.driverLapInfo[driver.id][1] =
-            driver.lapPrevious <= 0 ? -999 : driver.lapPrevious;
-          this.driverLapInfo[driver.id][2] = nowCheck + 10000;
-        }
-        // Lap color logic
-        if (driver.lapPrevious <= 0 || this.driverLapInfo[driver.id][1] === -999) {
-          this.driverLapInfo[driver.id][3] = 255;
-          this.driverLapInfo[driver.id][4] = 60;
-          this.driverLapInfo[driver.id][5] = 0;
-          this.driverLapInfo[driver.id][6] = 1;
-        } else if (
-          driver.lapPrevious <= driver.bestLapTimeLeader &&
-          !this.gameInReplay
-        ) {
-          this.driverLapInfo[driver.id][3] = 179;
-          this.driverLapInfo[driver.id][4] = 102;
-          this.driverLapInfo[driver.id][5] = 179;
-          this.driverLapInfo[driver.id][6] = 1;
-        } else if (
-          driver.lapPrevious <= driver.bestLapTimeClass &&
-          !this.gameInReplay
-        ) {
-          const classColor = hSLToRGB(driver.classColor, 1, 1);
-          if (
-              classColor &&
-              typeof classColor !== "string" &&
-              !Array.isArray(classColor)
-            ) {
-              // agora o TypeScript sabe que classColor é { r, g, b }
-              this.driverLapInfo[driver.id][3] = Math.round(classColor.r);
-              this.driverLapInfo[driver.id][4] = Math.round(classColor.g);
-              this.driverLapInfo[driver.id][5] = Math.round(classColor.b);
-              this.driverLapInfo[driver.id][6] = 1;
-            } else {
-              // fallback caso a cor seja inválida
-              this.driverLapInfo[driver.id][3] = 0;
-              this.driverLapInfo[driver.id][4] = 0;
-              this.driverLapInfo[driver.id][5] = 0;
-              this.driverLapInfo[driver.id][6] = 1;
-            }
-        } else if (
-          driver.lapPrevious <= driver.bestLapTime &&
-          driver.bestLapTime > 0 &&
-          !this.gameInReplay
-        ) {
-          this.driverLapInfo[driver.id][3] = 0;
-          this.driverLapInfo[driver.id][4] = 190;
-          this.driverLapInfo[driver.id][5] = 60;
-          this.driverLapInfo[driver.id][6] = 1;
-        } else {
-          this.driverLapInfo[driver.id][3] = 0;
-          this.driverLapInfo[driver.id][4] = 150;
-          this.driverLapInfo[driver.id][5] = 190;
-          this.driverLapInfo[driver.id][6] = 1;
-        }
-
-      } else {
-        this.driverLapInfo[driver.id] = [-1, -1, -1, -1, 190, 60, 1];
-      }
-
-    } else {
-      this.driverLapInfo[driver.id] = [-1, -1, -1, -1, 190, 60, 1];
-    }
   });
   // Mantém somente o que ainda é consumido
-  eDriverLapInfo = this.driverLapInfo;
   eDriverPitInfo = this.driverPitInfo;
 }
   

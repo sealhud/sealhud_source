@@ -1,3 +1,4 @@
+import { LapEvents } from "../../lib/LapEvents";
 import {
   classNames,
   base64ToString,
@@ -34,8 +35,6 @@ import {
   eGainLossPermanentTower,
   eRankInvert,
   IDriverPitInfo,
-  eDriverLapInfo,
-  IDriverLapInfo,
   showAllMode,
 } from "../app/app";
 import { action, observable } from "mobx";
@@ -772,7 +771,6 @@ export default class TvTower extends React.Component<IProps, {}> {
                   classPlayerCount={this.classDriverCount}
                   isMulti={this.multiClass}
                   playerPitInfo={eDriverPitInfo}
-                  playerLapInfo={eDriverLapInfo}
                   // playerDiffs={this.driverDiffs}
                   showIncUntil={this.showIncUntil}
                   playerSlotId={this.playerSlotId}
@@ -806,7 +804,6 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
   classPlayerCount: number;
   isMulti: boolean;
   playerPitInfo: IDriverPitInfo;
-  playerLapInfo: IDriverLapInfo;
   // playerDiffs: IDriverDiffs;
   showIncUntil: number;
   playerSlotId: number;
@@ -929,7 +926,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
         ? {}
         : this.props.playerPitInfo;
-    const playerLapInfo = this.props.playerLapInfo;
     const playerSlotId = this.props.playerSlotId;
     const classOnly = this.props.settings.subSettings.showOwnClassOnly.enabled;
     let showIt = false;
@@ -987,9 +983,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
         player.finishStatus < 2 &&
         startingLights === 6 &&
         startPosition !== -1 &&
-        ((player.lapsDone > 0 &&
-          playerLapInfo[player.id] !== undefined &&
-          nowCheck <= playerLapInfo[player.id][2]) ||
+        (player.lapsDone > 0 &&
+          LapEvents.shouldShowLapTime(player.id) ||
           gainLossPermanentTower)) ||
         showAllMode);
     const posGainedLost =
@@ -1078,6 +1073,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           </div>
         )}
         <div className="name">
+
           {/*Show Long Names*/}
           {this.props.settings.subSettings.showLongNames.enabled
             ? player.shortName
@@ -1122,56 +1118,47 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 
         {/*Show Last Laps*/}
         {showIt && (
-          <div
-            className={classNames("diff")}
-            style={{
-              color:
-                // --- PRIORIDADE 1: Popup de LastLap com cor ----
-                this.props.settings.subSettings.showLastLaps.enabled &&
-                playerLapInfo[player.id] !== undefined &&
-                nowCheck <= playerLapInfo[player.id][2] &&
-                !(
-                  (sessionType === ESession.Race && player.lapsDone < 1) ||
-                  (sessionType !== ESession.Race && player.bestLapTime < 0)
-                )
-                  ? `rgba(${playerLapInfo[player.id][3]}, ${
-                      playerLapInfo[player.id][4]
-                    }, ${playerLapInfo[player.id][5]}, 1)`
-                  : // --- PRIORIDADE 2: WarneInc Points (mantido igual)
-                    warnInc && showIncPoints
-                    ? "rgba(255, 0, 0, 1)"
-                    : // --- PRIORIDADE 3: Gap normal
-                      "rgba(255, 255, 255, 1)",
-            }}
-          >
-            {
-              // ==================== TEXTO EXIBIDO ====================
-              player.finishStatus > 1
-                ? `Lap ${player.lapsDone + 1}`
-                : showIncPoints
-                  ? maxIncidentPoints > 0
-                    ? `${myIncidentPoints}/${maxIncidentPoints}`
-                    : myIncidentPoints
-                  : // ========= PRIORIDADE 1 — Popup de Laptime =========
-                    this.props.settings.subSettings.showLastLaps.enabled &&
-                      playerLapInfo[player.id] !== undefined &&
-                      nowCheck <= playerLapInfo[player.id][2] &&
-                      !(
-                        (sessionType === ESession.Race &&
-                          player.lapsDone < 1) ||
-                        (sessionType !== ESession.Race &&
-                          player.bestLapTime < 0)
-                      )
-                    ? playerLapInfo[player.id][1] !== -999
-                      ? playerLapInfo[player.id][1] >= 60
-                        ? formatTime(playerLapInfo[player.id][1], "m:ss.SSS")
-                        : formatTime(playerLapInfo[player.id][1], "ss.SSS")
-                      : "INVALID"
-                    : // ========= PRIORIDADE 2 — Exibir gap / lapDiff =========
-                      player.diff
-            }
-          </div>
+        <div
+          className={classNames("diff")}
+          style={{
+            color:
+              // --- PRIORIDADE 1: Popup de LastLap (via LapEvents) ---
+              this.props.settings.subSettings.showLastLaps.enabled &&
+              LapEvents.shouldShowLapTime(player.id) &&
+              !(
+                (sessionType === ESession.Race && player.lapsDone < 1) ||
+                (sessionType !== ESession.Race && player.bestLapTime < 0)
+              )
+                ? LapEvents.getLapTimeColor(player.id)
+                : // --- PRIORIDADE 2: WarnInc Points (mantido igual)
+                  warnInc && showIncPoints
+                  ? "rgba(255, 0, 0, 1)"
+                  : // --- PRIORIDADE 3: Gap normal
+                    "rgba(255, 255, 255, 1)",
+          }}
+        >
+          {
+            // ==================== TEXTO EXIBIDO ====================
+            player.finishStatus > 1
+              ? `Lap ${player.lapsDone + 1}`
+              : showIncPoints
+                ? maxIncidentPoints > 0
+                  ? `${myIncidentPoints}/${maxIncidentPoints}`
+                  : myIncidentPoints
+                : // ========= PRIORIDADE 1 — Popup de Laptime (via LapEvents) =========
+                  this.props.settings.subSettings.showLastLaps.enabled &&
+                    LapEvents.shouldShowLapTime(player.id) &&
+                    !(
+                      (sessionType === ESession.Race && player.lapsDone < 1) ||
+                      (sessionType !== ESession.Race && player.bestLapTime < 0)
+                    )
+                  ? LapEvents.getLapTimeFormatted(player.id)
+                  : // ========= PRIORIDADE 2 — Exibir gap normal =========
+                    player.diff
+          }
+        </div>
         )}
+
         {(showAllMode ||
           (player.finishStatus < 2 &&
             sessionType === ESession.Race &&
@@ -1614,24 +1601,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
               </div>
             )
           ) : null
-          // <div className="debug">{`${'YOLO'}`}</div>
-          /* <div
-												className={classNames(
-													'pitting',
-													{
-														noShadow: true
-													}
-												)}
-												style={{
-													background: 'rgba(100, 221, 23, 0.8)',
-													color: 'rgba(100, 221, 23, 0)',
-													width: '5px'
-												}}
-											>
-												{
-													'|'
-												}
-											</div> */
         }
 
         {/*Show Penalties*/}
