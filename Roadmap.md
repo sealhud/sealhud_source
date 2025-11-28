@@ -18,3 +18,4 @@ Another thing: Would it be possible to show a widget just when crossing start fi
 - Corrigir comportamento do Delta na corrida. quando entra no box , aparece 1 Lap
 - Position Bar: está travada no formato 16:9
 - Position Bar: Muito no topo quando desliga "standings"
+- Relatives: Na prática/quali , quando há apenas 2 drivers na pista, o player some
