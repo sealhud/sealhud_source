@@ -1,4 +1,5 @@
 import { LapEvents } from "../../lib/LapEvents";
+import { PitEvents } from "../../lib/PitEvents";
 import {
   classNames,
   base64ToString,
@@ -13,7 +14,7 @@ import {
   widgetSettings,
   getInitials,
   getRankingData,
-  // showDebugMessageSmall,
+  showDebugMessageSmall,
   // resAspect,
   IRatingData,
   INVALID,
@@ -29,7 +30,7 @@ import {
   lowPerformanceMode,
   highPerformanceMode,
   eLogoUrl,
-  eDriverPitInfo,
+  // eDriverPitInfo,
   eIsLeaderboard,
   eIsHillClimb,
   eGainLossPermanentTower,
@@ -164,7 +165,7 @@ export default class TvTower extends React.Component<IProps, {}> {
       this.sessionType = r3e.data.SessionType;
       this.isLeaderboard = eIsLeaderboard;
       this.isHillClimb = eIsHillClimb;
-      this.driverPitInfo = eDriverPitInfo;
+      // this.driverPitInfo = eDriverPitInfo;
       // this.driverDiffs = eDriverDiffs;
       this.gameInReplay = r3e.data.GameInReplay > 0;
       if ((!this.isLeaderboard && !this.isHillClimb) || showAllMode) {
@@ -770,7 +771,7 @@ export default class TvTower extends React.Component<IProps, {}> {
                   driverCount={this.playerCount}
                   classPlayerCount={this.classDriverCount}
                   isMulti={this.multiClass}
-                  playerPitInfo={eDriverPitInfo}
+                  // playerPitInfo={eDriverPitInfo}
                   // playerDiffs={this.driverDiffs}
                   showIncUntil={this.showIncUntil}
                   playerSlotId={this.playerSlotId}
@@ -803,7 +804,7 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
   driverCount: number;
   classPlayerCount: number;
   isMulti: boolean;
-  playerPitInfo: IDriverPitInfo;
+  // playerPitInfo: IDriverPitInfo;
   // playerDiffs: IDriverDiffs;
   showIncUntil: number;
   playerSlotId: number;
@@ -917,15 +918,17 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       return null;
     }
     const player = this.props.player;
-    // const playerDiffs = this.props.playerDiffs;
+    // const playerDiffs = this.props.playerDiffs;      
+    /*
     const playerPitInfo =
-      gameInReplay &&
-      ((r3e.data.SessionTimeDuration !== -1 &&
-        r3e.data.SessionTimeRemaining <= 0) ||
-        (r3e.data.NumberOfLaps !== -1 &&
-          r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
-        ? {}
-        : this.props.playerPitInfo;
+    gameInReplay &&
+    ((r3e.data.SessionTimeDuration !== -1 &&
+      r3e.data.SessionTimeRemaining <= 0) ||
+      (r3e.data.NumberOfLaps !== -1 &&
+        r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
+      ? {}
+      : this.props.playerPitInfo;
+    */
     const playerSlotId = this.props.playerSlotId;
     const classOnly = this.props.settings.subSettings.showOwnClassOnly.enabled;
     let showIt = false;
@@ -1138,27 +1141,28 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           }}
         >
           {
-            // ==================== TEXTO EXIBIDO ====================
-            player.finishStatus > 1
-              ? `Lap ${player.lapsDone + 1}`
-              : showIncPoints
-                ? maxIncidentPoints > 0
-                  ? `${myIncidentPoints}/${maxIncidentPoints}`
-                  : myIncidentPoints
-                : // ========= PRIORIDADE 1 — Popup de Laptime (via LapEvents) =========
-                  this.props.settings.subSettings.showLastLaps.enabled &&
-                    LapEvents.shouldShowLapTime(player.id) &&
-                    !(
-                      (sessionType === ESession.Race && player.lapsDone < 1) ||
-                      (sessionType !== ESession.Race && player.bestLapTime < 0)
-                    )
-                  ? LapEvents.getLapTimeFormatted(player.id)
-                  : // ========= PRIORIDADE 2 — Exibir gap normal =========
-                    player.diff
+          // ==================== TEXTO EXIBIDO ====================
+          player.finishStatus > 1
+            ? `Lap ${player.lapsDone + 1}`
+            : showIncPoints
+              ? maxIncidentPoints > 0
+                ? `${myIncidentPoints}/${maxIncidentPoints}`
+                : myIncidentPoints
+              : // ========= PRIORIDADE 1 — Popup de Laptime (via LapEvents) =========
+                this.props.settings.subSettings.showLastLaps.enabled &&
+                  LapEvents.shouldShowLapTime(player.id) &&
+                  !(
+                    (sessionType === ESession.Race && player.lapsDone < 1) ||
+                    (sessionType !== ESession.Race && player.bestLapTime < 0)
+                  )
+                ? LapEvents.getLapTimeFormatted(player.id)
+                : // ========= PRIORIDADE 2 — Exibir gap normal =========
+                  player.diff
           }
         </div>
         )}
 
+        {/*Mandatory Pit Badge*/}
         {(showAllMode ||
           (player.finishStatus < 2 &&
             sessionType === ESession.Race &&
@@ -1244,417 +1248,273 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
         )}
 
         {/*Show Pit Status / Show Pit Times*/}
-        {
-          player.finishStatus > 0 ||
-          !this.props.settings.subSettings.showPitStatus.enabled ||
-          (sessionType !== ESession.Race &&
-            player.pitting &&
-            sessionPhase === 6) ? null : player.pitting > 0 || showAllMode ? (
-            // Showing when In Pits and time should be shown
-            this.props.settings.subSettings.showPitTime.enabled &&
-            (showAllMode ||
-              (playerPitInfo[player.id] !== undefined &&
-                sessionType === ESession.Race &&
-                playerPitInfo[player.id][2] >= 0)) ? (
-              <div
-                className={classNames("pitting", {
-                  noShadow: false,
-                })}
-                style={{
-                  background:
-                    showAllMode || playerPitInfo[player.id][3] > 0
-                      ? showAllMode || playerPitInfo[player.id][4] > 0
-                        ? "rgba(0, 221, 23, 0.8)"
-                        : "rgba(255, 70, 0, 0.8)"
-                      : "rgba(0, 176, 255, 0.8)",
-                  color: "#fff",
-                  width: "25px",
-                }}
-              >
-                <div className="pittinga">{`${"PIT"}`}</div>
-                <div
-                  className={classNames("pittime", {
-                    noShadow: false,
-                  })}
-                >
-                  {`${
-                    showAllMode
-                      ? 52.9
-                      : fancyTimeFormatGap(
-                          (nowCheck - playerPitInfo[player.id][2]) / 1000,
-                          1,
-                          1,
-                          false,
-                          true,
-                        ) // .toFixed(1)
-                  }`}
-                </div>
-                <div
-                  className={classNames("pittimea", {
-                    noShadow: showAllMode
-                      ? false
-                      : playerPitInfo[player.id][3] <= 0,
-                  })}
-                  style={{
-                    color:
-                      showAllMode || playerPitInfo[player.id][3] > 0
-                        ? showAllMode || playerPitInfo[player.id][4] > 0
-                          ? "rgba(0, 221, 23, 1)"
-                          : "rgba(255, 255, 255, 1)"
-                        : "rgba(255, 255, 255, 0)",
+        {(() => {
+          // Atalhos e segurança
+          if (
+            player.finishStatus > 0 ||
+            !this.props.settings.subSettings.showPitStatus.enabled ||
+            (sessionType !== ESession.Race && player.pitting && sessionPhase === 6)
+          ) {
+            return null;
+          }
+          const now = performance.now();
+          const st = PitEvents.getState(player.id);
+          const inPit = st?.inPitlane ?? false;
+          const enterTs = st?.timeEnterPitlane ?? null;
+          const stopTs = st?.timeStopOnSpot ?? null;
+          const leaveTs = st?.timeLeaveSpot ?? null;
+          const exitTs = st?.timeExitPitlane ?? null;
+          const pitTotal = st?.pitTotalDuration ?? null;
+          const spotDuration = st?.spotDuration ?? null;
+          // Configs
+          const showPitTime = this.props.settings.subSettings.showPitTime.enabled;
+          const autoHide = this.props.settings.subSettings.autoHidePitTime.enabled;
+          const showPenalties = this.props.settings.subSettings.showPenalties.enabled;
+          const showAll = showAllMode;
+          // Aux
+          const exitRecent = exitTs ? now - exitTs <= 7500 : false;
+          const shouldShowExitTimes = exitTs
+            ? autoHide
+              ? exitRecent
+              : (!showPenalties || exitRecent)
+            : false;
 
-                    background:
-                      showAllMode || playerPitInfo[player.id][3] > 0
-                        ? "rgba(0, 100, 255, 0.8)"
-                        : "rgba(0, 100, 255, 0)",
-                  }}
-                >
-                  {showAllMode || playerPitInfo[player.id][3] > 0
-                    ? showAllMode || playerPitInfo[player.id][4] <= 0
-                      ? `${
-                          showAllMode
-                            ? 13.5
-                            : fancyTimeFormatGap(
-                                (nowCheck - playerPitInfo[player.id][3]) / 1000,
-                                1,
-                                1,
-                                false,
-                                true,
-                              ) // .toFixed(1)
-                        }`
-                      : `${
-                          fancyTimeFormatGap(
-                            (playerPitInfo[player.id][4] -
-                              playerPitInfo[player.id][3]) /
-                              1000,
-                            1,
-                            1,
-                            false,
-                            true,
-                          ) // .toFixed(1)
-                        }`
-                    : "|"}
-                </div>
-              </div>
-            ) : (
-              // Showing when in Pits but no time should be shown
-              <div
-                className={classNames("pitting", {
-                  noShadow: false,
-                })}
-                style={{
-                  background:
-                    showAllMode ||
-                    (playerPitInfo[player.id] !== undefined &&
-                      playerPitInfo[player.id][3] > 0)
-                      ? showAllMode ||
-                        (playerPitInfo[player.id] !== undefined &&
-                          playerPitInfo[player.id][4] > 0)
-                        ? "rgba(0, 221, 23, 0.8)"
-                        : "rgba(255, 70, 0, 0.8)"
-                      : "rgba(0, 176, 255, 0.8)",
-                  color: "#fff",
-                  width: "25px",
-                }}
-              >
-                <div className="pittinga">{`${"PIT"}`}</div>
-              </div>
-            )
-          ) : // Shown when not in Pits
-          sessionType === ESession.Race &&
-            (player.mandatoryPit !== -1 ||
-              (gameInReplay && sessionType === ESession.Race)) ? (
-            // Shown when Mandatory is active
-            playerPitInfo[player.id] !== undefined &&
-            playerPitInfo[player.id][5] > 0 &&
-            ((nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-              this.props.settings.subSettings.autoHidePitTime.enabled) ||
-              (!this.props.settings.subSettings.autoHidePitTime.enabled &&
-                !this.props.settings.subSettings.showPenalties.enabled) ||
-              (!this.props.settings.subSettings.autoHidePitTime.enabled &&
-                nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-                this.props.settings.subSettings.showPenalties.enabled)) ? (
-              // Shown when Times should be shown and and it was a actual stop
-              (this.props.settings.subSettings.showPitTime.enabled &&
-                player.numPitstops > 1) ||
-              (player.numPitstops === 1 && this.props.pitWindow > 0) ? (
-                // Shown when Pit Window is active
-                <div
-                  className={classNames("pitting", {
-                    noShadow: false,
-                  })}
-                  style={{
-                    background:
-                      player.mandatoryPit === 2
-                        ? "rgba(0, 221, 23, 0.8)"
-                        : "rgba(255, 70, 0, 0.8)",
-                    color: "rgba(255, 255, 255, 1)",
-                    width: "25px",
-                  }}
-                >
-                  <div className="pittinga">{player.numPitstops}</div>
-                  <div
-                    className={classNames("pittime", {
-                      noShadow: false,
-                    })}
-                  >
-                    {`${
-                      fancyTimeFormatGap(
-                        (playerPitInfo[player.id][5] -
-                          playerPitInfo[player.id][2]) /
-                          1000,
-                        1,
-                        1,
-                        false,
-                        true,
-                      ) // .toFixed(1)
-                    }`}
-                  </div>
-                  <div
-                    className={classNames("pittimea", {
-                      noShadow: playerPitInfo[player.id][4] <= 0,
-                    })}
-                    style={{
-                      color:
-                        playerPitInfo[player.id][4] > 0
-                          ? "rgba(0, 221, 23, 1)"
-                          : "rgba(0, 221, 23, 0)",
-                      background:
-                        playerPitInfo[player.id][4] > 0
-                          ? "rgba(0, 100, 255, 0.8)"
-                          : "rgba(0, 100, 255, 0)",
-                    }}
-                  >
-                    {playerPitInfo[player.id][4] > 0
-                      ? `${
-                          fancyTimeFormatGap(
-                            (playerPitInfo[player.id][4] -
-                              playerPitInfo[player.id][3]) /
-                              1000,
-                            1,
-                            1,
-                            false,
-                            true,
-                          ) // .toFixed(1)
-                        }`
-                      : "|"}
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className={classNames("pitting", {
-                    noShadow: true,
-                  })}
-                  style={{
-                    background: "rgba(0, 0, 0, 0)",
-                    color: "rgba(0, 0, 0, 0)",
-                    width: "25px",
-                  }}
-                >
-                  <div className="pittinga" />
-                  <div
-                    className={classNames("pittime", {
-                      noShadow: false,
-                    })}
-                  >
-                    {`${
-                      fancyTimeFormatGap(
-                        (playerPitInfo[player.id][5] -
-                          playerPitInfo[player.id][2]) /
-                          1000,
-                        1,
-                        1,
-                        false,
-                        true,
-                      ) // .toFixed(1)
-                    }`}
-                  </div>
-                  <div
-                    className={classNames("pittimea", {
-                      noShadow: playerPitInfo[player.id][4] <= 0,
-                    })}
-                    style={{
-                      color:
-                        playerPitInfo[player.id][4] > 0
-                          ? "rgba(0, 221, 23, 1)"
-                          : "rgba(0, 221, 23, 0)",
-                      background:
-                        playerPitInfo[player.id][4] > 0
-                          ? "rgba(0, 100, 255, 0.8)"
-                          : "rgba(0, 100, 255, 0)",
-                    }}
-                  >
-                    {playerPitInfo[player.id][4] > 0
-                      ? `${
-                          fancyTimeFormatGap(
-                            (playerPitInfo[player.id][4] -
-                              playerPitInfo[player.id][3]) /
-                              1000,
-                            1,
-                            1,
-                            false,
-                            true,
-                          ) // .toFixed(1)
-                        }`
-                      : "|"}
-                  </div>
-                </div>
-              )
-            ) : player.numPitstops > 1 ? (
-              <div
-                className={classNames("pitting", {
-                  noShadow: false,
-                })}
-                style={{
-                  background:
-                    player.mandatoryPit === 2
-                      ? "rgba(0, 221, 23, 0.8)"
-                      : "rgba(255, 70, 0, 0.8)",
-                  color: "rgba(255, 255, 255, 1)",
-                  width: "25px",
-                }}
-              >
-                <div className="pittinga">{player.numPitstops}</div>
-              </div>
-            ) : null
-          ) : sessionType === ESession.Race && player.numPitstops > 0 ? (
-            this.props.settings.subSettings.showPitTime.enabled &&
-            playerPitInfo[player.id] !== undefined &&
-            playerPitInfo[player.id][5] > 0 &&
-            ((nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-              this.props.settings.subSettings.autoHidePitTime.enabled) ||
-              (!this.props.settings.subSettings.autoHidePitTime.enabled &&
-                !this.props.settings.subSettings.showPenalties.enabled) ||
-              (!this.props.settings.subSettings.autoHidePitTime.enabled &&
-                this.props.settings.subSettings.showPenalties.enabled &&
-                nowCheck - playerPitInfo[player.id][5] <= 7500)) ? (
-              <div
-                className={classNames("pitting", {
-                  noShadow: false,
-                })}
-                style={{
-                  background: "rgba(0, 221, 23, 0.8)",
-                  color: "rgba(255, 255, 255, 1)",
-                  width: "25px",
-                }}
-              >
-                <div className="pittinga">{player.numPitstops}</div>
-                <div
-                  className={classNames("pittime", {
-                    noShadow: false,
-                  })}
-                >
-                  {`${
-                    fancyTimeFormatGap(
-                      (playerPitInfo[player.id][5] -
-                        playerPitInfo[player.id][2]) /
-                        1000,
-                      1,
-                      1,
-                      false,
-                      true,
-                    ) // .toFixed(1)
-                  }`}
-                </div>
-                <div
-                  className={classNames("pittimea", {
-                    noShadow: playerPitInfo[player.id][4] <= 0,
-                  })}
-                  style={{
-                    color:
-                      playerPitInfo[player.id][4] > 0
-                        ? "rgba(0, 221, 23, 1)"
-                        : "rgba(0, 221, 23, 0)",
-                    background:
-                      playerPitInfo[player.id][4] > 0
-                        ? "rgba(0, 100, 255, 0.8)"
-                        : "rgba(0, 100, 255, 0)",
-                  }}
-                >
-                  {playerPitInfo[player.id][4] > 0
-                    ? `${
-                        fancyTimeFormatGap(
-                          (playerPitInfo[player.id][4] -
-                            playerPitInfo[player.id][3]) /
-                            1000,
-                          1,
-                          1,
-                          false,
-                          true,
-                        ) // .toFixed(1)
-                      }`
-                    : "|"}
-                </div>
-              </div>
-            ) : (
-              <div
-                className={classNames("pitting", {
-                  noShadow: false,
-                })}
-                style={{
-                  background: "rgba(0, 221, 23, 0.8)",
-                  color: "rgba(255, 255, 255, 1)",
-                  width: "25px",
-                }}
-              >
-                <div className="pittinga">{player.numPitstops}</div>
-              </div>
-            )
-          ) : null
-        }
-
-        {/*Show Penalties*/}
-        {this.props.settings.subSettings.showPenalties.enabled &&
-          (showAllMode ||
-            (sessionType === ESession.Race &&
-              ((player.finishStatus === 0 &&
-                player.pitting === 0 &&
-                (playerPitInfo[player.id] === undefined ||
-                  (playerPitInfo[player.id] !== undefined &&
-                    ((playerPitInfo[player.id][5] > 0 &&
-                      nowCheck - playerPitInfo[player.id][5] > 7500) ||
-                      playerPitInfo[player.id][5] <= 0)))) ||
-                player.finishStatus === 1))) &&
-          Object.keys(player.penalties)
-            .filter((penaltyKey) => {
-              const p = player.penalties[penaltyKey];
-              switch (penaltyKey) {
-                case "DriveThrough":
-                case "StopAndGo":
-                case "PitStop":
-                  return p === 0;
-                case "SlowDown":
-                case "TimeDeduction":
-                  return p > 0;
-                default:
-                  return false;
-              }
-            })
-            .map((penaltyKey) => {
+          // ---------- CASE A: currently in pits (or forced showAllMode) ----------
+          if (inPit || showAll) {
+            // decide whether to render times or just badge (original logic used playerPitInfo[2] >= 0)
+            const haveEnter = enterTs !== null;
+            const showTimesNow = showPitTime && (showAll || (haveEnter && sessionType === ESession.Race));
+            // background selection: entering (blue), stopped (red), leaving/clean (green)
+            let bg =
+              showAll || (stopTs && stopTs > 0)
+                ? showAll || (leaveTs && leaveTs > 0)
+                  ? "rgba(0, 221, 23, 0.8)" // leaving/ready
+                  : "rgba(255, 70, 0, 0.8)" // stopped on spot
+                : "rgba(0, 176, 255, 0.8)"; // entering
+            // compute lane time and spot time similarly to original behavior
+            const laneTime =
+              enterTs !== null ? (showAll ? 52.9 : (now - enterTs) / 1000) : null;
+            if (showTimesNow) {
               return (
-                <div key={penaltyKey} className="penalties">
-                  <div className="penaltiesText">
-                    {penaltyKey === "DriveThrough"
-                      ? "DT"
-                      : penaltyKey === "PitStop"
-                        ? "PS"
-                        : penaltyKey === "SlowDown"
-                          ? "SD"
-                          : penaltyKey === "StopAndGo"
-                            ? "SG"
-                            : "TD"}
+                <div
+                  className={classNames("pitting", { noShadow: false })}
+                  style={{ background: bg, color: "#fff", width: "25px" }}
+                >
+                  <div className="pittinga">PIT</div>
+                  <div className={classNames("pittime", { noShadow: false })}>
+                    {showAll ? (
+                      52.9
+                    ) : laneTime !== null ? (
+                      fancyTimeFormatGap(laneTime, 1, 1, false, true)
+                    ) : (
+                      // fallback similar to original (if no enter ts) show nothing or 0
+                      fancyTimeFormatGap(0, 1, 1, false, true)
+                    )}
+                  </div>
+                  <div
+                    className={classNames("pittimea", {
+                      noShadow: showAll ? false : !(stopTs && stopTs > 0),
+                    })}
+                    style={{
+                      color:
+                        showAll || (stopTs && stopTs > 0)
+                          ? showAll || (leaveTs && leaveTs > 0)
+                            ? "rgba(0, 221, 23, 1)"
+                            : "rgba(255, 255, 255, 1)"
+                          : "rgba(255, 255, 255, 0)",
+                      background:
+                        showAll || (stopTs && stopTs > 0)
+                          ? "rgba(0, 100, 255, 0.8)"
+                          : "rgba(0, 100, 255, 0)",
+                    }}
+                  >
+                    {showAll || (stopTs && stopTs > 0) ? (
+                      showAll || !(leaveTs && leaveTs > 0) ? (
+                        showAll ? (
+                          13.5
+                        ) : (
+                          fancyTimeFormatGap((now - (stopTs as number)) / 1000, 1, 1, false, true)
+                        )
+                      ) : (
+                        fancyTimeFormatGap(((leaveTs as number) - (stopTs as number)) / 1000, 1, 1, false, true)
+                      )
+                    ) : (
+                      "|"
+                    )}
                   </div>
                 </div>
               );
-            })}
+            } else {
+              // in pits but no time should be shown -> show only badge
+              return (
+                <div
+                  className={classNames("pitting", { noShadow: false })}
+                  style={{
+                    background:
+                      showAll || (stopTs && stopTs > 0)
+                        ? showAll || (leaveTs && leaveTs > 0)
+                          ? "rgba(0, 221, 23, 0.8)"
+                          : "rgba(255, 70, 0, 0.8)"
+                        : "rgba(0, 176, 255, 0.8)",
+                    color: "#fff",
+                    width: "25px",
+                  }}
+                >
+                  <div className="pittinga">PIT</div>
+                </div>
+              );
+            }
+          } // end inPit
+
+          // ---------- CASE B: mandatory pit logic (shown when NOT in pits) ----------
+          if (
+            sessionType === ESession.Race &&
+            (player.mandatoryPit !== -1 || (gameInReplay && sessionType === ESession.Race))
+          ) {
+            // cor: green (feito), red (pendente)
+            const isGreen = player.mandatoryPit === 2;
+            const bg = isGreen ? "rgba(0, 221, 23, 0.8)" : "rgba(255, 70, 0, 0.8)";
+            // narrowing explícito
+            const hasExit = exitTs != null;
+            const hasEnter = enterTs != null;
+            // tempos sempre calculados de forma segura
+            const total =
+              pitTotal ??
+              (hasEnter && hasExit ? (exitTs! - enterTs!) / 1000 : null);
+            const spot =
+              spotDuration ??
+              (stopTs && leaveTs ? (leaveTs - stopTs) / 1000 : null);
+            // --- MOSTRAR TEMPOS (e badge juntos) ---
+            if (hasExit && shouldShowExitTimes) {
+              return (
+                <div
+                  className={classNames("pitting", { noShadow: false })}
+                  style={{ background: bg, color: "rgba(255,255,255,1)", width: "25px" }}                >
+                  {/* BADGE SEMPRE IMEDIATO */}
+                  <div className="pittinga">{player.numPitstops}</div>
+                  {/* TEMPO TOTAL */}
+                  <div className={classNames("pittime", { noShadow: false })}>
+                    {total != null
+                      ? fancyTimeFormatGap(total, 1, 1, false, true)
+                      : fancyTimeFormatGap(0, 1, 1, false, true)}
+                  </div>
+                  {/* TEMPO DE SPOT */}
+                  <div
+                    className={classNames("pittimea", { noShadow: !spot })}
+                    style={{
+                      color: spot != null ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
+                      background: spot != null
+                        ? "rgba(0,100,255,0.8)"
+                        : "rgba(0,100,255,0)"
+                    }}
+                  >
+                    {spot != null
+                      ? fancyTimeFormatGap(spot, 1, 1, false, true)
+                      : "|"}
+                  </div>
+                </div>
+              );
+            }
+            // --- MOSTRAR APENAS O BADGE ---
+            if (player.numPitstops > 0) {
+              return (
+                <div
+                  className={classNames("pitting", { noShadow: false })}
+                  style={{ background: bg, color: "rgba(255,255,255,1)", width: "25px" }}
+                >
+                  <div className="pittinga">{player.numPitstops}</div>
+                </div>
+              );
+            }
+            return null;
+          }
+
+          // ---------- CASE C: regular post-pit display for normal races ----------
+          if (sessionType === ESession.Race && player.numPitstops > 0) {
+            if (showPitTime && exitTs && (autoHide ? exitRecent : (!showPenalties || exitRecent))) {
+              const total = pitTotal ?? (enterTs ? (exitTs - enterTs) / 1000 : null);
+              const spot = spotDuration ?? (stopTs && leaveTs ? (leaveTs - stopTs) / 1000 : null);
+              return (
+                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(0,221,23,0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
+                  <div className="pittinga">{player.numPitstops}</div>
+                  <div className={classNames("pittime", { noShadow: false })}>
+                    {total ? fancyTimeFormatGap(total, 1, 1, false, true) : fancyTimeFormatGap(0, 1, 1, false, true)}
+                  </div>
+                  <div className={classNames("pittimea", { noShadow: !spot })} style={{ color: spot ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)", background: spot ? "rgba(0,100,255,0.8)" : "rgba(0,100,255,0)" }}>
+                    {spot ? fancyTimeFormatGap(spot, 1, 1, false, true) : "|"}
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(0,221,23,0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
+                  <div className="pittinga">{player.numPitstops}</div>
+                </div>
+              );
+            }
+          }
+          return null;
+        })()}
+
+        {/*Show Penalties*/}
+        {this.props.settings.subSettings.showPenalties.enabled &&
+        (showAllMode ||
+          (sessionType === ESession.Race &&
+          player.finishStatus === 0)) &&
+        (() => {
+          // ==== PIT / PENALTY VISIBILITY CONTROL USING PitEvents ====
+          const inPit = PitEvents.isInPitlane(player.id);
+          const highlight = PitEvents.shouldHighlight(player.id);
+
+          // Se não estiver no modo de teste (showAll) ocultamos penalidades quando:
+          // - Está no pitlane
+          // - Ainda está no período de highlight pós-pit
+          if (!showAllMode) {
+          if (inPit) return null;
+          if (highlight) return null;
+          }
+          // ==== FILTRAR PENALIDADES ATIVAS ====
+          const active = Object.keys(player.penalties).filter((key) => {
+          const p = player.penalties[key];
+          switch (key) {
+            case "DriveThrough":
+            case "StopAndGo":
+            case "PitStop":
+            return p === 0; // ativa
+            case "SlowDown":
+            case "TimeDeduction":
+            return p > 0;
+            default:
+            return false;
+          }
+          });
+          if (!active.length) return null;
+          // ==== RENDER ====
+          return active.map((key) => (
+          <div key={key} className="penalties">
+            <div className="penaltiesText">
+            {key === "DriveThrough"
+              ? "DT"
+              : key === "PitStop"
+              ? "PS"
+              : key === "SlowDown"
+              ? "SD"
+              : key === "StopAndGo"
+              ? "SG"
+              : "TD"}
+            </div>
+          </div>
+          ));
+        })()
+        }
 
         {/*Finish Info*/}
         {showIt &&
           (player.finishStatus > 1 ? (
             <div className="notFinishBlock">{"|"}</div>
           ) : null)}
-      </div>
-    ) : !this.props.settings.subSettings.showFullGrid.enabled &&
+        </div>
+      ) : !this.props.settings.subSettings.showFullGrid.enabled &&
       ((classOnly &&
         player.performanceIndex === classPerformanceIndex &&
         positionClass > 6 &&

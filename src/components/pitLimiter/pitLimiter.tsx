@@ -39,64 +39,45 @@ interface IPosVec {
 @observer
 export default class PitLimiter extends React.Component<IProps, {}> {
 	@observable accessor inPitLane = 0;
-
 	@observable accessor pitlaneMax = 0;
-
 	@observable accessor speed = 0;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor mphSpeed = speedInMPH || false;
-
 	@observable accessor lapDistance = -1;
-
 	@observable accessor pitEntrance = -1;
-
 	@observable accessor pitDistance = -1;
-
 	@observable accessor pitState = -1;
-
 	@observable accessor pitMenuSelection = -1;
-
 	@observable accessor nowPos: IPosVec = {
 		X: -1,
 		Y: -1,
 		Z: -1
 	};
-
 	@observable accessor lastPos: IPosVec = {
 		X: -1,
 		Y: -1,
 		Z: -1
 	};
-
 	@observable accessor pitBoxSpotPos: IPosVec = {
 		X: -1,
 		Y: -1,
 		Z: -1
 	};
-
 	@observable accessor pitMaxDistance = -1;
-
 	@observable accessor pitBoxSpotDistance = -1;
-
 	constructor(props: IProps) {
 		super(props);
-
 		registerUpdate(this.update);
 	}
-
 	componentWillUnmount() {
 		unregisterUpdate(this.update);
 	}
 
 	@action
 	private update = () => {
-		if (
+		/*if (
 			(
 				highPerformanceMode &&
 				nowCheck - this.lastCheck >= 33
@@ -110,7 +91,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 				!highPerformanceMode &&
 				nowCheck - this.lastCheck >= 66
 			)
-		) {
+		)*/ {
 			this.lastCheck = nowCheck;
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;

@@ -4,6 +4,7 @@ declare global {
   }
 }
 import { LapEvents } from "../../lib/LapEvents";
+import { PitEvents } from "../../lib/PitEvents";
 import {
   classNames,
   base64ToString,
@@ -101,9 +102,9 @@ interface IDriverInfo {
   classColor: string;
   lapDistance: number;
   finishStatus: number;
-  speed: number;
+  // speed: number;
   lapPrevious: number;
-  distDiff: number;
+  // distDiff: number;
   dPos: {
     X: number;
     Y: number;
@@ -111,6 +112,7 @@ interface IDriverInfo {
   };
 }
 
+/*
 interface ILastPosVector {
   [index: string]: {
     X: number;
@@ -144,6 +146,7 @@ interface ILapRecords {
   // 0 - dist array
   // 1 - time array
 }
+*/
 
 interface IClassLaps {
   // Index = ClassPerformanceIndex
@@ -151,12 +154,7 @@ interface IClassLaps {
   // lapTime
 }
 
-export interface IDriverDiffs {
-  // Index = SlotId
-  [index: number]: number[][];
-  // 0 - lapTime
-  // 1 - diff to watched Car
-}
+
 
 export interface IDriverPitInfo {
   // Index = SlotId
@@ -197,8 +195,7 @@ let eGainLossPermanentBar = false;
 let eRankInvert = false;
 let eRankInvertRelative = false;
 let eLogoUrl = "./../../img/logo.png";
-let eDriverPitInfo: IDriverPitInfo = {};
-let eDriverDiffs: IDriverDiffs = {};
+// let eDriverPitInfo: IDriverPitInfo = {};
 let eResetId = "";
 let eIsLeaderboard = false;
 let eIsHillClimb = false;
@@ -221,8 +218,7 @@ export {
   eRankInvert,
   eRankInvertRelative,
   eLogoUrl,
-  eDriverPitInfo,
-  eDriverDiffs,
+  // eDriverPitInfo,
   eIsIngameBrowser,
   eIsLeaderboard,
   eIsHillClimb,
@@ -247,15 +243,15 @@ export default class App extends React.Component<IProps> {
   @observable accessor trackingString = "";
   @observable accessor tempTrackingString = "";
   @observable accessor driverPitInfo: IDriverPitInfo = {};
-  @observable accessor pitBoxDistances: IPitBoxDistances = {};
-  @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
-  @observable accessor lastPosition: ILastPosVector = {};
-  @observable accessor driverLapRecord: ILapRecords = {};
-  @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
-  @observable accessor storedRecordedLaps: ILapData = {};
+  // @observable accessor pitBoxDistances: IPitBoxDistances = {};
+  // @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
+  // @observable accessor lastPosition: ILastPosVector = {};
+  // @observable accessor driverLapRecord: ILapRecords = {};
+  // @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
+  // @observable accessor storedRecordedLaps: ILapData = {};
   @observable accessor classBestLap: IClassLaps = {};
-  @observable accessor currentClassLapData = [[-1], [0], [0], [0]];
-  @observable accessor tempClassLapData = [[-1], [0], [0], [0]];
+  // @observable accessor currentClassLapData = [[-1], [0], [0], [0]];
+  // @observable accessor tempClassLapData = [[-1], [0], [0], [0]];
   @observable accessor drivers: IDriverInfo[] = [];
   // loadTime = Date.now();
   @observable accessor loadTime = Date.now();
@@ -1995,6 +1991,7 @@ export default class App extends React.Component<IProps> {
     this.lapDistance = r3e.data.LapDistance;
     this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
+    PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
     this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;
@@ -2270,7 +2267,7 @@ export default class App extends React.Component<IProps> {
 
       // this.runBooboo();
       // this.getClassBestLaps(this.drivers);
-      this.updateDriverTimes();
+      // this.updateDriverTimes();
       // this.updateLapRecordTimes();
     }
   };
@@ -2313,7 +2310,7 @@ export default class App extends React.Component<IProps> {
           : driver.FinishStatus,
       speed: driver.CarSpeed,
       lapPrevious: driver.SectorTimePreviousSelf.Sector3,
-      distDiff: isUser ? 0 : driver.InPitlane ? 0 : 0, // this.getGapToPlayer(driver.LapDistance),
+      //distDiff: isUser ? 0 : driver.InPitlane ? 0 : 0, // this.getGapToPlayer(driver.LapDistance),
       /*timeDiff: isUser
         ? 0
         : this.driverRecordedLaps !== undefined
@@ -2343,7 +2340,8 @@ export default class App extends React.Component<IProps> {
     });
   };
   */
-    
+  
+  /* --- TESTAR V 0.9
   private updateDriverTimes() {
   if (!this.drivers.length) return;
   this.drivers.forEach((driver) => {
@@ -2429,6 +2427,7 @@ export default class App extends React.Component<IProps> {
   // Mantém somente o que ainda é consumido
   eDriverPitInfo = this.driverPitInfo;
 }
+*--------/
   
   /*
   private updateLapRecordTimes() {
@@ -3032,7 +3031,6 @@ export default class App extends React.Component<IProps> {
       return;
     }
     this.settings[name].zoom = parseFloat(e.target.value);
-
     this.saveSettings();
   };
 
@@ -3326,12 +3324,7 @@ export default class App extends React.Component<IProps> {
     localStorage.hideWidgets = hideWidgets ? "1" : "0";
     this.saveSettings();
   };
-  /* EXCLUIR
-  @action
-  private openDownload = () => {
-    window.open("https://sealhud.github.io/dash.zip", "_blank");
-  };
-  */
+  
   @action
   private toggleLockHud = () => {
     this.lockHud = !this.lockHud;

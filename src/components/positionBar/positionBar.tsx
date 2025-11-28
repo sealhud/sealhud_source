@@ -1,4 +1,5 @@
 import { LapEvents } from "../../lib/LapEvents";
+import { PitEvents } from "../../lib/PitEvents";
 import {
   classNames,
   base64ToString,
@@ -31,9 +32,9 @@ import { action, observable } from 'mobx';
 import { 
 	IWidgetSetting,
 	showAllMode,
-	IDriverPitInfo,
+	// IDriverPitInfo,
 	eDriverNum,
-	eDriverPitInfo,
+	// eDriverPitInfo,
 	eIsLeaderboard,
 	eIsHillClimb,
 	eGainLossPermanentBar,
@@ -810,7 +811,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							player={player}
 							relative={this.props.relative}
 							settings={this.props.settings}
-							playerPitInfo={eDriverPitInfo}
+							// playerPitInfo={eDriverPitInfo}
 							singleplayerRace={this.singleplayerRace}
 							sessionType={this.sessionType}
 							sessionPhase={this.sessionPhase}
@@ -1227,6 +1228,18 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				)
 			}
 
+			{/*PB: Show Session Duration (# Laps)*/}
+			{!this.props.relative &&
+			this.props.settings.subSettings.sessionTime.enabled &&
+			this.maxLaps !== INVALID && (
+				<div className="currentLap">
+					<span className="mono">
+						{this.currentLap}/{this.maxLaps}
+					</span>
+					<div className="label">{_('Lap')}</div>
+				</div>
+			)}
+
 			</div>
 		);
 	}
@@ -1238,7 +1251,7 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
 	player: IDriverInfo;
 	relative: boolean;
 	settings: IWidgetSetting;
-	playerPitInfo: IDriverPitInfo;
+	// playerPitInfo: IDriverPitInfo;
 	singleplayerRace: boolean;
 	sessionType: number;
 	sessionPhase: number;
@@ -1261,6 +1274,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 		const gameInReplay = r3e.data.GameInReplay > 0;
 		const position = this.props.position;
 		const player = this.props.player;
+		/*
 		const playerPitInfo =
 			r3e.data.GameInReplay > 0 &&
 			((r3e.data.SessionTimeDuration !== -1 &&
@@ -1269,6 +1283,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
 				? {}
 				: this.props.playerPitInfo;
+		*/
 		const singleplayerRace = this.props.singleplayerRace;
 		const multiClass = this.props.multiClass;
 		const isLeaderboard = this.props.isLeaderboard;
@@ -1512,12 +1527,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				)}
 
 				{/*RELATIVE: Show Class Logos*/}
-					{this.props.relative &&
-					this.props.settings.subSettings.showClassLogos.enabled && (
-					<div className="classLogo">
-						<img src={player.classUrl} width="20" height="20" />
-					</div>
-					)}
+				{this.props.relative &&
+				this.props.settings.subSettings.showClassLogos.enabled && (
+				<div className="classLogo">
+					<img src={player.classUrl} width="20" height="20" />
+				</div>
+				)}
 
 				{/*RELATIVE: GAP BETWEEN DRIVERS*/}
 				{this.props.relative && (
@@ -1567,391 +1582,309 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					/>
 				)}
 
+				
 				{/*STANDINGS: Pit-Stop Status Info*/}
-				{this.props.relative ||
-				player.finishStatus > 0 ||
-				!this.props.settings.subSettings.showPitStatus.enabled ||
-				(sessionType !== ESession.Race &&
-				player.pitting &&
-				sessionPhase === 6) ? null : player.pitting > 0 || showAllMode ? (
-				// Showing when In Pits and time should be shown
-				this.props.settings.subSettings.showPitTime.enabled &&
-				(showAllMode ||
-					(playerPitInfo[player.id] !== undefined &&
-					sessionType === ESession.Race &&
-					playerPitInfo[player.id][2] >= 0)) ? (
-					<div
-					className={classNames("pitting", {
-						noShadow: false,
-					})}
-					style={{
-						background:
-						showAllMode || playerPitInfo[player.id][3] > 0
-							? showAllMode || playerPitInfo[player.id][4] > 0
-							? "rgba(0, 221, 23, 0.8)"
-							: "rgba(255, 70, 0, 0.8)"
-							: "rgba(0, 176, 255, 0.8)",
-						color: "#fff",
-						width: "25px",
-					}}
-					>
-					<div className="pittinga">{`${"PIT"}`}</div>
-					<div
-						className={classNames("pittime", {
-						noShadow: false,
-						})}
-					>
-						{`${showAllMode	? 52.9 : fancyTimeFormatGap(
-							(nowCheck - playerPitInfo[player.id][2]) / 1000, 1,1,false,true) // .toFixed(1)
-						}`}
-					</div>
-					<div
-						className={classNames("pittimea", {
-						noShadow: showAllMode
-							? false
-							: playerPitInfo[player.id][3] <= 0,
-						})}
-						style={{
-						color:
-							showAllMode || playerPitInfo[player.id][3] > 0
-							? showAllMode || playerPitInfo[player.id][4] > 0
-								? "rgba(0, 221, 23, 1)"
-								: "rgba(255, 255, 255, 1)"
-							: "rgba(255, 255, 255, 0)",
+				{
+					(() => {
+						// Atalhos e segurança
+						if (
+						this.props.relative ||
+						player.finishStatus > 0 ||
+						!this.props.settings.subSettings.showPitStatus.enabled ||
+						(sessionType !== ESession.Race && player.pitting && sessionPhase === 6)
+						) {
+						return null;
+						}
+						const now = performance.now();
+						const st = PitEvents.getState(player.id);
+						const inPit = st?.inPitlane ?? false;
+						const enterTs = st?.timeEnterPitlane ?? null;
+						const stopTs = st?.timeStopOnSpot ?? null;
+						const leaveTs = st?.timeLeaveSpot ?? null;
+						const exitTs = st?.timeExitPitlane ?? null;
+						const spotDur = st?.spotDuration ?? null;
+						const pitDur = st?.pitTotalDuration ?? null;
+						// const pitCount = st?.pitCount ?? 0;
+						// Configs
+						const showAll = showAllMode;
+						const showPitTime = this.props.settings.subSettings.showPitTime.enabled;
+						const autoHide = this.props.settings.subSettings.autoHidePitTime.enabled;
+						const showPenalties = this.props.settings.subSettings.showPenalties.enabled;
+						// Aux
+						const exitRecent = exitTs ? now - exitTs <= 7500 : false;
+						const shouldShowExitTime =
+						exitTs && (autoHide ? exitRecent : !showPenalties || exitRecent);
+						// Formatting helper
+						const fmt = (t: number | null) =>
+						t != null
+							? fancyTimeFormatGap(t, 1, 1, false, true)
+							: fancyTimeFormatGap(0, 1, 1, false, true);
 
-						background:
-							showAllMode || playerPitInfo[player.id][3] > 0
-							? "rgba(0, 100, 255, 0.8)"
-							: "rgba(0, 100, 255, 0)",
-						}}
-					>
-						{showAllMode || playerPitInfo[player.id][3] > 0
-						? showAllMode || playerPitInfo[player.id][4] <= 0
-							? `${showAllMode ? 13.5	: fancyTimeFormatGap(
-								(nowCheck - playerPitInfo[player.id][3]) / 1000,1,1,false,true) // .toFixed(1)
-							}`
-							: `${
-								fancyTimeFormatGap(
-								(playerPitInfo[player.id][4] -
-									playerPitInfo[player.id][3]) / 1000,1,1,false,true) // .toFixed(1)
-							}`
-						: "|"}
-					</div>
-					</div>
-					) : (
-						// Showing when in Pits but no time should be shown
-						<div
-						className={classNames("pitting", {
-							noShadow: false,
-						})}
-						style={{
-							background:
-							showAllMode ||
-							(playerPitInfo[player.id] !== undefined &&
-								playerPitInfo[player.id][3] > 0)
-								? showAllMode ||
-								(playerPitInfo[player.id] !== undefined &&
-									playerPitInfo[player.id][4] > 0)
-								? "rgba(0, 221, 23, 0.8)"
-								: "rgba(255, 70, 0, 0.8)"
-								: "rgba(0, 176, 255, 0.8)",
-							color: "#fff",
-							width: "25px",
-						}}
-						>
-						<div className="pittinga">{`${"PIT"}`}</div>
-						</div>
-					)
-					) : // Shown when not in Pits
-					sessionType === ESession.Race &&
-					(player.mandatoryPit !== -1 ||
-						(gameInReplay && sessionType === ESession.Race)) ? (
-					// Shown when Mandatory is active
-					playerPitInfo[player.id] !== undefined &&
-					playerPitInfo[player.id][5] > 0 &&
-					((nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-						this.props.settings.subSettings.autoHidePitTime.enabled) ||
-						(!this.props.settings.subSettings.autoHidePitTime.enabled &&
-						!this.props.settings.subSettings.showPenalties.enabled) ||
-						(!this.props.settings.subSettings.autoHidePitTime.enabled &&
-						nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-						this.props.settings.subSettings.showPenalties.enabled)) ? (
-						// Shown when Times should be shown and and it was a actual stop
-						(this.props.settings.subSettings.showPitTime.enabled &&
-						player.numPitstops > 1) ||
-						(player.numPitstops === 1 && pitWindow > 0) ? (
-						// Shown when Pit Window is active
-						<div
-							className={classNames("pitting", {
-							noShadow: false,
-							})}
-							style={{
-							background:
-								player.mandatoryPit === 2
-								? "rgba(0, 221, 23, 0.8)"
-								: "rgba(255, 70, 0, 0.8)",
-							color: "rgba(255, 255, 255, 1)",
-							width: "25px",
-							}}
-						>
-							<div className="pittinga">{player.numPitstops}</div>
-							<div
-							className={classNames("pittime", {
-								noShadow: false,
-							})}
-							>
-							{`${
-								fancyTimeFormatGap(
-								(playerPitInfo[player.id][5] -
-									playerPitInfo[player.id][2]) / 1000,1,1,false,true) // .toFixed(1)
-							}`}
-							</div>
-							<div
-							className={classNames("pittimea", {
-								noShadow: playerPitInfo[player.id][4] <= 0,
-							})}
-							style={{
-								color:
-								playerPitInfo[player.id][4] > 0
-									? "rgba(0, 221, 23, 1)"
-									: "rgba(0, 221, 23, 0)",
-								background:
-								playerPitInfo[player.id][4] > 0
-									? "rgba(0, 100, 255, 0.8)"
-									: "rgba(0, 100, 255, 0)",
-							}}
-							>
-							{playerPitInfo[player.id][4] > 0
-								? `${
-									fancyTimeFormatGap(
-									(playerPitInfo[player.id][4] -
-										playerPitInfo[player.id][3]) / 1000, 1, 1, false, true) // .toFixed(1)
-								}`
-								: "|"}
-							</div>
-						</div>
-						) : (
-						<div
-							className={classNames("pitting", {
-							noShadow: true,
-							})}
-							style={{
-							background: "rgba(0, 0, 0, 0)",
-							color: "rgba(0, 0, 0, 0)",
-							width: "25px",
-							}}
-						>
-							<div className="pittinga" />
-							<div
-							className={classNames("pittime", {
-								noShadow: false,
-							})}
-							>
-							{`${
-								fancyTimeFormatGap(
-								(playerPitInfo[player.id][5] -
-									playerPitInfo[player.id][2]) / 1000,1,1,false,true) // .toFixed(1)
-							}`}
-							</div>
-							<div
-							className={classNames("pittimea", {
-								noShadow: playerPitInfo[player.id][4] <= 0,
-							})}
-							style={{
-								color:
-								playerPitInfo[player.id][4] > 0
-									? "rgba(0, 221, 23, 1)"
-									: "rgba(0, 221, 23, 0)",
-								background:
-								playerPitInfo[player.id][4] > 0
-									? "rgba(0, 100, 255, 0.8)"
-									: "rgba(0, 100, 255, 0)",
-							}}
-							>
-							{playerPitInfo[player.id][4] > 0
-								? `${
-									fancyTimeFormatGap(
-									(playerPitInfo[player.id][4] -
-										playerPitInfo[player.id][3]) / 1000,1,1,false,true) // .toFixed(1)
-								}`
-								: "|"}
-							</div>
-						</div>
-						)
-					) : player.numPitstops > 1 ? (
-						<div
-						className={classNames("pitting", {
-							noShadow: false,
-						})}
-						style={{
-							background:
-							player.mandatoryPit === 2
-								? "rgba(0, 221, 23, 0.8)"
-								: "rgba(255, 70, 0, 0.8)",
-							color: "rgba(255, 255, 255, 1)",
-							width: "25px",
-						}}
-						>
-						<div className="pittinga">{player.numPitstops}</div>
-						</div>
-					) : null
-					) : sessionType === ESession.Race && player.numPitstops > 0 ? (
-					this.props.settings.subSettings.showPitTime.enabled &&
-					playerPitInfo[player.id] !== undefined &&
-					playerPitInfo[player.id][5] > 0 &&
-					((nowCheck - playerPitInfo[player.id][5] <= 7500 &&
-						this.props.settings.subSettings.autoHidePitTime.enabled) ||
-						(!this.props.settings.subSettings.autoHidePitTime.enabled &&
-						!this.props.settings.subSettings.showPenalties.enabled) ||
-						(!this.props.settings.subSettings.autoHidePitTime.enabled &&
-						this.props.settings.subSettings.showPenalties.enabled &&
-						nowCheck - playerPitInfo[player.id][5] <= 7500)) ? (
-						<div
-						className={classNames("pitting", {
-							noShadow: false,
-						})}
-						style={{
-							background: "rgba(0, 221, 23, 0.8)",
-							color: "rgba(255, 255, 255, 1)",
-							width: "25px",
-						}}
-						>
-						<div className="pittinga">{player.numPitstops}</div>
-						<div
-							className={classNames("pittime", {
-							noShadow: false,
-							})}
-						>
-							{`${
-							fancyTimeFormatGap(
-								(playerPitInfo[player.id][5] -
-								playerPitInfo[player.id][2]) / 1000,1,1,false,true) // .toFixed(1)
-							}`}
-						</div>
-						<div
-							className={classNames("pittimea", {
-							noShadow: playerPitInfo[player.id][4] <= 0,
-							})}
-							style={{
-							color:
-								playerPitInfo[player.id][4] > 0
-								? "rgba(0, 221, 23, 1)"
-								: "rgba(0, 221, 23, 0)",
-							background:
-								playerPitInfo[player.id][4] > 0
-								? "rgba(0, 100, 255, 0.8)"
-								: "rgba(0, 100, 255, 0)",
-							}}
-						>
-							{playerPitInfo[player.id][4] > 0
-							? `${
-								fancyTimeFormatGap(
-									(playerPitInfo[player.id][4] -
-									playerPitInfo[player.id][3]) / 1000,1,1,false,true) // .toFixed(1)
-								}`
-							: "|"}
-						</div>
-						</div>
-					) : (
-						<div
-						className={classNames("pitting", {
-							noShadow: false,
-						})}
-						style={{
-							background: "rgba(0, 221, 23, 0.8)",
-							color: "rgba(255, 255, 255, 1)",
-							width: "25px",
-						}}
-						>
-						<div className="pittinga">{player.numPitstops}</div>
-						</div>
-					)
-					) : null
-					}
+						// ---------- CASE A: currently in pits (or forced showAllMode) ----------
+						if (inPit || showAll) {
+						const showTimes =
+							showPitTime &&
+							(showAll || (enterTs !== null && sessionType === ESession.Race));
 
-					{/*RELATIVES: Pit-Stop Status Info*/}
-					{this.props.relative &&
-					(sessionType === ESession.Race || showAllMode) &&
-					this.props.settings.subSettings.showPitStops.enabled && (
-						<div
-						className={classNames("stopStatus", {
-							textShadow: player.numStops > 0,
-						})}
-						style={{
-							background:
-							player.mandatoryPit === 2
-								? "green"
-								: player.mandatoryPit === 0 || player.mandatoryPit === 1
-								? "red"
-								: player.inPit
-								? "red"
-								: "dimgray",
-							color:
-							player.numStops > 0
-								? "white"
-								: player.inPit
-								? "white"
-								: player.mandatoryPit === 2
-								? "green"
-								: player.mandatoryPit === 0 || player.mandatoryPit === 1
-								? "red"
-								: player.inPit
-								? "red"
-								: "dimgray",
-						}}
-						>
-						{player.inPit ? `${"PIT"}` : player.numStops}
-						</div>
-					)}
+						const bg =
+							showAll || (stopTs && stopTs > 0)
+							? showAll || (leaveTs && leaveTs > 0)
+								? "rgba(0, 221, 23, 0.8)" // leaving
+								: "rgba(255, 70, 0, 0.8)" // stopped
+							: "rgba(0, 176, 255, 0.8)"; // entering
 
-					{/*STANDINGS: Penalties Info*/}
-					{!this.props.relative &&
-					this.props.settings.subSettings.showPenalties.enabled &&
-					(showAllMode ||
-						(sessionType === ESession.Race &&
-						((player.finishStatus === 0 &&
-							player.pitting === 0 &&
-							(playerPitInfo[player.id] === undefined ||
-							(playerPitInfo[player.id] !== undefined &&
-								((playerPitInfo[player.id][5] > 0 &&
-								nowCheck - playerPitInfo[player.id][5] > 7500) ||
-								playerPitInfo[player.id][5] <= 0)))) ||
-							player.finishStatus === 1))) &&
-					Object.keys(player.penalties)
-						.filter((penaltyKey) => {
-							const p = player.penalties[penaltyKey];
-							switch (penaltyKey) {
-								case "DriveThrough":
-								case "StopAndGo":
-								case "PitStop":
-								return p === 0;
-								case "SlowDown":
-								case "TimeDeduction":
-								return p > 0;
-								default:
-								return false;
-							}
-						})
-						.map((penaltyKey) => {
+						const laneTime = enterTs
+							? showAll
+							? 52.9
+							: (now - enterTs) / 1000
+							: null;
+						if (showTimes) {
+							return (
+							<div
+								className="pitting"
+								style={{ background: bg, color: "#fff", width: "25px" }}
+							>
+								<div className="pittinga">PIT</div>
+								<div className="pittime">
+								{showAll ? 52.9 : laneTime != null ? fmt(laneTime) : fmt(0)}
+								</div>
+								<div
+								className="pittimea"
+								style={{
+									color:
+									showAll || (stopTs && stopTs > 0)
+										? showAll || (leaveTs && leaveTs > 0)
+										? "rgba(0, 221, 23, 1)"
+										: "rgba(255, 255, 255, 1)"
+										: "rgba(255, 255, 255, 0)",
+									background:
+									showAll || (stopTs && stopTs > 0)
+										? "rgba(0, 100, 255, 0.8)"
+										: "rgba(0, 100, 255, 0)",
+								}}
+								>
+								{showAll || (stopTs && stopTs > 0)
+									? showAll || !(leaveTs && leaveTs > 0)
+									? showAll
+										? 13.5
+										: fmt((now - stopTs!) / 1000)
+									: fmt(((leaveTs as number) - (stopTs as number)) / 1000)
+									: " "}
+								</div>
+							</div>
+							);
+						}
+						// IN PIT but no time
 						return (
-							<div key={penaltyKey} className="penalties">
-							<div className="penaltiesText">
-								{penaltyKey === "DriveThrough"
-								? "DT"
-								: penaltyKey === "PitStop"
-								? "PS"
-								: penaltyKey === "SlowDown"
-								? "SD"
-								: penaltyKey === "StopAndGo"
-								? "SG"
-								: "TD"}
-							</div>
+							<div
+							className="pitting"
+							style={{ background: bg, color: "#fff", width: "25px" }}
+							>
+							<div className="pittinga">PIT</div>
 							</div>
 						);
 						}
-						)}
-					{" "}
-				</div>
+
+						// ---------- CASE B: mandatory pit logic (shown when NOT in pits) ----------
+						if (
+						sessionType === ESession.Race &&
+						(player.mandatoryPit !== -1 ||
+							(gameInReplay && sessionType === ESession.Race))
+						) {
+						const isGreen = player.mandatoryPit === 2;
+						const bg = isGreen ? "rgba(0,221,23,0.8)" : "rgba(255,70,0,0.8)";
+						const hasExit = exitTs != null;
+						const hasEnter = enterTs != null;
+						const total =
+							pitDur ??
+							(hasEnter && hasExit ? (exitTs! - enterTs!) / 1000 : null);
+						const spot =
+							spotDur ??
+							(stopTs && leaveTs ? (leaveTs - stopTs) / 1000 : null);
+
+						// ---- EXIBE TEMPOS + BADGE IMEDIATAMENTE ----
+						if (hasExit && shouldShowExitTime) {
+							return (
+							<div
+								className="pitting"
+								style={{ background: bg, color: "#fff", width: "25px" }}
+							>
+								{/* BADGE — sempre aparece imediatamente */}
+								<div className="pittinga">{player.numPitstops}</div>
+								{/* Tempo total */}
+								<div className="pittime">{fmt(total)}</div>
+								{/* Spot time */}
+								<div
+								className="pittimea"
+								style={{
+									color: spot != null ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
+									background:
+									spot != null
+										? "rgba(0,100,255,0.8)"
+										: "rgba(0,100,255,0)",
+								}}
+								>
+								{spot != null ? fmt(spot) : " "}
+								</div>
+							</div>
+							);
+						}
+						// ----- SEM TEMPOS → mostra só o badge -----
+						if (player.numPitstops > 0) {
+							return (
+							<div
+								className="pitting"
+								style={{ background: bg, color: "#fff", width: "25px" }}
+							>
+								<div className="pittinga">{player.numPitstops}</div>
+							</div>
+							);
+						}
+						return null;
+						}
+
+						// ---------- CASE C: regular post-pit display for normal races ----------
+						if (sessionType === ESession.Race && player.numPitstops > 0) {
+						if (
+							showPitTime &&
+							exitTs &&
+							(autoHide ? exitRecent : !showPenalties || exitRecent)
+						) {
+							const total =
+							pitDur ?? (enterTs && exitTs ? (exitTs - enterTs) / 1000 : null);
+							const spot =
+							spotDur ?? (stopTs && leaveTs ? (leaveTs - stopTs) / 1000 : null);
+
+							return (
+							<div
+								className="pitting"
+								style={{
+								background: "rgba(0,221,23,0.8)",
+								color: "#fff",
+								width: "25px",
+								}}
+							>
+								<div className="pittinga">{player.numPitstops}</div>
+								<div className="pittime">{fmt(total)}</div>
+								<div
+								className="pittimea"
+								style={{
+									color: spot ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
+									background: spot ? "rgba(0,100,255,0.8)" : "rgba(0,100,255,0)",
+								}}
+								>
+								{spot ? fmt(spot) : " "}
+								</div>
+							</div>
+							);
+						}
+						return (
+							<div
+							className="pitting"
+							style={{
+								background: "rgba(0,221,23,0.8)",
+								color: "#fff",
+								width: "25px",
+							}}
+							>
+							<div className="pittinga">{player.numPitstops}</div>
+							</div>
+						);
+						}
+						return null;
+					})()
+				}
+
+				{/*RELATIVES: Pit-Stop Status Info*/}
+				{this.props.relative &&
+				(sessionType === ESession.Race || showAllMode) &&
+				this.props.settings.subSettings.showPitStops.enabled && (
+					<div
+					className={classNames("stopStatus", {
+						textShadow: player.numStops > 0,
+					})}
+					style={{
+						background:
+						player.mandatoryPit === 2
+							? "green"
+							: player.mandatoryPit === 0 || player.mandatoryPit === 1
+							? "red"
+							: player.inPit
+							? "red"
+							: "dimgray",
+						color:
+						player.numStops > 0
+							? "white"
+							: player.inPit
+							? "white"
+							: player.mandatoryPit === 2
+							? "green"
+							: player.mandatoryPit === 0 || player.mandatoryPit === 1
+							? "red"
+							: player.inPit
+							? "red"
+							: "dimgray",
+					}}
+					>
+					{player.inPit ? `${"PIT"}` : player.numStops}
+					</div>
+				)}
+
+				{/*STANDINGS: Penalties Info*/}
+				{!this.props.relative &&
+				this.props.settings.subSettings.showPenalties.enabled &&
+				(showAllMode ||
+					(sessionType === ESession.Race &&
+					player.finishStatus === 0)) &&
+
+				(() => {
+					// ==== PIT / PENALTY VISIBILITY CONTROL USING PitEvents ====
+					const inPit = PitEvents.isInPitlane(player.id);
+					const highlight = PitEvents.shouldHighlight(player.id);
+					// Se não estiver no modo de teste (showAll) ocultamos penalidades quando:
+					// - Está no pitlane
+					// - Ainda está no período de highlight pós-pit
+					if (!showAllMode) {
+					if (inPit) return null;
+					if (highlight) return null;
+					}
+					// ==== FILTRAR PENALIDADES ATIVAS ====
+					const active = Object.keys(player.penalties).filter((key) => {
+					const p = player.penalties[key];
+					switch (key) {
+						case "DriveThrough":
+						case "StopAndGo":
+						case "PitStop":
+						return p === 0; // ativa
+						case "SlowDown":
+						case "TimeDeduction":
+						return p > 0;
+						default:
+						return false;
+					}
+					});
+					if (!active.length) return null;
+					// ==== RENDER ====
+					return active.map((key) => (
+					<div key={key} className="penalties">
+						<div className="penaltiesText">
+						{key === "DriveThrough"
+							? "DT"
+							: key === "PitStop"
+							? "PS"
+							: key === "SlowDown"
+							? "SD"
+							: key === "StopAndGo"
+							? "SG"
+							: "TD"}
+						</div>
+					</div>
+					));
+				})()
+				}
+
+				{" "}
+			</div>
 			);
 		}
 		return null;

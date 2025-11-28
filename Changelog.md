@@ -2,7 +2,7 @@
 	----------		
 	GENERAL
 	- TV Tower: Now, the intervals between players are displayed in M:SS.S format. Displaying M:SS.SSS is unnecessary excess information.
-	- Relatives: No new car names were mapped since 2021! Now all car names are up to date.
+	- Relatives: No new car names were mapped since 2021. Now all car names are up to date.
 	
 	0.8
 	----------		
