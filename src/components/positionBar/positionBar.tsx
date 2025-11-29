@@ -222,19 +222,19 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				);
 			}
 
-      driverData = driverData.sort(this.sortByLapDistance);
+			driverData = driverData.sort(this.sortByLapDistance);
 
-      const playerIndex = this.getPlayerPosition(driverData);
-      const N = driverData.length;
-      // Construir array circular
-      const circular = driverData.concat(driverData).concat(driverData);
-      // Centro do bloco no array circular
-      const center = N + playerIndex;
-      // Cortar exatamente eDriverNum acima e abaixo
-      const start = center - eDriverNum;
-      const end   = center + eDriverNum + 1;
-      // Remover duplicados (caso haja pilotos com dados incompletos)
-      driverData = uniq(circular.slice(start, end));
+			const playerIndex = this.getPlayerPosition(driverData);
+			const N = driverData.length;
+			// Construir array circular
+			const circular = driverData.concat(driverData).concat(driverData);
+			// Centro do bloco no array circular
+			const center = N + playerIndex;
+			// Cortar exatamente eDriverNum acima e abaixo
+			const start = center - eDriverNum;
+			const end   = center + eDriverNum + 1;
+			// Remover duplicados (caso haja pilotos com dados incompletos)
+			driverData = uniq(circular.slice(start, end));
 		}
 
 		this.calculateDiffs(driverData);
@@ -1604,7 +1604,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 						const exitTs = st?.timeExitPitlane ?? null;
 						const spotDur = st?.spotDuration ?? null;
 						const pitDur = st?.pitTotalDuration ?? null;
-						// const pitCount = st?.pitCount ?? 0;
 						// Configs
 						const showAll = showAllMode;
 						const showPitTime = this.props.settings.subSettings.showPitTime.enabled;

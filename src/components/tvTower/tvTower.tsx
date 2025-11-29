@@ -35,7 +35,7 @@ import {
   eIsHillClimb,
   eGainLossPermanentTower,
   eRankInvert,
-  IDriverPitInfo,
+  // IDriverPitInfo,
   showAllMode,
 } from "../app/app";
 import { action, observable } from "mobx";
@@ -130,7 +130,7 @@ export default class TvTower extends React.Component<IProps, {}> {
   @observable accessor currentSlotId = -1;
   @observable accessor isLeaderboard = false;
   @observable accessor isHillClimb = false;
-  @observable accessor driverPitInfo: IDriverPitInfo = {};
+  // @observable accessor driverPitInfo: IDriverPitInfo = {};
   // @observable accessor driverDiffs: IDriverDiffs = {};
   @observable accessor gameInReplay = false;
   constructor(props: IProps) {
@@ -285,6 +285,39 @@ export default class TvTower extends React.Component<IProps, {}> {
       this.singleplayerRace = true;
     }
 
+  const st = PitEvents.getState(driver.DriverInfo.SlotId);
+  const veryShortStop =
+    st?.timeStopOnSpot != null &&
+    st?.timeLeaveSpot != null &&
+    (st.timeLeaveSpot - st.timeStopOnSpot) < 2000;
+  const finishStatusPatched =
+    this.gameInReplay &&
+    st &&
+    st.inPitlane &&
+    veryShortStop &&
+    driver.EngineState === 0
+      ? 2
+      : driver.FinishStatus;
+  const finishStatusTextPatched =
+    this.gameInReplay &&
+    st &&
+    st.inPitlane &&
+    veryShortStop &&
+    driver.EngineState === 0
+      ? "DNF"
+      : driver.FinishStatus === 0
+        ? "running"
+        : driver.FinishStatus === 1
+          ? "finished"
+          : driver.FinishStatus === 2
+            ? "DNF"
+            : driver.FinishStatus === 3
+              ? "DNQ"
+              : driver.FinishStatus === 4
+                ? "DNS"
+                : driver.FinishStatus === 5
+                  ? "DQ"
+                  : "none";
     const driverData = {
       isUser,
       id: driver.DriverInfo.SlotId,
@@ -317,40 +350,9 @@ export default class TvTower extends React.Component<IProps, {}> {
             driver.DriverInfo.ManufacturerId.toString() +
             this.logoUrlp2
           : `${this.logoUrlp1}4596${this.logoUrlp2}`,
-      finishStatus:
-        this.gameInReplay &&
-        driver.InPitlane &&
-        this.driverPitInfo[driver.DriverInfo.SlotId] !== undefined &&
-        Math.abs(
-          this.driverPitInfo[driver.DriverInfo.SlotId][2] -
-            this.driverPitInfo[driver.DriverInfo.SlotId][3],
-        ) < 2000 &&
-        driver.EngineState === 0
-          ? 2
-          : driver.FinishStatus,
-      finishStatusText:
-        this.gameInReplay &&
-        driver.InPitlane &&
-        this.driverPitInfo[driver.DriverInfo.SlotId] !== undefined &&
-        Math.abs(
-          this.driverPitInfo[driver.DriverInfo.SlotId][2] -
-            this.driverPitInfo[driver.DriverInfo.SlotId][3],
-        ) < 2000 &&
-        driver.EngineState === 0
-          ? "DNF"
-          : driver.FinishStatus === 0
-            ? "running"
-            : driver.FinishStatus === 1
-              ? "finished"
-              : driver.FinishStatus === 2
-                ? "DNF"
-                : driver.FinishStatus === 3
-                  ? "DNQ"
-                  : driver.FinishStatus === 4
-                    ? "DNS"
-                    : driver.FinishStatus === 5
-                      ? "DQ"
-                      : "none",
+      // now using the modern PitEvents logic
+      finishStatus: finishStatusPatched,
+      finishStatusText: finishStatusTextPatched,
       lapPrevious: driver.SectorTimePreviousSelf.Sector3,
       lapsDone: driver.CompletedLaps,
       rankingData: getRankingData(driver.DriverInfo.UserId),

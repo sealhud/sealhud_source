@@ -9,7 +9,6 @@ interface PitState {
   stoppedOnSpot: boolean;    // está parado no box
   leftSpot: boolean;         // saiu do box e está indo embora
   exitedPitlane: boolean;    // terminou pitlane (exit)
-  pitCount: number;          // número de paradas (count oficial)
   timeEnterPitlane: number | null; // timestamp de entrada
   timeStopOnSpot: number | null;   // timestamp parou
   timeLeaveSpot: number | null;    // timestamp saiu do box
@@ -45,8 +44,6 @@ export class PitEvents {
           stoppedOnSpot: false,
           leftSpot: false,
           exitedPitlane: false,
-
-          pitCount: 0,
 
           timeEnterPitlane: null,
           timeStopOnSpot: null,
@@ -124,9 +121,6 @@ export class PitEvents {
           st.pitTotalDuration = st.laneDuration; // total = laneDuration
         }
 
-        // incrementa pitCount:
-        st.pitCount++;
-
         // popup de pit exit → aparece por 8s
         st.highlightUntil = now + this.HIGHLIGHT_DURATION;
       }
@@ -154,10 +148,6 @@ export class PitEvents {
   static shouldHighlight(id: number): boolean {
     const st = this.states.get(id);
     return st?.highlightUntil ? performance.now() < st.highlightUntil : false;
-  }
-
-  static getPitCount(id: number): number {
-    return this.states.get(id)?.pitCount ?? 0;
   }
 
   static getPitLaneTime(id: number): number | null {

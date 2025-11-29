@@ -50,7 +50,6 @@ import Info from "../info/info";
 import Inputs from "../inputs/inputs";
 import InputsGraph from "../inputsGraph/inputsGraph";
 import IShared, {
-  ESession,
   EControl,
   IDriverData,
 } from "./../../types/r3eTypes";
@@ -91,19 +90,19 @@ interface IDriverInfo {
   engineState: number;
   name: string;
   modelId: number;
-  currentTime: number;
-  validLap: number;
+  // currentTime: number;
+  // validLap: number;
   performanceIndex: number;
-  bestLapTime: number;
-  bestLapTimeLeader: number;
-  bestLapTimeClass: number;
-  pitting: number;
+  // bestLapTime: number;
+  // bestLapTimeLeader: number;
+  // bestLapTimeClass: number;
+  // pitting: number;
   classId: number;
   classColor: string;
-  lapDistance: number;
+  // lapDistance: number;
   finishStatus: number;
   // speed: number;
-  lapPrevious: number;
+  // lapPrevious: number;
   // distDiff: number;
   dPos: {
     X: number;
@@ -155,7 +154,7 @@ interface IClassLaps {
 }
 
 
-
+/*
 export interface IDriverPitInfo {
   // Index = SlotId
   [index: number]: number[];
@@ -166,6 +165,7 @@ export interface IDriverPitInfo {
   // 4 - Pit Start Time
   // 5 - Pit Exit Time
 }
+*/
 
 export interface IWidgetSetting {
   id: string;
@@ -242,14 +242,14 @@ export default class App extends React.Component<IProps> {
   @observable accessor changeLogToggled = false;
   @observable accessor trackingString = "";
   @observable accessor tempTrackingString = "";
-  @observable accessor driverPitInfo: IDriverPitInfo = {};
+  // @observable accessor driverPitInfo: IDriverPitInfo = {};
   // @observable accessor pitBoxDistances: IPitBoxDistances = {};
   // @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
   // @observable accessor lastPosition: ILastPosVector = {};
   // @observable accessor driverLapRecord: ILapRecords = {};
   // @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
   // @observable accessor storedRecordedLaps: ILapData = {};
-  @observable accessor classBestLap: IClassLaps = {};
+  // @observable accessor classBestLap: IClassLaps = {};
   // @observable accessor currentClassLapData = [[-1], [0], [0], [0]];
   // @observable accessor tempClassLapData = [[-1], [0], [0], [0]];
   @observable accessor drivers: IDriverInfo[] = [];
@@ -1825,7 +1825,7 @@ export default class App extends React.Component<IProps> {
   @observable accessor singleplayerRace = false;
   @observable accessor bestLapTimeLeader = -1;
   @observable accessor lapTimeCurrentSelf = -1;
-  @observable accessor lapDistance = -1;
+  // @observable accessor lapDistance = -1;
   @observable accessor layoutLength = -1;
   @observable accessor lapTimePreviousSelf = -1;
   @observable accessor tractionControlPercentUndefined = true;
@@ -1986,13 +1986,13 @@ export default class App extends React.Component<IProps> {
     this.currentSlotId = eCurrentSlotId;
     this.sessionType = r3e.data.SessionType;
     this.sessionPhase = r3e.data.SessionPhase;
-    this.bestLapTimeLeader = r3e.data.SectorTimesSessionBestLap.Sector3;
-    this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
-    this.lapDistance = r3e.data.LapDistance;
+    // this.bestLapTimeLeader = r3e.data.SectorTimesSessionBestLap.Sector3;
+    // this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
+    // this.lapDistance = r3e.data.LapDistance;
     this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
-    this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
+    // this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;
 
@@ -2277,6 +2277,20 @@ export default class App extends React.Component<IProps> {
     if (driver.DriverInfo.UserId === -1) {
       this.singleplayerRace = true;
     }
+    // --- Replace old driverPitInfo hack with PitEvents-based logic ---
+    const st = PitEvents.getState(driver.DriverInfo.SlotId);
+    const veryShortStop =
+      st?.timeStopOnSpot != null &&
+      st?.timeLeaveSpot != null &&
+      (st.timeLeaveSpot - st.timeStopOnSpot) < 2000;
+    const finishStatusPatched =
+      this.gameInReplay &&
+      st &&
+      st.inPitlane &&
+      veryShortStop &&
+      driver.EngineState === 0
+        ? 2
+        : driver.FinishStatus;
     const driverData = {
       isUser,
       id: driver.DriverInfo.SlotId,
@@ -2284,9 +2298,10 @@ export default class App extends React.Component<IProps> {
       engineState: driver.EngineState,
       name: base64ToString(driver.DriverInfo.Name),
       modelId: driver.DriverInfo.ModelId,
-      currentTime: driver.LapTimeCurrentSelf,
-      validLap: driver.CurrentLapValid,
+      // currentTime: driver.LapTimeCurrentSelf,
+      // validLap: driver.CurrentLapValid,
       performanceIndex: driver.DriverInfo.ClassPerformanceIndex,
+      /*
       bestLapTime: driver.SectorTimeBestSelf.Sector3,
       bestLapTimeLeader: this.bestLapTimeLeader,
       bestLapTimeClass:
@@ -2294,33 +2309,14 @@ export default class App extends React.Component<IProps> {
           ? this.classBestLap[driver.DriverInfo.ClassPerformanceIndex]
           : 9999,
       pitting: driver.InPitlane,
+      */
       classId: driver.DriverInfo.ClassId,
       classColor: getClassColor(driver.DriverInfo.ClassPerformanceIndex),
-      lapDistance: driver.LapDistance,
-      finishStatus:
-        this.gameInReplay &&
-        driver.InPitlane &&
-        this.driverPitInfo[driver.DriverInfo.SlotId] !== undefined &&
-        Math.abs(
-          this.driverPitInfo[driver.DriverInfo.SlotId][2] -
-            this.driverPitInfo[driver.DriverInfo.SlotId][3]
-        ) < 2000 &&
-        driver.EngineState === 0
-          ? 2
-          : driver.FinishStatus,
+      // lapDistance: driver.LapDistance,
+      // now using the modern PitEvents logic
+      finishStatus: finishStatusPatched,
       speed: driver.CarSpeed,
       lapPrevious: driver.SectorTimePreviousSelf.Sector3,
-      //distDiff: isUser ? 0 : driver.InPitlane ? 0 : 0, // this.getGapToPlayer(driver.LapDistance),
-      /*timeDiff: isUser
-        ? 0
-        : this.driverRecordedLaps !== undefined
-        ? this.driverRecordedLaps[0][0] !== -1
-          ? this.updateDiffs
-            ? this.getTimeToPlayer(driver.LapDistance)
-            : this.getLastTimeDiff(this.drivers, driver.DriverInfo.SlotId)
-          : 0
-        : 0,
-        */
       dPos: driver.Position,
     };
     return driverData;
