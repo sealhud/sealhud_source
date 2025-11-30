@@ -225,16 +225,33 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			driverData = driverData.sort(this.sortByLapDistance);
 
 			const playerIndex = this.getPlayerPosition(driverData);
-			const N = driverData.length;
+			const player = driverData[playerIndex];
+
+			// -----------------------------
+			// Ajustar tamanho do bloco (effectiveNum)
+			// -----------------------------
+			let effectiveNum = eDriverNum;
+			if (this.playerCount <= 3 && eDriverNum > 1) {
+				effectiveNum = 1;
+			} else if (this.playerCount <= 5 && this.playerCount > 3 && eDriverNum > 2) {
+				effectiveNum = 2;
+			}
+			// -----------------------------
 			// Construir array circular
+			// -----------------------------
 			const circular = driverData.concat(driverData).concat(driverData);
 			// Centro do bloco no array circular
-			const center = N + playerIndex;
-			// Cortar exatamente eDriverNum acima e abaixo
-			const start = center - eDriverNum;
-			const end   = center + eDriverNum + 1;
-			// Remover duplicados (caso haja pilotos com dados incompletos)
+			const center = this.playerCount + playerIndex;
+			// Cortar exatamente effectiveNum acima e abaixo
+			const start = center - effectiveNum;
+			const end   = center + effectiveNum + 1;
+			// Deduplicar
 			driverData = uniq(circular.slice(start, end));
+			// Garantir que o player nunca desapareça
+			if (!driverData.some(d => d.id === player.id)) {
+				driverData.unshift(player);
+			}
+			// showDebugMessageSmall(`effective:${effectiveNum} totalDrivers:${this.playerCount}  playerIndex:${playerIndex} start:${start} end:${end} center:${center}`);
 		}
 
 		this.calculateDiffs(driverData);

@@ -3,7 +3,8 @@
 	GENERAL
 	- TV Tower: Now, the intervals between players are displayed in M:SS.S format. Displaying M:SS.SSS is unnecessary excess information.
 	- TV Tower / Position Bar: On multiclass races, the pit counter (number of pitstops for each driver) wasn't working. Fixed.
-	- Relatives: No new car names were mapped since 2021. Now all car names are up to date.	
+	- Relatives: No new car names were mapped since 2021. Now all car names are up to date.
+	- Relatives: Player's name was missing when there's only 2 drivers on track. Fixed.
 	
 	0.8
 	----------		
