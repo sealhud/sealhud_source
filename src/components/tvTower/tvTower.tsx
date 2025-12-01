@@ -1287,12 +1287,14 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             const haveEnter = enterTs !== null;
             const showTimesNow = showPitTime && (showAll || (haveEnter && sessionType === ESession.Race));
             // background selection: entering (blue), stopped (red), leaving/clean (green)
-            let bg =
-              showAll || (stopTs && stopTs > 0)
+            const bg =
+              sessionType !== ESession.Race
+              ? "rgba(0, 176, 255, 0.8)"
+              : showAll || (stopTs && stopTs > 0)
                 ? showAll || (leaveTs && leaveTs > 0)
-                  ? "rgba(0, 221, 23, 0.8)" // leaving/ready
-                  : "rgba(255, 70, 0, 0.8)" // stopped on spot
-                : "rgba(0, 176, 255, 0.8)"; // entering
+                  ? "rgba(0, 221, 23, 0.8)" // leaving
+                  : "rgba(255, 70, 0, 0.8)" // stopped
+                : "rgba(0, 176, 255, 0.8)";   // entering
             // compute lane time and spot time similarly to original behavior
             const laneTime =
               enterTs !== null ? (showAll ? 52.9 : (now - enterTs) / 1000) : null;
@@ -1352,12 +1354,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                 <div
                   className={classNames("pitting", { noShadow: false })}
                   style={{
-                    background:
-                      showAll || (stopTs && stopTs > 0)
-                        ? showAll || (leaveTs && leaveTs > 0)
-                          ? "rgba(0, 221, 23, 0.8)"
-                          : "rgba(255, 70, 0, 0.8)"
-                        : "rgba(0, 176, 255, 0.8)",
+                    background: bg,
                     color: "#fff",
                     width: "25px",
                   }}

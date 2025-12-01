@@ -221,37 +221,25 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				this.filterDriverDataQualy
 				);
 			}
-
 			driverData = driverData.sort(this.sortByLapDistance);
-
 			const playerIndex = this.getPlayerPosition(driverData);
-			const player = driverData[playerIndex];
-
-			// -----------------------------
-			// Ajustar tamanho do bloco (effectiveNum)
-			// -----------------------------
-			let effectiveNum = eDriverNum;
-			if (this.playerCount <= 3 && eDriverNum > 1) {
-				effectiveNum = 1;
-			} else if (this.playerCount <= 5 && this.playerCount > 3 && eDriverNum > 2) {
+			const N = driverData.length;
+			// Ajustar effectiveNum conforme a qutde de drivers na pista
+			let effectiveNum = eDriverNum; 
+			if (N <= 3 && eDriverNum > 1) { 				
+				effectiveNum = 1;				
+			} else if (N <= 5 && N > 3 && eDriverNum > 2) {
 				effectiveNum = 2;
-			}
-			// -----------------------------
+			}			
 			// Construir array circular
-			// -----------------------------
 			const circular = driverData.concat(driverData).concat(driverData);
 			// Centro do bloco no array circular
-			const center = this.playerCount + playerIndex;
-			// Cortar exatamente effectiveNum acima e abaixo
+			const center = N + playerIndex;
+			// Cortar effectiveNum acima e abaixo,  
 			const start = center - effectiveNum;
 			const end   = center + effectiveNum + 1;
-			// Deduplicar
+			// Remover duplicados (caso haja pilotos com dados incompletos)
 			driverData = uniq(circular.slice(start, end));
-			// Garantir que o player nunca desapareça
-			if (!driverData.some(d => d.id === player.id)) {
-				driverData.unshift(player);
-			}
-			// showDebugMessageSmall(`effective:${effectiveNum} totalDrivers:${this.playerCount}  playerIndex:${playerIndex} start:${start} end:${end} center:${center}`);
 		}
 
 		this.calculateDiffs(driverData);
@@ -1641,14 +1629,14 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 						const showTimes =
 							showPitTime &&
 							(showAll || (enterTs !== null && sessionType === ESession.Race));
-
 						const bg =
-							showAll || (stopTs && stopTs > 0)
-							? showAll || (leaveTs && leaveTs > 0)
-								? "rgba(0, 221, 23, 0.8)" // leaving
-								: "rgba(255, 70, 0, 0.8)" // stopped
-							: "rgba(0, 176, 255, 0.8)"; // entering
-
+							sessionType !== ESession.Race
+							? "rgba(0, 176, 255, 0.8)"
+							: showAll || (stopTs && stopTs > 0)
+								? showAll || (leaveTs && leaveTs > 0)
+									? "rgba(0, 221, 23, 0.8)" // leaving
+									: "rgba(255, 70, 0, 0.8)" // stopped
+								: "rgba(0, 176, 255, 0.8)";   // entering
 						const laneTime = enterTs
 							? showAll
 							? 52.9

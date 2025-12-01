@@ -14,6 +14,7 @@ import {
 	IWidgetSetting,
 	lowPerformanceMode,
 	highPerformanceMode,
+	eIsHyperCar,
 	showAllMode
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -167,9 +168,9 @@ export default class Motec extends React.Component<IProps, {}> {
 				:	false;
 			this.engineMap = r3e.data.EngineMapSetting;
 			this.abs = r3e.data.AbsSetting;
-			if(r3e.data.BrakeRaw === 0) {
-				this.brakeBias = Math.round((100 - 100 * r3e.data.BrakeBias)*10) / 10;
-			}			
+			if (!eIsHyperCar || r3e.data.BrakeRaw === 0) {
+				this.brakeBias = Math.round((100 - 100 * r3e.data.BrakeBias) * 10) / 10;
+			}	
 			this.tractionLevel = r3e.data.TractionControlSetting;
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;

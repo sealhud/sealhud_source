@@ -2,7 +2,7 @@ import {
 	classNames,
 	ePlayerIsFocus,
 	INVALID,
-	// showDebugMessageSmall,
+	showDebugMessageSmall,
 	// showDebugMessage,
 	widgetSettings
 } from './../../lib/utils';
@@ -10,6 +10,7 @@ import {
 	IWidgetSetting,
 	eIsLeaderboard,
 	eIsHillClimb,
+	eIsHyperCar,
 	lowPerformanceMode,
 	highPerformanceMode,
 	// eDriverDiffs,
@@ -357,7 +358,7 @@ export default class Info extends React.Component<IProps, {}> {
 				:	tControl;
 			}
 
-			if (r3e.data.BrakeRaw === 0) {
+			if (!eIsHyperCar || r3e.data.BrakeRaw === 0) {
 				const bBias = Math.round((100 - 100 * r3e.data.BrakeBias)*10) / 10;
 				if (
 					bBias !== this.eValues.BrakeBias

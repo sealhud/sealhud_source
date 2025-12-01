@@ -199,6 +199,7 @@ let eLogoUrl = "./../../img/logo.png";
 let eResetId = "";
 let eIsLeaderboard = false;
 let eIsHillClimb = false;
+let eIsHyperCar = false;
 let isMenu = false;
 const eIsIngameBrowser = window.clientInformation.appVersion
   .toString()
@@ -222,6 +223,7 @@ export {
   eIsIngameBrowser,
   eIsLeaderboard,
   eIsHillClimb,
+  eIsHyperCar,
 };
 // Hud Version
 const currentVersion = 0.8;
@@ -2254,6 +2256,8 @@ export default class App extends React.Component<IProps> {
         r3e.data.RaceSessionLaps.Race3 === -1 &&
         r3e.data.SessionTimeDuration === -1 &&
         r3e.data.SessionTimeRemaining === -1;
+      eIsHyperCar =
+        r3e.data.VehicleInfo.ClassId === 13129;
       eIsHillClimb =
         r3e.data.LayoutId === 1682 ||
         r3e.data.LayoutId === 1709 ||
@@ -2262,8 +2266,7 @@ export default class App extends React.Component<IProps> {
         r3e.data.LayoutId === 9321 ||
         r3e.data.LayoutId === 9360 ||
         r3e.data.LayoutId === 11859 ||
-        r3e.data.LayoutId === 11861    
-        ;
+        r3e.data.LayoutId === 11861;
 
       // this.runBooboo();
       // this.getClassBestLaps(this.drivers);
@@ -2271,6 +2274,7 @@ export default class App extends React.Component<IProps> {
       // this.updateLapRecordTimes();
     }
   };
+  
 
   private formatDriverData = (driver: IDriverData): IDriverInfo => {
     const isUser = this.currentSlotId === driver.DriverInfo.SlotId;

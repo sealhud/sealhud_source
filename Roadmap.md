@@ -19,3 +19,4 @@ Another thing: Would it be possible to show a widget just when crossing start fi
 - Position Bar: está travada no formato 16:9
 - Position Bar: Muito no topo quando desliga "standings"
 - SoF: Quando um driver invalida a volta ele está sendo excluído do cálculo
+- Terminar de atualizar os CarNames
