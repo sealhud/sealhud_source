@@ -82,7 +82,7 @@ export class LapEvents {
 
     // localizar driver atual (por slot)
     const driver = drivers.find((d) => d.DriverInfo.SlotId === slot);
-    if (!driver) return "#0bacd8ff";
+    if (!driver) return "#46d7ffff";
 
     const personalBest = driver.SectorTimeBestSelf.Sector3;
 
@@ -109,7 +109,7 @@ export class LapEvents {
       return "#00CC66"; // melhor volta pessoal
     }
 
-    return "#0bacd8ff"; // volta comum
+    return "#46d7ffff"; // volta comum
   }
 
   static reset() {

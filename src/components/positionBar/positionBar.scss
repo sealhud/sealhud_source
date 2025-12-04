@@ -1,6 +1,3 @@
-// extracted by mini-css-extract-plugin
-// module.exports = {"positionBarContainer":"positionBarContainer","normal":"normal","shouldShow":"shouldShow","positionBar":"positionBar","player":"player","position":"position","name":"name","diff":"diff","isUser":"isUser","classStyle":"classStyle","pitting":"pitting","noShadow":"noShadow","pittime":"pittime","pittimea":"pittimea","currentLapTime":"currentLapTime","currentPosition":"currentPosition","currentPositionClass":"currentPositionClass","sessionLaps":"sessionLaps","sessionLapsRemain":"sessionLapsRemain","sessionTime":"sessionTime","incidentPoints":"incidentPoints","lastLap":"lastLap","bestLap":"bestLap","strengthOfField":"strengthOfField","currentLap":"currentLap","label":"label","sessionRemainHours":"sessionRemainHours","sessionRemainHoursText":"sessionRemainHoursText","sessionRemainMinutes":"sessionRemainMinutes","sessionRemainMinutesText":"sessionRemainMinutesText","sessionRemainSeconds":"sessionRemainSeconds","sessionRemainSecondsText":"sessionRemainSecondsText","noTime":"noTime","noStandings":"noStandings","gameIsVR":"gameIsVR","noMultiClass":"noMultiClass","relative":"relative","sCarNames":"sCarNames","carName":"carName","sRankData":"sRankData","rankData":"rankData","carLogo":"carLogo","stopStatus":"stopStatus","textShadow":"textShadow","lapping":"lapping","sameLap":"sameLap","lapped":"lapped","noRaceSession":"noRaceSession","validLap":"validLap","noValidLap":"noValidLap","classLogo":"classLogo","userId":"userId","sClassLogos":"sClassLogos","sCarLogos":"sCarLogos","sGapsInSeconds":"sGapsInSeconds"};
-
 .positionBarContainer.normal {
 	position: absolute;
 	top: 0;
@@ -26,7 +23,7 @@
 	bottom: 0;
 	white-space: nowrap;
 	width: 1920px;
-	height: 43px
+	height: 43px;
 }
 
 .positionBarContainer.normal .positionBar:before {
@@ -105,7 +102,7 @@
 	text-align: center;
 	bottom: 4px;
 	right: 0;
-	left: 20px
+	left: 26px
 }
 
 .positionBarContainer.normal .positionBar .player.isUser {
@@ -384,7 +381,7 @@
 .positionBarContainer.normal.noStandings .sessionLapsRemain,
 .positionBarContainer.normal.noStandings .sessionTime,
 .positionBarContainer.normal.noStandings .strengthOfField {
-	top: 0
+	top: 20px
 }
 
 .positionBarContainer.normal.gameIsVR {
@@ -392,8 +389,8 @@
 }
 
 .positionBarContainer.normal.noMultiClass .positionBar {
-	height: 40px;
-	padding-top: 0
+	height: 43px;
+	padding-top: -3px;
 }
 
 .positionBarContainer.relative {

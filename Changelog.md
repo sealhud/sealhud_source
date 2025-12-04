@@ -1,10 +1,13 @@
 	0.9
 	----------		
 	GENERAL
-	- TV Tower: Now, the intervals between players are displayed in M:SS.S format. Displaying M:SS.SSS is unnecessary excess information.
-	- TV Tower / Position Bar: On multiclass races, the pit counter (number of pitstops for each driver) wasn't working. Fixed.
-	- Relatives: No new car names were mapped since 2021. Now all car names are up to date.
-	- Relatives: Player's name was missing when there's only 2 drivers on track. Fixed.
+	- TV Tower: Intervals between players are now displayed in M:SS.S format. Showing M:SS.SSS was unnecessary.
+	- TV Tower / Position Bar: In multiclass races, the pit counter (number of pitstops per driver) was not working. Fixed.
+	- TV Tower / Position Bar / Relatives: During yellow-flag situations, slower drivers are now highlighted in yellow.
+	- Position Bar: Strength of Field was not accounting for drivers on invalid laps, causing the value to change during the race. The calculation is now consistent and accurate for all drivers.
+	- Relatives: No new car names had been mapped since 2021. All car names are now up to date.
+	- Relatives: The player's name was missing when only two drivers were on track. Fixed.
+	- Performance: SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient.
 	
 	0.8
 	----------		

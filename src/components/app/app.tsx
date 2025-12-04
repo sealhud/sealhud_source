@@ -5,6 +5,7 @@ declare global {
 }
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
+import { FlagEvents } from "../../lib/FlagEvents";
 import {
   classNames,
   base64ToString,
@@ -1964,8 +1965,8 @@ export default class App extends React.Component<IProps> {
   
   @action
   private updatePerformance = () => {
-    this.gameInReplay = r3e.data.GameInReplay > 0;
-    this.gameInMenus = r3e.data.GameInMenus > 0;
+    // this.gameInReplay = r3e.data.GameInReplay > 0;
+    //this.gameInMenus = r3e.data.GameInMenus > 0;
     if (this.gameInMenus) {
       return; // não atualiza nada quando está no menu
     }
@@ -1994,6 +1995,7 @@ export default class App extends React.Component<IProps> {
     this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
+    FlagEvents.update(r3e.data.DriverData); // FLAG EVENTS FOR ALL WIDGETS
     // this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;

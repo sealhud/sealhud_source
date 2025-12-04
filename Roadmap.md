@@ -2,11 +2,8 @@
 - Temperatura de Motor
 - Alterar o widget dos pneus
 - Musica quando ganha corrida
-- Mapear mais pistas
 - Delta a partir da primeira volta
 - (Pedro) - Delta continua quando invalida ((no Rehud existe essa função que é configurada ou não)) - Relative-Times Branch
-- Mudar as bandeiras para sinais eletronicos em gif
-- (Diego) - Marcar o piloto em bandeira amarela
 - (Diego) - so for example i would like to see tyre wear instead 99% to be 99,11% this way i can see on which corner i have the most wear and so i can try how to dave tyre
 - Something else for suggestions.TXT: could you make the “all widgets off” setting an option when cycling through views 1,2,3? I’d like to have just one button bound to cycle through all the views, but don’t want to sacrifice one of the three layouts. Thanks!
 - Verificar glitch relatado com overlay discord. (Relatado no canal por vipersonix: Dear Sealhudders, is there a way to fix discord glitching when focused on the game? i have a great time when focused on the game but then on 2nd screen discord visually glitches out to black or gray, until certain amount of time passed or i focus on it.) Pode ser comportamento causado pelo webhud em si (raceroom browser), e não pelo sealhud.
@@ -16,7 +13,7 @@ Another thing: Would it be possible to show a widget just when crossing start fi
 - RaceInfo (MP): Precisa estar ativo antes da corrida iniciar 
 - Relatives: Desligar manufacturer logos só funciona no single player
 - Corrigir comportamento do Delta na corrida. quando entra no box , aparece 1 Lap
+- Delta exibe uma linha preta estranha, verificar.
 - Position Bar: está travada no formato 16:9
-- Position Bar: Muito no topo quando desliga "standings"
-- SoF: Quando um driver invalida a volta ele está sendo excluído do cálculo
 - Terminar de atualizar os CarNames
+- Incident Points: Classificar os incidentes

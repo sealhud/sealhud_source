@@ -1,5 +1,6 @@
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
+import { FlagEvents } from "../../lib/FlagEvents";
 import {
   classNames,
   base64ToString,
@@ -506,29 +507,37 @@ export default class TvTower extends React.Component<IProps, {}> {
   }
 
   private getFlagColor(): string {
-    if (r3e.data.Flags.Yellow > 0) {
-      return require("./../../img/yellow.png");
+    const flags = FlagEvents.getFlags();
+    
+    if (!flags) {
+        return require("./../../img/transparent.png");
     }
-    if (r3e.data.Flags.White > 0) {
-      return require("./../../img/white.png");
+
+    if (FlagEvents.isYellow()) {
+        return require("./../../img/yellow.png");
     }
-    if (r3e.data.Flags.Blue > 0) {
-      return require("./../../img/blue.png");
+    if (FlagEvents.whiteReason() > 0) {
+        return require("./../../img/white.png");
     }
-    if (r3e.data.Flags.Black > 0) {
-      return require("./../../img/black.png");
+    if (FlagEvents.isBlue()) {
+        return require("./../../img/blue.png");
     }
-    if (r3e.data.Flags.Green > 0) {
-      return require("./../../img/green.png");
+    if (FlagEvents.isBlack()) {
+        return require("./../../img/black.png");
     }
-    if (r3e.data.Flags.Checkered > 0) {
-      return require("./../../img/checkered.png");
+    if (FlagEvents.isGreen()) {
+        return require("./../../img/green.png");
     }
-    if (r3e.data.Flags.BlackAndWhite > 0) {
-      return require("./../../img/diagonal.png");
+    if (FlagEvents.isCheckered()) {
+        return require("./../../img/checkered.png");
     }
+    if (FlagEvents.blackAndWhiteReason() > 0) {
+        return require("./../../img/diagonal.png");
+    }
+
     return require("./../../img/transparent.png");
   }
+
 
   render() {
     if (
@@ -829,6 +838,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
   constructor(props: IEntryProps) {
     super(props);
   }
+  /*
   private renderPlayerNameLong(name: string) {
     const firstInitial = name.substr(0, 1).toUpperCase() + ". ";
     const parts = name.split(" ");
@@ -836,6 +846,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
     const retName = lastNames.map((item) => item.toUpperCase());
     return firstInitial + retName.toString().replace(",", " ").substr(0, 3);
   }
+    */
   private renderPlayerNameShort(name: string) {
     const parts = name.split(" ");
     const lastNames = parts.slice(1);
@@ -867,6 +878,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
     return require("./../../img/transparent.png");
   }
 
+  /*
   private hexToRGB(hex: string, alpha: number) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -881,6 +893,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       b >= 0 ? b : 0
     }, ${alpha}) 5px solid`;
   }
+  */
 
   private getStartEnd(theEnd: boolean) {
     const classOnly = this.props.settings.subSettings.showOwnClassOnly.enabled;
@@ -1039,9 +1052,24 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           lapping: player.lapDiff < 0,
           sameLap: player.lapDiff === 0,
           lapped: player.lapDiff > 0,
-        })}
+        })}        
+        style={{
+          // YellowFlag mark
+          background: FlagEvents.shouldHighlight(player.id)
+            ? "rgba(65, 65, 3, 0.8)"
+            : undefined,
+          color: FlagEvents.shouldHighlight(player.id) 
+            ? "Yellow" 
+            : undefined,
+        }}
       >
-        <div className="position">
+        <div className="position" 
+        style={{
+          color: FlagEvents.shouldHighlight(player.id) 
+            ? "Yellow" 
+            : undefined,
+        }}
+        >
           {this.props.settings.subSettings.showOverallPos.enabled
             ? player.position
             : player.positionClass}
@@ -1077,13 +1105,13 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             {posGainedLost > 0 ? posGainedLost : "-"}
           </div>
         )}
-        <div className="name">
 
-          {/*Show Long Names*/}
-          {this.props.settings.subSettings.showLongNames.enabled
-            ? player.shortName
-            : // ?	this.renderPlayerNameLong(player.name)
-              this.renderPlayerNameShort(player.name)}
+        {/*Show Long Names*/}
+        <div className="name">
+        {this.props.settings.subSettings.showLongNames.enabled
+          ? player.shortName
+          : // ?	this.renderPlayerNameLong(player.name)
+            this.renderPlayerNameShort(player.name)}
         </div>
         {showRD && (
           <div
@@ -1121,7 +1149,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           </div>
         )}
 
-        {/*Show Last Laps*/}
+        {/*Show Last Laps & Gaps Between drivers*/}
         {showIt && (
         <div
           className={classNames("diff")}
@@ -1135,33 +1163,41 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                 (sessionType !== ESession.Race && player.bestLapTime < 0)
               )
                 ? LapEvents.getLapTimeColor(player.id)
-                : // --- PRIORIDADE 2: WarnInc Points (mantido igual)
-                  warnInc && showIncPoints
-                  ? "rgba(255, 0, 0, 1)"
-                  : // --- PRIORIDADE 3: Gap normal
-                    "rgba(255, 255, 255, 1)",
+
+                // --- PRIORIDADE 2: WarnInc Points (mantido igual) ---
+                : warnInc && showIncPoints
+                ? "rgba(255, 0, 0, 1)"
+
+                // --- PRIORIDADE 3: Yellow Highlight ---
+                : FlagEvents.shouldHighlight(player.id)
+                ? "yellow"
+
+                // --- PRIORIDADE 4: Gap normal ---
+                : "rgba(255, 255, 255, 1)",
           }}
-        >
+          >
           {
-          // ==================== TEXTO EXIBIDO ====================
-          player.finishStatus > 1
-            ? `Lap ${player.lapsDone + 1}`
-            : showIncPoints
-              ? maxIncidentPoints > 0
-                ? `${myIncidentPoints}/${maxIncidentPoints}`
-                : myIncidentPoints
-              : // ========= PRIORIDADE 1 — Popup de Laptime (via LapEvents) =========
-                this.props.settings.subSettings.showLastLaps.enabled &&
+            // ==================== TEXTO EXIBIDO ====================
+            player.finishStatus > 1
+              ? `Lap ${player.lapsDone + 1}`
+              : showIncPoints
+                ? maxIncidentPoints > 0
+                  ? `${myIncidentPoints}/${maxIncidentPoints}`
+                  : myIncidentPoints
+
+                // ========= PRIORIDADE 1 — Popup de Laptime (via LapEvents) =========
+                : this.props.settings.subSettings.showLastLaps.enabled &&
                   LapEvents.shouldShowLapTime(player.id) &&
                   !(
                     (sessionType === ESession.Race && player.lapsDone < 1) ||
                     (sessionType !== ESession.Race && player.bestLapTime < 0)
                   )
                 ? LapEvents.getLapTimeFormatted(player.id)
-                : // ========= PRIORIDADE 2 — Exibir gap normal =========
-                  player.diff
+
+                // ========= PRIORIDADE 2 — Exibir gap / yellow highlight =========
+                : player.diff
           }
-        </div>
+          </div>
         )}
 
         {/*Mandatory Pit Badge*/}

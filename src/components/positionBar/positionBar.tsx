@@ -1,5 +1,6 @@
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
+import { FlagEvents } from "../../lib/FlagEvents";
 import {
   classNames,
   base64ToString,
@@ -88,6 +89,7 @@ interface IDriverInfo {
 export default class PositionBar extends React.Component<IProps, {}> {
   	@observable accessor vrGame = false;
 	@observable accessor drivers: IDriverInfo[] = [];
+	@observable accessor formattedDrivers: IDriverInfo[] = [];
 	@observable accessor currentLap = INVALID;
 	@observable accessor maxLaps = INVALID;
 	@observable accessor pitState = INVALID;
@@ -202,15 +204,16 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.multiClass = false;
 		this.singleplayerRace = false;
 		this.startingLights = r3e.data.StartLights;
+		this.formattedDrivers = r3e.data.DriverData.map(this.formatDriverData);
 		let driverData = this.props.relative
 			? this.props.settings.subSettings.showAllSessions.enabled
-			? r3e.data.DriverData.map(this.formatDriverData).filter(
+			? this.formattedDrivers.filter(
 				this.filterDriverDataQualy
 				)
-			: r3e.data.DriverData.map(this.formatDriverData).filter(
+			: this.formattedDrivers.filter(
 				this.filterDriverData
 				)
-			: r3e.data.DriverData.map(this.formatDriverData).filter(
+			: this.formattedDrivers.filter(
 				this.filterDriverData
 			);
 
@@ -277,14 +280,13 @@ export default class PositionBar extends React.Component<IProps, {}> {
             }
           });
         }
-        if (
-          !this.singleplayerRace &&
-          rankData.length > 0 &&
-          this.strengthOF === "" &&
-          this.startingLights >= 5
-        ) {
-          this.strengthOF = this.getStrengthOfField();
-        }
+       if (!this.singleplayerRace &&
+			rankData.length > 0 &&
+			this.strengthOF === "" &&
+			this.startingLights >= 5
+		) {
+			this.strengthOF = this.getStrengthOfField();
+		}
       }
 	};
 
@@ -377,7 +379,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			bestLapTime: driver.SectorTimeBestSelf.Sector3,
 			lapsDone: driver.CompletedLaps,
 			rankingData: getRankingData(driver.DriverInfo.UserId),
-			classColor: getClassColor(driver.DriverInfo.ClassPerformanceIndex),
+			classColor:  getClassColor(driver.DriverInfo.ClassPerformanceIndex),
 			penalties: showAllMode ? {
 				DriveThrough: 1,
 				StopAndGo: 0,
@@ -679,14 +681,20 @@ export default class PositionBar extends React.Component<IProps, {}> {
 	}
 
 	private getStrengthOfField() {
-		let sumUp = 0;
+		let sum = 0;
 		let count = 0;
-		this.drivers.forEach((driver) => {
-		sumUp += driver.rankingData.Rating;
-		count += 1;
+
+		this.formattedDrivers.forEach((driver: IDriverInfo) => {
+			const rating = driver.rankingData?.Rating;
+			if (typeof rating === "number") {
+				sum += rating;
+				count++;
+			}
 		});
-		return `${(sumUp / count / 1000).toFixed(2)}K`;
+
+		return `${(sum / count / 1000).toFixed(2)}K`;
 	}
+
 
 	private getPlayerPositionText(): string {
 		const isntRace = r3e.data.SessionType !== ESession.Race;
@@ -1400,9 +1408,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				<div
 				className="position"
 					style={{
-					color: this.props.relative ? "#fff" : undefined,
-					width: !this.props.relative ? "25px" : undefined,
-					top: !this.props.relative && showGainLoss ? "-10px" : undefined,
+						// Yellow flag mark
+						color: FlagEvents.shouldHighlight(player.id)
+								? "yellow"
+								: "#fff",
+						width: !this.props.relative ? "25px" : undefined,
+						top: !this.props.relative && showGainLoss ? "-10px" : undefined,
 					}}
 				>
 
@@ -1410,7 +1421,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				{this.props.settings.subSettings.showOverallPos.enabled
 				? player.position
 				: player.positionClass}
-				</div>{" "}
+				</div>{""}
 
 				{/*STANDINGS: Show Position Gain And Loss*/}	
 				{!this.props.relative && showGainLoss && (
@@ -1481,8 +1492,14 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					) : null
 				}
 
-				{/*RELATIVE: Driver's name*/}		
-				<div className="name">
+				{/*RELATIVE & STANDINGS: Driver's name*/}		
+				<div className="name" 
+				style = {{
+				// YellowFlag mark
+					color: FlagEvents.shouldHighlight(player.id)
+						? "Yellow"
+						: undefined,
+				}}>
 					{this.props.relative
 						? this.props.settings.subSettings.showCarNames.enabled ||
 						this.props.settings.subSettings.showCarLogos.enabled ||
@@ -1541,7 +1558,13 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 
 				{/*RELATIVE: GAP BETWEEN DRIVERS*/}
 				{this.props.relative && (
-					<div className="diff mono">
+					<div className="diff mono"
+					style = {{
+						color: FlagEvents.shouldHighlight(player.id)
+						? "Yellow"
+						: undefined,
+					}}
+					>
 						{player.diff}
 					</div>
 					)
@@ -1552,34 +1575,56 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				this.props.settings.subSettings.showStandings.enabled &&
 				((!isLeaderboard && !isHillClimb) || showAllMode) && (
 					<div
-						className="diff mono"
-						style={{
-							color: 
-							this.props.settings.subSettings.showLastLaps.enabled 
-							? (
-								LapEvents.shouldShowLapTime(player.id)
-								? LapEvents.getLapTimeColor(player.id)
-								: undefined
-							) : undefined
-						}}
-					>{this.props.settings.subSettings.showLastLaps.enabled 
+					className="diff mono"
+					style={{
+						color: (() => {
+						// 1) PRIORIDADE — LastLap popup
+						if (this.props.settings.subSettings.showLastLaps.enabled &&
+							LapEvents.shouldShowLapTime(player.id)) {
+							return LapEvents.getLapTimeColor(player.id);
+						}
+
+						// 2) NOVO — Yellow highlight
+						if (FlagEvents.shouldHighlight(player.id)) {
+							return "yellow";
+						}
+
+						// 3) Default
+						return undefined;
+						})()
+					}}
+					>
+					{
+						// Texto exibido
+						this.props.settings.subSettings.showLastLaps.enabled 
 						? (LapEvents.shouldShowLapTime(player.id)
-						? LapEvents.getLapTimeFormatted(player.id)
-						: player.diff) : player.diff}
+							? LapEvents.getLapTimeFormatted(player.id)
+							: player.diff)
+						: player.diff
+					}
 					</div>
-					)
-				}
+				)}
+
 
 				{/*RELATIVE & STANDINGS: Class Colors*/}
-				{multiClass && (
+				{
+				(
 					<div
 						className="classStyle"
 						style={{
-							borderTop:
-							!this.props.relative && multiClass
-							? `3px solid ${player.classColor}`
-							: `0`,
-							borderLeft:
+						borderTop:
+							!this.props.relative
+							? multiClass
+								? `${
+								FlagEvents.shouldHighlight(player.id)
+								? "3px solid yellow"
+								: `3px solid ${player.classColor}`
+							}`
+							: FlagEvents.shouldHighlight(player.id)
+								? "3px solid yellow"
+								: '3px solid #252525ff'
+							: undefined,							
+						borderLeft:
 							this.props.relative && multiClass
 							? `4px solid ${player.classColor}`
 							: undefined,
@@ -1587,7 +1632,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					/>
 				)}
 
-				
 				{/*STANDINGS: Pit-Stop Status Info*/}
 				{
 					(() => {
