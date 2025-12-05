@@ -1965,8 +1965,8 @@ export default class App extends React.Component<IProps> {
   
   @action
   private updatePerformance = () => {
-    // this.gameInReplay = r3e.data.GameInReplay > 0;
-    //this.gameInMenus = r3e.data.GameInMenus > 0;
+    this.gameInReplay = r3e.data.GameInReplay > 0;
+    this.gameInMenus = r3e.data.GameInMenus > 0;
     if (this.gameInMenus) {
       return; // não atualiza nada quando está no menu
     }

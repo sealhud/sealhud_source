@@ -21,7 +21,7 @@ export class FlagEvents {
 
     // Config
     private static HIGHLIGHT_DURATION = 8000; // ms
-    private static SPEED_THRESHOLD = 12.5; // 45 km/h ≈ 12.5 m/s
+    private static SPEED_THRESHOLD = 10; // 36 km/h ≈ 10 m/s
     private static SPEED_THRESHOLD_REMOVE = 16.6; // 60 km/h -> remover quando acima
 
     // -----------------------
@@ -147,9 +147,6 @@ export class FlagEvents {
         return sy.Sector3 === 1;
     }
 
-    static closestYellowDist(): number {
-        return this.currentFlags?.ClosestYellowDistanceIntoTrack ?? -1;
-    }
     static isBlue(): boolean {
         return this.currentFlags?.Blue === 1;
     }
