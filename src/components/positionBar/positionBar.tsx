@@ -118,6 +118,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 	@observable accessor myIncidentPoints = -1;
 	@observable accessor playerIsFocus = false;
 	@observable accessor maxIncidentPoints = -1;
+	@observable accessor myCutTrackWarnings = -1;
 	@observable accessor actualRoundsLeft = -1;
 	@observable accessor bestLapSelf = -1;
 	@observable accessor sessionTimeDuration = -1;
@@ -199,6 +200,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			: -1;
 		this.myIncidentPoints =
 			r3e.data.IncidentPoints !== undefined ? r3e.data.IncidentPoints : -1;
+		this.myCutTrackWarnings =
+			r3e.data.CutTrackWarnings !== undefined ? r3e.data.CutTrackWarnings : -1;
 		this.classDriverCount = 0;
 		this.playerCount = r3e.data.DriverData.length;
 		this.multiClass = false;
@@ -759,16 +762,15 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				break;
 		}
 		const showIncPoints =
-		!this.props.relative &&
-		this.props.settings.subSettings.showIncidentPoints.enabled &&
-		(showAllMode ||
-			(this.playerIsFocus &&
-			this.maxIncidentPoints > 0 &&
-			sessionName !== _("Practice") &&
-			sessionName !== _("Warmup"))
-		);
-		const warnInc =
-		showIncPoints && this.myIncidentPoints >= this.maxIncidentPoints * 0.9;
+			!this.props.relative &&
+			this.props.settings.subSettings.showIncidentPoints.enabled &&
+			(showAllMode ||
+				(this.playerIsFocus &&
+				this.maxIncidentPoints > 0 &&
+				sessionName !== _("Practice") &&
+				sessionName !== _("Warmup"))
+			);
+		const warnInc =	showIncPoints && this.myIncidentPoints >= this.maxIncidentPoints * 0.9;
 
 		return (
 			<div
@@ -859,10 +861,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					: "10px",
 				}}
 			>
+				<div className="label">{_("Position")}</div>
 				<span className="mono">
 				{showAllMode ? "9/12" : `${this.position}/${this.playerCount}`}
 				</span>
-				<div className="label">{_("Position")}</div>
 			</div>
 			)}
 
@@ -886,12 +888,12 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: "120px",
 				}}
 				>
-				<span className="mono">
-					{showAllMode
-					? "3/6"
-					: `${this.positionClass}/${this.classDriverCount}`}
-				</span>
-				<div className="label">{_("Position Class")}</div>
+					<div className="label">{_("Position Class")}</div>
+					<span className="mono">
+						{showAllMode
+						? "3/6"
+						: `${this.positionClass}/${this.classDriverCount}`}
+					</span>				
 				</div>
 			)}
 
@@ -917,10 +919,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: "10px",
 					}}
 				>
-				<span className="mono">
-					{showAllMode ? 6 : this.completedLaps}
-				</span>
-				<div className="label">{_("Completed Laps")}</div>
+					<div className="label">{_("Completed Laps")}</div>
+					<span className="mono">
+						{showAllMode ? 6 : this.completedLaps}
+					</span>				
 				</div>
 			)}
 
@@ -990,6 +992,17 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					: "160px",
 				}}
 			>
+				<div className="label">
+				{this.props.settings.subSettings.sessionLapsRemain.enabled ||
+				this.props.settings.subSettings.sessionLapsTotal.enabled
+					? this.props.settings.subSettings.sessionLapsTotal.enabled &&
+					(this.bestLapSelf > 0 || showAllMode)
+					? !this.props.settings.subSettings.sessionLapsRemain.enabled
+						? _("Estimated Laps total")
+						: _("Est.L. left / Est.L. total")
+					: _("Estimated Laps left")
+					: ""}
+				</div>
 				<span className="mono">
 				{this.props.settings.subSettings.sessionLapsTotal.enabled ||
 				this.props.settings.subSettings.sessionLapsRemain.enabled
@@ -1012,18 +1025,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						}`
 					: `${showAllMode ? 6 : this.actualRoundsLeft}`
 					: ""}
-				</span>
-				<div className="label">
-				{this.props.settings.subSettings.sessionLapsRemain.enabled ||
-				this.props.settings.subSettings.sessionLapsTotal.enabled
-					? this.props.settings.subSettings.sessionLapsTotal.enabled &&
-					(this.bestLapSelf > 0 || showAllMode)
-					? !this.props.settings.subSettings.sessionLapsRemain.enabled
-						? _("Estimated Laps total")
-						: _("Est.L. left / Est.L. total")
-					: _("Estimated Laps left")
-					: ""}
-				</div>
+				</span>				
 			</div>
 			)}
 
@@ -1077,10 +1079,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					: "10px",
 				}}
 			>
+				<div className="label">{_("Strength of Field")}</div>
 				<span className="mono">
 				{showAllMode ? "2.22K" : this.getStrengthOfField()}
-				</span>
-				<div className="label">{_("Strength of Field")}</div>
+				</span>				
 			</div>
 			)}
 
@@ -1093,12 +1095,12 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					noTime: this.lapTimeCurrentSelf <= 0,
 					})}
 				>
+					<div className="label">{_("Lap time")}</div>
 					<span className="mono">
 					{this.lapTimeCurrentSelf !== INVALID
 						? formatTime(this.lapTimeCurrentSelf, "mm:ss.SSS")
 						: "-:--.---"}
-					</span>
-					<div className="label">{_("Lap time")}</div>
+					</span>					
 				</div>
 			)}
 
@@ -1141,14 +1143,14 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: "10px",
 					}}
 				>
+					<div className="label">{_("Last Lap")}</div>
 					<span className="mono">
 					{this.lapTimePreviousSelf !== -1
 						? formatTime(this.lapTimePreviousSelf, "mm:ss.SSS")
 						: showAllMode
 						? "01:48.023"
 						: "-:--.---"}
-					</span>
-					<div className="label">{_("Last Lap")}</div>
+					</span>					
 				</div>
 			)}
 
@@ -1173,14 +1175,14 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: "10px",
 				}}
 				>
-				<span className="mono">
-					{this.bestSelfSector3 !== -1
-					? formatTime(this.bestSelfSector3, "mm:ss.SSS")
-					: showAllMode
-					? "01:48.023"
-					: "-:--.---"}
-				</span>
-				<div className="label">{_("Best Lap")}</div>
+					<div className="label">{_("Best Lap")}</div>
+					<span className="mono">
+						{this.bestSelfSector3 !== -1
+						? formatTime(this.bestSelfSector3, "mm:ss.SSS")
+						: showAllMode
+						? "01:48.023"
+						: "-:--.---"}
+					</span>				
 				</div>
 			)}
 
@@ -1197,16 +1199,17 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: "10px",
 				}}
 				>
-				<span className="mono">
-					{`${
-					showAllMode
-						? 135
-						: this.myIncidentPoints === -1
-						? "N/A"
-						: this.myIncidentPoints
-					}/${showAllMode ? 200 : this.maxIncidentPoints}`}
-				</span>
-				<div className="label">{_("Incidents")}</div>
+					<div className="label">{_("Incidents")}</div>
+					<span className="mono">
+						{`${
+						showAllMode
+							? 135
+							: this.myIncidentPoints === -1
+								? "N/A"
+								: this.myIncidentPoints
+						}/${showAllMode ? 200 : this.maxIncidentPoints}`}								
+					</span>
+					<div className="details">{"( "+this.myCutTrackWarnings+" "+_("cuts")+" )"}</div>				
 				</div>
 			)}
 
@@ -1216,6 +1219,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				((!this.isLeaderboard && !this.isHillClimb) || showAllMode) &&
 				this.sessionTimeRemaining !== INVALID && (
 				<div className="sessionTime">
+					<div className="label">{sessionName}</div>
 					<span className="mono">
 					<div className="sessionRemainHours">
 						{showAllMode
@@ -1235,8 +1239,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 						: formatTime(this.sessionTimeRemaining, "ss")}
 					</div>
 					<div className="sessionRemainSecondsText">{`${"S"}`}</div>
-					</span>
-					<div className="label">{sessionName}</div>
+					</span>					
 				</div>
 				)
 			}
@@ -1246,10 +1249,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			this.props.settings.subSettings.sessionTime.enabled &&
 			this.maxLaps !== INVALID && (
 				<div className="currentLap">
+					<div className="label">{_('Lap')}</div>
 					<span className="mono">
 						{this.currentLap}/{this.maxLaps}
-					</span>
-					<div className="label">{_('Lap')}</div>
+					</span>					
 				</div>
 			)}
 

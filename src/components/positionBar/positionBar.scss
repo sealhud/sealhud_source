@@ -259,7 +259,7 @@
 .positionBarContainer.normal .sessionTime,
 .positionBarContainer.normal .strengthOfField {
 	position: absolute;
-	top: 60px;
+	top: 64px;
 	font-size: 32px;
 	text-align: center
 }
@@ -270,6 +270,7 @@
 .positionBarContainer.normal .currentPosition .label,
 .positionBarContainer.normal .currentPositionClass .label,
 .positionBarContainer.normal .incidentPoints .label,
+.positionBarContainer.normal .incidentPoints .details,
 .positionBarContainer.normal .lastLap .label,
 .positionBarContainer.normal .sessionLaps .label,
 .positionBarContainer.normal .sessionLapsRemain .label,
