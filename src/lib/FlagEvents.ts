@@ -4,6 +4,7 @@
 
 import r3e from "./../lib/r3e";
 import { IFlags, IDriverData } from "./../types/r3eTypes";
+import { showDebugMessageSmall } from './../lib/utils';
 
 export class FlagEvents {
     // -----------------------
@@ -21,8 +22,7 @@ export class FlagEvents {
 
     // Config
     private static HIGHLIGHT_DURATION = 8000; // ms
-    private static SPEED_THRESHOLD = 10; // 36 km/h ≈ 10 m/s
-    private static SPEED_THRESHOLD_REMOVE = 16.6; // 60 km/h -> remover quando acima
+    private static SPEED_THRESHOLD_REMOVE = 19; // 19 m/s -> remover quando acima
 
     // -----------------------
     // update chamado pelo loop principal
@@ -61,32 +61,44 @@ export class FlagEvents {
     // - Yellow ativa
     // - Não está no pit
     // - Não terminou a corrida
-    // - Velocidade < Threshold configurado
+    // - Velocidade < Threshold progressivo [3, 6, 9, 12, 15, 18] (metros por segundo)
     // Seleciona o primeiro que satisfaz e faz highlight por HIGHLIGHT_DURATION
     // -----------------------
     private static detectSimple(drivers: IDriverData[]) {
         const now = performance.now();
 
-        for (const d of drivers) {
-            const slot = d.DriverInfo?.SlotId;
-            if (slot == null) continue;
+        // thresholds progressivos (em m/s)
+        const thresholds = [3, 6, 9, 12, 15, 18]; 
 
-            // ignorar quem está no box
-            if (d.InPitlane > 0) continue;
+        for (const T of thresholds) {
+            // coleta todos os drivers <= T
+            const slowDrivers: { slot: number, speed: number }[] = [];
+            for (const d of drivers) {
+                const slot = d.DriverInfo?.SlotId;
+                if (slot == null) continue;
+                // ignorar quem está no box
+                if (d.InPitlane > 0) continue;
+                // ignorar quem terminou
+                if (d.FinishStatus > 0) continue;
+                const speed = d.CarSpeed ?? 0;
+                if (speed <= T) {
+                    slowDrivers.push({ slot, speed });
+                }
+            }
 
-            // ignorar quem já terminou
-            if (d.FinishStatus > 0) continue;
+            // se achou algum grupo <= T, marcar todos e parar
+            if (slowDrivers.length > 0) {
+                for (const drv of slowDrivers) {
+                    this.causerSlots.set(drv.slot, now + this.HIGHLIGHT_DURATION);
+                }
 
-            // velocidade atual
-            const speed = d.CarSpeed ?? 0;
-
-            if (speed < this.SPEED_THRESHOLD) {
-                // adiciona/atualiza expiry individual
-                this.causerSlots.set(slot, now + this.HIGHLIGHT_DURATION);
-                // não fazemos return — permitimos detectar múltiplos na mesma passagem
+                // debug:
+                // showDebugMessageSmall(`Yellow: Found ${slowDrivers.length} drivers <= ${T} m/s`);
+                return; // PARA A BUSCA — prioridade sempre vai ao menor threshold possível
             }
         }
     }
+
     // Remove o highlight quando o driver não cumpre mais requisito para Yellow
     private static pruneSlots(drivers: IDriverData[], now: number) {
         if (this.causerSlots.size === 0) return;
