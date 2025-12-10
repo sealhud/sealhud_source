@@ -1209,7 +1209,11 @@ export default class PositionBar extends React.Component<IProps, {}> {
 								: this.myIncidentPoints
 						}/${showAllMode ? 200 : this.maxIncidentPoints}`}								
 					</span>
-					<div className="details">{"( "+this.myCutTrackWarnings+" "+_("cuts")+" )"}</div>				
+					{(this.sessionType === ESession.Race || showAllMode) && (
+						<div className="details">
+							{`( ${this.myCutTrackWarnings} ${_("cuts")} )`}
+						</div>
+					)}
 				</div>
 			)}
 
