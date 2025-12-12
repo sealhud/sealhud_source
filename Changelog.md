@@ -8,6 +8,7 @@
 	- Position Bar: Added information on how many times the player cut the track.
 	- Relatives: No new car names had been mapped since 2021. All car names are now up to date.
 	- Relatives: The player's name was missing when only two drivers were on track. Fixed.
+	- Relatives: The gap was being calculated incorrectly when drivers were one lap ahead or one lap behind. Now, the HUD estimates the gap using the player's best lap.
 	- Performance: SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient.
 	
 	0.8

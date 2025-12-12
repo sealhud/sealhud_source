@@ -514,24 +514,28 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		const myLaps = drivers[userIndex]?.lapsDone ?? 0;
 		const layoutLen = r3e.data.LayoutLength;
 		const showSeconds = this.props.settings.subSettings.showGapsInSeconds.enabled;
-		// Evita aparecer lapTime do usuário via delta nativo bugado do RR
+		// Evita RR mostrar lapTime como delta do player
 		const metaUser = drivers[userIndex]?.meta;
 		if (metaUser) {
 			metaUser.TimeDeltaBehind = 0;
 			metaUser.TimeDeltaFront = 0;
 		}
 		// ----- CÁLCULOS MANUAIS -----
-		const fallbackSpeed = 50; // m/s aproximado
+		const fallbackSpeed = 50; // m/s
 		const manualBehind = (e: Entry) => {
-			const best = e.driver.meta?.SectorTimeBestSelf.Sector3;
-			const vel = (best && best > 0) ? best / layoutLen : null;
-			const t = Math.abs(e.diff) * (vel ?? (1 / fallbackSpeed));
+			const myBest = r3e.data.LapTimeBestSelf;
+			const vel = myBest > 0
+				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro - 30%
+				: (1 / fallbackSpeed);      // fallback s/m
+			const t = Math.abs(e.diff) * vel;
 			return "+" + t.toFixed(1);
 		};
 		const manualAhead = (e: Entry) => {
-			const best = e.driver.meta?.SectorTimeBestSelf.Sector3;
-			const vel = (best && best > 0) ? best / layoutLen : null;
-			const t = Math.abs(e.diff) * (vel ?? (1 / fallbackSpeed));
+			const myBest = r3e.data.LapTimeBestSelf;
+			const vel = myBest > 0
+				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro - 30%
+				: (1 / fallbackSpeed);      // fallback s/m
+			const t = Math.abs(e.diff) * vel;
 			return "-" + t.toFixed(1);
 		};
 		// ----- ENTRIES PRÉ-COMPUTADOS -----
@@ -544,6 +548,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			manualBehind: boolean,
 		};
 		const entries: Entry[] = drivers.map((driver, i) => {
+			// Jogador
 			if (driver.meta?.DriverInfo.SlotId === userSlot) {
 				return {
 					driver,
@@ -557,6 +562,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			const otherDist = driver.meta?.LapDistance ?? 0;
 			const otherRacePos = driver.meta?.DriverInfo.Position ?? driver.position;
 			let diff = myDist - otherDist;
+			// Wrap
 			if (diff < 0 && i > userIndex) diff += layoutLen;
 			if (diff > 0 && i < userIndex) diff -= layoutLen;
 			const lapDiff = this.computeRealLapDiff(
@@ -568,11 +574,15 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				diff,
 				otherRacePos,
 				lapDiff,
-				manualAhead: diff < 0 && (otherRacePos > myRacePos || lapDiff !== 0),
-				manualBehind: diff > 0 && (otherRacePos < myRacePos || lapDiff !== 0),
+				manualAhead:
+					diff < 0 &&
+					(otherRacePos > myRacePos || lapDiff !== 0),
+				manualBehind:
+					diff > 0 &&
+					(otherRacePos < myRacePos || lapDiff !== 0),
 			};
 		});
-		// ----- MODO METROS -----
+		// MODO METROS
 		if (!showSeconds) {
 			entries.forEach(e => {
 				if (e.driver.meta?.DriverInfo.SlotId === userSlot) {
@@ -589,7 +599,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		for (let i = userIndex - 1; i >= 0; i--) {
 			const e = entries[i];
 			if (e.driver.meta?.DriverInfo.SlotId === userSlot) continue;
-			accFront += e.driver.meta?.TimeDeltaBehind ?? 0;
+			// Só acumula nativo se NÃO for manual
+			if (!e.manualAhead) {
+				accFront += e.driver.meta?.TimeDeltaBehind ?? 0;
+			}
 			e.driver.diff = e.manualAhead
 				? manualAhead(e)
 				: "-" + accFront.toFixed(1);
@@ -599,7 +612,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		for (let i = userIndex + 1; i < entries.length; i++) {
 			const e = entries[i];
 			if (e.driver.meta?.DriverInfo.SlotId === userSlot) continue;
-			accBack += e.driver.meta?.TimeDeltaFront ?? 0;
+			// Só acumula nativo se NÃO for manual
+			if (!e.manualBehind) {
+				accBack += e.driver.meta?.TimeDeltaFront ?? 0;
+			}
 			e.driver.diff = e.manualBehind
 				? manualBehind(e)
 				: "+" + accBack.toFixed(1);
@@ -623,7 +639,27 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			} else {
 				e.driver.diff = "0.0";
 			}
+		})
+		
+		// ----- DEBUG: acrescentar metros ao final do diff -----
+		/*
+		entries.forEach(e => {
+			const slot = e.driver.meta?.DriverInfo.SlotId;
+			if (slot === userSlot) return; // jogador não exibe diff
+
+			if (!e.driver.diff) return; // se não houver diff, não faz nada
+
+			// e.diff é sempre em metros (+/-)
+			const meters = e.diff;
+			const mp = meters > 0 ? "+" : "";
+			const metersStr = `${mp}${meters.toFixed(0)}m`;
+
+			// concatena ao final do gap existente
+			e.driver.diff = `${e.driver.diff} ${metersStr}`;
 		});
+		*/
+		
+	;
 	}
 
 	// RELATIVES: Calculate Distance Between Drivers (Qualify)

@@ -227,7 +227,7 @@ export {
   eIsHyperCar,
 };
 // Hud Version
-const currentVersion = 0.8;
+const currentVersion = 0.9;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -3493,34 +3493,32 @@ export default class App extends React.Component<IProps> {
                     fontSize: "26px",
                   }}
                 >
-                  {`${"November 23, 2025"}`}
+                  {`${"December 11, 2025"}`}
                 </span>
               </b>
               <br />
               <ul>
 
                 <li>
-                  {`${"Position Bar, TV Tower and Relative timings:"}`}
+                  {`${"TV Tower:"}`}
                   <br />
-                  {`${"HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry. Furthermore, there's no more delay in generating times, as everything is done in 'live mode'. We also no longer need to collect track data for this! \õ/"}`}
-                  <br />
-                </li>
-                <br />
-
-                <li>
-                  {`${"Performance modes:"}`}
-                  <br />
-                  {`${"Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: Low Performance (15 fps), Normal (30 fps) and High Performance (60 fps)."}`}
+                  {`${"Intervals between players are now displayed in M:SS.S format. Showing M:SS.SSS was unnecessary."}`}
                   <br />
                 </li>
                 <br />
 
                 <li>
-                  {`${"Inputs Graph Widget:"}`}
+                  {`${"TV Tower / Position Bar:"}`}
                   <br />
-                  {`${"Now user can change the duration time telemetry data will be kept."}`}
+                  {`${"In multiclass races, the pit counter (number of pitstops per driver) was not working. Fixed."}`}
                   <br />
-                  {`${"Included 'input meters' option, for clutch, brake, throttle and steering wheel. This option extends the widget."}`}
+                </li>
+                <br />
+
+                <li>
+                  {`${"TV Tower / Position Bar / Relatives:"}`}
+                  <br />
+                  {`${"During yellow-flag situations, slower drivers are now highlighted in yellow."}`}
                   <br />
                 </li>
                 <br />
@@ -3528,29 +3526,29 @@ export default class App extends React.Component<IProps> {
                 <li>
                   {`${"Position Bar:"}`}
                   <br />
-                  {`${"'Show penalties' option included. This will show penalties for all drivers in the field."}`}
+                  {`${"Strength of Field was not accounting for drivers on invalid laps, causing the value to change during the race. The calculation is now consistent and accurate for all drivers."}`}
                   <br />
-                  {`${"'Show Positions Gain/Loss' option included. "}`}
-                  <br />
-                  {`${"'Show Pit-Status' option included. This will show the number of pit stops for all drivers."}`}
+                  {`${"Added information on how many times the player cut the track."}`}
                   <br />
                 </li>
                 <br />
 
                 <li>
-                  {`${"TV Tower:"}`}
+                  {`${"Relatives:"}`}
                   <br />
-                  {`${"'Show penalties' option included. This will show penalties for all drivers in the field."}`}
+                  {`${"No new car names had been mapped since 2021. All car names are now up to date. Including new DTM-2025 and DTM-2003. I work! =)"}`}
                   <br />
-                  {`${"'Show Positions Gain/Loss' option included."}`}
+                  {`${"The player's name was missing when only two drivers were on track. Fixed."}`}
+                  <br />
+                  {`${"The gap was being calculated incorrectly when drivers were one lap ahead or one lap behind. Now, the HUD estimates the gap using the player's best lap (RR doesn't provide that info)."}`}
                   <br />
                 </li>
                 <br />
 
                 <li>
-                  {`${"Translations:"}`}
+                  {`${"Performance:"}`}
                   <br />
-                  {`${"Added and fixed a bunch of things."}`}
+                  {`${"SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient."}`}
                   <br />
                 </li>
 
@@ -3560,31 +3558,40 @@ export default class App extends React.Component<IProps> {
               <br />
               {`${"If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!"}`}
               <br />
-              {`${"HUGE THANKS to everyone on the forum who has been reporting bugs and helping improve SealHud."}`}
+              {`${"HUGE THANKS to everyone on the forum who has been reporting bugs and helping improve SealHud. Special thanks to some fellas who made suggestions:"}`}
               <br />
+              {`${"• Jos Snijder"}`}
               <br />
-              {`${'**ATTENTION**: Starting December 1, 2025, SealHud will ONLY be available at https://sealhud.github.io/. The "dsjunges83" repository will no longer work. Make sure you set the correct parameter in the Steam launcher:'}`}
+              {`${"• Mad Day Man"}`}
               <br />
-              {`${"-webHudUrl=https://sealhud.github.io/"}`}
-              <br />
-              <br />
-              {`${"SealHud is free to use and it´s a fork from OtterHud."}`}
-              <br />
-              <br />
-              {`${"Thanks for using this hud! And thanks for driving RaceRoom!"}`}
-              <br />
-              {`${"The SealHUD Team & its collaborators!"}`}
-              <br />
-              {`${"• Diego Junges"}`}
+              {`${"• Niismo"}`}
               <br />
               {`${"• Pedro Santana"}`}
               <br />
-              {`${"• Leonardo Santana"}`}
               <br />
-              {`${"• Florian (Mad Day Man)"}`}
+              {`${"A big THANK YOU to everyone who made donations:"}`}
+              <br />
+              {`${"• Alexander Samardzic"}`}
+              <br />
+              {`${"• Martin Decker"}`}
+              <br />
+              {`${"• Marcus Stoffels"}`}
+              <br />
+              {`${"• Stuart Tennant"}`}
+              <br />
+              {`${"• donald hunter"}`}
+              <br />
+              {`${"• Hans-Jörg Mächler"}`}
+              <br />
+              {`${"• Jos Snijder"}`}
               <br />
               <br />
-              {`${"Special thanks to ChatGPT and CoPilot, who help us REALLY a lot."}`}
+              {`${"Thanks for using SealHUD! Thanks for driving RaceRoom!"}`}
+              <br />
+              {`${"The SealHUD Team & its collaborators!"}`}
+              <br />
+              <br />
+              {`${"*Special thanks to ChatGPT and CoPilot, who help us REALLY a lot."}`}
               <br />
             </div>
             <div
