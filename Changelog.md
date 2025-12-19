@@ -1,3 +1,8 @@
+	1.0
+	----------		
+	GENERAL
+	- TV Tower / Position Bar: Pit times were being summed, so when a driver performed more than one stop, the pit time was displayed incorrectly. Fixed.
+
 	0.9
 	----------		
 	GENERAL

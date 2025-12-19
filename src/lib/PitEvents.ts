@@ -1,6 +1,5 @@
 // PitEvents.ts — Sistema moderno de detecção e estado de Pit no SealHud
 
-import r3e from "./../lib/r3e";
 import { IDriverData } from "./../types/r3eTypes";
 
 // Cada piloto terá um registro completo de estado do pit:
@@ -63,13 +62,23 @@ export class PitEvents {
       // =============================
       if (inPitlane && !st.inPitlane && d.FinishStatus === 0) {
         st.inPitlane = true;
-        st.timeEnterPitlane = now;
-        st.exitedPitlane = false;
+
+        // reset do ciclo de pit
+        st.stoppedOnSpot = false;
         st.leftSpot = false;
-        st.timeExitPitlane = null;
+        st.exitedPitlane = false;
+
+        st.timeEnterPitlane = now;
+        st.timeStopOnSpot = null;
         st.timeLeaveSpot = null;
-        // não incrementa pitCount ainda — só quando terminar exit
+        st.timeExitPitlane = null;
+
+        st.spotDuration = null;
+        st.laneDuration = null;
+        st.pitTotalDuration = null;
+        st.highlightUntil = null;
       }
+
 
       // =============================
       // 2. Parou no BOX (spot)
