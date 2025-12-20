@@ -1227,7 +1227,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				<div
 				className={classNames("incidentPoints")}
 				style={{
-					color: warnInc ? "rgba(255, 0, 0, 1)" : "rgba(255,255,255,1)",
+					color: warnInc && this.maxIncidentPoints > 1 ? "rgba(255, 0, 0, 1)" : "rgba(255,255,255,1)",
 					right:
 					this.props.settings.subSettings.sessionTime.enabled &&
 					((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
@@ -1243,14 +1243,14 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							: this.myIncidentPoints === -1
 								? "N/A"
 								: this.myIncidentPoints
-						}${showAllMode ? "/"+200 : this.maxIncidentPoints === -1 
+						}${showAllMode ? "/"+200 : this.maxIncidentPoints < 1 
 							? ""
 							: "/"+this.maxIncidentPoints
 						}`}								
 					</span>
 					{(this.sessionType === ESession.Race || showAllMode) && (
 						<div className="details">
-							{`${this.myCutTrackWarnings} ${_("cuts")}`}
+							{`( ${this.myCutTrackWarnings} ${_("cuts")} )`}
 						</div>
 					)}
 				</div>

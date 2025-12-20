@@ -1738,7 +1738,6 @@ export default class App extends React.Component<IProps> {
     typeof setTimeout
   > | null = null;
   @observable accessor sessionType = -1;
-  @observable accessor sessionPhase = -1;
   @observable accessor singleplayerRace = false;
   @observable accessor bestLapTimeLeader = -1;
   @observable accessor lapTimeCurrentSelf = -1;
@@ -1903,7 +1902,6 @@ export default class App extends React.Component<IProps> {
     this.playerIsFocus = ePlayerIsFocus;
     this.currentSlotId = eCurrentSlotId;
     this.sessionType = r3e.data.SessionType;
-    this.sessionPhase = r3e.data.SessionPhase;
     this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
