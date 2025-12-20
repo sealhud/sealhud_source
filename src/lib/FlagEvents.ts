@@ -22,7 +22,7 @@ export class FlagEvents {
 
     // Config
     private static HIGHLIGHT_DURATION = 8000; // ms
-    private static SPEED_THRESHOLD_REMOVE = 19; // 19 m/s -> remover quando acima
+    private static SPEED_THRESHOLD_REMOVE = 21; // 20 m/s -> remover quando acima
 
     // -----------------------
     // update chamado pelo loop principal
@@ -61,14 +61,14 @@ export class FlagEvents {
     // - Yellow ativa
     // - Não está no pit
     // - Não terminou a corrida
-    // - Velocidade < Threshold progressivo [3, 6, 9, 12, 15, 18] (metros por segundo)
+    // - Velocidade < Threshold progressivo [4, 8, 12, 16, 20] (metros por segundo)
     // Seleciona o primeiro que satisfaz e faz highlight por HIGHLIGHT_DURATION
     // -----------------------
     private static detectSimple(drivers: IDriverData[]) {
         const now = performance.now();
 
         // thresholds progressivos (em m/s)
-        const thresholds = [3, 6, 9, 12, 15, 18]; 
+        const thresholds = [4, 8, 12, 16, 20]; 
 
         for (const T of thresholds) {
             // coleta todos os drivers <= T

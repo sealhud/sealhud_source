@@ -14,17 +14,14 @@ import {
   ePlayerIsFocus,
   eCurrentSlotId,
   getSlotIds,
-  // fancyTimeFormatGap,
   prettyDebugInfo,
   currentFocusIsInput,
   getClassColor,
   getJason,
-  // getInitials,
   hSLToRGB,
   rankData,
   showDebugMessage,
   showDebugMessageSmall,
-  // IRatingData,
   INVALID,
 } from "../../lib/utils";
 import { merge } from "lodash-es";
@@ -44,7 +41,6 @@ import Damage from "../damage/damage";
 import Flags from "../flags/flags";
 import Fuel from "../fuel/fuel";
 import FuelDetail from "../fuelDetail/fuelDetail";
-// import getRecordedLapsData from "./../../lib/trackData";
 import Gforce from "../gforce/gforce";
 import Graphs from "../graphs/graphs";
 import Info from "../info/info";
@@ -56,7 +52,6 @@ import IShared, {
 } from "./../../types/r3eTypes";
 import Motec from "../motec/motec";
 import OvertakingAids from "../overtakingAids/overtakingAids";
-// import PerformanceInfo from '../performanceInfo/performanceInfo';
 import PitLimiter from "../pitLimiter/pitLimiter";
 import Pitstop from "../pitstop/pitstop";
 import PositionBar from "../positionBar/positionBar";
@@ -91,82 +86,16 @@ interface IDriverInfo {
   engineState: number;
   name: string;
   modelId: number;
-  // currentTime: number;
-  // validLap: number;
   performanceIndex: number;
-  // bestLapTime: number;
-  // bestLapTimeLeader: number;
-  // bestLapTimeClass: number;
-  // pitting: number;
   classId: number;
   classColor: string;
-  // lapDistance: number;
   finishStatus: number;
-  // speed: number;
-  // lapPrevious: number;
-  // distDiff: number;
   dPos: {
     X: number;
     Y: number;
     Z: number;
   };
 }
-
-/*
-interface ILastPosVector {
-  [index: string]: {
-    X: number;
-    Y: number;
-    Z: number;
-  };
-}
-
-interface IPitBoxDistances {
-  // Index TrackLayoutId
-  [index: string]: {
-    [index: string]: {
-      X: number;
-      Y: number;
-      Z: number;
-    };
-  };
-}
-
-interface IPitBoxEntrances {
-  [index: string]: number;
-}
-
-interface ILapData {
-  [index: string]: number[][];
-}
-
-interface ILapRecords {
-  // Index = SlotId
-  [index: number]: number[][];
-  // 0 - dist array
-  // 1 - time array
-}
-*/
-
-interface IClassLaps {
-  // Index = ClassPerformanceIndex
-  [index: number]: number;
-  // lapTime
-}
-
-
-/*
-export interface IDriverPitInfo {
-  // Index = SlotId
-  [index: number]: number[];
-  // 0 - Is In Pit
-  // 1 - Is In Pit Start
-  // 2 - Pit Enter Time
-  // 3 - Pit Stand Time
-  // 4 - Pit Start Time
-  // 5 - Pit Exit Time
-}
-*/
 
 export interface IWidgetSetting {
   id: string;
@@ -196,7 +125,6 @@ let eGainLossPermanentBar = false;
 let eRankInvert = false;
 let eRankInvertRelative = false;
 let eLogoUrl = "./../../img/logo.png";
-// let eDriverPitInfo: IDriverPitInfo = {};
 let eResetId = "";
 let eIsLeaderboard = false;
 let eIsHillClimb = false;
@@ -220,14 +148,13 @@ export {
   eRankInvert,
   eRankInvertRelative,
   eLogoUrl,
-  // eDriverPitInfo,
   eIsIngameBrowser,
   eIsLeaderboard,
   eIsHillClimb,
   eIsHyperCar,
 };
 // Hud Version
-const currentVersion = 0.9;
+const currentVersion = 0.91;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -245,18 +172,7 @@ export default class App extends React.Component<IProps> {
   @observable accessor changeLogToggled = false;
   @observable accessor trackingString = "";
   @observable accessor tempTrackingString = "";
-  // @observable accessor driverPitInfo: IDriverPitInfo = {};
-  // @observable accessor pitBoxDistances: IPitBoxDistances = {};
-  // @observable accessor pitBoxEntrances: IPitBoxEntrances = {};
-  // @observable accessor lastPosition: ILastPosVector = {};
-  // @observable accessor driverLapRecord: ILapRecords = {};
-  // @observable accessor driverRecordedLaps = [[-1], [0], [0], [0]];
-  // @observable accessor storedRecordedLaps: ILapData = {};
-  // @observable accessor classBestLap: IClassLaps = {};
-  // @observable accessor currentClassLapData = [[-1], [0], [0], [0]];
-  // @observable accessor tempClassLapData = [[-1], [0], [0], [0]];
   @observable accessor drivers: IDriverInfo[] = [];
-  // loadTime = Date.now();
   @observable accessor loadTime = Date.now();
   // Deal with centering the main ui so it is always stays 16:9
   @observable accessor aspectHeight: number | null = null;
@@ -1800,8 +1716,6 @@ export default class App extends React.Component<IProps> {
   @observable accessor nowTrackId = -1;
   @observable accessor nowLayoutId = -1;
   @observable accessor lastCheck = -1;
-  // @observable accessor lastDiffCheck = 0;
-  // @observable accessor updateDiffs = true;
   @observable accessor tempLowPerfo = false;
   @observable accessor tempHighPerfo = false;
   @observable accessor tempSavePerfo: boolean[] = [];
@@ -1828,7 +1742,6 @@ export default class App extends React.Component<IProps> {
   @observable accessor singleplayerRace = false;
   @observable accessor bestLapTimeLeader = -1;
   @observable accessor lapTimeCurrentSelf = -1;
-  // @observable accessor lapDistance = -1;
   @observable accessor layoutLength = -1;
   @observable accessor lapTimePreviousSelf = -1;
   @observable accessor tractionControlPercentUndefined = true;
@@ -1966,9 +1879,11 @@ export default class App extends React.Component<IProps> {
   @action
   private updatePerformance = () => {
     this.gameInReplay = r3e.data.GameInReplay > 0;
-    this.gameInMenus = r3e.data.GameInMenus > 0;
-    if (this.gameInMenus) {
-      return; // não atualiza nada quando está no menu
+    this.gameInMenus  = r3e.data.GameInMenus > 0;
+    const gamePaused  = r3e.data.GamePaused > 0;
+
+    if (this.gameInMenus || gamePaused) {
+      return;
     }
     const showAtAll =
       r3e.data && !this.gameInMenus && r3e.data.DriverData.length > 0;
@@ -1989,14 +1904,10 @@ export default class App extends React.Component<IProps> {
     this.currentSlotId = eCurrentSlotId;
     this.sessionType = r3e.data.SessionType;
     this.sessionPhase = r3e.data.SessionPhase;
-    // this.bestLapTimeLeader = r3e.data.SectorTimesSessionBestLap.Sector3;
-    // this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
-    // this.lapDistance = r3e.data.LapDistance;
     this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
     FlagEvents.update(r3e.data.DriverData); // FLAG EVENTS FOR ALL WIDGETS
-    // this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;
 
@@ -2205,17 +2116,9 @@ export default class App extends React.Component<IProps> {
         this.nowTrackId = r3e.data.TrackId;
         this.nowLayoutId = r3e.data.LayoutId;
         this.tempTrackingString = `${r3e.data.TrackId}_${r3e.data.LayoutId}_7982`;
-        //this.tempClassLapData = getRecordedLapsData(this.tempTrackingString);
-        //this.driverRecordedLaps = getRecordedLapsData(this.tempTrackingString);
         this.forceCheck = true;
       }
     }
-    /*
-    this.updateDiffs = false;
-    if (nowCheck - this.lastDiffCheck >= 500 || this.forceCheck) {
-      this.updateDiffs = true;
-      this.lastDiffCheck = nowCheck;
-    }*/
 
     if (
       (highPerformanceMode && nowCheck - this.lastCheck >= 11) ||
@@ -2271,9 +2174,6 @@ export default class App extends React.Component<IProps> {
         r3e.data.LayoutId === 11861;
 
       // this.runBooboo();
-      // this.getClassBestLaps(this.drivers);
-      // this.updateDriverTimes();
-      // this.updateLapRecordTimes();
     }
   };
   
@@ -2304,21 +2204,9 @@ export default class App extends React.Component<IProps> {
       engineState: driver.EngineState,
       name: base64ToString(driver.DriverInfo.Name),
       modelId: driver.DriverInfo.ModelId,
-      // currentTime: driver.LapTimeCurrentSelf,
-      // validLap: driver.CurrentLapValid,
       performanceIndex: driver.DriverInfo.ClassPerformanceIndex,
-      /*
-      bestLapTime: driver.SectorTimeBestSelf.Sector3,
-      bestLapTimeLeader: this.bestLapTimeLeader,
-      bestLapTimeClass:
-        this.classBestLap[driver.DriverInfo.ClassPerformanceIndex] !== undefined
-          ? this.classBestLap[driver.DriverInfo.ClassPerformanceIndex]
-          : 9999,
-      pitting: driver.InPitlane,
-      */
       classId: driver.DriverInfo.ClassId,
       classColor: getClassColor(driver.DriverInfo.ClassPerformanceIndex),
-      // lapDistance: driver.LapDistance,
       // now using the modern PitEvents logic
       finishStatus: finishStatusPatched,
       speed: driver.CarSpeed,
@@ -2328,223 +2216,6 @@ export default class App extends React.Component<IProps> {
     return driverData;
   };
   
-  /*
-  private getClassBestLaps = (driverData: IDriverInfo[]) => {
-    driverData.forEach((driver) => {
-      if (this.classBestLap[driver.performanceIndex] === undefined) {
-        this.classBestLap[driver.performanceIndex] = 9999;
-      } else if (
-        driver.bestLapTime > 0 &&
-        driver.bestLapTime <= this.classBestLap[driver.performanceIndex]
-      ) {
-        this.classBestLap[driver.performanceIndex] = driver.bestLapTime;
-      }
-    });
-  };
-  */
-  
-  /* --- TESTAR V 0.9
-  private updateDriverTimes() {
-  if (!this.drivers.length) return;
-  this.drivers.forEach((driver) => {
-    // --- PIT INFO -----------------------------------------------------
-    if (this.sessionType === ESession.Race && this.driverPitInfo[driver.id] !== undefined) {
-
-      // Was in Pits on Start
-      if (this.driverPitInfo[driver.id][1] < 0 && driver.pitting === 0) {
-        this.driverPitInfo[driver.id][1] = 0;
-        this.driverPitInfo[driver.id][0] = 0;
-        return;
-      }
-      // Re-Enters pits
-      if (
-        this.driverPitInfo[driver.id][1] > 0 &&
-        this.driverPitInfo[driver.id][0] === 0 &&
-        driver.pitting
-      ) {
-        this.driverPitInfo[driver.id][2] = nowCheck;
-        this.driverPitInfo[driver.id][3] = -1;
-        this.driverPitInfo[driver.id][4] = -1;
-        this.driverPitInfo[driver.id][5] = -1;
-      }
-
-      // Enters the Pit
-      if (
-        this.driverPitInfo[driver.id][0] === 0 &&
-        this.driverPitInfo[driver.id][1] !== -1 &&
-        driver.pitting &&
-        driver.finishStatus === 0
-      ) {
-        this.driverPitInfo[driver.id][0] = 1;
-        this.driverPitInfo[driver.id][2] = nowCheck;
-      }
-      // Stops on Spot
-      if (
-        this.driverPitInfo[driver.id][0] > 0 &&
-        this.driverPitInfo[driver.id][3] < 0 &&
-        driver.pitting &&
-        driver.finishStatus === 0 &&
-        (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
-      ) {
-        this.driverPitInfo[driver.id][3] = nowCheck;
-      }
-      // Starts from Spot
-      if (
-        this.driverPitInfo[driver.id][0] > 0 &&
-        this.driverPitInfo[driver.id][3] > 0 &&
-        this.driverPitInfo[driver.id][4] < 0 &&
-        driver.pitting &&
-        driver.finishStatus === 0 &&
-        driver.speed >= 1 &&
-        driver.speed.toString().indexOf("E") < 0
-      ) {
-        this.driverPitInfo[driver.id][4] = nowCheck;
-      }
-      // Stops again before exit (Miss-Spot)
-      if (
-        this.driverPitInfo[driver.id][0] > 0 &&
-        this.driverPitInfo[driver.id][3] > 0 &&
-        this.driverPitInfo[driver.id][4] > 0 &&
-        driver.pitting &&
-        driver.finishStatus === 0 &&
-        (driver.speed <= 0.05 || driver.speed.toString().indexOf("E") > -1)
-      ) {
-        this.driverPitInfo[driver.id][4] = -1;
-      }
-      // Exits Pits
-      if (
-        this.driverPitInfo[driver.id][0] > 0 &&
-        !driver.pitting &&
-        this.driverPitInfo[driver.id][5] < 0 &&
-        driver.finishStatus === 0
-      ) {
-        this.driverPitInfo[driver.id][0] = 0;
-        this.driverPitInfo[driver.id][5] = nowCheck;
-        this.driverPitInfo[driver.id][1]++;
-      }
-    } else {
-      this.driverPitInfo[driver.id] = [0, -1, -1, -1, -1, -1];
-    }
-  });
-  // Mantém somente o que ainda é consumido
-  eDriverPitInfo = this.driverPitInfo;
-}
-*--------/
-  
-  /*
-  private updateLapRecordTimes() {
-    let checkNeeded = false;
-    if (
-      (highPerformanceMode && nowCheck - this.lastRecordUpdate >= 15) ||
-      (lowPerformanceMode && nowCheck - this.lastRecordUpdate >= 66) ||
-      (!lowPerformanceMode &&
-        !highPerformanceMode &&
-        nowCheck - this.lastRecordUpdate >= 32)
-    ) {
-      checkNeeded = true;
-      this.lastRecordUpdate = nowCheck;
-    }
-    if (!checkNeeded) {
-      return;
-    }
-    if (!this.drivers.length) {
-      return;
-    }
-    let needStoring = false;
-    this.drivers.forEach((driver) => {
-      if (this.driverLapRecord[driver.id] !== undefined) {
-        if (
-          driver.finishStatus < 1 &&
-          driver.currentTime >= 0 &&
-          driver.validLap &&
-          driver.pitting < 1 &&
-          this.playerSlotId !== -1 &&
-          driver.id === this.playerSlotId
-        ) {
-          let aLength = this.driverLapRecord[driver.id][0].length;
-          const storeTime =
-            driver.lapPrevious > 0
-              ? driver.lapPrevious
-              : this.lapTimePreviousSelf > 0
-              ? this.lapTimePreviousSelf
-              : 0;
-          if (
-            nowCheck - this.driverLapRecord[driver.id][2][0] > 5500 &&
-            driver.lapDistance < 51 &&
-            driver.lapDistance > 2 &&
-            storeTime > 0
-          ) {
-            if (aLength > 10 && this.driverLapRecord[driver.id][0][1] < 100) {
-              this.driverLapRecord[driver.id][0].push(this.layoutLength);
-              this.driverLapRecord[driver.id][1].push(storeTime);
-              if (
-                this.playerSlotId === driver.id &&
-                (this.driverRecordedLaps[0][0] === -1 ||
-                  this.driverRecordedLaps[0][0] > storeTime ||
-                  this.driverRecordedLaps[1][0] === 0)
-              ) {
-                this.driverRecordedLaps[0][0] = storeTime;
-                this.driverRecordedLaps[1][0] = 1;
-                this.driverRecordedLaps[2] = this.driverLapRecord[
-                  driver.id
-                ][0].map((x) => x);
-                this.driverRecordedLaps[3] = this.driverLapRecord[
-                  driver.id
-                ][1].map((x) => x);
-
-                let tString = "";
-                if (
-                  r3e.data.TrackId !== -1 &&
-                  r3e.data.LayoutId !== -1 &&
-                  driver.classId !== -1
-                ) {
-                  tString = `${r3e.data.TrackId}_${r3e.data.LayoutId}_${driver.classId}`;
-                }
-                if (tString !== "") {
-                  this.storedRecordedLaps[tString] = this.driverRecordedLaps;
-                  needStoring = false; // true;
-                }
-              }
-            }
-            this.driverLapRecord[driver.id][0] = [0];
-            this.driverLapRecord[driver.id][1] = [0];
-            this.driverLapRecord[driver.id][0].push(driver.lapDistance);
-            this.driverLapRecord[driver.id][1].push(driver.currentTime);
-            this.driverLapRecord[driver.id][2][0] = nowCheck + 5000;
-            aLength = 2;
-            this.lapStartTime = -1;
-          }
-          if (
-            aLength &&
-            driver.lapDistance > this.driverLapRecord[driver.id][0][aLength - 1]
-          ) {
-            this.driverLapRecord[driver.id][0].push(driver.lapDistance);
-            this.driverLapRecord[driver.id][1].push(driver.currentTime);
-            if (this.lapStartTime === -1) {
-              this.lapStartTime = nowCheck - driver.currentTime;
-            }
-          }
-        } else if (
-          this.playerSlotId !== -1 &&
-          driver.id === this.playerSlotId &&
-          this.driverLapRecord[driver.id][2][0] !== -1
-        ) {
-          this.driverLapRecord[driver.id] = [[0], [0], [-1]];
-        }
-      } else {
-        this.driverLapRecord[driver.id] = [[0], [0], [-1]];
-      }
-    });
-    if (needStoring) {
-      localStorage.StoredRecordedLaps = JSON.stringify(
-        this.storedRecordedLaps,
-        null,
-        "  "
-      );
-    }
-  }
-  */
-
   // Shortcut keys
   private showKey = (e: KeyboardEvent) => {
     if (!this.lockHud) {
@@ -2982,13 +2653,6 @@ export default class App extends React.Component<IProps> {
       this.mouseTimeout = window.setTimeout(this.checkMouseMove, 3000);
     }
 
-    /* const diff = Math.max(0, 1 - Math.pow(Math.max(0, (x1 - x2)) / 100, 7));
-		this.settingsOpacity = 1;// diff;
-		if (this.settingsOpacity === 0) {
-			clearTimeout(this.mouseTimeout);
-			this.hideMouse = false;
-		} */
-
     this.settingsOpacity = 1; // diff;
 
     const cursorOffset = this.currentCursorWidgetOffset;
@@ -3356,9 +3020,6 @@ export default class App extends React.Component<IProps> {
   private getWidgetId(e: React.MouseEvent | React.WheelEvent) {
     return (e.currentTarget as HTMLDivElement).getAttribute("data-id");
   }
-  private getClassName(e: React.MouseEvent | React.WheelEvent) {
-    return (e.currentTarget as HTMLDivElement).className;
-  }
 
   render() {
     const driverDataPlace = r3e.data
@@ -3493,32 +3154,32 @@ export default class App extends React.Component<IProps> {
                     fontSize: "26px",
                   }}
                 >
-                  {`${"December 11, 2025"}`}
+                  {`${"December 20, 2025"}`}
                 </span>
               </b>
               <br />
               <ul>
 
                 <li>
-                  {`${"TV Tower:"}`}
-                  <br />
-                  {`${"Intervals between players are now displayed in M:SS.S format. Showing M:SS.SSS was unnecessary."}`}
-                  <br />
-                </li>
-                <br />
-
-                <li>
                   {`${"TV Tower / Position Bar:"}`}
                   <br />
-                  {`${"In multiclass races, the pit counter (number of pitstops per driver) was not working. Fixed."}`}
+                  {`${"Pit times were being summed, so when a driver performed more than one stop, the pit time was displayed incorrectly. Fixed."}`}
                   <br />
                 </li>
                 <br />
 
                 <li>
-                  {`${"TV Tower / Position Bar / Relatives:"}`}
+                  {`${"Standings Bar:"}`}
                   <br />
-                  {`${"During yellow-flag situations, slower drivers are now highlighted in yellow."}`}
+                  {`${"The 'position info' block was exploding upwards when showing the position gained/lost. Fixed."}`}
+                  <br />
+                </li>
+                <br />
+
+                <li>
+                  {`${"Yellow-flag driver highlight/detection:"}`}
+                  <br />
+                  {`${"Some improvements for better detection quality."}`}
                   <br />
                 </li>
                 <br />
@@ -3526,31 +3187,10 @@ export default class App extends React.Component<IProps> {
                 <li>
                   {`${"Position Bar:"}`}
                   <br />
-                  {`${"Strength of Field was not accounting for drivers on invalid laps, causing the value to change during the race. The calculation is now consistent and accurate for all drivers."}`}
-                  <br />
-                  {`${"Added information on how many times the player cut the track."}`}
+                  {`${"If a race has no incident limit, it will now display 'N/A', so the track cut counter remains enabled."}`}
                   <br />
                 </li>
                 <br />
-
-                <li>
-                  {`${"Relatives:"}`}
-                  <br />
-                  {`${"No new car names had been mapped since 2021. All car names are now up to date. Including new DTM-2025 and DTM-2003. I work! =)"}`}
-                  <br />
-                  {`${"The player's name was missing when only two drivers were on track. Fixed."}`}
-                  <br />
-                  {`${"The gap was being calculated incorrectly when drivers were one lap ahead or one lap behind. Now, the HUD estimates the gap using the player's best lap (RR doesn't provide that info)."}`}
-                  <br />
-                </li>
-                <br />
-
-                <li>
-                  {`${"Performance:"}`}
-                  <br />
-                  {`${"SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient."}`}
-                  <br />
-                </li>
 
               </ul>
               <b>{`${"--------------------------------------------------- CHANGELOG END ---------------------------------------------------"}`}</b>

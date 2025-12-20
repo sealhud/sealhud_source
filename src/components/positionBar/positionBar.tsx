@@ -802,7 +802,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			this.props.settings.subSettings.showIncidentPoints.enabled &&
 			(showAllMode ||
 				(this.playerIsFocus &&
-				this.maxIncidentPoints > 0 &&
+				// this.maxIncidentPoints > 0 &&
 				sessionName !== _("Practice") &&
 				sessionName !== _("Warmup"))
 			);
@@ -1243,11 +1243,14 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							: this.myIncidentPoints === -1
 								? "N/A"
 								: this.myIncidentPoints
-						}/${showAllMode ? 200 : this.maxIncidentPoints}`}								
+						}${showAllMode ? "/"+200 : this.maxIncidentPoints === -1 
+							? ""
+							: "/"+this.maxIncidentPoints
+						}`}								
 					</span>
 					{(this.sessionType === ESession.Race || showAllMode) && (
 						<div className="details">
-							{`( ${this.myCutTrackWarnings} ${_("cuts")} )`}
+							{`${this.myCutTrackWarnings} ${_("cuts")}`}
 						</div>
 					)}
 				</div>
@@ -1456,7 +1459,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 								? "yellow"
 								: "#fff",
 						width: !this.props.relative ? "25px" : undefined,
-						top: !this.props.relative && showGainLoss ? "-10px" : undefined,
+						//top: !this.props.relative && showGainLoss ? "-10px" : undefined,
 					}}
 				>
 

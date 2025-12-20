@@ -13,7 +13,6 @@ import {
 	eIsHyperCar,
 	lowPerformanceMode,
 	highPerformanceMode,
-	// eDriverDiffs,
 	showAllMode
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -613,6 +612,34 @@ export default class Info extends React.Component<IProps, {}> {
 		return reasonText;
 	}
 
+	private formatPenaltyText(penaltyKey: string): string {
+		const baseText =
+			this.penaltyTexts[penaltyKey] || penaltyKey;
+
+		const reason =
+			this.getPenaltyReason(
+				penaltyKey,
+				this.penaltyTimes[penaltyKey]
+			);
+
+		if (penaltyKey !== 'DriveThrough' && penaltyKey !== 'StopAndGo') {
+			return `${baseText}\n  ${reason}`;
+		}
+
+		const lapsLeft =
+			(this.penaltyLaps[penaltyKey] + 3) - this.completedLaps;
+
+		const serveText =
+			lapsLeft > 1 ? _('Serve within') : _('Serve');
+
+		const lapText =
+			lapsLeft > 1
+				? `${lapsLeft} ${_('laps')}`
+				: _('this lap');
+
+		return `${baseText}\n  ${reason}\n  ${serveText} ${lapText}`;
+	}
+
 	render() {
 		if (
 			this.sessionType === 2 &&
@@ -646,71 +673,8 @@ export default class Info extends React.Component<IProps, {}> {
 							if (!this.playerIsFocus) { return null; }
 							return (
 								<div key={penaltyKey} className="warning">
-									<SvgIcon
-										src={require('./../../img/icons/warning.svg')}
-									/>
-										{
-											`${
-												this.penaltyTexts[penaltyKey] ||
-												penaltyKey
-											} \n  ${
-												this.getPenaltyReason(penaltyKey, this.penaltyTimes[penaltyKey])
-											} ${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-														?	'\n  ' + _('Serve within')
-														:	'\n  ' + _('Serve')
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.DriveThrough + 3) -
-															this.completedLaps
-														) > 1
-															?	'\n  ' + _('Serve within')
-															:	'\n  ' + _('Serve')
-													:	''
-											} ${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-													?	(
-															(this.penaltyLaps.DriveThrough + 3) -
-															this.completedLaps
-														)
-													:	' ' + _('this lap')
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.StopAndGo + 3) -
-															this.completedLaps
-														) > 1
-														?	(
-																(this.penaltyLaps.StopAndGo + 3) -
-																this.completedLaps
-															)
-														:	' ' + _('this lap')
-													:	''
-											}${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-													?	' ' + _('laps')
-													:	''
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.StopAndGo + 3) -
-															this.completedLaps
-														) > 1
-														?	' ' + _('laps')
-														:	''
-													:	''
-											}`
-										}
+									<SvgIcon src={require('./../../img/icons/warning.svg')} />
+									{this.formatPenaltyText(penaltyKey)}
 								</div>
 							);
 						})
@@ -795,139 +759,4 @@ export default class Info extends React.Component<IProps, {}> {
 			</div>
 		);
 	}
-	/* render() {
-		if (
-			this.sessionType === 2 &&
-			this.sessionPhase === 1
-		) { return null; }
-		return (
-			<div
-				className={classNames(style.info, this.props.className)}
-				{...widgetSettings(this.props)}
-			>
-				{}
-				{
-					(
-						Object.keys(this.eTimes)
-						.filter((eKey) => this.eTimes[eKey] >= nowCheck)
-						.map((eKey) => {
-							if (!this.playerIsFocus) { return null; }
-							return (
-								<div key={eKey} className="warning">
-									<SvgIcon
-										src={require('./../../img/icons/info.svg')}
-									/>
-										{
-											eKey === 'PitRequest'
-											?	_('Pit-Stop requested - Pit In')
-											:	`${
-													this.eTexts[eKey]
-												} ${
-													this.eValues[eKey]
-												}${
-													eKey === 'BrakeBias'
-													?	'%'
-													:	''
-												}`
-										}
-								</div>
-							);
-						})
-					)
-				}
-				{
-					(
-						Object.keys(this.penalties)
-						.filter((penaltyKey) => this.penalties[penaltyKey] > 0)
-						.map((penaltyKey) => {
-							if (!this.playerIsFocus) { return null; }
-							return (
-								<div key={penaltyKey} className="warning">
-									<SvgIcon
-										src={require('./../../img/icons/warning.svg')}
-									/>
-										{
-											`${
-												this.penaltyTexts[penaltyKey] ||
-												penaltyKey
-											} \n${
-												this.getPenaltyReason(penaltyKey, this.penaltyTimes[penaltyKey])
-											} ${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-														?	'\n  Serve within'
-														:	'\n  Serve'
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.DriveThrough + 3) -
-															this.completedLaps
-														) > 1
-															?	'\n  Serve within'
-															:	'\n  Serve'
-													:	penaltyKey === 'SlowDown'
-														?	'\n Approximate Time to give back:'
-														:	''
-											} ${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-													?	(
-															(this.penaltyLaps.DriveThrough + 3) -
-															this.completedLaps
-														)
-													:	' this lap'
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.StopAndGo + 3) -
-															this.completedLaps
-														) > 1
-														?	(
-																(this.penaltyLaps.StopAndGo + 3) -
-																this.completedLaps
-															)
-														:	' this lap'
-													:	penaltyKey === 'SlowDown'
-														?	eDriverDiffs[eCurrentSlotId][2][0]
-														:	''
-											}${
-												penaltyKey === 'DriveThrough'
-												?	(
-														(this.penaltyLaps.DriveThrough + 3) -
-														this.completedLaps
-													) > 1
-													?	' laps'
-													:	''
-												:	penaltyKey === 'StopAndGo'
-													?	(
-															(this.penaltyLaps.StopAndGo + 3) -
-															this.completedLaps
-														) > 1
-														?	' laps'
-														:	''
-													:	penaltyKey === 'SlowDown'
-														?	's'
-														:	''
-											}`
-										}
-								</div>
-							);
-						})
-					)
-				}
-				{(this.showLapInvalid || showAllMode) && (
-					<div className="warning">
-						<SvgIcon
-							src={require('./../../img/icons/warning.svg')}
-						/>
-						{_('This lap will not count')}
-					</div>
-				)}
-			</div>
-		);
-	}*/
 }
