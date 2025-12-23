@@ -63,14 +63,13 @@ export default class StartingLights extends React.Component<IProps, {}> {
 			this.sessionPhase = r3e.data.SessionPhase;
 			this.isRace = this.sessionType === ESession.Race;
 			this.isHillClimb = eIsHillClimb;
-			this.isGridStage = this.isRace &&
-				this.sessionPhase === 1;
+			this.isGridStage = this.isRace && this.sessionPhase === 1;
 			// this.manualFormation = eFormationLap;
 			// if (this.manualFormation === -1) {
 			if (this.isGridStage) {
 				const gTime = Math.floor(r3e.data.SessionTimeRemaining);
 				this.gridTimerText =
-					`Grid Formation\nForced Race Start in: ${
+					`SealHUD Started - Grid Formation\nForced Race Start in: ${
 						Math.floor(r3e.data.SessionTimeRemaining)
 					}s`;
 				if (gTime > 0) { showDebugMessageSmall(this.gridTimerText, 60, 36, 100, 50, 36); }

@@ -4,8 +4,6 @@ import {
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
-	lowPerformanceMode,
-	highPerformanceMode
 } from '../app/app';
 import {
 	registerUpdate,
@@ -39,21 +37,6 @@ export default class Clock extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		if (
-			(
-				highPerformanceMode &&
-				nowCheck - this.lastCheck >= 66
-			) ||
-			(
-				lowPerformanceMode &&
-				nowCheck - this.lastCheck >= 266
-			) ||
-			(
-				!lowPerformanceMode &&
-				!highPerformanceMode &&
-				nowCheck - this.lastCheck >= 133
-			)
-		) {
 			this.lastCheck = nowCheck;
 			const theTime = new Date();
 			const hours = theTime.getHours();
@@ -75,7 +58,6 @@ export default class Clock extends React.Component<IProps, {}> {
 				}${
 					seconds
 				}`;
-		}
 	};
 
 	render() {

@@ -283,7 +283,9 @@ html.debug .viewport {
   max-height: 80%;
   min-height: 80%;
   width: 82%;
+  white-space: pre;
 }
+
 .viewport .changelog .gotIt {
   height: 50px;
   width: 75%;

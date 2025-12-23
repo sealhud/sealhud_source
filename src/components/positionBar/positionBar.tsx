@@ -525,7 +525,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		const manualBehind = (e: Entry) => {
 			const myBest = r3e.data.LapTimeBestSelf;
 			const vel = myBest > 0
-				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro - 30%
+				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro * 70%
 				: (1 / fallbackSpeed);      // fallback s/m
 			const t = Math.abs(e.diff) * vel;
 			return "+" + t.toFixed(1);
@@ -533,7 +533,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		const manualAhead = (e: Entry) => {
 			const myBest = r3e.data.LapTimeBestSelf;
 			const vel = myBest > 0
-				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro - 30%
+				? (0.7*(myBest / layoutLen))      // s/m = tempo por metro * 70%
 				: (1 / fallbackSpeed);      // fallback s/m
 			const t = Math.abs(e.diff) * vel;
 			return "-" + t.toFixed(1);
@@ -657,8 +657,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			// concatena ao final do gap existente
 			e.driver.diff = `${e.driver.diff} ${metersStr}`;
 		});
-		*/
-		
+		*/		
 	;
 	}
 
@@ -709,7 +708,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			// velocidade média (real ou fallback)
 			let velMedia: number;
 			if (e.bestLap) {
-				velMedia = e.bestLap / layoutLen;   // s por metro
+				velMedia = (0.7*(e.bestLap / layoutLen));   // s por metro * 70%
 			} else {
 				velMedia = 1 / 50; // fallback → 50 m/s
 			}
@@ -1223,7 +1222,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			)}
 
 			{/*PB: Show Incident Points*/}
-			{!this.props.relative && showIncPoints && (
+			{(!this.isLeaderboard && !this.isHillClimb) && !this.props.relative && showIncPoints && (
 				<div
 				className={classNames("incidentPoints")}
 				style={{
@@ -1459,7 +1458,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 								? "yellow"
 								: "#fff",
 						width: !this.props.relative ? "25px" : undefined,
-						//top: !this.props.relative && showGainLoss ? "-10px" : undefined,
+						top: !this.props.relative && showGainLoss ? "-3px" : undefined,
 					}}
 				>
 

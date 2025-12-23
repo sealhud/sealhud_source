@@ -641,10 +641,6 @@ export default class Info extends React.Component<IProps, {}> {
 	}
 
 	render() {
-		if (
-			this.sessionType === 2 &&
-			this.sessionPhase === 1
-		) { return null; }
 		const isGoing = r3e.data.CarSpeed > 3 && r3e.data.CarSpeed.toString().indexOf('E') === -1;
 		const showIncPoints =
 			showAllMode ||
@@ -659,6 +655,13 @@ export default class Info extends React.Component<IProps, {}> {
 			showIncPoints &&
 			this.myIncidentPoints >= (this.maxIncidentPoints * 0.9);
 
+		const isCountdown =
+			this.sessionType === ESession.Race &&
+			this.sessionPhase === 1;
+
+		const isPlayerActive =
+			this.playerIsFocus || isCountdown;
+
 		return (
 			<div
 				className={classNames('info', this.props.className)}
@@ -670,7 +673,7 @@ export default class Info extends React.Component<IProps, {}> {
 						Object.keys(this.penalties)
 						.filter((penaltyKey) => this.penalties[penaltyKey] > 0)
 						.map((penaltyKey) => {
-							if (!this.playerIsFocus) { return null; }
+							if (!isPlayerActive) { return null; }
 							return (
 								<div key={penaltyKey} className="warning">
 									<SvgIcon src={require('./../../img/icons/warning.svg')} />
@@ -701,7 +704,7 @@ export default class Info extends React.Component<IProps, {}> {
 						Object.keys(this.eTimes)
 						.filter((eKey) => this.eTimes[eKey] >= nowCheck)
 						.map((eKey) => {
-							if (!this.playerIsFocus) { return null; }
+							if (!isPlayerActive) { return null; }
 							return (
 								<div key={eKey} className="warning">
 									<SvgIcon

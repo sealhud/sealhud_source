@@ -131,69 +131,98 @@ export function getSlotIds() {
 }
 
 export async function getJason() {
-	if (rankList.length === 0) {
-		await fetch(`https://corsproxy.io/?${
-			encodeURIComponent('https://game.raceroom.com/multiplayer-rating/ratings.json')
-		}`, { method: 'GET' })
-			.then((res: Response) => res.json())
-			.then((json: any[]) => {
-				json.forEach((driver: any) => {
-					rankList.push(driver.UserId);
-				});
-			});
-	}
-	rankData = [];
-	for await (const driver of r3e.data.DriverData) {
-		const userId = driver.DriverInfo.UserId;
+  if (rankList.length === 0) {
+    try {
+      const res = await fetch(
+        `https://corsproxy.io/?${encodeURIComponent(
+          'https://game.raceroom.com/multiplayer-rating/ratings.json'
+        )}`
+      );
 
-		if (userId !== -1 && rankList.includes(userId)) {
-			await fetch(`https://corsproxy.io/?${
-				encodeURIComponent(`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`)
-			}`)
-			.then((resp: Response) => resp.json())
-			.then((respa: any) => {
-				rankData.push(respa);
-			})
-		}
-	}
+      const json = await res.json();
+
+      if (Array.isArray(json)) {
+        json.forEach((driver: any) => {
+          if (typeof driver?.UserId === 'number') {
+            rankList.push(driver.UserId);
+          }
+        });
+      } else {
+        console.warn(
+          '[getJason] ratings.json did not return an array, fallback to per-user fetch',
+          json
+        );
+      }
+    } catch (err) {
+      console.warn(
+        '[getJason] Failed to fetch ratings.json, fallback to per-user fetch',
+        err
+      );
+    }
+  }
+  rankData = [];
+
+  for (const driver of r3e.data.DriverData) {
+    const userId = driver.DriverInfo.UserId;
+
+    if (
+      userId !== -1 &&
+      (rankList.length === 0 || rankList.includes(userId))
+    ) {
+      try {
+        const resp = await fetch(
+          `https://corsproxy.io/?${encodeURIComponent(
+            `https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
+          )}`
+        );
+
+        const data = await resp.json();
+
+        if (data && typeof data.UserId === 'number') {
+          rankData.push(data);
+        }
+      } catch (err) {
+        console.warn(
+          `[getJason] Failed to fetch rating for user ${userId}`,
+          err
+        );
+      }
+    }
+  }
 }
 
 export function getRankingData(userId: number) {
-	if (userId === -1 || rankData.length < 1) {
-		return {
-			UserId: -1,
-			Username: 'none',
-			Fullname: 'none',
-			Rating: 1500,
-			ActivityPoints: 0,
-			RacesCompleted: 0,
-			Reputation: 0,
-			Country: 'none',
-			Team: 'none'
-		};
-	}
-	let indexa = -1;
-	let i = rankData.length;
-	for (i; i--;) {
-		if (rankData[i].UserId === userId) {
-			indexa = i;
-			break;
-		}
-	}
-	if (indexa !== -1) {
-		return rankData[indexa];
-	}
-	return {
-		UserId: userId,
-		Username: 'none',
-		Fullname: 'none',
-		Rating: 1500,
-		ActivityPoints: 0,
-		RacesCompleted: 0,
-		Reputation: 0,
-		Country: 'none',
-		Team: 'none'
-	};
+  if (userId === -1 || rankData.length === 0) {
+    return {
+      UserId: userId,
+      Username: 'none',
+      Fullname: 'none',
+      Rating: 1500,
+      ActivityPoints: 0,
+      RacesCompleted: 0,
+      Reputation: 0,
+      Country: 'none',
+      Team: 'none'
+    };
+  }
+
+  for (let i = rankData.length; i--;) {
+    if (rankData[i].UserId === userId) {
+      return rankData[i];
+    }
+  }
+
+  return {
+    UserId: userId,
+    Username: 'none',
+    Fullname: 'none',
+    Rating: 1500,
+    ActivityPoints: 0,
+    RacesCompleted: 0,
+    Reputation: 0,
+    Country: 'none',
+    Team: 'none'
+  };
 }
 
 export function fancyTimeFormatGap(

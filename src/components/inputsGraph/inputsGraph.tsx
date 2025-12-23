@@ -2,9 +2,6 @@ import { observer } from "mobx-react";
 import { action, observable } from "mobx";
 import {
 	IWidgetSetting,
-	// lowPerformanceMode,
-	// highPerformanceMode,
-	// showAllMode
 } from '../app/app';
 import r3e, { registerUpdate, unregisterUpdate, nowCheck } from "../../lib/r3e";
 import { widgetSettings } from "../../lib/utils";
@@ -27,6 +24,8 @@ export default class InputsGraph extends React.Component<IProps> {
 	@observable accessor throttleHistory: { t: number; v: number }[] = [];
 	@observable accessor brakeHistory: { t: number; v: number }[] = [];
 	@observable accessor clutchHistory: { t: number; v: number }[] = [];
+	@observable accessor sessionPhase = -1;
+	@observable accessor sessionType = -1;
 
 	constructor(props: IProps) {
 		super(props);
@@ -39,6 +38,8 @@ export default class InputsGraph extends React.Component<IProps> {
 
 	@action
 	private update = () => {
+		this.sessionType = r3e.data.SessionType;
+		this.sessionPhase = r3e.data.SessionPhase;
 		const now = nowCheck;
 		// Parâmetro de suavização (1=sem suavizar | 0.1=curva ultra suave)
 		const smoothFactor = 0.20;
@@ -84,6 +85,10 @@ export default class InputsGraph extends React.Component<IProps> {
 	}
 
 	render() {
+		if (
+			this.sessionType === 2 &&
+			this.sessionPhase === 1
+		) { return null; }
 		return (
 			<div {...widgetSettings(this.props)} className={`inputsGraph ${this.props.settings.subSettings.showInputMeters?.enabled ? "withMeters" : ""}`}>
 				<div className="graphAndMeters">

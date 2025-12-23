@@ -49,6 +49,7 @@ import InputsGraph from "../inputsGraph/inputsGraph";
 import IShared, {
   EControl,
   IDriverData,
+  ESession,
 } from "./../../types/r3eTypes";
 import Motec from "../motec/motec";
 import OvertakingAids from "../overtakingAids/overtakingAids";
@@ -154,7 +155,7 @@ export {
   eIsHyperCar,
 };
 // Hud Version
-const currentVersion = 0.91;
+const currentVersion = 0.92;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -2689,16 +2690,6 @@ export default class App extends React.Component<IProps> {
   };
 
   @action
-  private zoomWidget = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.getAttribute("data-name");
-    if (!name) {
-      return;
-    }
-    this.settings[name].zoom = parseFloat(e.target.value);
-    this.saveSettings();
-  };
-
-  @action
   private resetWidget(e: React.MouseEvent) {
     const name = e.currentTarget.getAttribute("data-name");
     if (!name) {
@@ -3035,10 +3026,8 @@ export default class App extends React.Component<IProps> {
       isMenu = false;
     }
     const showAtAll =
-      r3e.data &&
-      !this
-        .gameInMenus /* && (!this.gameInReplay || this.sessionType === ESession.Race) */ &&
-      r3e.data.DriverData.length > 0;
+      r3e.data && !this.gameInMenus &&
+      (this.sessionType === ESession.Race || r3e.data.DriverData.length > 0);
     const versionMisMatch =
       // r3e.data.VersionMinor !== process.env.SHARED_MEMORY_VERSION_MINOR ||
       r3e.data !== undefined &&
@@ -3109,6 +3098,18 @@ export default class App extends React.Component<IProps> {
       }
       return null;
     }
+    
+    /*
+    // Renders the Hud, no matter what
+    const allowRender = r3e.data !== undefined;
+    if (!allowRender) {
+      setTimeout(() => {
+        this.forceUpdate();
+      }, 500);
+      return null;
+    }
+    */
+
     // SPLASH-SCREEN
     if (!this.changeLogRead) {
       return (
@@ -3122,7 +3123,7 @@ export default class App extends React.Component<IProps> {
             <div className="sealLogo">
               <img
                 className="oh_logo"
-                src={require("./../../img/sealhud_logo.png")}
+                src={require("./../../img/sealhud_logo_xmas.png")}
               />
             </div>
             <div className="sealTitle">{`${" Welcome to SealHud "}`}</div>
@@ -3139,99 +3140,14 @@ export default class App extends React.Component<IProps> {
             <div className="coffeePot">
               <img
                 className="coffeePotImg"
-                src={require("./../../img/donate.png")}
+                src={require("./../../img/donate_xmas.png")}
               />
             </div>
             <img className="paypalQRImg" src={require("./../../img/qr.png")} />
             <div className="changeLogTitle">{`${"CHANGELOG"}`}</div>
-            <div className="theLog">
-              <b>
-                <span
-                  style={{
-                    textDecoration: "underline",
-                    fontSize: "26px",
-                  }}
-                >
-                  {`${"December 20, 2025"}`}
-                </span>
-              </b>
-              <br />
-              <ul>
 
-                <li>
-                  {`${"TV Tower / Position Bar:"}`}
-                  <br />
-                  {`${"Pit times were being summed, so when a driver performed more than one stop, the pit time was displayed incorrectly. Fixed."}`}
-                  <br />
-                </li>
-                <br />
+            {this.getChangelog()}
 
-                <li>
-                  {`${"Standings Bar:"}`}
-                  <br />
-                  {`${"The 'position info' block was exploding upwards when showing the position gained/lost. Fixed."}`}
-                  <br />
-                </li>
-                <br />
-
-                <li>
-                  {`${"Yellow-flag driver highlight/detection:"}`}
-                  <br />
-                  {`${"Some improvements for better detection quality."}`}
-                  <br />
-                </li>
-                <br />
-
-                <li>
-                  {`${"Position Bar:"}`}
-                  <br />
-                  {`${"If a race has no incident limit, it will now display 'N/A', so the track cut counter remains enabled."}`}
-                  <br />
-                </li>
-                <br />
-
-              </ul>
-              <b>{`${"--------------------------------------------------- CHANGELOG END ---------------------------------------------------"}`}</b>
-              <br />
-              <br />
-              {`${"If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!"}`}
-              <br />
-              {`${"HUGE THANKS to everyone on the forum who has been reporting bugs and helping improve SealHud. Special thanks to some fellas who made suggestions:"}`}
-              <br />
-              {`${"• Jos Snijder"}`}
-              <br />
-              {`${"• Mad Day Man"}`}
-              <br />
-              {`${"• Niismo"}`}
-              <br />
-              {`${"• Pedro Santana"}`}
-              <br />
-              <br />
-              {`${"A big THANK YOU to everyone who made donations:"}`}
-              <br />
-              {`${"• Alexander Samardzic"}`}
-              <br />
-              {`${"• Martin Decker"}`}
-              <br />
-              {`${"• Marcus Stoffels"}`}
-              <br />
-              {`${"• Stuart Tennant"}`}
-              <br />
-              {`${"• donald hunter"}`}
-              <br />
-              {`${"• Hans-Jörg Mächler"}`}
-              <br />
-              {`${"• Jos Snijder"}`}
-              <br />
-              <br />
-              {`${"Thanks for using SealHUD! Thanks for driving RaceRoom!"}`}
-              <br />
-              {`${"The SealHUD Team & its collaborators!"}`}
-              <br />
-              <br />
-              {`${"*Special thanks to ChatGPT and CoPilot, who help us REALLY a lot."}`}
-              <br />
-            </div>
             <div
               className="gotIt"
               onClick={this.toggleChangeLog}
@@ -3531,9 +3447,7 @@ export default class App extends React.Component<IProps> {
             settings={this.settings.tvTower}
           />
         )}
-        {this.playerIsFocus &&
-          !this.gameInReplay &&
-          this.settings.info.enabled && (
+        {this.settings.info.enabled && (
             <Info
               onMouseDown={this.onMouseDown}
               onWheel={this.onWheel}
@@ -3606,7 +3520,7 @@ export default class App extends React.Component<IProps> {
         <div className="sealhud_logo">
           <img
             className="oh_logo"
-            src={require("./../../img/sealhud_logo.png")}
+            src={require("./../../img/sealhud_logo_xmas.png")}
           />
         </div>
         <div
@@ -3629,15 +3543,15 @@ export default class App extends React.Component<IProps> {
         >
           {_("Updates/sec:")}{" "}
           {this.lowPerfo || this.tempLowPerfo
-            ? this.performance > 15
-              ? 15
+            ? this.performance > 11
+              ? 30
               : this.performance
             : this.tempHighPerfo || this.highPerfo
-            ? this.performance > 60
-              ? 60
+            ? this.performance > 33
+              ? 90
               : this.performance
-            : this.performance > 30
-            ? 30
+            : this.performance > 16
+            ? 60
             : this.performance}
         </div>
 
@@ -4250,4 +4164,144 @@ export default class App extends React.Component<IProps> {
       </div>
     );
   }
+
+private getChangelog() {
+  return (
+  <div className="theLog">
+    <span style={{fontSize: "27px",}}>
+      {`${"DECEMBER 23, 2025"}`}
+    </span>
+{`
+
+
+WHAT'S NEW:
+------------------
+- Pre-Race Countdown: Now the hud displays the countdown timer before the race starts and also RaceInfo widget will now show TC, BrakeBias, Engine Map, and other changes.
+- Translations: A few fixes for German translations (Thank you, ShortyBuzzGER).
+- Incident Points Counter: Removed from LeaderBoard and HillClimb sessions.
+- Strength Of Field: Stopped working due to some server-side changes. Fixed. 
+
+THANK YOU:
+------------------
+Everyone on the forum who has been reporting bugs and helping improve SealHud. 
+Special thanks to some fellas who made suggestions:
+• Jos Snijder
+• Mad Day Man
+• Niismo
+• Pedro Santana
+
+SUPPORTERS:
+------------------
+• Alexander Samardzic
+• Martin Decker
+• Marcus Stoffels
+• Stuart Tennant
+• Donald Hunter
+• Hans-Jörg Mächler
+• Jos Snijder
+
+If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!
+
+Thanks for using SealHUD! Thanks for driving RaceRoom!
+Diego Junges
+
+
+
+`}
+
+<span style={{fontSize: "27px",}}>
+  {`${"COMPLETE CHANGELOG:"}`}
+</span>
+
+{`
+EVERYTHING WE'VE DONE, SINCE SEPTEMBER 2025
+
+
+VERSION 0.91
+------------------
+- TV Tower / Position Bar: Pit times were being summed, so when a driver performed more than one stop, the pit time was displayed incorrectly. Fixed.
+- Standings Bar: The "position info" block was exploding upwards when showing the position gained/lost. Fixed.
+- Yellow-flag detection: Some improvements for better detection quality.
+- Position Bar: If a race has no incident limit, it will now display "N/A", so the track cut counter remains enabled.
+
+VERSION 0.9
+------------------
+- TV Tower: Intervals between players are now displayed in M:SS.S format. Showing M:SS.SSS was unnecessary.
+- TV Tower / Position Bar: In multiclass races, the pit counter (number of pitstops per driver) was not working. Fixed.
+- TV Tower / Position Bar / Relatives: During yellow-flag situations, slower drivers are now highlighted in yellow.
+- Position Bar: Strength of Field was not accounting for drivers on invalid laps, causing the value to change during the race. The calculation is now consistent and accurate for all drivers.
+- Position Bar: Added information on how many times the player cut the track.
+- Relatives: No new car names had been mapped since 2021. All car names are now up to date.
+- Relatives: The player's name was missing when only two drivers were on track. Fixed.
+- Relatives: The gap was being calculated incorrectly when drivers were one lap ahead or one lap behind. Now, the HUD estimates the gap using the player's best lap.
+- Performance: SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient.
+
+VERSION 0.8
+------------------
+- Position Bar / TV Tower / Relatives timings: HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry.
+  Furthermore, there's no more delay in generating times, as everything is done in "live mode". We also no longer need to collect track data for this!
+- Performance modes: Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: 
+  Low Performance (30 fps), Normal (60 fps) and High Performance (90 fps).
+- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
+- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
+- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.
+- Position Bar: "Show Positions Gain/Loss" option included. 
+- Position Bar: "Show Pit-Status" option included. This will show the number of pit stops for all drivers.
+- TV Tower: "Show penalties" option included. This will show penalties for all drivers in the field.
+- TV Tower: "Show Positions Gain/Loss" option included.
+- Translations: Added and fixed a bunch of things.
+
+VERSION 0.7
+------------------
+- Added track relative timings for Zandvoort 2025.
+- RaceInfo Widget: Now shows "Pit limiter" status info.
+- New Widget: INPUTS GRAPH - Realtime graphic telemetry for throttle, brake and clutch inputs.
+- New donation link.
+
+VERSION 0.6
+------------------
+- Added track data (Name, Layouts, Length, Corner Names, Pit entrance and Pit Spots) for: Circuit de Charade, Circuit De Pau Ville, Circuit Zandvoort (2025),
+  DEKRA Lausitzring GP Course Oval T1, Estoril Circuit, Fliegerhorst Diepholz and Hockenheimring Classic.
+- Added track relative timings for: Interlagos and Circuit de Pau Ville.
+- RaceInfo Widget: Now shows headlights info.
+- Motec Widget: Now always shows electronics, even for cars that doesn't have any (for those it will show: NA)
+- Motec Widget: RPM bar wasn't working. Fixed.
+- Correction on some translations
+
+VERSION 0.5
+------------------
+- RaceInfo Widget: DriveThrough penalties were not working due to a failure to read data from the new API. Now it's fixed!
+- RaceInfo Widget: Slow down penalties now display both the time to give back and the time remaining to serve the penalty.
+- RaceInfo and Motec widgets now displays ABS level changes.
+- Radar now uses an SVG format for better image quality. Thanks to Mad Day Man for the art.
+- Some tweaks on fonts and shadows to make it look cleaner.
+
+VERSION 0.4
+------------------
+- Widgets were moving away from the mouse cursor when dragging them in resolutions other than 1080p. The HUD now supports all resolutions.
+- Added - Track data (Name, Layouts, Length, Corner Names, Pit entrance and Pit Spots) for: AVUS, Alemanring and Donington Park.
+
+VERSION 0.3
+------------------
+- New PNG images for starting lights, more modern-looking, for a change.
+- Fix for retrieving driver rating and reputation from Raceroom (used by SoF and TV Tower)
+
+VERSION 0.2
+------------------
+- Brakebias for hypercars were being displayed during automatic changes. Now it's for manual changes only.
+- For new hypercars, Motec was displaying all automatic changes in brake bias. Now it's manual changes only, as well.
+- Multiplayer ranking button removed, since this feature was no longer working.
+
+VERSION 0.1
+------------------
+- SEALHUD FORK RELEASE: Hello World! =)
+- Added - Interlagos track info (corner names, length, pit spot positions, etc.)
+- Changed QR code to new KW studios forum
+- Embedded fonts (it doesn't load from Google anymore)
+
+      `}
+      </div>
+    );
+  }
+
 }
