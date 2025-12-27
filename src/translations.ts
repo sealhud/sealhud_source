@@ -294,7 +294,7 @@ const translations = {
 		"You need to download/run dash.exe": "Du mußt die dash.exe Herunterladen/Ausführen",
 		"Your dash.exe is OUTDATED": "Deine dash.exe ist VERALTET",
 		"after this lap": "nach dieser Runde",
-		"in 1 minute": "in 1 Minuten",
+		"in 1 minute": "in 1 Minute",
 		"lap": "Runde",
 		"laps": "Runden",
 		"minute": "Minute",
