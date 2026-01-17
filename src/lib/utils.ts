@@ -5,6 +5,7 @@ import IShared from './../types/r3eTypes';
 import isPlainObject from 'lodash-es/isPlainObject';
 import r3e from './r3e';
 import speedDate from 'speed-date';
+import { FuelEvents } from "./FuelEvents";
 
 export interface IRatingData {
 	UserId: number;
@@ -190,6 +191,21 @@ export async function getJason() {
     }
   }
 }
+
+export function computeRealLapDiff(
+  meLaps: number,
+  meDist: number,
+  otherLaps: number,
+  otherDist: number
+): number {
+  let lapDiff = meLaps - otherLaps;
+
+  if (lapDiff < 0 && otherDist < meDist) lapDiff++;
+  else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
+
+  return lapDiff;
+}
+
 
 export function getRankingData(userId: number) {
   if (userId === -1 || rankData.length === 0) {
@@ -677,17 +693,17 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	el.id = id;
 
 	el.style.color = '#fff';
-	el.style.fontSize = '50px';
+	el.style.fontSize = '30px';
 	el.style.position = 'fixed';
 	el.style.top = '50%';
 	el.style.left = '50%';
 	el.style.background = 'rgba(0,0,0,0.6)';
 	el.style.textShadow = '2px 2px 0 rgba(0,0,0,0.5)';
 	el.style.padding = '0 30px';
-	el.style.height = '100px';
-	el.style.lineHeight = '100px';
+	el.style.height = '60px';
+	el.style.lineHeight = '60px';
 	el.style.textAlign = 'center';
-	el.style.borderRadius = '20px';
+	el.style.borderRadius = '00px';
 	el.style.transform = 'translate(-50%, -50%)';
 	el.style.zIndex = `${zIndex}`;
 	el.style.whiteSpace = 'nowrap';
@@ -731,7 +747,7 @@ export function showDebugMessageSmall(
 	el.style.height = `${bHeight}px`;
 	el.style.lineHeight = `${lHeight}px`;
 	el.style.textAlign = 'center';
-	el.style.borderRadius = '20px';
+	el.style.borderRadius = '0px';
 	el.style.transform = 'translate(-50%, -50%)';
 	el.style.zIndex = `${zIndex}`;
 	el.style.whiteSpace = 'pre';
@@ -806,6 +822,94 @@ export function getRoundsLeft(fastestLapGiven: number) {
 	return Math.round(roundsLeftFloat * 10) / 10;
 }
 
+export function getFuelNeed() {
+	const perLap = FuelEvents.avgFuelPerLap;
+	if (!perLap || perLap <= 0) {
+		return { ftEnd: null, ftAdd: null };
+	}
+	const secsRemain = r3e.data.SessionTimeRemaining;
+	let fastestLapLeader = r3e.data.LapTimeBestLeader;
+	let fastestLap =
+		FuelEvents.avgLapTimeSec ??
+		FuelEvents.bestLapTimeSec ??
+		(r3e.data.LapTimeBestSelf > 0 ? r3e.data.LapTimeBestSelf : null);
+	if (!fastestLap || fastestLap <= 0) {
+		return { ftEnd: null, ftAdd: null };
+	}
+	if (fastestLapLeader <= 0) {
+		fastestLapLeader = fastestLap;
+	}
+	let roundsLeft = 0;
+	let roundsLeftFloat = 0.0;
+	let leader = 999;
+	let leaderLaps = -1;
+	const playerLaps = r3e.data.CompletedLaps;
+	let leaderPercent = 0;
+	const playerPercent = r3e.data.LapDistanceFraction;
+	let timeLeft = 0;
+
+	if (r3e.data.SessionLengthFormat >= 0) {
+		if (r3e.data.SessionLengthFormat === 1) {
+			let blob = 0;
+			r3e.data.DriverData.forEach((driver) => {
+					const blab = driver.CompletedLaps + 1;
+					if (blab != null && blab > blob) {
+						blob = blab;
+					}
+				}
+			);
+			roundsLeft = r3e.data.SessionPhase === 6
+				?	0
+				:	r3e.data.NumberOfLaps - blob;
+			roundsLeftFloat = roundsLeft + (1 - playerPercent);
+		} else if (r3e.data.SessionType !== -1) {
+			if (r3e.data.SessionType < 2) {
+				roundsLeft = r3e.data.SessionPhase === 6
+					?	0
+					:	Math.floor(secsRemain / fastestLap);
+				roundsLeftFloat = roundsLeft + (1 - playerPercent);
+			} else if (r3e.data.SessionType === 2) {
+				if (r3e.data.SessionPhase === 6) {
+					roundsLeft = 0;
+					roundsLeftFloat = roundsLeft + (1 - playerPercent);
+				} else {
+					r3e.data.DriverData.forEach((driver) => {
+							const blib = driver.Place;
+							if (blib != null && blib < leader) {
+								leader = blib;
+								leaderLaps =
+									driver.CompletedLaps;
+								leaderPercent =
+									driver.LapDistance / r3e.data.LayoutLength;
+							}
+						}
+					);
+					roundsLeft = Math.floor(secsRemain / fastestLap);
+					timeLeft = secsRemain - (fastestLap * roundsLeft);
+					if (
+						leaderLaps > playerLaps &&
+						leaderPercent < playerPercent
+					) {
+						roundsLeft++;
+					}
+					if (timeLeft > (fastestLapLeader * (1 - leaderPercent))) {
+						roundsLeft++;
+					}
+					roundsLeftFloat = roundsLeft + (1 - playerPercent);
+				}
+			}
+		}
+	}
+	const fuelToEnd = perLap * roundsLeftFloat;
+	const fuelToAdd = fuelToEnd >= 0 ? fuelToEnd - r3e.data.FuelLeft : 0;
+	//roundsLeft = Math.round(roundsLeftFloat * 10) / 10;
+	return {
+		ftEnd: fuelToEnd > 0 ? fuelToEnd : null,
+		ftAdd: fuelToAdd !== 0 ? fuelToAdd : null
+	};
+}
+
+/*
 export function getFuelNeeded(toEnd: boolean) {
 	const perLap = r3e.data.FuelPerLap;
 	if (perLap === -1) {
@@ -882,6 +986,7 @@ export function getFuelNeeded(toEnd: boolean) {
 	}
 	return 'N/A';
 }
+*/
 
 export function resAspect(
 	srcWidth: number,

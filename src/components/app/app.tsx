@@ -6,6 +6,10 @@ declare global {
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
 import { FlagEvents } from "../../lib/FlagEvents";
+import { FuelEvents } from "../../lib/FuelEvents";
+import { FuelStrategy } from "../../lib/FuelStrategy";
+import { EnergyEvents } from "../../lib/EnergyEvents";
+import { EnergyStrategy } from "../../lib/EnergyStrategy";
 import {
   classNames,
   base64ToString,
@@ -161,19 +165,19 @@ const currentVersion = 0.92;
 export default class App extends React.Component<IProps> {
   appRef = React.createRef<HTMLDivElement>();
 
-  @observable accessor playerSlotId = -1;
+  //@observable accessor playerSlotId = -1;
   @observable accessor playerDriverDataIndex = -1;
   @observable accessor playerIsFocus = false;
-  @observable accessor currentSlotId = -1;
+  //@observable accessor currentSlotId = -1;
   @observable accessor storedVersion = -1;
-  @observable accessor replayCheck = true;
-  @observable accessor replayReloadDone = false;
-  @observable accessor badReplay = false;
+  //@observable accessor replayCheck = true;
+  //@observable accessor replayReloadDone = false;
+  //@observable accessor badReplay = false;
   @observable accessor changeLogRead = true;
   @observable accessor changeLogToggled = false;
   @observable accessor trackingString = "";
   @observable accessor tempTrackingString = "";
-  @observable accessor drivers: IDriverInfo[] = [];
+  //@observable accessor drivers: IDriverInfo[] = [];
   @observable accessor loadTime = Date.now();
   // Deal with centering the main ui so it is always stays 16:9
   @observable accessor aspectHeight: number | null = null;
@@ -425,7 +429,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.6999999999999997,
+      zoom: 1,
       name: __("TV Tower"),
       subSettings: {
         showLogo: {
@@ -506,8 +510,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1,
-        y: 1,
+        x: 90,
+        y: 120,
       },
     },
     progress: {
@@ -516,7 +520,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.9099999999999999,
+      zoom: 1,
       name: __("Delta"),
       subSettings: {
         deltaText: {
@@ -557,8 +561,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 87,
-        y: -246,
+        x: 90,
+        y: -210,
       },
     },
     tires: {
@@ -614,7 +618,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.5999999999999996,
+      zoom: 1,
       name: __("Fuel & Lap Details"),
       subSettings: {
         showStoredInfo: {
@@ -643,8 +647,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 376,
-        y: 962,
+        x: 180,
+        y: 950,
       },
     },
     pitstop: {
@@ -666,8 +670,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1412,
-        y: 676,
+        x: 1410,
+        y: 680,
       },
     },
     spotting: {
@@ -701,43 +705,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 825,
-        y: 803,
-      },
-    },
-    motec: {
-      id: "motec",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Motec"),
-      subSettings: {
-        plBlink: {
-          text: __("PitLimiter Blink"),
-          enabled: true,
-        },
-        plBBlink: {
-          text: __("Background Blinking"),
-          enabled: true,
-        },
-        showECU: {
-          text: __("Show Electronics"),
-          enabled: true,
-        },
-        showTCPercent: {
-          text: __("Show TC in percent if available"),
-          enabled: true,
-        },
-        showMPH: {
-          text: __("Speed in MPH"),
-          enabled: false,
-        },
-      },
-      position: {
-        x: 1745,
-        y: 917,
+        x: 830,
+        y: 570,
       },
     },
     cornerNames: {
@@ -763,31 +732,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 2,
-        y: 892,
-      },
-    },
-    inputs: {
-      id: "inputs",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Inputs"),
-      subSettings: {
-        showInputNumbers: {
-          text: __("Show Numbers"),
-          enabled: true,
-        },
-        steeringInput: {
-          text: __("Steering wheel"),
-          enabled: true,
-        },
-      },
-      position: {
-        x: 1670,
-        y: 917,
+        x: 10,
+        y: 870,
       },
     },
     inputsGraph: {
@@ -796,7 +742,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 6,
-      zoom: 1.85,
+      zoom: 1,
       name: __("Inputs Graph"),
       subSettings: {
         showInputThrottle: {
@@ -817,8 +763,73 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 400,
-        y: 800,
+        x: 600,
+        y: 960,
+      },
+    },
+    motec: {
+      id: "motec",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1.0,
+      name: __("Motec"),
+      subSettings: {
+        plBBlink: {
+          text: __("PitLimiter Blink"),
+          enabled: true,
+        },
+        showMPH: {
+          text: __("Speed in MPH"),
+          enabled: false,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 810,
+      },
+    },
+    inputs: {
+      id: "inputs",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1.0,
+      name: __("Inputs"),
+      subSettings: {
+        showInputNumbers: {
+          text: __("Show Numbers"),
+          enabled: true,
+        },
+        steeringInput: {
+          text: __("Steering wheel"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 1000,
+      },
+    },
+    overtakingAids: {
+      id: "overtakingAids",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Electronics"),
+      subSettings: {
+        tempCelsius: {
+          text: __("Temperture in Celsius"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 730,
       },
     },
     fuel: {
@@ -827,17 +838,17 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Fuel"),
+      zoom: 1.0,
+      name: __("Consumption"),
       subSettings: {},
       position: {
-        x: 1883,
-        y: 917,
+        x: 1190,
+        y: 920,
       },
     },
     gforce: {
       id: "gforce",
-      enabled: true,
+      enabled: false,
       resetIt: false,
       volume: 0,
       duration: 0,
@@ -855,26 +866,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.95,
+      zoom: 1,
       name: __("Car assists"),
       subSettings: {},
       position: {
-        x: 150,
-        y: 962,
-      },
-    },
-    overtakingAids: {
-      id: "overtakingAids",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("P2P/DRS"),
-      subSettings: {},
-      position: {
-        x: 1669,
-        y: 837,
+        x: 1440,
+        y: 890,
       },
     },
     startingLights: {
@@ -901,8 +898,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race info"),
       subSettings: {},
       position: {
-        x: 17,
-        y: 408,
+        x: 0,
+        y: 540,
       },
     },
     pitLimiter: {
@@ -925,12 +922,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.1500000000000001,
+      zoom: 1,
       name: __("Damage"),
       subSettings: {},
       position: {
-        x: 367,
-        y: 1098,
+        x: 500,
+        y: 500,
       },
     },
     flags: {
@@ -943,8 +940,8 @@ export default class App extends React.Component<IProps> {
       name: __("Flags"),
       subSettings: {},
       position: {
-        x: 1218,
-        y: 121,
+        x: 1230,
+        y: 150,
       },
     },
     crewChief: {
@@ -953,12 +950,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.03,
+      zoom: 1,
       name: __("Crew Chief"),
       subSettings: {},
       position: {
-        x: 1719,
-        y: 273,
+        x: 1430,
+        y: 270,
       },
     },
     graphs: {
@@ -981,12 +978,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.5000000000000004,
+      zoom: 1,
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1755,
-        y: 140,
+        x: 1190,
+        y: 680,
       },
     },
   };
@@ -1008,7 +1005,7 @@ export default class App extends React.Component<IProps> {
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
-        },        
+        },
         showPosGainLoss: {
           text: __("Show Positions Gain/Loss"),
           enabled: true,
@@ -1064,7 +1061,7 @@ export default class App extends React.Component<IProps> {
         showBestLap: {
           text: __("Show Best-Lap"),
           enabled: true,
-        },
+        },        
         showIncidentPoints: {
           text: __("Show Incident Points"),
           enabled: true,
@@ -1087,11 +1084,11 @@ export default class App extends React.Component<IProps> {
       duration: 0,
       zoom: 0.97,
       name: __("Relative"),
-			subSettings: {   
+			subSettings: {
         showAllSessions: {
           text: __("Show in all Sessions"),
           enabled: true,
-        },     
+        },
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
@@ -1099,7 +1096,7 @@ export default class App extends React.Component<IProps> {
         showGapsInSeconds: {
           text: __("Show Gaps in Seconds"),
           enabled: true,
-        },    
+        },
         showCarNames: {
           text: __("Show Car Names"),
           enabled: true,
@@ -1136,7 +1133,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.6999999999999997,
+      zoom: 1,
       name: __("TV Tower"),
       subSettings: {
         showLogo: {
@@ -1217,8 +1214,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1,
-        y: 1,
+        x: 90,
+        y: 120,
       },
     },
     progress: {
@@ -1227,7 +1224,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.9099999999999999,
+      zoom: 1,
       name: __("Delta"),
       subSettings: {
         deltaText: {
@@ -1268,8 +1265,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 87,
-        y: -246,
+        x: 90,
+        y: -210,
       },
     },
     tires: {
@@ -1325,7 +1322,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.5999999999999996,
+      zoom: 1,
       name: __("Fuel & Lap Details"),
       subSettings: {
         showStoredInfo: {
@@ -1354,8 +1351,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 376,
-        y: 962,
+        x: 180,
+        y: 950,
       },
     },
     pitstop: {
@@ -1377,8 +1374,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1412,
-        y: 676,
+        x: 1410,
+        y: 680,
       },
     },
     spotting: {
@@ -1412,43 +1409,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 825,
-        y: 803,
-      },
-    },
-    motec: {
-      id: "motec",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Motec"),
-      subSettings: {
-        plBlink: {
-          text: __("PitLimiter Blink"),
-          enabled: true,
-        },
-        plBBlink: {
-          text: __("Background Blinking"),
-          enabled: true,
-        },
-        showECU: {
-          text: __("Show Electronics"),
-          enabled: true,
-        },
-        showTCPercent: {
-          text: __("Show TC in percent if available"),
-          enabled: true,
-        },
-        showMPH: {
-          text: __("Speed in MPH"),
-          enabled: false,
-        },
-      },
-      position: {
-        x: 1745,
-        y: 917,
+        x: 830,
+        y: 570,
       },
     },
     cornerNames: {
@@ -1474,31 +1436,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 2,
-        y: 892,
-      },
-    },
-    inputs: {
-      id: "inputs",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Inputs"),
-      subSettings: {
-        showInputNumbers: {
-          text: __("Show Numbers"),
-          enabled: true,
-        },
-        steeringInput: {
-          text: __("Steering wheel"),
-          enabled: true,
-        },
-      },
-      position: {
-        x: 1670,
-        y: 917,
+        x: 10,
+        y: 870,
       },
     },
     inputsGraph: {
@@ -1507,7 +1446,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 6,
-      zoom: 1.85,
+      zoom: 1,
       name: __("Inputs Graph"),
       subSettings: {
         showInputThrottle: {
@@ -1528,8 +1467,73 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1750,
-        y: 800,
+        x: 600,
+        y: 960,
+      },
+    },
+    motec: {
+      id: "motec",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1.0,
+      name: __("Motec"),
+      subSettings: {
+        plBBlink: {
+          text: __("PitLimiter Blink"),
+          enabled: true,
+        },
+        showMPH: {
+          text: __("Speed in MPH"),
+          enabled: false,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 810,
+      },
+    },
+    inputs: {
+      id: "inputs",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1.0,
+      name: __("Inputs"),
+      subSettings: {
+        showInputNumbers: {
+          text: __("Show Numbers"),
+          enabled: true,
+        },
+        steeringInput: {
+          text: __("Steering wheel"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 1000,
+      },
+    },
+    overtakingAids: {
+      id: "overtakingAids",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Electronics"),
+      subSettings: {
+        tempCelsius: {
+          text: __("Temperture in Celsius"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1190,
+        y: 730,
       },
     },
     fuel: {
@@ -1538,17 +1542,17 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.6300000000000006,
-      name: __("Fuel"),
+      zoom: 1.0,
+      name: __("Consumption"),
       subSettings: {},
       position: {
-        x: 1883,
-        y: 917,
+        x: 1190,
+        y: 920,
       },
     },
     gforce: {
       id: "gforce",
-      enabled: true,
+      enabled: false,
       resetIt: false,
       volume: 0,
       duration: 0,
@@ -1566,26 +1570,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.95,
+      zoom: 1,
       name: __("Car assists"),
       subSettings: {},
       position: {
-        x: 150,
-        y: 962,
-      },
-    },
-    overtakingAids: {
-      id: "overtakingAids",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("P2P/DRS"),
-      subSettings: {},
-      position: {
-        x: 1669,
-        y: 837,
+        x: 1440,
+        y: 890,
       },
     },
     startingLights: {
@@ -1612,8 +1602,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race info"),
       subSettings: {},
       position: {
-        x: 17,
-        y: 408,
+        x: 0,
+        y: 540,
       },
     },
     pitLimiter: {
@@ -1636,12 +1626,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.1500000000000001,
+      zoom: 1,
       name: __("Damage"),
       subSettings: {},
       position: {
-        x: 367,
-        y: 1098,
+        x: 500,
+        y: 500,
       },
     },
     flags: {
@@ -1654,8 +1644,8 @@ export default class App extends React.Component<IProps> {
       name: __("Flags"),
       subSettings: {},
       position: {
-        x: 1218,
-        y: 121,
+        x: 1230,
+        y: 150,
       },
     },
     crewChief: {
@@ -1664,12 +1654,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.03,
+      zoom: 1,
       name: __("Crew Chief"),
       subSettings: {},
       position: {
-        x: 1719,
-        y: 273,
+        x: 1430,
+        y: 270,
       },
     },
     graphs: {
@@ -1692,12 +1682,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.5000000000000004,
+      zoom: 1,
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1755,
-        y: 140,
+        x: 1190,
+        y: 680,
       },
     },
   };
@@ -1722,11 +1712,11 @@ export default class App extends React.Component<IProps> {
   @observable accessor tempSavePerfo: boolean[] = [];
   @observable accessor debugData: IShared | null = null;
   @observable accessor resetString = _("Reset Settings");
-  @observable accessor nowDriverDataSize = -1;
+  //@observable accessor nowDriverDataSize = -1;
   @observable accessor forceCheck = false;
-  @observable accessor lastDriverDataSize = -1;
-  @observable accessor slowDiff = -1;
-  @observable accessor lapStartTime = -1;
+  //@observable accessor lastDriverDataSize = -1;
+  //@observable accessor slowDiff = -1;
+  //@observable accessor lapStartTime = -1;
   @observable accessor oneRefresh = false;
 
   currentCursorWidgetOffset: null | {
@@ -1740,12 +1730,12 @@ export default class App extends React.Component<IProps> {
   > | null = null;
   @observable accessor sessionType = -1;
   @observable accessor singleplayerRace = false;
-  @observable accessor bestLapTimeLeader = -1;
-  @observable accessor lapTimeCurrentSelf = -1;
-  @observable accessor layoutLength = -1;
-  @observable accessor lapTimePreviousSelf = -1;
+  //@observable accessor bestLapTimeLeader = -1;
+  //@observable accessor lapTimeCurrentSelf = -1;
+  //@observable accessor layoutLength = -1;
+  //@observable accessor lapTimePreviousSelf = -1;
   @observable accessor tractionControlPercentUndefined = true;
-  @observable accessor pitStoppedTime = -1;
+  //@observable accessor pitStoppedTime = -1;
 
   updateFunction: Function | null = null;
 
@@ -1898,15 +1888,19 @@ export default class App extends React.Component<IProps> {
     if (localStorage.gainLossPermanentTower === undefined) {
       this.toggleGainLossPermanentTower();
     }
-    this.playerSlotId = ePlayerSlotId;
+    //this.playerSlotId = ePlayerSlotId;
     this.playerDriverDataIndex = ePlayerDriverDataIndex;
     this.playerIsFocus = ePlayerIsFocus;
-    this.currentSlotId = eCurrentSlotId;
+    //this.currentSlotId = eCurrentSlotId;
     this.sessionType = r3e.data.SessionType;
-    this.layoutLength = r3e.data.LayoutLength;
-    LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS -> ChatGPT Idea =)
+    //this.layoutLength = r3e.data.LayoutLength;
+    LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
     FlagEvents.update(r3e.data.DriverData); // FLAG EVENTS FOR ALL WIDGETS
+    FuelEvents.update(); // FUEL EVENTS FOR ALL WIDGETS
+    EnergyEvents.update(); // ENERGY STRATEGY FOR ALL WIDGETS
+    FuelStrategy.update(); // FUEL STRATEGY FOR ALL WIDGETS
+    EnergyStrategy.update(); // ENERGY STRATEGY FOR ALL WIDGETS
     this.tractionControlPercentUndefined =
       r3e.data.TractionControlPercent === undefined;
 
@@ -1973,6 +1967,8 @@ export default class App extends React.Component<IProps> {
     }
     // localStorage.changeLogRead = '0';
     this.forceCheck = false;
+
+    /*
     this.nowDriverDataSize = r3e.data.DriverData.length;
     const driverSizeDiff = Math.abs(
       this.nowDriverDataSize - this.lastDriverDataSize
@@ -1982,6 +1978,7 @@ export default class App extends React.Component<IProps> {
       this.forceCheck = true;
     }
     this.currentNumDrivers = r3e.data.NumCars;
+    */
 
     if (localStorage.stateJson) {
       showDebugMessage(
@@ -2065,7 +2062,6 @@ export default class App extends React.Component<IProps> {
       eResetId = "";
       this.saveSettings();
     }
-
     const diff = nowCheck - this.lastPerformance;
     if (diff <= 1000) {
       this.performanceTick.push(nowCheck - this.performanceTime);
@@ -2130,6 +2126,7 @@ export default class App extends React.Component<IProps> {
       this.singleplayerRace = false;
       this.lastCheck = nowCheck;
 
+      /*
       const driverData = r3e.data.DriverData.map(this.formatDriverData);
       this.drivers = driverData.map((driver) => {
         return driver;
@@ -2143,6 +2140,7 @@ export default class App extends React.Component<IProps> {
         this.lastNumDrivers = this.currentNumDrivers;
         getJason();
       }
+      */
       if (
         !this.singleplayerRace &&
         rankData.length <= 0 &&
@@ -2176,44 +2174,6 @@ export default class App extends React.Component<IProps> {
     }
   };
   
-
-  private formatDriverData = (driver: IDriverData): IDriverInfo => {
-    const isUser = this.currentSlotId === driver.DriverInfo.SlotId;
-    if (driver.DriverInfo.UserId === -1) {
-      this.singleplayerRace = true;
-    }
-    // --- Replace old driverPitInfo hack with PitEvents-based logic ---
-    const st = PitEvents.getState(driver.DriverInfo.SlotId);
-    const veryShortStop =
-      st?.timeStopOnSpot != null &&
-      st?.timeLeaveSpot != null &&
-      (st.timeLeaveSpot - st.timeStopOnSpot) < 2000;
-    const finishStatusPatched =
-      this.gameInReplay &&
-      st &&
-      st.inPitlane &&
-      veryShortStop &&
-      driver.EngineState === 0
-        ? 2
-        : driver.FinishStatus;
-    const driverData = {
-      isUser,
-      id: driver.DriverInfo.SlotId,
-      userId: driver.DriverInfo.UserId,
-      engineState: driver.EngineState,
-      name: base64ToString(driver.DriverInfo.Name),
-      modelId: driver.DriverInfo.ModelId,
-      performanceIndex: driver.DriverInfo.ClassPerformanceIndex,
-      classId: driver.DriverInfo.ClassId,
-      classColor: getClassColor(driver.DriverInfo.ClassPerformanceIndex),
-      // now using the modern PitEvents logic
-      finishStatus: finishStatusPatched,
-      speed: driver.CarSpeed,
-      lapPrevious: driver.SectorTimePreviousSelf.Sector3,
-      dPos: driver.Position,
-    };
-    return driverData;
-  };
   
   // Shortcut keys
   private showKey = (e: KeyboardEvent) => {
@@ -3491,40 +3451,55 @@ export default class App extends React.Component<IProps> {
     );
   }
 
+  // Novo SETTINGS
   private getAppSettings() {
     return (
-      <div className="settings">
-        <div
-          className="versionNumber"
-          style={{
-            padding: "0px",
-            textAlign: "left",
-          }}
-        >
+      <div className="settingsRoot">
+        {this.renderLeftPanel()}
+        {this.renderRightPanel()}
+      </div>
+    );
+  }
+
+  private renderRightPanel() {
+    return (
+      <div className="settingsRight">
+        {Object.keys(this.settings).map((widgetId) => {
+          const subSettings = this.settings[widgetId].subSettings;
+
+          if (widgetId !== "manualStart") {
+            return this.getWidgetSetting(widgetId, subSettings);
+          }
+
+          return null;
+        })}
+      </div>
+    );
+  }
+
+  private renderLeftPanel() {
+    return (
+      <div className="settingsLeft">
+        {this.renderHeader()}
+        {this.renderLogo()}
+        {this.renderChangelogButton()}
+        {this.renderLanguageOptions()}
+        {this.renderPerformanceOptions()}
+        {this.renderGlobalOptions()}
+        {this.renderFooterButtons()}
+      </div>
+    );
+  }
+
+  private renderHeader() {
+    return (
+      <div className="settingsHeader">
+        <div className="versionText">
           {_("Current version:")} {currentVersion}
         </div>
-        <button
-          className={classNames("buttonSnap", {
-            active: this.snapOn,
-          })}
-          onClick={this.toggleSnap}
-        >
-          {this.snapOn
-            ? _("Snap To Grid Enabled")
-            : _("Snap To Grid Disabled")}
-        </button>
-        <button className="toggleChangeLog" onClick={this.toggleChangeLog}>
-          {_("Changelog / Help")}
-        </button>
 
-        <div className="sealhud_logo">
-          <img
-            className="oh_logo"
-            src={require("./../../img/sealhud_logo_xmas.png")}
-          />
-        </div>
         <div
-          className="performance"
+          className="performanceText"
           style={{
             color:
               ((this.tempLowPerfo || this.lowPerfo) && this.performance < 10) ||
@@ -3538,7 +3513,6 @@ export default class App extends React.Component<IProps> {
                 this.performance < 25)
                 ? "red"
                 : "lime",
-            padding: currentVersion < 1.16 ? "15px" : "0px",
           }}
         >
           {_("Updates/sec:")}{" "}
@@ -3554,209 +3528,244 @@ export default class App extends React.Component<IProps> {
             ? 60
             : this.performance}
         </div>
-
-        {Object.keys(this.settings).map((widgetId) => {
-          const subSettings = this.settings[widgetId].subSettings;
-          if (widgetId !== "manualStart") {
-            return this.getWidgetSetting(widgetId, subSettings);
-          }
-          return null;
-        })}
-
-        <div className="languages">
-          {Object.keys(getTranslations()).map((langKey) => {
-            const languageLookup: { [key: string]: string } = {
-              de: _("German"),
-              en: _("English"),
-              fr: _("French"),
-              pt: _("Portuguese"),
-              es: _("Spanish"),
-              it: _("Italian"),
-              pl: _("Polish"),
-            };
-            return (
-              <div
-                key={langKey}
-                className={classNames("language", {
-                  active: langKey === this.language,
-                })}
-                onClick={() => {
-                  this.setLocale(langKey as Locales);
-                }}
-              >
-                {languageLookup[langKey]}
-              </div>
-            );
-          })}
-        </div>
-        <button
-          className={classNames("buttona", {
-            active: this.showAll,
-          })}
-          onClick={this.showAllWidgets}
-        >
-          {_("Widgets-TEST-Mode")}
-        </button>
-        <button
-          className={classNames("buttonb", {
-            active: this.lowPerfo,
-          })}
-          onClick={this.togglePerformanceModeLow}
-        >
-          {_("Low Performance Mode")}
-        </button>
-        <button
-          className={classNames("buttonc", {
-            active: !this.lowPerfo && !this.highPerfo,
-          })}
-          onClick={this.togglePerformanceModeNormal}
-        >
-          {_("Normal Performance Mode")}
-        </button>
-        <button
-          className={classNames("buttond", {
-            active: this.highPerfo,
-          })}
-          onClick={this.togglePerformanceModeHigh}
-        >
-          {_("High Performance Mode")}
-        </button>
-        <button className="button_reset" onClick={this.changeResetText}>
-          {_(this.resetString)}
-        </button>
-        <button className="button_close" onClick={this.toggleSettings}>
-          {_("Close")}
-        </button>
       </div>
     );
   }
 
-  private getWidgetSetting(widgetId: string, subSettings: ISubSettings) {
+  private renderLogo() {
     return (
-      <div
-        key={widgetId}
-        className={classNames("widget", {
-          active: this.settings[widgetId].enabled,
-        })}
+      <div className="settingsLogo">
+        <img
+          src={require("./../../img/sealhud_logo.png")}
+          alt="SealHUD"
+        />
+      </div>
+    );
+  }
+
+  private renderMainButton(
+    label: string,
+    onClick: () => void,
+    active: boolean = false
+  ) {
+    return (
+      <button
+        className={classNames("mainButton", { active })}
+        onClick={onClick}
       >
+        {_(label)}
+      </button>
+    );
+  }
+
+  private renderChangelogButton() {
+    return this.renderMainButton(
+      "Changelog / Help",
+      this.toggleChangeLog
+    );
+  }
+
+  private renderLanguageOptions() {
+    const languageLookup: { [key: string]: string } = {
+      de: _("German"),
+      en: _("English"),
+      fr: _("French"),
+      pt: _("Portuguese"),
+      es: _("Spanish"),
+      it: _("Italian"),
+      pl: _("Polish"),
+    };
+
+    return (
+      <div className="optionGroup">
+        <div className="optionLabel">LANGUAGE</div>
+        <div className="optionBody">
+          {Object.keys(languageLookup).map((langKey) => (
+            <button
+              key={langKey}
+              className={classNames("optionButton", {
+                active: langKey === this.language,
+              })}
+              onClick={() => this.setLocale(langKey as Locales)}
+            >
+              {languageLookup[langKey]}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  private renderPerformanceOptions() {
+    return (
+      <div className="optionGroup">
+        <div className="optionLabel">PERFORMANCE</div>
+        <div className="optionBody">
+          <button
+            className={classNames("optionButton", { active: this.lowPerfo })}
+            onClick={this.togglePerformanceModeLow}
+          >
+            {_("Low Performance Mode")}
+          </button>
+
+          <button
+            className={classNames("optionButton", {
+              active: !this.lowPerfo && !this.highPerfo,
+            })}
+            onClick={this.togglePerformanceModeNormal}
+          >
+            {_("Normal Performance Mode")}
+          </button>
+
+          <button
+            className={classNames("optionButton", { active: this.highPerfo })}
+            onClick={this.togglePerformanceModeHigh}
+          >
+            {_("High Performance Mode")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  private renderGlobalOptions() {
+    return (
+      <div className="optionGroup">
+        <div className="optionLabel">GLOBAL OPTIONS</div>
+
+        <div className="optionBody rows">
+          {/* Speed */}
+          <div className="optionRow">
+            <span>Speed:</span>
+            <button className="smallOption active">KpH</button>
+            <button className="smallOption">MpH</button>
+          </div>
+
+          {/* Temperature */}
+          <div className="optionRow">
+            <span>Temperature:</span>
+            <button className="smallOption active">ºC</button>
+            <button className="smallOption">ºF</button>
+          </div>
+
+          {/* Pressure */}
+          <div className="optionRow">
+            <span>Pressure:</span>
+            <button className="smallOption active">kPa</button>
+            <button className="smallOption">PSI</button>
+          </div>
+
+          {/* Grid Snap */}
+          <div className="optionRow">
+            <span>Grid-Snap:</span>
+            <button
+              className={classNames("smallOption", {
+                active: this.snapOn,
+              })}
+              onClick={this.toggleSnap}
+            >
+              ON
+            </button>
+            <button
+              className={classNames("smallOption", {
+                active: !this.snapOn,
+              })}
+              onClick={this.toggleSnap}
+            >
+              OFF
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private renderFooterButtons() {
+    return (
+      <div className="settingsFooter">
+        {this.renderMainButton(
+          "Widgets-TEST-Mode",
+          this.showAllWidgets,
+          this.showAll
+        )}
+
+        {this.renderMainButton(
+          this.resetString,
+          this.changeResetText
+        )}
+
+        {this.renderMainButton(
+          "Close",
+          this.toggleSettings
+        )}
+      </div>
+    );
+  }
+
+  // Novo getWidgetSettings
+  private renderGenericSubSettings(
+    widgetId: string,
+    subSettings: ISubSettings
+  ) {
+    return Object.keys(subSettings).map((subId) => (
+      <div key={subId} className="subWidget">
         <label
-          className={classNames("main", {
-            active: this.settings[widgetId].enabled,
+          className={classNames("sub", {
+            active:
+              subSettings[subId].enabled &&
+              this.settings[widgetId].enabled,
           })}
         >
-          <span className="text">{this.settings[widgetId].name()}</span>
           <input
             type="checkbox"
-            checked={this.settings[widgetId].enabled}
+            checked={subSettings[subId].enabled}
             data-name={widgetId}
-            onChange={this.toggleWidget}
+            data-sub-name={subId}
+            onChange={this.toggleSubWidget}
           />
+          {_(subSettings[subId].text())}
         </label>
-        <button
-          className="resetWidgetButton"
-          data-name={widgetId}
-          onClick={this.resetWidget}
-        >
-          {_("Reset")}
-        </button>
-        {widgetId === "spotting" &&
-          subSettings &&
-          Object.keys(subSettings).map((subId) => {
-            if (
-              subId === "shouldBeep" &&
-              this.settings.spotting.enabled &&
-              this.settings.spotting.subSettings.shouldBeep.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className={classNames("sub", {
-                      active:
-                        subSettings[subId].enabled &&
-                        this.settings[widgetId].enabled,
-                    })}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={subSettings[subId].enabled}
-                      data-name={widgetId}
-                      data-sub-name={subId}
-                      onChange={this.toggleSubWidget}
-                    />
-                    {_(subSettings[subId].text())}
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "beepVolume" &&
-              this.settings.spotting.enabled &&
-              this.settings.spotting.subSettings.shouldBeep.enabled
-            ) {
-              return (
-                <div key="beepVolume" className="subWidget">
-                  <label
-                    className="sub"
-                    style={{
-                      border: "2px solid rgba(90, 90, 90, 0)",
-                      color: "white",
-                    }}
-                  >
-                    {`${"VOL: "}`}
-                    <input
-                      type="range"
-                      min="0.1"
-                      max="1"
-                      step="0.05"
-                      value={this.settings.spotting.volume}
-                      data-name="spotting"
-                      onChange={this.changeBeepVolume}
-                    />
-                    <div
-                      className="barValue"
-                      style={{
-                        marginLeft:
-                          this.settings.spotting.volume === 1 ? "1px" : "5px",
-                      }}
-                    >
-                      {`${Math.round(this.settings.spotting.volume * 100)}%`}
-                    </div>
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "beepVolume" &&
-              (!this.settings.spotting.enabled ||
-                !this.settings.spotting.subSettings.shouldBeep.enabled)
-            ) {
-              return null;
-            }
-            return (
-              <div key={subId} className="subWidget">
-                <label
-                  className={classNames("sub", {
-                    active:
-                      subSettings[subId].enabled &&
-                      this.settings[widgetId].enabled,
-                  })}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subSettings[subId].enabled}
-                    data-name={widgetId}
-                    data-sub-name={subId}
-                    onChange={this.toggleSubWidget}
-                  />
-                  {_(subSettings[subId].text())}
-                </label>
-              </div>
-            );
-          })}
+      </div>
+    ));
+  }
 
-        {/*Slider de ajuste de duração Inputs Graph*/}
-        {widgetId === "inputsGraph" && this.settings.inputsGraph.enabled && (
-          <div key="graphDuration" className="subWidget">
+  private renderSpottingSettings(subSettings: ISubSettings) {
+    return Object.keys(subSettings).map((subId) => {
+      // Checkbox: shouldBeep
+      if (
+        subId === "shouldBeep" &&
+        this.settings.spotting.enabled &&
+        this.settings.spotting.subSettings.shouldBeep.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className={classNames("sub", {
+                active:
+                  subSettings[subId].enabled &&
+                  this.settings.spotting.enabled,
+              })}
+            >
+              <input
+                type="checkbox"
+                checked={subSettings[subId].enabled}
+                data-name="spotting"
+                data-sub-name={subId}
+                onChange={this.toggleSubWidget}
+              />
+              {_(subSettings[subId].text())}
+            </label>
+          </div>
+        );
+      }
+      // Slider: beepVolume
+      if (
+        subId === "beepVolume" &&
+        this.settings.spotting.enabled &&
+        this.settings.spotting.subSettings.shouldBeep.enabled
+      ) {
+        return (
+          <div key="beepVolume" className="subWidget">
             <label
               className="sub"
               style={{
@@ -3764,406 +3773,501 @@ export default class App extends React.Component<IProps> {
                 color: "white",
               }}
             >
-              {`Time:`}
+              {`VOL: `}
               <input
                 type="range"
-                min="3"
-                max="15"
-                step="1"
-                value={this.settings.inputsGraph.duration}
-                data-name="inputsGraph"
-                onChange={this.changeGraphDuration}
+                min="0.1"
+                max="1"
+                step="0.05"
+                value={this.settings.spotting.volume}
+                data-name="spotting"
+                onChange={this.changeBeepVolume}
               />
               <div
                 className="barValue"
                 style={{
                   marginLeft:
-                    this.settings.inputsGraph.duration === 1 ? "1px" : "5px",
+                    this.settings.spotting.volume === 1 ? "1px" : "5px",
                 }}
               >
-                {`${this.settings.inputsGraph.duration} s`}
+                {`${Math.round(this.settings.spotting.volume * 100)}%`}
               </div>
             </label>
           </div>
-        )}
-        {widgetId === "positionBarRelative" &&
-          subSettings &&
-          Object.keys(subSettings).map((subId) => {
-            if (
-              subId === "showRanking" &&
-              this.settings.positionBarRelative.enabled &&
-              this.settings.positionBarRelative.subSettings.showRanking.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className={classNames("sub", {
-                      active:
-                        subSettings[subId].enabled &&
-                        this.settings[widgetId].enabled,
-                    })}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={subSettings[subId].enabled}
-                      data-name={widgetId}
-                      data-sub-name={subId}
-                      onChange={this.toggleSubWidget}
-                    />
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("rankInvert", {
-                        active: this.rankInvertRelative,
-                      })}
-                      onClick={this.toggleRankInvertRelative}
-                    >
-                      {`${"INVERT"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "numberDrivers" &&
-              !this.settings.positionBarRelative.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className="sub"
-                    style={{
-                      border: "2px solid rgba(90, 90, 90, 0)",
-                      color: "rgba(170, 170, 170, 1",
-                    }}
-                  >
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("num3", {
-                        active: false,
-                      })}
-                      style={{
-                        border: "1px solid rgba(90, 90, 90, 1)",
-                        background:
-                          this.driverNum === 3
-                            ? "rgba(90, 90, 90, 1)"
-                            : undefined,
-                      }}
-                      onClick={this.driverNumTo3}
-                    >
-                      {`${"3"}`}
-                    </button>
-                    <button
-                      className={classNames("num2", {
-                        active: false,
-                      })}
-                      style={{
-                        border: "1px solid rgba(90, 90, 90, 1)",
-                        background:
-                          this.driverNum === 2
-                            ? "rgba(90, 90, 90, 1)"
-                            : undefined,
-                      }}
-                      onClick={this.driverNumTo2}
-                    >
-                      {`${"2"}`}
-                    </button>
-                    <button
-                      className={classNames("num1", {
-                        active: false,
-                      })}
-                      style={{
-                        border: "1px solid rgba(90, 90, 90, 1)",
-                        background:
-                          this.driverNum === 1
-                            ? "rgba(90, 90, 90, 1)"
-                            : undefined,
-                      }}
-                      onClick={this.driverNumTo1}
-                    >
-                      {`${"1"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "numberDrivers" &&
-              this.settings.positionBarRelative.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className="sub"
-                    style={{
-                      border: "2px solid rgba(90, 90, 90, 0)",
-                      color: "white",
-                    }}
-                  >
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("num3", {
-                        active: this.driverNum === 3,
-                      })}
-                      onClick={this.driverNumTo3}
-                    >
-                      {`${"3"}`}
-                    </button>
-                    <button
-                      className={classNames("num2", {
-                        active: this.driverNum === 2,
-                      })}
-                      onClick={this.driverNumTo2}
-                    >
-                      {`${"2"}`}
-                    </button>
-                    <button
-                      className={classNames("num1", {
-                        active: this.driverNum === 1,
-                      })}
-                      onClick={this.driverNumTo1}
-                    >
-                      {`${"1"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            return (
-              <div key={subId} className="subWidget">
-                <label
-                  className={classNames("sub", {
-                    active:
-                      subSettings[subId].enabled &&
-                      this.settings[widgetId].enabled,
-                  })}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subSettings[subId].enabled}
-                    data-name={widgetId}
-                    data-sub-name={subId}
-                    onChange={this.toggleSubWidget}
-                  />
-                  {_(subSettings[subId].text())}
-                </label>
-              </div>
-            );
-          })}
-        {widgetId === "tvTower" &&
-          subSettings &&
-          Object.keys(subSettings).map((subId) => {
-            if (
-              this.settings.tvTower.subSettings.hLogoUrl.enabled &&
-              subId === "hLogoUrl"
-            ) {
-              return (
-                <div
-                  key={subId}
-                  className={classNames("subWidget", {
-                    urlInput: true,
-                  })}
-                >
-                  <label className="sub">
-                    {_(subSettings[subId].text())}
-                    <input
-                      type="text"
-                      className="urlInput"
-                      value={
-                        this.hLogoUrl === "" && !this.logoUrlEdit
-                          ? `${_("Current Logo:")} ${this.hLogoUrl} - ${_(
-                              "Click here to change"
-                            )}`
-                          : this.logoUrlEdit
-                          ? this.hLogoUrl
-                          : `${_("Current Logo:")} ${this.hLogoUrl} - ${_(
-                              "Click here to change"
-                            )}`
-                      }
-                      onChange={this.changeLogoUrl}
-                      onClick={this.emptyUrl}
-                    />
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "showRanking" &&
-              this.settings.tvTower.enabled &&
-              this.settings.tvTower.subSettings.showRanking.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className={classNames("sub", {
-                      active:
-                        subSettings[subId].enabled &&
-                        this.settings[widgetId].enabled,
-                    })}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={subSettings[subId].enabled}
-                      data-name={widgetId}
-                      data-sub-name={subId}
-                      onChange={this.toggleSubWidget}
-                    />
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("rankInvert", {
-                        active: this.rankInvert,
-                      })}
-                      onClick={this.toggleRankInvert}
-                    >
-                      {`${"INVERT"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            if (
-              subId === "showPosGainLoss" &&
-              this.settings.tvTower.enabled &&
-              this.settings.tvTower.subSettings.showPosGainLoss.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className={classNames("sub", {
-                      active:
-                        subSettings[subId].enabled &&
-                        this.settings[widgetId].enabled,
-                    })}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={subSettings[subId].enabled}
-                      data-name={widgetId}
-                      data-sub-name={subId}
-                      onChange={this.toggleSubWidget}
-                    />
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("gainLossPermanentTower", {
-                        active: this.gainLossPermanentTower,
-                      })}
-                      onClick={this.toggleGainLossPermanentTower}
-                    >
-                      {`${"ALWAYS"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            return (
-              <div key={subId} className="subWidget">
-                <label
-                  className={classNames("sub", {
-                    active:
-                      subSettings[subId].enabled &&
-                      this.settings[widgetId].enabled,
-                  })}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subSettings[subId].enabled}
-                    data-name={widgetId}
-                    data-sub-name={subId}
-                    onChange={this.toggleSubWidget}
-                  />
-                  {_(subSettings[subId].text())}
-                </label>
-              </div>
-            );
-          })}
-        {widgetId === "positionBar" &&
-          subSettings &&
-          Object.keys(subSettings).map((subId) => {
-            if (
-              subId === "showPosGainLoss" &&
-              this.settings.positionBar.enabled &&
-              this.settings.positionBar.subSettings.showPosGainLoss.enabled
-            ) {
-              return (
-                <div key={subId} className="subWidget">
-                  <label
-                    className={classNames("sub", {
-                      active:
-                        subSettings[subId].enabled &&
-                        this.settings[widgetId].enabled,
-                    })}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={subSettings[subId].enabled}
-                      data-name={widgetId}
-                      data-sub-name={subId}
-                      onChange={this.toggleSubWidget}
-                    />
-                    {_(subSettings[subId].text())}
-                    <button
-                      className={classNames("gainLossPermanentBar", {
-                        active: this.gainLossPermanentBar,
-                      })}
-                      onClick={this.toggleGainLossPermanentBar}
-                    >
-                      {`${"ALWAYS"}`}
-                    </button>
-                  </label>
-                </div>
-              );
-            }
-            return (
-              <div key={subId} className="subWidget">
-                <label
-                  className={classNames("sub", {
-                    active:
-                      subSettings[subId].enabled &&
-                      this.settings[widgetId].enabled,
-                  })}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subSettings[subId].enabled}
-                    data-name={widgetId}
-                    data-sub-name={subId}
-                    onChange={this.toggleSubWidget}
-                  />
-                  {_(subSettings[subId].text())}
-                </label>
-              </div>
-            );
-          })}
+        );
+      }
+      // beepVolume invisível quando desativado
+      if (subId === "beepVolume") {
+        return null;
+      }
+      // fallback genérico (caso apareça algo novo)
+      return (
+        <div key={subId} className="subWidget">
+          <label
+            className={classNames("sub", {
+              active:
+                subSettings[subId].enabled &&
+                this.settings.spotting.enabled,
+            })}
+          >
+            <input
+              type="checkbox"
+              checked={subSettings[subId].enabled}
+              data-name="spotting"
+              data-sub-name={subId}
+              onChange={this.toggleSubWidget}
+            />
+            {_(subSettings[subId].text())}
+          </label>
+        </div>
+      );
+    });
+  }
+
+  private renderInputsGraphSettings() {
+    return (
+      <div key="graphDuration" className="subWidget">
+        <label
+          className="sub"
+          style={{
+            border: "2px solid rgba(90, 90, 90, 0)",
+            color: "white",
+          }}
+        >
+          {`Time:`}
+          <input
+            type="range"
+            min="3"
+            max="15"
+            step="1"
+            value={this.settings.inputsGraph.duration}
+            data-name="inputsGraph"
+            onChange={this.changeGraphDuration}
+          />
+          <div
+            className="barValue"
+            style={{
+              marginLeft:
+                this.settings.inputsGraph.duration === 1 ? "1px" : "5px",
+            }}
+          >
+            {`${this.settings.inputsGraph.duration} s`}
+          </div>
+        </label>
+      </div>
+    );
+  }
+
+  private renderPositionBarRelativeSettings(subSettings: ISubSettings) {
+    return Object.keys(subSettings).map((subId) => {
+      // showRanking + INVERT
+      if (
+        subId === "showRanking" &&
+        this.settings.positionBarRelative.enabled &&
+        this.settings.positionBarRelative.subSettings.showRanking.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className={classNames("sub", {
+                active:
+                  subSettings[subId].enabled &&
+                  this.settings.positionBarRelative.enabled,
+              })}
+            >
+              <input
+                type="checkbox"
+                checked={subSettings[subId].enabled}
+                data-name="positionBarRelative"
+                data-sub-name={subId}
+                onChange={this.toggleSubWidget}
+              />
+              {_(subSettings[subId].text())}
+
+              <button
+                className={classNames("rankInvert", {
+                  active: this.rankInvertRelative,
+                })}
+                onClick={this.toggleRankInvertRelative}
+              >
+                {`INVERT`}
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // numberDrivers quando widget DESATIVADO (cinza)
+      if (
+        subId === "numberDrivers" &&
+        !this.settings.positionBarRelative.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className="sub"
+              style={{
+                border: "2px solid rgba(90, 90, 90, 0)",
+                color: "rgba(170, 170, 170, 1)",
+              }}
+            >
+              {_(subSettings[subId].text())}
+
+              <button
+                className="num3"
+                style={{
+                  border: "1px solid rgba(90, 90, 90, 1)",
+                  background:
+                    this.driverNum === 3
+                      ? "rgba(90, 90, 90, 1)"
+                      : undefined,
+                }}
+                onClick={this.driverNumTo3}
+              >
+                3
+              </button>
+
+              <button
+                className="num2"
+                style={{
+                  border: "1px solid rgba(90, 90, 90, 1)",
+                  background:
+                    this.driverNum === 2
+                      ? "rgba(90, 90, 90, 1)"
+                      : undefined,
+                }}
+                onClick={this.driverNumTo2}
+              >
+                2
+              </button>
+
+              <button
+                className="num1"
+                style={{
+                  border: "1px solid rgba(90, 90, 90, 1)",
+                  background:
+                    this.driverNum === 1
+                      ? "rgba(90, 90, 90, 1)"
+                      : undefined,
+                }}
+                onClick={this.driverNumTo1}
+              >
+                1
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // numberDrivers quando widget ATIVO
+      if (
+        subId === "numberDrivers" &&
+        this.settings.positionBarRelative.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className="sub"
+              style={{
+                border: "2px solid rgba(90, 90, 90, 0)",
+                color: "white",
+              }}
+            >
+              {_(subSettings[subId].text())}
+
+              <button
+                className={classNames("num3", {
+                  active: this.driverNum === 3,
+                })}
+                onClick={this.driverNumTo3}
+              >
+                3
+              </button>
+
+              <button
+                className={classNames("num2", {
+                  active: this.driverNum === 2,
+                })}
+                onClick={this.driverNumTo2}
+              >
+                2
+              </button>
+
+              <button
+                className={classNames("num1", {
+                  active: this.driverNum === 1,
+                })}
+                onClick={this.driverNumTo1}
+              >
+                1
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // fallback (checkbox simples)
+      return (
+        <div key={subId} className="subWidget">
+          <label
+            className={classNames("sub", {
+              active:
+                subSettings[subId].enabled &&
+                this.settings.positionBarRelative.enabled,
+            })}
+          >
+            <input
+              type="checkbox"
+              checked={subSettings[subId].enabled}
+              data-name="positionBarRelative"
+              data-sub-name={subId}
+              onChange={this.toggleSubWidget}
+            />
+            {_(subSettings[subId].text())}
+          </label>
+        </div>
+      );
+    });
+  }
+
+  private renderTvTowerSettings(subSettings: ISubSettings) {
+    return Object.keys(subSettings).map((subId) => {
+      // URL input (Logo)
+      if (
+        subId === "hLogoUrl" &&
+        this.settings.tvTower.subSettings.hLogoUrl.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget urlInput">
+            <label className="sub">
+              {_(subSettings[subId].text())}
+              <input
+                type="text"
+                className="urlInput"
+                value={
+                  this.hLogoUrl === "" && !this.logoUrlEdit
+                    ? `${_("Current Logo:")} ${this.hLogoUrl} - ${_(
+                        "Click here to change"
+                      )}`
+                    : this.logoUrlEdit
+                    ? this.hLogoUrl
+                    : `${_("Current Logo:")} ${this.hLogoUrl} - ${_(
+                        "Click here to change"
+                      )}`
+                }
+                onChange={this.changeLogoUrl}
+                onClick={this.emptyUrl}
+              />
+            </label>
+          </div>
+        );
+      }
+      // showRanking + INVERT
+      if (
+        subId === "showRanking" &&
+        this.settings.tvTower.enabled &&
+        this.settings.tvTower.subSettings.showRanking.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className={classNames("sub", {
+                active:
+                  subSettings[subId].enabled &&
+                  this.settings.tvTower.enabled,
+              })}
+            >
+              <input
+                type="checkbox"
+                checked={subSettings[subId].enabled}
+                data-name="tvTower"
+                data-sub-name={subId}
+                onChange={this.toggleSubWidget}
+              />
+              {_(subSettings[subId].text())}
+
+              <button
+                className={classNames("rankInvert", {
+                  active: this.rankInvert,
+                })}
+                onClick={this.toggleRankInvert}
+              >
+                INVERT
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // showPosGainLoss + ALWAYS
+      if (
+        subId === "showPosGainLoss" &&
+        this.settings.tvTower.enabled &&
+        this.settings.tvTower.subSettings.showPosGainLoss.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className={classNames("sub", {
+                active:
+                  subSettings[subId].enabled &&
+                  this.settings.tvTower.enabled,
+              })}
+            >
+              <input
+                type="checkbox"
+                checked={subSettings[subId].enabled}
+                data-name="tvTower"
+                data-sub-name={subId}
+                onChange={this.toggleSubWidget}
+              />
+              {_(subSettings[subId].text())}
+
+              <button
+                className={classNames("gainLossPermanentTower", {
+                  active: this.gainLossPermanentTower,
+                })}
+                onClick={this.toggleGainLossPermanentTower}
+              >
+                ALWAYS
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // fallback genérico
+      return (
+        <div key={subId} className="subWidget">
+          <label
+            className={classNames("sub", {
+              active:
+                subSettings[subId].enabled &&
+                this.settings.tvTower.enabled,
+            })}
+          >
+            <input
+              type="checkbox"
+              checked={subSettings[subId].enabled}
+              data-name="tvTower"
+              data-sub-name={subId}
+              onChange={this.toggleSubWidget}
+            />
+            {_(subSettings[subId].text())}
+          </label>
+        </div>
+      );
+    });
+  }
+
+  private renderPositionBarSettings(subSettings: ISubSettings) {
+    return Object.keys(subSettings).map((subId) => {
+      // showPosGainLoss + ALWAYS
+      if (
+        subId === "showPosGainLoss" &&
+        this.settings.positionBar.enabled &&
+        this.settings.positionBar.subSettings.showPosGainLoss.enabled
+      ) {
+        return (
+          <div key={subId} className="subWidget">
+            <label
+              className={classNames("sub", {
+                active:
+                  subSettings[subId].enabled &&
+                  this.settings.positionBar.enabled,
+              })}
+            >
+              <input
+                type="checkbox"
+                checked={subSettings[subId].enabled}
+                data-name="positionBar"
+                data-sub-name={subId}
+                onChange={this.toggleSubWidget}
+              />
+              {_(subSettings[subId].text())}
+
+              <button
+                className={classNames("gainLossPermanentBar", {
+                  active: this.gainLossPermanentBar,
+                })}
+                onClick={this.toggleGainLossPermanentBar}
+              >
+                ALWAYS
+              </button>
+            </label>
+          </div>
+        );
+      }
+      // fallback genérico
+      return (
+        <div key={subId} className="subWidget">
+          <label
+            className={classNames("sub", {
+              active:
+                subSettings[subId].enabled &&
+                this.settings.positionBar.enabled,
+            })}
+          >
+            <input
+              type="checkbox"
+              checked={subSettings[subId].enabled}
+              data-name="positionBar"
+              data-sub-name={subId}
+              onChange={this.toggleSubWidget}
+            />
+            {_(subSettings[subId].text())}
+          </label>
+        </div>
+      );
+    });
+  }
+   
+  private getWidgetSetting(widgetId: string, subSettings: ISubSettings) {
+  const enabled = this.settings[widgetId].enabled;
+
+  return (
+    <div
+      className={classNames("widget", { active: enabled })}
+    >
+      {/* HEADER */}
+      <div className="widgetHeader">
+        <label className="widgetLabel">
+          <input
+            type="checkbox"
+            checked={enabled}
+            data-name={widgetId}
+            onChange={this.toggleWidget}
+          />
+          <span className="widgetTitle">
+            {this.settings[widgetId].name()}
+          </span>
+        </label>
+
+        <button
+          className="resetWidgetButton"
+          data-name={widgetId}
+          onClick={this.resetWidget}
+        >
+          {_("Reset")}
+        </button>
+      </div>
+
+      <div className="widgetDivider" />
+
+      {/* BODY */}
+      <div className="widgetBody">
+        {widgetId === "spotting" && subSettings && this.renderSpottingSettings(subSettings)}
+        {widgetId === "inputsGraph" && enabled && this.renderInputsGraphSettings()}
+        {widgetId === "positionBarRelative" && subSettings && this.renderPositionBarRelativeSettings(subSettings)}
+        {widgetId === "tvTower" && subSettings && this.renderTvTowerSettings(subSettings)}
+        {widgetId === "positionBar" && subSettings && this.renderPositionBarSettings(subSettings)}
         {widgetId !== "positionBar" &&
           widgetId !== "positionBarRelative" &&
           widgetId !== "tvTower" &&
           widgetId !== "manualStart" &&
           widgetId !== "spotting" &&
           subSettings &&
-          Object.keys(subSettings).map((subId) => {
-            return (
-              <div key={subId} className="subWidget">
-                <label
-                  className={classNames("sub", {
-                    active:
-                      subSettings[subId].enabled &&
-                      this.settings[widgetId].enabled,
-                  })}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subSettings[subId].enabled}
-                    data-name={widgetId}
-                    data-sub-name={subId}
-                    onChange={this.toggleSubWidget}
-                  />
-                  {_(subSettings[subId].text())}
-                </label>
-              </div>
-            );
-          })}
+          this.renderGenericSubSettings(widgetId, subSettings)}
       </div>
-    );
-  }
+    </div>
+  );
+}
+
 
 private getChangelog() {
   return (

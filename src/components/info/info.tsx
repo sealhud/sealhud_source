@@ -36,23 +36,14 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 @observer
 export default class Info extends React.Component<IProps, {}> {
 	@observable accessor currentLapValid = INVALID;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor completedLaps = 0;
-
 	@observable accessor lapTimeBestSelf = INVALID;
-
 	@observable accessor penaltyLap = -1;
-
 	@observable accessor maxIncidentPoints = -1;
-
 	@observable accessor myIncidentPoints = -1;
-
 	@observable accessor showIncidentsUntil = -1;
-
 	@observable accessor penalties: ICutTrackPenalties = {
 		DriveThrough: 0,
 		StopAndGo: 0,
@@ -60,16 +51,15 @@ export default class Info extends React.Component<IProps, {}> {
 		TimeDeduction: 0,
 		SlowDown: 0
 	};
-
 	@observable accessor eValues: { [key: string]: number }  = {
 		PitLimiter: -99,
 		TractionControl: -99,
 		BrakeBias: -99,
 		Abs: -99,
 		EngineMap: -99,
-		HeadLights: -99
+		HeadLights: -99,
+		WaterLeft: -99
 	};
-
 	@observable accessor eTimes: { [key: string]: number } = {
 		PitRequest: -1,
 		PitLimiter: -1,
@@ -77,9 +67,9 @@ export default class Info extends React.Component<IProps, {}> {
 		BrakeBias: -1,
 		Abs: -1,
 		EngineMap: -1,
-		HeadLights: -1
+		HeadLights: -1,
+		WaterLeft: -1
 	};
-
 	eTexts: { [key: string]: string }  = {
 		PitRequest: _('Pit-Stop requested'),
 		PitLimiter: _('Pit limiter'),
@@ -87,9 +77,9 @@ export default class Info extends React.Component<IProps, {}> {
 		BrakeBias: _('Brake Bias:'),
 		Abs: ('ABS:'),
 		EngineMap: _('Engine Map:'),
-		HeadLights: _('HeadLights:')
+		HeadLights: _('HeadLights:'),
+		WaterLeft: _('Remaining Water:')
 	};
-
 	@observable accessor penaltyTimes: ICutTrackPenalties = {
 		DriveThrough: 0,
 		StopAndGo: 0,
@@ -102,7 +92,6 @@ export default class Info extends React.Component<IProps, {}> {
 	slowDownRemaining = 60; // slowdown timer seconds to countdown	
 	slowDownPaused = false; // pause countdown
 	slowDownPauseTime = 0;	
-
 	penaltyTexts: { [key: string]: string } = {
 	DriveThrough: _('Drive Through Penalty'),
 	StopAndGo: _('Stop And Go Penalty'),
@@ -110,32 +99,20 @@ export default class Info extends React.Component<IProps, {}> {
 	TimeDeduction: _('Time Deduction Penalty'),
 	SlowDown: _('Slow Down Penalty')
 	};
-
 	@observable accessor penaltyLaps = {
 		DriveThrough: -1,
 		StopAndGo: -1
 	};
-
 	@observable accessor notInRace = false;
-
 	@observable accessor hasValidLap = true;
-
 	@observable accessor showLapInvalid = true;
-
 	@observable accessor showNextLapInvalid = false;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor isLeaderboard = false;
-
 	@observable accessor isHillClimb = false;
-
 	@observable accessor lapDistance = -1;
-
 	@observable accessor pitEntrance = -1;
-
 	@observable accessor pitDistance = -1;
 
 	constructor(props: IProps) {
@@ -327,7 +304,6 @@ export default class Info extends React.Component<IProps, {}> {
 							this.slowDownStartTime += Date.now() - this.slowDownPauseTime;
 						}
 					}
-
 					// Atualiza o tempo restante apenas se não estiver pausado
 					if (!this.slowDownPaused) {
 						this.slowDownRemaining = Math.max(
@@ -377,6 +353,16 @@ export default class Info extends React.Component<IProps, {}> {
 					this.eTimes.Abs = nowCheck + 5000;
 				}
 				this.eValues.Abs = abs;
+			}
+
+			const waterLeft = Math.round((r3e.data.WaterLeft)*10)/10;
+			if (
+				 waterLeft !== this.eValues.WaterLeft
+			) {
+				if (this.eValues.WaterLeft !== -99) {
+					this.eTimes.WaterLeft = nowCheck + 5000;
+				}
+				this.eValues.WaterLeft = waterLeft;
 			}
 
 			const pitLimiter = r3e.data.PitLimiter;
@@ -623,7 +609,7 @@ export default class Info extends React.Component<IProps, {}> {
 			);
 
 		if (penaltyKey !== 'DriveThrough' && penaltyKey !== 'StopAndGo') {
-			return `${baseText}\n  ${reason}`;
+			return `${baseText}\n${reason}`;
 		}
 
 		const lapsLeft =
@@ -637,7 +623,7 @@ export default class Info extends React.Component<IProps, {}> {
 				? `${lapsLeft} ${_('laps')}`
 				: _('this lap');
 
-		return `${baseText}\n  ${reason}\n  ${serveText} ${lapText}`;
+		return `${baseText}\n${reason}\n${serveText} ${lapText}`;
 	}
 
 	render() {
@@ -666,99 +652,112 @@ export default class Info extends React.Component<IProps, {}> {
 			<div
 				className={classNames('info', this.props.className)}
 				{...widgetSettings(this.props)}
-			>
-				{/* Loop through all penalties and check if they should show */}
-				{
-					(
-						Object.keys(this.penalties)
-						.filter((penaltyKey) => this.penalties[penaltyKey] > 0)
-						.map((penaltyKey) => {
-							if (!isPlayerActive) { return null; }
-							return (
-								<div key={penaltyKey} className="warning">
-									<SvgIcon src={require('./../../img/icons/warning.svg')} />
-									{this.formatPenaltyText(penaltyKey)}
-								</div>
-							);
-						})
-					)
-				}
+				>
+				{Object.keys(this.penalties)
+					.filter((penaltyKey) => this.penalties[penaltyKey] > 0)
+					.map((penaltyKey) => {
+					if (!isPlayerActive) return null;
+					return (
+						<div key={penaltyKey} className="warning">
+						<span className="icon">
+							<SvgIcon src={require('./../../img/icons/warning.svg')} />
+						</span>
+						<span className="text">
+							{this.formatPenaltyText(penaltyKey)}
+						</span>
+						</div>
+					);
+					})}
+
 				{(this.showLapInvalid || showAllMode) && (
 					<div className="warning">
-						<SvgIcon
-							src={require('./../../img/icons/warning.svg')}
-						/>
+					<span className="icon">
+						<SvgIcon src={require('./../../img/icons/warning.svg')} />
+					</span>
+					<span className="text">
 						{_('This lap will not count')}
+					</span>
 					</div>
 				)}
+
 				{(this.showNextLapInvalid || showAllMode) && (
 					<div className="warning">
-						<SvgIcon
-							src={require('./../../img/icons/warning.svg')}
-						/>
+					<span className="icon">
+						<SvgIcon src={require('./../../img/icons/warning.svg')} />
+					</span>
+					<span className="text">
 						{_('Next lap will not count')}
+					</span>
 					</div>
 				)}
-				{
-					(
-						Object.keys(this.eTimes)
-						.filter((eKey) => this.eTimes[eKey] >= nowCheck)
-						.map((eKey) => {
-							if (!isPlayerActive) { return null; }
-							return (
-								<div key={eKey} className="warning">
-									<SvgIcon
-										src={require('./../../img/icons/info.svg')}
-									/>
-									{
-										eKey === 'PitRequest'
-											? this.pitDistance <= 500
-												? `${_('Pit-Stop requested - Pit In')}: ${this.pitDistance}m`
-												: `${_('Pit-Stop requested - Pit In')}`
-											: eKey === 'PitLimiter'
-												? this.eTexts[eKey] // Apenas texto, nunca concatena número
-												: eKey === 'TractionControl' && (isGoing || showAllMode)
-													? `${this.eTexts[eKey]} ${this.eValues[eKey]} (${showAllMode ? 60 : Math.round(r3e.data.TractionControlPercent)} %)`
-													: `${this.eTexts[eKey]} ${this.eValues[eKey]}${eKey === 'BrakeBias' ? '%' : ''}`
-									}
-								</div>
-							);
-						})
-					)
-				}
-				{
-					showIncPoints && (
-						<div
-							className={classNames(
-								'warning'
-							)}
-							style={{
-								color: warnInc
-									?	'rgb(255, 0, 0)'
-									:	'rgb(255, 255, 255)'
-							}}
-						>
-							<SvgIcon
-								src={warnInc ? require('./../../img/icons/warning.svg') : require('./../../img/icons/info.svg')}
-							/>
-								{
-									`${
-										_('Incidents')
-									}: ${
-										showAllMode
-										?	135
-										:	this.myIncidentPoints === -1
-											?	0
-											:	this.myIncidentPoints
-									} / ${
-										showAllMode
-										?	200
-										:	this.maxIncidentPoints
-									}`
-								}
+
+				{Object.keys(this.eTimes)
+					.filter((eKey) => this.eTimes[eKey] >= nowCheck)
+					.map((eKey) => {
+					if (!isPlayerActive) return null;
+					return (
+						<div key={eKey} className="warning">
+						<span className="icon">
+							<SvgIcon src={require('./../../img/icons/info.svg')} />
+						</span>
+						<span className="text">
+							{eKey === 'PitRequest'
+							? this.pitDistance <= 500
+								? `${_('Pit-Stop requested - Pit In')}: ${this.pitDistance}m`
+								: `${_('Pit-Stop requested - Pit In')}`
+							: eKey === 'PitLimiter'
+								? this.eTexts[eKey]
+								: eKey === 'TractionControl' && (isGoing || showAllMode)
+								? <span>
+									{this.eTexts[eKey]}{' '}
+									<span className="value">
+										{this.eValues[eKey]} [{showAllMode ? 60 : Math.round(r3e.data.TractionControlPercent)}%]
+									</span>
+								</span>
+								: eKey === 'WaterLeft'
+									? <span>
+										{this.eTexts[eKey]}{' '}
+										<span className="value">
+											{this.eValues[eKey]}{eKey === 'WaterLeft' ? ' L' : ''}
+										</span>
+									</span>
+									: <span>
+										{this.eTexts[eKey]}{' '}
+										<span className="value">
+											{this.eValues[eKey]}{eKey === 'BrakeBias' ? '%' : ''}
+										</span>
+									</span>
+							}
+						</span>
 						</div>
-					)
-				}
+					);
+					})}
+
+				{showIncPoints && (
+					<div
+					className="warning"
+					style={{
+						color: warnInc ? 'rgb(255,0,0)' : 'rgb(255,255,255)'
+					}}
+					>
+					<span className="icon">
+						<SvgIcon
+						src={
+							warnInc
+							? require('./../../img/icons/warning.svg')
+							: require('./../../img/icons/info.svg')
+						}
+						/>
+					</span>
+					<span className="text">
+						{_('Incidents')}{': '}
+						<span className="value"> 
+							{showAllMode ? 135 : this.myIncidentPoints === -1 ? 0 : this.myIncidentPoints
+							} / {showAllMode ? 200 : this.maxIncidentPoints}
+						</span>
+					</span>
+					</div>
+				)}
 			</div>
 		);
 	}

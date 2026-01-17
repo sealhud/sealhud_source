@@ -32,27 +32,16 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 export default class CornerNames extends React.Component<IProps, {}> {
 	@observable accessor sessionType = -1;
 	sessionPhase = -1;
-
 	@observable accessor trackName = '';
-
 	@observable accessor trackLayoutName = '';
-
 	@observable accessor trackLength = 0;
-
 	@observable accessor trackDist = 0;
-
 	@observable accessor cornerName = '';
-
 	@observable accessor details = true;
-
 	@observable accessor corners = true;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor lastFastCheck = 0;
-
 	@observable accessor nowTrackId = -1;
-
 	@observable accessor nowLayoutId = -1;
 
 	constructor(props: IProps) {

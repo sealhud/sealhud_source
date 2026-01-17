@@ -1,3 +1,11 @@
+	1.00
+	----------		
+	GENERAL
+	- Pre-Race Countdown: Now the hud displays the countdown timer before the race starts and also RaceInfo widget will now show TC, BrakeBias, Engine Map, and other changes.
+	- Translations: A few fixes for German translations (Thank you, ShortyBuzzGER).
+	- Incident Points Counter: Removed from LeaderBoard and HillClimb sessions.
+	- Strength Of Field: Stopped working due to some server-side changes. Fixed. 
+
 	0.92
 	----------		
 	GENERAL

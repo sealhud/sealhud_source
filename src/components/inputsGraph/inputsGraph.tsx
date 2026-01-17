@@ -18,8 +18,8 @@ export default class InputsGraph extends React.Component<IProps> {
 		return (this.props.settings.duration ?? 6) * 1000;
 	}
 
-	private canvasWidth = 160;
-	private canvasHeight = 50;
+	private canvasWidth = 287;
+	private canvasHeight = 90;
 
 	@observable accessor throttleHistory: { t: number; v: number }[] = [];
 	@observable accessor brakeHistory: { t: number; v: number }[] = [];
@@ -104,8 +104,8 @@ export default class InputsGraph extends React.Component<IProps> {
 							x2={this.canvasWidth}
 							y2={this.canvasHeight * 0.25}
 							stroke="rgba(255,255,255,0.4)"
-							strokeWidth="0.3"
-							strokeDasharray="2 3"
+							strokeWidth="0.6"
+							strokeDasharray="4 6"
 						/>
 
 						{/* Linha 50% */}
@@ -115,8 +115,8 @@ export default class InputsGraph extends React.Component<IProps> {
 							x2={this.canvasWidth}
 							y2={this.canvasHeight / 2}
 							stroke="rgba(255,255,255,0.5)"
-							strokeWidth="0.4"
-							strokeDasharray="2 3"
+							strokeWidth="0.8"
+							strokeDasharray="4 5"
 						/>
 
 						{/* Linha 25% (mais próxima do fundo) */}
@@ -126,8 +126,8 @@ export default class InputsGraph extends React.Component<IProps> {
 							x2={this.canvasWidth}
 							y2={this.canvasHeight * 0.75}
 							stroke="rgba(255,255,255,0.4)"
-							strokeWidth="0.3"
-							strokeDasharray="2 3"
+							strokeWidth="0.6"
+							strokeDasharray="4 5"
 						/>
 
 						{/* Brake RED */}
@@ -136,7 +136,7 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#cd5c5c"
-									strokeWidth="1.5"
+									strokeWidth="3"
 									points={this.renderPath(this.brakeHistory, "red")}
 								/>
 							)
@@ -147,7 +147,7 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#30b65d"
-									strokeWidth="1.5"
+									strokeWidth="3"
 									points={this.renderPath(this.throttleHistory, "green")}
 								/>
 							)
@@ -158,7 +158,7 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#707070"
-									strokeWidth="1.5"
+									strokeWidth="3"
 									points={this.renderPath(this.clutchHistory, "gray")}
 								/>
 							)

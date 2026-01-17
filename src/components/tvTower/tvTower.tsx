@@ -20,6 +20,7 @@ import {
   IRatingData,
   INVALID,
   getClassColor,
+  computeRealLapDiff
 } from "./../../lib/utils";
 import {
   ESession,
@@ -410,7 +411,7 @@ export default class TvTower extends React.Component<IProps, {}> {
     });
   }
 
-  // Function used to check if lapDiff is "real"
+  /*
   private computeRealLapDiff = (
     meLaps: number,
     meDist: number,
@@ -422,6 +423,7 @@ export default class TvTower extends React.Component<IProps, {}> {
     else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
     return lapDiff;
   };
+  */
 
   // TV Tower: Calculate Gaps Between Drivers (Race)
   private roundGap(gap: number): number {
@@ -442,7 +444,7 @@ export default class TvTower extends React.Component<IProps, {}> {
     driversInfront.forEach((driver) => {
       const otherDist = driver.meta?.LapDistance ?? 0;
       const otherLaps = driver.lapsDone ?? 0;
-      const lapDiff = this.computeRealLapDiff(
+      const lapDiff = computeRealLapDiff(
         userLapsDone,
         userLapDist,
         otherLaps,
@@ -466,7 +468,7 @@ export default class TvTower extends React.Component<IProps, {}> {
     driversBehind.forEach((driver) => {
       const otherDist = driver.meta?.LapDistance ?? 0;
       const otherLaps = driver.lapsDone ?? 0;
-      const lapDiff = this.computeRealLapDiff(
+      const lapDiff = computeRealLapDiff(
         userLapsDone,
         userLapDist,
         otherLaps,

@@ -34,11 +34,8 @@ export default class Damage extends React.Component<IProps, {}> {
 	};
 
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
 
 	constructor(props: IProps) {
@@ -76,109 +73,87 @@ export default class Damage extends React.Component<IProps, {}> {
 		}
 	};
 
-	render() {
-		if (
-			this.sessionType === 2 &&
-			this.sessionPhase === 1
-		) { return null; }
-		if (!this.playerIsFocus && !showAllMode) {
-			return null;
-		}
-		return (
-			<div
-				{...widgetSettings(this.props)}
-				className={classNames('damage', this.props.className)}
-			>
-				<div className="carDamage">
-					{/* Engine damage */}
-					{(this.carDamage.Engine !== INVALID || showAllMode) && (
-						<div
-							className={classNames('part engine', {
-								bad: !showAllMode && this.carDamage.Engine < 0.98,
-								broken: showAllMode || this.carDamage.Engine < 0.5
-							})}
-						>
-							<div className="label">{_('Engine')}</div>
-							<div className="barContainer">
-								<div
-									className="bar"
-									style={{
-										width: showAllMode
-											?	`49%`
-											:	`${this.carDamage.Engine * 100}%`
-									}}
-								/>
-							</div>
-						</div>
-					)}
+	render() {return (
+		<div
+			{...widgetSettings(this.props)}
+			className={classNames("damageNew", this.props.className)}
+		>
+			<div className="carDamageNew">
 
-					{/* Transmission damage */}
-					{(this.carDamage.Transmission !== INVALID || showAllMode) && (
-						<div
-							className={classNames('part transmission', {
-								bad: showAllMode || this.carDamage.Transmission < 0.98,
-								broken: !showAllMode && this.carDamage.Transmission < 0.5
-							})}
-						>
-							<div className="label">{_('Transmission')}</div>
-							<div className="barContainer">
-								<div
-									className="bar"
-									style={{
-										width: showAllMode
-											?	`75%`
-											:	`${this.carDamage.Transmission * 100}%`
-									}}
-								/>
-							</div>
-						</div>
-					)}
+			{/* Engine */}
+			{(this.carDamage.Engine !== INVALID || showAllMode) && (
+				<div
+					className={classNames("damageRow", {
+					bad: !showAllMode && this.carDamage.Engine < 0.98,
+					broken: showAllMode || this.carDamage.Engine < 0.3
+					})}
+				>
+					<div className="damageLabel">{_("Engine")}</div>
 
-					{/* Aerodynamics damage */}
-					{(this.carDamage.Aerodynamics !== INVALID || showAllMode) && (
-						<div
-							className={classNames('part aerodynamics', {
-								bad: !showAllMode && this.carDamage.Aerodynamics < 0.98,
-								broken: !showAllMode && this.carDamage.Aerodynamics < 0.5
-							})}
-						>
-							<div className="label">{_('Aerodynamics')}</div>
-							<div className="barContainer">
-								<div
-									className="bar"
-									style={{
-										width: showAllMode
-											?	`100%`
-											:	`${this.carDamage.Aerodynamics * 100}%`
-									}}
-								/>
-							</div>
-						</div>
-					)}
-
-					{/* Suspension damage */}
-					{(this.carDamage.Suspension !== INVALID || showAllMode) && (
-						<div
-							className={classNames('part suspension', {
-								bad: !showAllMode && this.carDamage.Suspension < 0.98,
-								broken: !showAllMode && this.carDamage.Suspension < 0.5
-							})}
-						>
-							<div className="label">{_('Suspension')}</div>
-							<div className="barContainer">
-								<div
-									className="bar"
-									style={{
-										width: showAllMode
-											?	`100%`
-											:	`${this.carDamage.Suspension * 100}%`
-									}}
-								/>
-							</div>
-						</div>
-					)}
+					<div className="damageValue">
+					{showAllMode
+						? "75%"
+						: `${Math.round((1 - this.carDamage.Engine) * 100)}%`}
+					</div>
 				</div>
+			)}
+
+			{/* Transmission */}
+			{(this.carDamage.Transmission !== INVALID || showAllMode) && (
+				<div
+					className={classNames("damageRow", {
+					bad: showAllMode || this.carDamage.Transmission < 0.98,
+					broken: !showAllMode && this.carDamage.Transmission < 0.3
+					})}
+				>
+					<div className="damageLabel">{_("Transmission")}</div>
+
+					<div className="damageValue">
+					{showAllMode
+						? "49%"
+						: `${Math.round((1 - this.carDamage.Transmission) * 100)}%`}
+					</div>
+				</div>
+			)}
+
+			{/* Aerodynamics */}
+			{(this.carDamage.Aerodynamics !== INVALID || showAllMode) && (
+				<div
+					className={classNames("damageRow", {
+					bad: !showAllMode && this.carDamage.Aerodynamics < 0.98,
+					broken: !showAllMode && this.carDamage.Aerodynamics < 0.3
+					})}
+				>
+					<div className="damageLabel">{_("Aerodynamics")}</div>
+
+					<div className="damageValue">
+					{showAllMode
+						? "0%"
+						: `${Math.round((1 - this.carDamage.Aerodynamics) * 100)}%`}
+					</div>
+				</div>
+			)}
+
+			{/* Suspension */}
+			{(this.carDamage.Suspension !== INVALID || showAllMode) && (
+				<div
+					className={classNames("damageRow", {
+					bad: !showAllMode && this.carDamage.Suspension < 0.98,
+					broken: !showAllMode && this.carDamage.Suspension < 0.3
+					})}
+				>
+					<div className="damageLabel">{_("Suspension")}</div>
+
+					<div className="damageValue">
+					{showAllMode
+						? "0%"
+						: `${Math.round((1 - this.carDamage.Suspension) * 100)}%`}
+					</div>
+				</div>
+			)}
+
 			</div>
+		</div>
 		);
 	}
 }

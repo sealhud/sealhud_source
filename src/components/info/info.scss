@@ -5,27 +5,41 @@
   position: absolute;
   left: 20px;
   top: 405px;
-  font-family: EurasiaEx;
+  font-family: 'Roboto';
   white-space: pre;
   font-size: 14px;
 }
+
+.info .value {
+  font-weight: 700;
+}
+
 .info .warning {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 5px 5px 3px 18px;
-  border-radius: 5px;
-  margin-bottom: 5px;
   position: relative;
+  margin-left: 22px;
+
+  /* UM ÚNICO BACKGROUND */
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.5) 0px,     /* faixa esquerda (clara) */
+    rgba(0, 0, 0, 0.5) 25px,
+    rgba(0, 0, 0, 0.8)  25px,   /* área direita (escura) */
+    rgba(0, 0, 0, 0.8)  100%
+  );
+
+  padding: 7px 11px 5px 31px;
+  margin-bottom: 2px;
 }
-.info .warning .svgIcon {
-  vertical-align: top;
-}
-.info .warning .svgIcon svg {
+
+.info .warning .icon {
   position: absolute;
-  top: 2px;
-  left: 6px;
-  height: 17px;
+  left: 4px;
+  top: 0px;
+  z-index: 1;
+}
+
+.info .warning .icon svg {
   width: 17px;
-  fill: orange;
-  margin-right: 0;
-  padding: 0;
+  height: 25px;
+  fill: rgb(255, 238, 0);
 }

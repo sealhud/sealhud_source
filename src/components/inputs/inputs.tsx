@@ -26,24 +26,16 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 @observer
 export default class Inputs extends React.Component<IProps, {}> {
 	@observable accessor throttlePedal = 0;
-
 	@observable accessor brakePedal = 0;
-
 	@observable accessor clutchPedal = 0;
-
 	@observable accessor wheelTurn = 0;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor playerIsFocus = false;
 
 	constructor(props: IProps) {
 		super(props);
-
 		registerUpdate(this.update);
 	}
 
@@ -72,140 +64,78 @@ export default class Inputs extends React.Component<IProps, {}> {
 	};
 
 	render() {
-		if (
-			this.sessionType === 2 &&
-			this.sessionPhase === 1
-		) { return null; }
-		if (r3e.data.GameInReplay > 0 && !this.playerIsFocus && !showAllMode) { return null; }
+		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
+		if (r3e.data.GameInReplay > 0 && !this.playerIsFocus && !showAllMode) return null;
+
 		return (
 			<div
-				{...widgetSettings(this.props)}
-				className={classNames('inputs', this.props.className, {
-					hasWheel:		this.props.settings.subSettings.steeringInput
-									.enabled &&
-									(this.playerIsFocus || showAllMode),
-					showNumbers:	this.props.settings.subSettings.showInputNumbers
-									.enabled
-				})}
+			{...widgetSettings(this.props)}
+			className={classNames("inputsNew", this.props.className, {
+				hasWheel: this.props.settings.subSettings.steeringInput.enabled &&
+						(this.playerIsFocus || showAllMode),
+				showNumbers: this.props.settings.subSettings.showInputNumbers.enabled
+			})}
 			>
-				{/* Clutch */}
-				{
-					this.props.settings.subSettings.showInputNumbers.enabled && (
-						<div className="clutchTextContainer">
-							{
-								<div className="clutchText">
-									{
-										showAllMode
-										?	80
-										:	this.clutchPedal > 0.9
-											?	this.playerIsFocus
-												?	Math.floor(this.clutchPedal * 100)
-												:	Math.ceil(this.clutchPedal * 100)
-											:	Math.ceil(this.clutchPedal * 100)
-									}
-								</div>
-							}
-						</div>
-					)
-				}
-				{
-					this.props.settings.subSettings.showInputNumbers.enabled && (
-						<div className="brakeTextContainer">
-							{
-								<div className="brakeText">
-									{
-										showAllMode
-										?	90
-										:	this.brakePedal > 0.9
-											?	this.playerIsFocus
-												?	Math.floor(this.brakePedal * 100)
-												:	Math.ceil(this.brakePedal * 100)
-											:	Math.ceil(this.brakePedal * 100)
-									}
-								</div>
-							}
-						</div>
-					)
-				}
-				{
-					this.props.settings.subSettings.showInputNumbers.enabled && (
-						<div className="throttleTextContainer">
-							{
-								<div className="throttleText">
-									{
-										showAllMode
-										?	100
-										:	this.throttlePedal > 0.9
-											?	this.playerIsFocus
-												?	Math.floor(this.throttlePedal * 100)
-												:	Math.ceil(this.throttlePedal * 100)
-											:	Math.ceil(this.throttlePedal * 100)
-									}
-								</div>
-							}
-						</div>
-					)
-				}
-				<div className="barContainer">
-					{(!!this.clutchPedal || showAllMode) && (
-						<div
-							className="bar clutchPedal"
-							style={{
-								height: `${showAllMode
-									?	80
-									:	this.clutchPedal * 100
-								}%`
-							}}
-						/>
-					)}
+
+			{/* LEFT COLUMN — WHEEL */}
+			{this.props.settings.subSettings.steeringInput.enabled &&
+				(this.playerIsFocus || showAllMode) && (
+				<div className="inputsWheel">
+					<SvgIcon
+					className="steeringWheel"
+					src={require("./../../img/icons/wheel.svg")}
+					style={{
+						transform: `rotate(${showAllMode ? 30 : this.wheelTurn}deg)`
+					}}
+					/>
+				</div>
+			)}
+
+			{/* RIGHT COLUMN — INPUTS */}
+			<div className="inputsBars">
+
+				{/* CLUTCH */}
+				<div className="inputRow clutch">
+				<div className="inputValue">
+					{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
+				</div>
+				<div className="inputMeter">
+					<div
+					className="inputFill"
+					style={{ width: `${showAllMode ? 80 : this.clutchPedal * 100}%` }}
+					/>
+				</div>
 				</div>
 
-				{/* Brake */}
-				<div className="barContainer">
-					{(!!this.brakePedal || showAllMode) && (
-						<div
-							className="bar brakePedal"
-							style={{
-								height: `${showAllMode
-									?	90
-									:	this.brakePedal * 100
-								}%`
-							}}
-						/>
-					)}
+				{/* BRAKE */}
+				<div className="inputRow brake">
+				<div className="inputValue">
+					{showAllMode ? 90 : Math.ceil(this.brakePedal * 100)}
+				</div>
+				<div className="inputMeter">
+					<div
+					className="inputFill"
+					style={{ width: `${showAllMode ? 90 : this.brakePedal * 100}%` }}
+					/>
+				</div>
 				</div>
 
-				{/* Throttle */}
-				<div className="barContainer">
-					{(!!this.throttlePedal || showAllMode) && (
-						<div
-							className="bar throttlePedal"
-							style={{
-								height: `${showAllMode
-									?	100
-									:	this.throttlePedal * 100
-								}%`
-							}}
-						/>
-					)}
+				{/* THROTTLE */}
+				<div className="inputRow throttle">
+				<div className="inputValue">
+					{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
 				</div>
-				{
-					this.props.settings.subSettings.steeringInput.enabled &&
-					(this.playerIsFocus || showAllMode) &&
-					(
-						<SvgIcon
-							className="steeringWheel"
-							src={require('./../../img/icons/wheel.svg')}
-							style={{
-								transform: `rotate(${showAllMode
-									?	30
-									:	this.wheelTurn
-								}deg)`
-							}}
-						/>
-					)
-				}
+				<div className="inputMeter">
+					<div
+					className="inputFill"
+					style={{ width: `${showAllMode ? 100 : this.throttlePedal * 100}%` }}
+					/>
+				</div>
+				</div>
+
+			</div>
 			</div>
 		);
 	}
+
 }

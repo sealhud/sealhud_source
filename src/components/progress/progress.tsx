@@ -1,3 +1,4 @@
+import { FuelEvents } from "../../lib/FuelEvents";
 import {
 	classNames,
 	ePlayerIsFocus,
@@ -20,7 +21,6 @@ import {
 import { action, observable } from 'mobx';
 import { ESession, EPitState } from './../../types/r3eTypes';
 import { observer } from 'mobx-react';
-import { personalBestTime } from '../fuelDetail/fuelDetail';
 import _ from './../../translate';
 import r3e, {
 	registerUpdate,
@@ -41,135 +41,92 @@ export default class Progress extends React.Component<IProps, {}> {
 	differences: number[] = [];
 
 	@observable accessor lapDistanceFraction = 0;
-
 	@observable accessor lapDistance = -1;
-
 	@observable accessor isImproving = 0;
-
 	@observable accessor showDeltaOnLaptime = false;
-
 	@observable accessor isLeading = false;
-
 	@observable accessor sessionType = INVALID;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor estimatedPosition = 0;
-
 	@observable accessor estimatedLaptime = 10000;
-
 	@observable accessor estimatedDeltaNext = INVALID;
-
 	@observable accessor lapTimeCurrentSelf = INVALID;
-
 	@observable accessor lapTimePreviousSelf = INVALID;
-
 	@observable accessor startLights = INVALID;
-
 	@observable accessor sectorStartFactors = {
 		Sector1: 0,
 		Sector2: 0,
 		Sector3: 0
 	};
-
 	@observable accessor sectorTimesBestSelf = {
 		Sector1: INVALID,
 		Sector2: INVALID,
 		Sector3: INVALID
 	};
-
 	@observable accessor currentSectors = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor bestSectorsOverall = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor bestSectorsClass = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor bestSectorsSelf = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor sectorStatus = {
 		Sector1: 0,
 		Sector2: 0,
 		Sector3: 0
 	};
-
 	@observable accessor sectorReset = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor toCheckCurrent = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor toCheckBest = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
 	};
-
 	@observable accessor laptimeBest = -1;
-
 	@observable accessor laptimeBestClass = -1;
-
 	@observable accessor laptimeStatus = 0;
-
 	@observable accessor resetSectors = false;
-
 	@observable accessor pitState = INVALID;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor gotLapped = false;
-
 	@observable accessor completedLaps = -1;
-
 	@observable accessor lappedAmount = 0;
-
-	@observable accessor pbTime = personalBestTime;
-
+	//@observable accessor pbTime = personalBestTime;
+	@observable accessor pbTime = FuelEvents.bestLapTimeSec;
 	@observable accessor lapTimeBestSelf = -1;
-
 	@observable accessor timeDeltaBestSelf = -1;
-
 	@observable accessor lapTimeBestLeaderClass = -1;
-
 	@observable accessor lapTimeBestLeader = -1;
-
 	@observable accessor classPerformanceIndex = -1;
-
 	previousDeltaInfront = 0;
-
 	lastSessionType: number | null = null;
-
 	// seconds
 	maxImprovingValue = 0.003;
 	improvingSmoothness = 100;
-
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor currentSlotId = -1;
-
 	@observable accessor isLeaderboard = false;
-
 	@observable accessor isHillClimb = false;
 
 	constructor(props: IProps) {
@@ -206,7 +163,7 @@ export default class Progress extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		this.pbTime = personalBestTime;
+		this.pbTime = FuelEvents.bestLapTimeSec;
 		/*if (
 			(
 				highPerformanceMode &&

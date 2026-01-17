@@ -19,7 +19,7 @@ export class LapEvents {
     this.cachedDrivers = drivers.slice(); // shallow copy, evita aliasing direto
 
     // Melhor volta global da sessão (referência oficial do jogo)
-    const sessionBest = r3e.data.SectorTimesSessionBestLap.Sector3 ?? -1;
+    // const sessionBest = r3e.data.SectorTimesSessionBestLap.Sector3 ?? -1;
 
     // Construir melhor volta POR CLASSE (igual ao Otter)
     const bestLapByClass = new Map<number, number>();

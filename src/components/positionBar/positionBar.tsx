@@ -1,6 +1,8 @@
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
 import { FlagEvents } from "../../lib/FlagEvents";
+import { FuelEvents } from "../../lib/FuelEvents";
+import { FuelStrategy } from '../../lib/FuelStrategy';
 import {
   classNames,
   base64ToString,
@@ -21,6 +23,7 @@ import {
   IRatingData,
   INVALID,
   getClassColor,
+  computeRealLapDiff
 } from './../../lib/utils';
 import {
 	ESession,
@@ -42,7 +45,6 @@ import {
 	eRankInvertRelative
 } from '../app/app';
 import { observer } from 'mobx-react';
-import { personalBestTime, eRoundsLeft } from "../fuelDetail/fuelDetail";
 import { times, uniq } from 'lodash-es';
 import _ from './../../translate';
 import r3e, { registerUpdate, unregisterUpdate, nowCheck } from './../../lib/r3e';
@@ -127,6 +129,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 	@observable accessor lastCheck = 0;
 	@observable accessor lapDistance = -1;
 	@observable accessor notInRacePhase = true;
+	@observable accessor personalBestTime = FuelEvents.bestLapTimeSec;
 
 	playerPosition = INVALID;
 	positionBarCount = 15;
@@ -153,17 +156,17 @@ export default class PositionBar extends React.Component<IProps, {}> {
 	private update = () => {
 		this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
 		this.bestLapSelf =
-        personalBestTime > -1
-          ? personalBestTime
-          : r3e.data.LapTimeBestSelf > -1
-          ? r3e.data.LapTimeBestSelf
-          : r3e.data.LapTimeBestLeaderClass > -1
-          ? r3e.data.LapTimeBestLeaderClass
-          : r3e.data.LapTimeBestLeader > -1
-          ? r3e.data.LapTimeBestLeader
-          : r3e.data.SectorTimesSessionBestLap.Sector3 > -1
-          ? r3e.data.SectorTimesSessionBestLap.Sector3
-          : -1;
+			this.personalBestTime !== null
+			? this.personalBestTime
+			: r3e.data.LapTimeBestSelf > -1
+			? r3e.data.LapTimeBestSelf
+			: r3e.data.LapTimeBestLeaderClass > -1
+			? r3e.data.LapTimeBestLeaderClass
+			: r3e.data.LapTimeBestLeader > -1
+			? r3e.data.LapTimeBestLeader
+			: r3e.data.SectorTimesSessionBestLap.Sector3 > -1
+			? r3e.data.SectorTimesSessionBestLap.Sector3
+			: -1;
 		this.lapDistance = r3e.data.LapDistance;
 		this.completedLaps = r3e.data.CompletedLaps;
 		this.sessionPhase = r3e.data.SessionPhase;
@@ -174,7 +177,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.sessionType = r3e.data.SessionType;
 		this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
 		this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
-		this.actualRoundsLeft = eRoundsLeft > -1 ? eRoundsLeft : getRoundsLeft(this.lapTimeBestSelf);
+		this.actualRoundsLeft = 
+			FuelStrategy.RoundsLeft !== null 
+			? Math.round(FuelStrategy.RoundsLeft* 10) / 10 
+			: getRoundsLeft(this.lapTimeBestSelf);
 		this.bestSelfSector3 = r3e.data.SectorTimesBestSelf.Sector3;
 		this.layoutLength = r3e.data.LayoutLength;
 		this.isLeaderboard = eIsLeaderboard;
@@ -433,7 +439,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		});
 	}
 
-	// Function used to check if lapDiff is "real"
+	/*
 	private computeRealLapDiff = (
 			meLaps: number, meDist: number,
 			otherLaps: number, otherDist: number
@@ -443,6 +449,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
 			return lapDiff;
 		};
+		*/
 
 	// STANDINGS BAR: Calculate Gaps Between Drivers (Race)
 	private previousLapDiff = new Map<number, number>();
@@ -459,7 +466,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			if (slot == null) return;
 			const otherDist = driver.meta?.LapDistance ?? 0;
 			const otherLaps = driver.lapsDone ?? 0;
-			const lapDiff = this.computeRealLapDiff(
+			const lapDiff = computeRealLapDiff(
 				userCompletedLaps, userLapDistance,
 				otherLaps, otherDist
 			);
@@ -484,7 +491,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			if (slot == null) return;
 			const otherDist = driver.meta?.LapDistance ?? 0;
 			const otherLaps = driver.lapsDone ?? 0;
-			const lapDiff = this.computeRealLapDiff(
+			const lapDiff = computeRealLapDiff(
 				userCompletedLaps, userLapDistance,
 				otherLaps, otherDist
 			);
@@ -565,7 +572,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			// Wrap
 			if (diff < 0 && i > userIndex) diff += layoutLen;
 			if (diff > 0 && i < userIndex) diff -= layoutLen;
-			const lapDiff = this.computeRealLapDiff(
+			const lapDiff = computeRealLapDiff(
 				myLaps, myDist,
 				driver.lapsDone ?? 0, otherDist
 			);

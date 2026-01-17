@@ -901,6 +901,12 @@ export default interface IShared {
 	FuelCapacity: number;
 	FuelPerLap: number;
 
+	// Battery and Virtual Energy data
+	BatterySoC: number;
+	VirtualEnergyCapacity: number;
+	VirtualEnergyLeft: number;
+	VirtualEnergyPerLap: number;
+
 	/** Unit: Celsius (C) */
 	/** Note: Not valid for AI or remote players */
 	EngineWaterTemp: number;
@@ -1023,6 +1029,8 @@ export default interface IShared {
 	/** Unit: Kilo Newtons (kN) */
 	/** Note: Not valid for AI or remote players */
 	BrakePressure: ITireData<number>;
+
+	WaterLeft: number;
 
 	//////////////////////////////////////////////////////////////////////////
 	/** Electronics */
