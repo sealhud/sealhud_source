@@ -5,7 +5,7 @@ import {
 import {
 	IWidgetSetting,
 	showAllMode,
-	eIsHyperCar
+	eIsDynamicBbias
 } from '../app/app';
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -129,7 +129,7 @@ export default class OvertakingAids extends React.Component<IProps, {}> {
 		}
 		this.engineMap = r3e.data.EngineMapSetting;
 		this.absLevel = r3e.data.AbsSetting;
-		if (!eIsHyperCar || r3e.data.BrakeRaw === 0) {
+		if (!eIsDynamicBbias || r3e.data.BrakeRaw === 0) {
 			this.brakeBias = Math.round((100 - 100 * r3e.data.BrakeBias) * 10) / 10;
 		}	
 		this.tcLevel = r3e.data.TractionControlSetting;

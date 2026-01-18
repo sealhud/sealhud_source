@@ -19,6 +19,9 @@ export class FuelEvents {
 
   private static persistKey: string | null = null;
   private static persisted: FuelPersistedData | null = null;
+  private static pendingLapStats = false;
+  private static pendingLapTries = 0;
+  private static lastProcessedLapTime = -1;
 
   // Estado da volta atual
   private static lapStartFuel = -1;
@@ -57,6 +60,7 @@ export class FuelEvents {
   static get samples() {
     return this.persisted?.samples ?? 0;
   }
+  
 
   // -----------------------
   // Update principal
@@ -81,9 +85,12 @@ export class FuelEvents {
       )
     ) {
       this.lapInvalid = true;
+      this.lastProcessedLapTime = -1;
     }
     this.detectLap();
+    this.tryUpdateLapStats();
   }
+  
 
   // -----------------------
   // Persistência
@@ -128,6 +135,31 @@ export class FuelEvents {
     );
   }
 
+  static clearCurrentPersisted() {
+    if (!this.persistKey) return;
+    localStorage.removeItem(`fuel-${this.persistKey}`);
+    // Reseta persistência
+    this.persisted = { samples: 0 };
+    // Reseta estado de volta / runtime
+    this.lapStartFuel = -1;
+    this.lapPassedMid = false;
+    this.lapInvalid = false;
+    this.lastLapFuel = null;
+  }
+
+  static clearAllPersisted() {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith("fuel-"))
+      .forEach((k) => localStorage.removeItem(k));
+    // Reseta tudo em memória
+    this.persistKey = null;
+    this.persisted = null;
+    this.lapStartFuel = -1;
+    this.lapPassedMid = false;
+    this.lapInvalid = false;
+    this.lastLapFuel = null;
+  }
+
   // -----------------------
   // Detecção de volta limpa
   // -----------------------
@@ -158,7 +190,6 @@ export class FuelEvents {
       this.lapPassedMid = true;
       return;
     }
-
     // Fechamento da volta
     if (
       this.lapStartFuel >= 0 &&
@@ -183,7 +214,8 @@ export class FuelEvents {
       const used1x = used / mult;
       this.lastLapFuel = used;
       this.updateFuelAvg(used1x);
-      this.updateLapStats();
+      this.pendingLapStats = true;
+      this.pendingLapTries = 0;
     }
 
     // Reset SEMPRE
@@ -208,36 +240,54 @@ export class FuelEvents {
     this.savePersisted();
   }
 
-  private static updateLapStats() {
-    if (!this.persisted) return;
+  private static tryUpdateLapStats() {
+    if (!this.pendingLapStats || !this.persisted) return;
 
     const lapSec = r3e.data.LapTimePreviousSelf;
-    const len = r3e.data.LayoutLength;
 
-    if (lapSec > 0) {
-
-      if (
-        this.persisted.bestLapSec === undefined ||
-        lapSec < this.persisted.bestLapSec
-      ) {
-        this.persisted.bestLapSec = lapSec;
+    // Ainda não chegou ou é repetido
+    if (
+      lapSec <= 0 ||
+      lapSec === this.lastProcessedLapTime
+    ) {
+      this.pendingLapTries++;
+      if (this.pendingLapTries > 10) {
+        this.pendingLapStats = false;
       }
-
-      this.persisted.avgLapSec =
-        this.persisted.avgLapSec === undefined
-          ? lapSec
-          : this.persisted.avgLapSec * 0.8 + lapSec * 0.2;
-
-      if (len > 0) {
-        const speedMs = len / lapSec;
-        this.persisted.avgSpeedMs =
-          this.persisted.avgSpeedMs === undefined
-            ? speedMs
-            : this.persisted.avgSpeedMs * 0.8 + speedMs * 0.2;
-      }
-      this.savePersisted();
+      return;
     }
+
+    // Agora temos o tempo NOVO da volta recém-fechada
+
+    const len = r3e.data.LayoutLength;
+    if (
+      this.persisted.bestLapSec === undefined ||
+      lapSec < this.persisted.bestLapSec
+    ) {
+      this.persisted.bestLapSec = lapSec;
+    }
+
+    this.persisted.avgLapSec =
+      this.persisted.avgLapSec === undefined
+        ? lapSec
+        : this.persisted.avgLapSec * 0.8 + lapSec * 0.2;
+
+    if (len > 0) {
+      const speedMs = len / lapSec;
+      this.persisted.avgSpeedMs =
+        this.persisted.avgSpeedMs === undefined
+          ? speedMs
+          : this.persisted.avgSpeedMs * 0.8 + speedMs * 0.2;
+    }
+
+    this.savePersisted();
+
+    // Finaliza
+    this.pendingLapStats = false;
+    this.lastProcessedLapTime = lapSec;
+    this.pendingLapStats = false;
   }
+
 
   // -----------------------
   // Utils

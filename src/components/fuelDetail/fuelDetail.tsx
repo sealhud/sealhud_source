@@ -17,7 +17,8 @@ import {
 	showAllMode,
 	lowPerformanceMode,
 	highPerformanceMode,
-	speedInMPH
+	speedInMPH,
+	blockFuelCalc,
 } from '../app/app';
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -34,29 +35,22 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	settings: IWidgetSetting;
 }
 
-type FuelDetailMode = "details" | "calculator";
-
-interface IFuelDetailState {
-  mode: FuelDetailMode;
-}
-
-
 @observer
-export default class FuelDetail extends React.Component<IProps, IFuelDetailState> {
-	state: IFuelDetailState = {
-		mode: "details"
-	};
-	onRightClick = (e: React.MouseEvent) => {
-		e.preventDefault();
-
-		this.setState(prev => ({
-			mode: prev.mode === "details" ? "calculator" : "details"
-		}));
-	};
+export default class FuelDetail extends React.Component<IProps, {}> {
 	@observable accessor sessionType = -1;
 	@observable accessor sessionPhase = -1;
 	@observable accessor lastCheck = 0;
-
+	@observable accessor displayMessage = '';
+	@observable accessor showDeleteAll = false;
+	@observable accessor showDeleteCombo = false;
+	@observable accessor displayMessageSwitch = false;
+	@observable accessor showConfirmButtons = false;
+	@observable accessor displayMessageTimer: any = INVALID;
+	@observable accessor blockCalc = false;
+	@observable accessor fuelCalcBlock = blockFuelCalc;
+	@observable accessor fuelCalcEnabled = false;
+	@observable accessor setTimeFuel = 0;
+	@observable accessor setRoundFuel = 0;
 	@observable accessor fuelPerLap = 0;
 	@observable accessor fuelLeft = 0;
 	@observable accessor fuelUseActive = false;
@@ -65,14 +59,15 @@ export default class FuelDetail extends React.Component<IProps, IFuelDetailState
 
 	constructor(props: IProps) {
 		super(props);
+
 		registerUpdate(this.update);
-	}	
-	componentWillUnmount() {
-		unregisterUpdate(this.update);
 	}
+
 
 	@action
 	private update = () => {
+		
+		/*
 		if (
 			(
 				highPerformanceMode &&
@@ -88,6 +83,7 @@ export default class FuelDetail extends React.Component<IProps, IFuelDetailState
 				nowCheck - this.lastCheck >= 133
 			)
 		) {
+		*/
 			this.lastCheck = nowCheck;
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;
@@ -96,133 +92,654 @@ export default class FuelDetail extends React.Component<IProps, IFuelDetailState
 			this.fuelUseActive = r3e.data.FuelUseActive > 0 && r3e.data.FuelPressure > 0;
 			this.veUseActive = r3e.data.VirtualEnergyCapacity > 0;
 			this.veLeft = ((r3e.data.VirtualEnergyLeft * 100) / r3e.data.VirtualEnergyCapacity);
-		}
+			this.fuelCalcBlock = blockFuelCalc;
+			if (this.props.settings.subSettings.clearComboData.enabled) {
+				this.clearData(false);
+			}
+			if (this.props.settings.subSettings.clearAllData.enabled) {
+				this.clearData(true);
+			}
+		//}
 	};
 
+	// HELPERS
 
-	render() {
-		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
-		
-		// HELPERS
-		const isNA = (value: unknown) => value === "-" || value === "--:--.--";
-		const fuelCellClass = (
-			value: string,
-			{
-				ok,
-				need
-			}: { ok?: string; need?: string }
-			) => {
-			if (isNA(value)) return "fueldetail-na";
-			if (needsFuel && need) return need;
-			return ok ?? "";
-		};
-		const veCellClass = (
-			value: string,
-			{
-				ok,
-				need
-			}: { ok?: string; need?: string }
-			) => {
-			if (isNA(value)) return "fueldetail-na";
-			if (needsVE && need) return need;
-			return ok ?? "";
-		};
+	private isNA(value: unknown) {
+		return value === "-" || value === "--:--.--";
+	}
 
-		// LAP TIME & SPEED INFO
-		const bestLapTimeSelf = FuelEvents.bestLapTimeSec !== null 
-			? formatTime(FuelEvents.bestLapTimeSec, 'm:ss.SSS')
-			: "--:--.--";
-		const avgLapTimeSelf = FuelEvents.avgLapTimeSec !== null 
-			? formatTime(FuelEvents.avgLapTimeSec, 'm:ss.SSS')
-			: "--:--.--";
-		const avgSpeed = FuelEvents.avgSpeedMs !== null
-			? mpsToKph(FuelEvents.avgSpeedMs).toFixed() + " km/h"
-			: "-";
+	private cellClass(
+		value: string,
+		needs: boolean,
+		ok?: string,
+		need?: string
+		) {
+		if (this.isNA(value)) return "fueldetail-na";
+		if (needs && need) return need;
+		return ok ?? "";
+	}
 
-		// FUEL
-		const fuelToEnd = FuelStrategy.FuelToEnd !== null && this.fuelUseActive
-			? FuelStrategy.FuelToEnd.toFixed(1)
-			: '-';
-		const fuelToAdd = FuelStrategy.FuelToAdd !== null && this.fuelUseActive
-			? FuelStrategy.FuelToAdd.toFixed(1)
-			: '-';
+	// DADOS DE FUEL
+
+	private getFuelDetails() {
+		const active = this.fuelUseActive;
 		const fuelToAddRaw = FuelStrategy.FuelToAdd;
 		const needsFuel = fuelToAddRaw !== null && fuelToAddRaw > 0;
-		const lastLapFuelUsed = FuelEvents.lastLapFuelUsed !== null
-			? FuelEvents.lastLapFuelUsed.toFixed(2)
-			: '-';
-		const avgFuelPerLap = this.fuelUseActive
-			? FuelEvents.avgFuelPerLap === null
-				? this.fuelPerLap.toFixed(2)
-				: FuelEvents.avgFuelPerLap.toFixed(2)
-			: '-';
-		const fuelLeft = this.fuelUseActive
-			? this.fuelLeft.toFixed(1)
-			: "-";
-		const lapsEstim = this.fuelUseActive
-			? FuelEvents.avgFuelPerLap === null
-				? (this.fuelLeft / this.fuelPerLap).toFixed(1)
-				: (this.fuelLeft / FuelEvents.avgFuelPerLap).toFixed(1)
-			: "-";
-		const timeEstim = this.fuelUseActive && FuelEvents.avgLapTimeSec !== null
-			? FuelEvents.avgFuelPerLap === null
-				? formatTime(((this.fuelLeft / this.fuelPerLap)*FuelEvents.avgLapTimeSec), 'H:mm:ss')
-				: formatTime(((this.fuelLeft / FuelEvents.avgFuelPerLap)*FuelEvents.avgLapTimeSec), 'H:mm:ss')
-			: "--:--.--";
 
-		// VIRTUAL ENERGY
-		const veToEnd = EnergyStrategy.veToEndValue !== null && this.veUseActive
-			? EnergyStrategy.veToEndValue.toFixed(0)+"%"
-			: '-';
-		const veToAdd = EnergyStrategy.veToAddValue !== null && this.veUseActive
-			? EnergyStrategy.veToAddValue.toFixed(0)+"%"
-			: '-';
+		return {
+			fuelLeft: active ? this.fuelLeft.toFixed(1) : "-",
+			avgFuelPerLap: active
+			? (FuelEvents.avgFuelPerLap ?? this.fuelPerLap).toFixed(2)
+			: "-",
+			lastLapFuelUsed:
+			FuelEvents.lastLapFuelUsed !== null
+				? FuelEvents.lastLapFuelUsed.toFixed(2)
+				: "-",
+			fuelToEnd:
+			active && FuelStrategy.FuelToEnd !== null
+				? FuelStrategy.FuelToEnd.toFixed(1)
+				: "-",
+			fuelToAdd:
+			active && FuelStrategy.FuelToAdd !== null
+				? FuelStrategy.FuelToAdd.toFixed(1)
+				: "-",
+			lapsEstim:
+			active
+				? (
+					this.fuelLeft /
+					(FuelEvents.avgFuelPerLap ?? this.fuelPerLap)
+				).toFixed(1)
+				: "-",
+			timeEstim:
+			active && FuelEvents.avgLapTimeSec !== null
+				? formatTime(
+					(this.fuelLeft /
+					(FuelEvents.avgFuelPerLap ?? this.fuelPerLap)) *
+					FuelEvents.avgLapTimeSec,
+					"H:mm:ss"
+				)
+				: "--:--.--",
+			needsFuel
+		};
+	}
+
+	// DADOS DE VIRTUAL ENERGY
+
+	private getVEDetails() {
+		const active = this.veUseActive;
 		const veToAddRaw = EnergyStrategy.veToAddValue;
 		const needsVE = veToAddRaw !== null && veToAddRaw > 0;
-		const lastLapVeUsed = EnergyEvents.lastLapVEUsed !== null
-			? EnergyEvents.lastLapVEUsed.toFixed(1)+"%"
-			: '-';
-		const avgVePerLap = this.veUseActive && EnergyStrategy.veAvgValue !== null
-			? EnergyStrategy.veAvgValue.toFixed(1)+"%"
-			: '-';
-		const veLeft = EnergyStrategy.veNowValue !== null
-			? EnergyStrategy.veNowValue.toFixed(0)+"%"
-			: "-";
-		const lapsEstimVe = this.veUseActive && EnergyStrategy.veAvgValue !== null
-			? (this.veLeft / EnergyStrategy.veAvgValue).toFixed(1)
-			: "-";
-		const timeEstimVe = this.veUseActive && FuelEvents.avgLapTimeSec !== null && EnergyStrategy.veAvgValue !== null
-			? formatTime(((this.veLeft / EnergyStrategy.veAvgValue)*FuelEvents.avgLapTimeSec), 'H:mm:ss')
+
+		return {
+			veLeft:
+			EnergyStrategy.veNowValue !== null
+				? EnergyStrategy.veNowValue.toFixed(0) + "%"
+				: "-",
+			avgVePerLap:
+			active && EnergyStrategy.veAvgValue !== null
+				? EnergyStrategy.veAvgValue.toFixed(1) + "%"
+				: "-",
+			lastLapVeUsed:
+			EnergyEvents.lastLapVEUsed !== null
+				? EnergyEvents.lastLapVEUsed.toFixed(1) + "%"
+				: "-",
+			veToEnd:
+			active && EnergyStrategy.veToEndValue !== null
+				? EnergyStrategy.veToEndValue.toFixed(0) + "%"
+				: "-",
+			veToAdd:
+			active && EnergyStrategy.veToAddValue !== null
+				? EnergyStrategy.veToAddValue.toFixed(0) + "%"
+				: "-",
+			lapsEstimVe:
+			active && EnergyStrategy.veAvgValue !== null
+				? (this.veLeft / EnergyStrategy.veAvgValue).toFixed(1)
+				: "-",
+			timeEstimVe:
+			active &&
+			FuelEvents.avgLapTimeSec !== null &&
+			EnergyStrategy.veAvgValue !== null
+				? formatTime(
+					(this.veLeft / EnergyStrategy.veAvgValue) *
+					FuelEvents.avgLapTimeSec,
+					"H:mm:ss"
+				)
+				: "--:--.--",
+			needsVE
+		};
+	}	
+
+	@action
+	private clearData(allData = false) {
+		if (allData) {
+			this.displayMessage = _('Really delete ALL data?');
+			this.showDeleteAll = true;
+			this.showDeleteCombo = false;
+		} else {
+			this.displayMessage = _('Really delete Combination data?');
+			this.showDeleteCombo = true;
+			this.showDeleteAll = false;
+		}
+		this.displayMessageSwitch = true;
+		this.showConfirmButtons = true;
+	}
+
+	@action
+	private cancelClearData = () => {
+		this.showDeleteAll = false;
+		this.showDeleteCombo = false;
+		this.showConfirmButtons = false;
+		this.displayMessageSwitch = false;
+		clearTimeout(this.displayMessageTimer);
+	}
+
+	@action
+		private displayMessageReset = () => {
+			this.displayMessageSwitch = false;
+		}
+
+	@action
+	private onDummy = () => {
+		let moo = 0;
+		moo = moo;
+		if (moo === 1) {
+			moo = 2;
+		}
+	}
+
+	@action
+	private onMouseDown = (e: React.MouseEvent) => {
+		if (e.button === 2) {
+			if (this.fuelCalcEnabled) {
+				this.fuelCalcEnabled = false;
+				this.blockCalc = true;
+				setTimeout(() => {
+					this.blockCalc = false;
+				}, 2000);
+			}
+			if (
+				!this.fuelCalcEnabled && !this.blockCalc
+			) {
+				if (
+					FuelEvents.avgLapTimeSec === null 
+				) {
+					this.displayMessage = _('We have no Data yet!');
+					this.displayMessageSwitch = true;
+					clearTimeout(this.displayMessageTimer);
+					this.displayMessageTimer = setTimeout(this.displayMessageReset, 3000);
+				} else {
+					this.fuelCalcEnabled = true;
+				}
+			}
+		}
+		this.fuelCalcBlock = blockFuelCalc;
+	}
+
+	@action
+	private onMouseUp = () => {
+		if (
+			!this.fuelCalcEnabled && !this.blockCalc && !this.fuelCalcBlock
+		) {
+			if (
+					FuelEvents.avgLapTimeSec === null 
+				) {
+				this.displayMessage = _('We have no Data yet!');
+				this.displayMessageSwitch = true;
+				clearTimeout(this.displayMessageTimer);
+				this.displayMessageTimer = setTimeout(this.displayMessageReset, 3000);
+			} else {
+				this.fuelCalcEnabled = true;
+			}
+		}
+		this.fuelCalcBlock = blockFuelCalc;
+	}
+
+	@action
+	private adjustSetTimeFuelM1 = () => {
+		this.setTimeFuel =
+			(this.setTimeFuel - 1) < 0
+			?	0
+			:	this.setTimeFuel - 1;
+	}
+
+	@action
+	private adjustSetTimeFuelM10 = () => {
+		this.setTimeFuel =
+			(this.setTimeFuel - 10) < 0
+			?	0
+			:	this.setTimeFuel - 10;
+	}
+
+	@action
+	private adjustSetTimeFuelP1 = () => {
+		this.setTimeFuel++;
+	}
+
+	@action
+	private adjustSetTimeFuelP10 = () => {
+		this.setTimeFuel += 10;
+	}
+
+	@action
+	private adjustSetRoundFuelM1 = () => {
+		this.setRoundFuel =
+			(this.setRoundFuel - 1) < 0
+			?	0
+			:	this.setRoundFuel - 1;
+	}
+
+	@action
+	private adjustSetRoundFuelM5 = () => {
+		this.setRoundFuel =
+			(this.setRoundFuel - 5) < 0
+			?	0
+			:	this.setRoundFuel - 5;
+	}
+
+	@action
+	private adjustSetRoundFuelP1 = () => {
+		this.setRoundFuel++;
+	}
+
+	@action
+	private adjustSetRoundFuelP5 = () => {
+		this.setRoundFuel += 5;
+	}
+
+	@action resetSetTimeFuel = () => {
+		this.setTimeFuel = 0;
+	}
+
+	@action resetSetRoundFuel = () => {
+		this.setRoundFuel = 0;
+	}
+
+	@action onWheel = () => {
+		return;
+	}	
+
+	private getFuelNeeded(minutes: boolean) {
+		let calculated = 0;
+		if (FuelEvents.avgLapTimeSec !== null && this.fuelUseActive) {
+			const fuelPerLap = FuelEvents.avgFuelPerLap; 
+			calculated = this.setRoundFuel * fuelPerLap;
+			if (minutes) {
+				calculated = fuelPerLap * Math.ceil((this.setTimeFuel * 60) / FuelEvents.avgLapTimeSec);
+			}
+		}		
+		return calculated.toFixed(1) + 'L';
+	}
+
+	private getVeNeeded(minutes: boolean) {
+		let vecalculated = 0;
+		if (FuelEvents.avgLapTimeSec !== null && EnergyEvents.avgVEPerLap !== null && this.veUseActive) {
+			const vePerLap = (EnergyEvents.avgVEPerLap)*100 / r3e.data.VirtualEnergyCapacity; 
+			vecalculated = this.setRoundFuel * vePerLap;
+			if (minutes) {
+				vecalculated = vePerLap * Math.ceil((this.setTimeFuel * 60) / FuelEvents.avgLapTimeSec);
+			}
+		}		
+		return vecalculated.toFixed(1) + '%';
+	}
+
+	@action
+	private clearAllData = () => {
+		this.showDeleteAll = false;
+		this.showDeleteCombo = false;
+		this.showConfirmButtons = false;
+		if (FuelEvents.avgLapTimeSec !== null) {
+			FuelEvents.clearAllPersisted();
+			showDebugMessage(
+				_('All Fuel/Lap Tracking data got deleted!'),
+				3000
+			);
+		}
+		this.displayMessageSwitch = false;
+		// this.displayMessage = 'Data for all Combinations deleted';
+		clearTimeout(this.displayMessageTimer);
+		// this.displayMessageTimer = setTimeout(this.displayMessageReset, 3000);
+	}
+
+	@action
+	private clearCombinationData = () => {
+		if (FuelEvents.avgLapTimeSec !== null) {
+			this.showDeleteAll = false;
+			this.showDeleteCombo = false;
+			this.showConfirmButtons = false;
+			FuelEvents.clearCurrentPersisted();
+			showDebugMessage(
+				_('Fuel/Lap Tracking data for this Combination got deleted!'),
+				3000
+			);
+		}
+		this.displayMessageSwitch = false;
+		// this.displayMessage = 'Data for this Combination deleted';
+		clearTimeout(this.displayMessageTimer);
+		// this.displayMessageTimer = setTimeout(this.displayMessageReset, 3000);
+	}
+
+	private renderMessageSwitch() {
+		return (
+			<>
+				<div className="ClearData">
+					{this.displayMessage}
+				</div>
+				{
+					this.showConfirmButtons &&
+					!this.showDeleteCombo &&
+					this.showDeleteAll && (
+						<button className="confirmYes" onClick={this.clearAllData}>
+							{_('YES')}
+						</button>
+					)
+				}
+				{
+					this.showConfirmButtons &&
+					!this.showDeleteCombo &&
+					this.showDeleteAll && (
+						<button className="confirmNo" onClick={this.cancelClearData}>
+							{_('NO')}
+						</button>
+					)
+				}
+				{
+					this.showConfirmButtons &&
+					!this.showDeleteAll &&
+					this.showDeleteCombo &&
+					(
+						<button className="confirmYes" onClick={this.clearCombinationData}>
+							{_('YES')}
+						</button>
+					)
+				}
+				{
+					this.showConfirmButtons &&
+					!this.showDeleteAll &&
+					this.showDeleteCombo && (
+						<button className="confirmNo" onClick={this.cancelClearData}>
+							{_('NO')}
+						</button>
+					)
+				}
+			</>
+		);
+	}
+
+	private renderFuelCalculator () {
+		return (
+			<>
+			<div className="FuelCalcTitleBox"/>
+				<div className="FuelCalcTitleTextBox">
+					<div className="FuelCalcTitleText">
+						{_('Fuel Calculator - Right click to close')}
+					</div>
+				</div>
+
+				<div className="FuelCalcMinuteBox"/>
+				<div className="FuelCalcMinuteTextBox">
+					<div className="FuelCalcMinuteText">
+						{_('Minutes')}
+					</div>
+				</div>
+				<div className="FuelCalcMinuteAmountBox">
+					<div className="FuelCalcMinuteAmount">
+						{this.setTimeFuel}
+					</div>
+				</div>
+
+				<div className="FuelCalcRoundBox"/>
+				<div className="FuelCalcRoundTextBox">
+					<div className="FuelCalcRoundText">
+						{_('Laps')}
+					</div>
+				</div>
+				<div className="FuelCalcRoundAmountBox">
+					<div className="FuelCalcRoundAmount">
+						{this.setRoundFuel}
+					</div>
+				</div>
+
+				<div className="FuelMinuteM1TextBox">
+					<div
+						className={classNames('FuelMinuteM1Text', {
+						})}
+					>
+						{`${'-1'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelMinuteM1Box', {
+						})}
+					onClick={this.adjustSetTimeFuelM1}
+				/>
+
+				<div className="FuelMinuteM10TextBox">
+					<div
+						className={classNames('FuelMinuteM10Text', {
+						})}
+						onClick={this.adjustSetTimeFuelM10}
+					>
+						{`${'-10'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelMinuteM10Box', {
+					})}
+					onClick={this.adjustSetTimeFuelM10}
+				/>
+
+				<div className="FuelRoundM1TextBox">
+					<div
+						className={classNames('FuelRoundM1Text', {
+						})}
+						onClick={this.adjustSetRoundFuelM1}
+					>
+						{`${'-1'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelRoundM1Box', {
+					})}
+					onClick={this.adjustSetRoundFuelM1}
+				/>
+
+				<div className="FuelRoundM5TextBox">
+					<div
+						className={classNames('FuelRoundM5Text', {
+						})}
+						onClick={this.adjustSetRoundFuelM5}
+					>
+						{`${'-5'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelRoundM5Box', {
+					})}
+					onClick={this.adjustSetRoundFuelM5}
+				/>
+
+				<div className="FuelMinuteResetTextBox">
+					<div
+						className={classNames('FuelMinuteResetText', {
+						})}
+						onClick={this.resetSetTimeFuel}
+					>
+						{_('Reset')}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelMinuteResetBox', {
+					})}
+					onClick={this.resetSetTimeFuel}
+				/>
+
+				<div className="FuelRoundResetTextBox">
+					<div
+						className={classNames('FuelRoundResetText', {
+						})}
+						onClick={this.resetSetRoundFuel}
+					>
+						{_('Reset')}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelRoundResetBox', {
+					})}
+					onClick={this.resetSetRoundFuel}
+				/>
+
+				<div className="FuelMinuteP1TextBox">
+					<div
+						className={classNames('FuelMinuteP1Text', {
+						})}
+						onClick={this.adjustSetTimeFuelP1}
+					>
+						{`${'+1'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelMinuteP1Box', {
+					})}
+					onClick={this.adjustSetTimeFuelP1}
+				/>
+
+				<div className="FuelMinuteP10TextBox">
+					<div
+						className={classNames('FuelMinuteP10Text', {
+						})}
+						onClick={this.adjustSetTimeFuelP10}
+					>
+						{`${'+10'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelMinuteP10Box', {
+					})}
+					onClick={this.adjustSetTimeFuelP10}
+				/>
+
+				<div className="FuelRoundP1TextBox">
+					<div
+						className={classNames('FuelRoundP1Text', {
+						})}
+						onClick={this.adjustSetRoundFuelP1}
+					>
+						{`${'+1'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelRoundP1Box', {
+					})}
+					onClick={this.adjustSetRoundFuelP1}
+				/>
+
+				<div className="FuelRoundP5TextBox">
+					<div
+						className={classNames('FuelRoundP5Text', {
+						})}
+						onClick={this.adjustSetRoundFuelP5}
+					>
+						{`${'+5'}`}
+					</div>
+				</div>
+				<button
+					className={classNames('FuelRoundP5Box', {
+					})}
+					onClick={this.adjustSetRoundFuelP5}
+				/>
+
+				<div className="FuelCalcMinuteNeedBox"/>
+				<div className="FuelCalcMinuteNeedTextBox">
+					<div className="FuelCalcMinuteNeedText">
+						{_('Fuel needed')}
+					</div>
+				</div>
+
+				<div className="FuelCalcMinuteNeedAmountBox">
+					<div className="FuelCalcMinuteNeedAmount">
+						{this.getFuelNeeded(true)}
+					</div>
+				</div>
+
+				<div className="FuelCalcRoundNeedBox"/>
+				<div className="FuelCalcRoundNeedTextBox">
+					<div className="FuelCalcRoundNeedText">
+						{_('Fuel needed')}
+					</div>
+				</div>
+				<div className="FuelCalcRoundNeedAmountBox">
+					<div className="FuelCalcRoundNeedAmount">
+						{this.getFuelNeeded(false)}
+					</div>
+				</div>
+
+				<div className="VeCalcMinuteNeedBox"/>
+				<div className="VeCalcMinuteNeedTextBox">
+					<div className="VeCalcMinuteNeedText">
+						{_('V.E. needed')}
+					</div>
+				</div>
+
+				<div className="VeCalcMinuteNeedAmountBox">
+					<div className="VeCalcMinuteNeedAmount">
+						{this.getVeNeeded(true)}
+					</div>
+				</div>
+
+				<div className="VeCalcRoundNeedBox"/>
+				<div className="VeCalcRoundNeedTextBox">
+					<div className="VeCalcRoundNeedText">
+						{_('V.E. needed')}
+					</div>
+				</div>
+				<div className="VeCalcRoundNeedAmountBox">
+					<div className="VeCalcRoundNeedAmount">
+						{this.getVeNeeded(false)}
+					</div>
+				</div>
+			</>
+		);
+	}
+
+	private renderFuelDetails () {
+		const fuel = this.getFuelDetails();
+		const ve = this.getVEDetails();
+		const bestLapTimeSelf =
+		FuelEvents.bestLapTimeSec !== null
+			? formatTime(FuelEvents.bestLapTimeSec, 'm:ss.SSS')
 			: "--:--.--";
 
-		return (
-			<div
-			{...widgetSettings(this.props)}
-			className="fuelDetails"
-			onContextMenu={this.onRightClick}
-			>
+		const avgLapTimeSelf =
+		FuelEvents.avgLapTimeSec !== null
+			? formatTime(FuelEvents.avgLapTimeSec, 'm:ss.SSS')
+			: "--:--.--";
 
-			{this.state.mode === "details" && (
+		const avgSpeed =
+		FuelEvents.avgSpeedMs !== null
+			? mpsToKph(FuelEvents.avgSpeedMs).toFixed() + " km/h"
+			: "-";
+		return (
+			<>
 				<div className="fuelTable">
 
-				{/* ROW 1 — OVERVIEW */}
-				<div className="fuelRow">
+					{/* ROW 1 — OVERVIEW */}
+					<div className="fuelRow">
 					<div className="cell label span-1">Avg.</div>
-					<div className={classNames("cell data span-2",fuelCellClass(avgSpeed, {}))}>
+					<div className={classNames("cell data span-2",this.cellClass(avgSpeed, false))}>
 						{avgSpeed}
 					</div>
-					<div className={classNames("cell data span-2",fuelCellClass(avgLapTimeSelf, {}))}>
+					<div className={classNames("cell data span-2",this.cellClass(avgLapTimeSelf, false))}>
 						{avgLapTimeSelf}
 					</div>
 					<div className="cell label span-1">Best</div>
-					<div className={classNames("cell data span-2",fuelCellClass(bestLapTimeSelf, {}))}>
+					<div className={classNames("cell data span-2",this.cellClass(bestLapTimeSelf, false))}>
 						{bestLapTimeSelf}
 					</div>
-					<div className="cell empty span-1"/>
-				</div>
+					<div className="cell empty span-1" />
+					</div>
 
-				{/* ROW 2 — HEADER */}
-				<div className="fuelRow">
+					{/* ROW 2 — HEADER */}
+					<div className="fuelRow">
 					<div className="cell data span-1" />
 					<div className="cell label">Remain</div>
 					<div className="cell label">Per Lap</div>
@@ -231,130 +748,137 @@ export default class FuelDetail extends React.Component<IProps, IFuelDetailState
 					<div className="cell label">Laps Estim.</div>
 					<div className="cell label">Time Estim.</div>
 					<div className="cell label">To Add</div>
-				</div>
+					</div>
 
-				{/* ROW 3 — FUEL */}
-				<div className="fuelRow">
+					{/* ROW 3 — FUEL */}
+					<div className="fuelRow">
 					<div className="cell label">Fuel (L)</div>
-					<div className={classNames("cell data",fuelCellClass(fuelLeft, {}))}>
-						{fuelLeft}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(avgFuelPerLap, {}))}>
-						{avgFuelPerLap}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(lastLapFuelUsed, {}))}>
-						{lastLapFuelUsed}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(fuelToEnd, {ok: "fueldetailvalue-ok",need: "fueldetailvalue-need"}))}>
-						{fuelToEnd}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(lapsEstim, {}))}>
-						{lapsEstim}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(timeEstim, {}))}>
-						{timeEstim}
-					</div>
-					<div className={classNames("cell data",fuelCellClass(fuelToAdd, {ok: "fueldetail-ok",need: "fueldetail-need"}))}>
-  						{fuelToAdd}
-					</div>
-				</div>
 
-				{/* ROW 4 — VIRTUAL ENERGY */}
-				<div className="fuelRow">
+					<div className={classNames("cell data",this.cellClass(fuel.fuelLeft, fuel.needsFuel))}>
+						{fuel.fuelLeft}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.avgFuelPerLap, fuel.needsFuel))}>
+						{fuel.avgFuelPerLap}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.lastLapFuelUsed, fuel.needsFuel))}>
+						{fuel.lastLapFuelUsed}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.fuelToEnd,fuel.needsFuel,"fueldetailvalue-ok","fueldetailvalue-need"))}>
+						{fuel.fuelToEnd}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.lapsEstim, fuel.needsFuel))}>
+						{fuel.lapsEstim}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.timeEstim, fuel.needsFuel))}>
+						{fuel.timeEstim}
+					</div>
+
+					<div className={classNames("cell data",this.cellClass(fuel.fuelToAdd,fuel.needsFuel,"fueldetail-ok","fueldetail-need"))}>
+						{fuel.fuelToAdd}
+					</div>
+					</div>
+
+					{/* ROW 4 — VIRTUAL ENERGY */}
+					<div className="fuelRow">
 					<div className="cell label">V.E. (%)</div>
-					<div className={classNames("cell data",veCellClass(veLeft, {}))}>
-						{veLeft}
+
+					<div className={classNames("cell data",this.cellClass(ve.veLeft, ve.needsVE))}>
+						{ve.veLeft}
 					</div>
-					<div className={classNames("cell data",veCellClass(avgVePerLap, {}))}>
-						{avgVePerLap}
+
+					<div className={classNames("cell data",this.cellClass(ve.avgVePerLap, ve.needsVE))}>
+						{ve.avgVePerLap}
 					</div>
-					<div className={classNames("cell data",veCellClass(lastLapVeUsed, {}))}>
-						{lastLapVeUsed}
+
+					<div className={classNames("cell data",this.cellClass(ve.lastLapVeUsed, ve.needsVE))}>
+						{ve.lastLapVeUsed}
 					</div>
-					<div className={classNames("cell data",veCellClass(veToEnd, {ok: "fueldetailvalue-ok",need: "fueldetailvalue-need"}))}>
-						{veToEnd}
+
+					<div className={classNames("cell data",this.cellClass(ve.veToEnd,ve.needsVE,"fueldetailvalue-ok","fueldetailvalue-need"))}>
+						{ve.veToEnd}
 					</div>
-					<div className={classNames("cell data",veCellClass(lapsEstimVe, {}))}>
-						{lapsEstimVe}
+
+					<div className={classNames("cell data",this.cellClass(ve.lapsEstimVe, ve.needsVE))}>
+						{ve.lapsEstimVe}
 					</div>
-					<div className={classNames("cell data",veCellClass(timeEstimVe, {}))}>
-						{timeEstimVe}
+
+					<div className={classNames("cell data",this.cellClass(ve.timeEstimVe, ve.needsVE))}>
+						{ve.timeEstimVe}
 					</div>
-					<div className={classNames("cell data",veCellClass(veToAdd, {ok: "fueldetail-ok",need: "fueldetail-need"}))}>
-  						{veToAdd}
+
+					<div className={classNames("cell data",this.cellClass(ve.veToAdd,ve.needsVE,"fueldetail-ok","fueldetail-need"))}>
+						{ve.veToAdd}
+					</div>
 					</div>
 				</div>
-
-				</div>
-			)}
-
-			{this.state.mode === "calculator" && (
-				<div className="fuelCalc">
-
-					{/* ROW 1 — HEADER */}
-					<div className="fuelCalcRow">
-					<div className="cell label span-2">STINT</div>
-					<div className="cell label">FUEL</div>
-					<div className="cell label">V.E.</div>
-					</div>
-
-					{/* ROW 2 — LAPS */}
-					<div className="fuelCalcRow">
-					<div className="cell label">LAPS</div>
-
-					<div className="cell data control">
-						<div className="ctrlCol">
-						<button>-5</button>
-						<button>-1</button>
-						</div>
-
-						<div className="ctrlValue">0</div>
-
-						<div className="ctrlCol">
-						<button>+1</button>
-						<button>+5</button>
-						</div>
-					</div>
-
-					<div className="cell data">--</div>
-					<div className="cell data">--</div>
-					</div>
-
-					{/* ROW 3 — MINUTES */}
-					<div className="fuelCalcRow">
-					<div className="cell label">MIN</div>
-
-					<div className="cell data control">
-						<div className="ctrlCol">
-						<button>-5</button>
-						<button>-1</button>
-						</div>
-
-						<div className="ctrlValue">0</div>
-
-						<div className="ctrlCol">
-						<button>+1</button>
-						<button>+5</button>
-						</div>
-					</div>
-
-					<div className="cell data">--</div>
-					<div className="cell data">--</div>
-					</div>
-
-					{/* ROW 4 — RESET */}
-					<div className="fuelCalcRow">
-					<div className="cell data reset span-4">
-						RESET
-					</div>
-					</div>
-
-				</div>
-				)}
-
-
-			</div>
+			</>
 		);
 	}
 
+	render() {
+		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
+
+		// ESTADO 1: MENSAGEM
+		if (this.displayMessageSwitch) {
+			return (
+				<div
+					{...widgetSettings(this.props)}
+					className={classNames('fuelMessageBox', this.props.className, {
+					})}
+					onWheel={this.onDummy}
+					onMouseDown={this.onDummy}
+					onMouseUp={this.onDummy}
+				>
+					{this.renderMessageSwitch()}
+				</div>
+			);
+		}
+
+		// ESTADO 2: CALCULADORA
+		if (this.fuelCalcEnabled) {			
+			return (
+				<div
+					{...widgetSettings(this.props)}
+					className={classNames('fuelCalc', this.props.className, {
+					})}
+					onMouseDown={this.onMouseDown}
+					onWheel={this.onWheel}
+				>
+					{this.renderFuelCalculator()}
+				</div>
+			);
+		}
+
+		// ESTADO 3: MOUSEUP: FUEL DETAILS
+		if (!this.fuelCalcBlock) {
+					return (
+				<div
+					{...widgetSettings(this.props)}
+					className={classNames('fuelDetails', this.props.className, {
+					})}
+					onMouseUp={this.onMouseUp}
+				>
+					{this.renderFuelDetails()}
+				</div>
+			);
+		}
+
+		// ESTADO 4: MOUSEDOWN: FUEL DETAILS			
+		return (
+			<div
+				{...widgetSettings(this.props)}
+				className={classNames('fuelDetails', this.props.className, {
+				})}
+				onMouseDown={this.onMouseDown}
+			>
+				{this.renderFuelDetails()}
+			</div>
+		);
+		
+	}
 }

@@ -1,6 +1,5 @@
 .fuelDetails {
   position: absolute;
-  width: 612px;
   pointer-events: auto;
 }
 
@@ -13,7 +12,7 @@
 /* ROW */
 .fuelDetails .fuelRow {
   display: grid;
-  grid-template-columns: repeat(9, 68px);
+  grid-template-columns: repeat(9, 70px);
   height: 27px;
   margin-bottom: 3px;
 }
@@ -48,15 +47,6 @@
 .fuelDetails .span-1 { grid-column: span 1; }
 .fuelDetails .span-2 { grid-column: span 2; }
 
-/* CALCULATOR PLACEHOLDER */
-.fuelDetails .fuelCalculatorPlaceholder {
-  height: 120px;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Estados de background de célula e font color*/
 .cell.data.fueldetail-na {
   background: rgba(0, 0, 0, 0.8);
@@ -73,4 +63,657 @@
 }
 .fueldetailvalue-ok{
   color: #4dfa47c7;
+}
+
+// MESSAGE BOX
+
+.fuelMessageBox {
+  width: 560px;
+  height: 117px;
+  overflow: hidden;
+  position: absolute;
+  font-weight: 200;
+}
+
+.fuelMessageBox .ClearData {
+  width: 100%;
+  height: 40%;
+  padding: 5px;
+  font-size: 30px;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.fuelMessageBox .ClearData,
+.fuelMessageBox .confirmNo {
+  display: block;
+  opacity: 1;
+  border: 3px solid #ffffff;
+  border-radius: 12px;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  text-align: center;
+  margin: 0;
+}
+.fuelMessageBox .confirmNo {
+  left: 55%;
+}
+.fuelMessageBox .confirmNo,
+.fuelMessageBox .confirmYes {  
+  width: 24%;
+  height: 50%;
+  top: 45%;
+  font-size: 30px;
+}
+.fuelMessageBox .confirmYes {
+  display: block;
+  left: 120px;
+  opacity: 1;
+  border: 3px solid #ffffff;
+  border-radius: 12px;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  text-align: center;
+  margin: 0;
+}
+
+// FUEL CALC
+
+.fuelCalc {
+  width: 560px;
+  height: 117px;
+  overflow: hidden;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+}
+.fuelCalc .FuelCalcTitleBox,
+.fuelCalc .FuelCalcTitleTextBox {
+  display: block;
+  width: 100%;
+  height: 20%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcTitleTextBox .FuelCalcTitleText {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;  
+  padding: 2px;
+}
+
+.fuelCalc .FuelCalcMinuteBox,
+.fuelCalc .FuelCalcMinuteTextBox {
+  display: block;
+  width: 89px;
+  top: 20%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcMinuteTextBox {
+  height: 15%;
+}
+.fuelCalc .FuelCalcMinuteTextBox .FuelCalcMinuteText {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcMinuteAmountBox {
+  display: block;
+  width: 89px;
+  height: 35%;
+  top: 35%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcMinuteAmountBox .FuelCalcMinuteAmount {
+  height: 35%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcRoundBox,
+.fuelCalc .FuelCalcRoundTextBox {
+  display: block;
+  width: 89px;
+  top: 60%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcRoundTextBox .FuelCalcRoundText {
+  height: 15%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcRoundAmountBox {
+  display: block;
+  width: 89px;
+  height: 35%;
+  top: 75%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcRoundAmountBox .FuelCalcRoundAmount {
+  width: 100%;
+  height: 35%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelMinuteM1Box {
+  opacity: 0;
+  border-width: 0;
+  background: transparent;
+}
+.fuelCalc .FuelMinuteM1Box,
+.fuelCalc .FuelMinuteM1TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 91px;
+  top: 20%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelMinuteM1TextBox {
+  background: #838383;
+}
+
+.fuelCalc .FuelMinuteM1TextBox .FuelMinuteM1Text {
+  height: 20%;
+  white-space: pre;
+  color: #7d0000;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelMinuteM10Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelMinuteM10Box,
+.fuelCalc .FuelMinuteM10TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 91px;
+  top: 40%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelMinuteM10TextBox {
+  background: #838383;
+}
+.fuelCalc .FuelMinuteM10TextBox .FuelMinuteM10Text {
+  height: 20%;
+  white-space: pre;
+  color: #7d0000;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelRoundM1Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelRoundM1Box,
+.fuelCalc .FuelRoundM1TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 91px;
+  top: 60%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelRoundM1TextBox {
+  background: #646464;
+}
+.fuelCalc .FuelRoundM1TextBox .FuelRoundM1Text {
+  height: 20%;
+  white-space: pre;
+  color: #7d0000;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelRoundM5Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelRoundM5Box,
+.fuelCalc .FuelRoundM5TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 91px;
+  top: 80%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelRoundM5TextBox {
+  background: #646464;
+}
+.fuelCalc .FuelRoundM5TextBox .FuelRoundM5Text {
+  height: 20%;
+  white-space: pre;
+  color: #7d0000;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelMinuteResetBox {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelMinuteResetBox,
+.fuelCalc .FuelMinuteResetTextBox {
+  display: block;
+  width: 89px;
+  height: 40%;
+  left: 182px;
+  top: 20%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelMinuteResetTextBox {
+  background: #a10606;
+}
+
+.fuelCalc .FuelMinuteResetTextBox .FuelMinuteResetText {
+  height: 20%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 21px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 12%;
+}
+.fuelCalc .FuelRoundResetBox {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelRoundResetBox,
+.fuelCalc .FuelRoundResetTextBox {
+  display: block;
+  width: 89px;
+  height: 40%;
+  left: 182px;
+  top: 60%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelRoundResetTextBox {
+  background: #7d0000;
+}
+.fuelCalc .FuelRoundResetTextBox .FuelRoundResetText {
+  height: 20%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 21px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 12%;
+}
+.fuelCalc .FuelMinuteP1Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelMinuteP1Box,
+.fuelCalc .FuelMinuteP1TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 273px;
+  top: 20%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelMinuteP1TextBox {
+  background: #838383;
+}
+.fuelCalc .FuelMinuteP1TextBox .FuelMinuteP1Text {
+  height: 20%;
+  white-space: pre;
+  color: #022702;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelMinuteP10Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelMinuteP10Box,
+.fuelCalc .FuelMinuteP10TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 273px;
+  top: 40%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelMinuteP10TextBox {
+  background: #838383;
+}
+.fuelCalc .FuelMinuteP10TextBox .FuelMinuteP10Text {
+  height: 20%;
+  white-space: pre;
+  color: #022702;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelRoundP1Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelRoundP1Box,
+.fuelCalc .FuelRoundP1TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 273px;
+  top: 60%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelRoundP1TextBox {
+  background: #646464;
+}
+.fuelCalc .FuelRoundP1TextBox .FuelRoundP1Text {
+  height: 20%;
+  white-space: pre;
+  color: #022702;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+.fuelCalc .FuelRoundP5Box {
+  opacity: 0;
+  background: transparent;
+}
+.fuelCalc .FuelRoundP5Box,
+.fuelCalc .FuelRoundP5TextBox {
+  display: block;
+  width: 89px;
+  height: 20%;
+  left: 273px;
+  top: 80%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelRoundP5TextBox {
+  background: #646464;
+}
+.fuelCalc .FuelRoundP5TextBox .FuelRoundP5Text {
+  height: 20%;
+  white-space: pre;
+  color: #022702;
+  font-style: normal;
+  font-size: 19px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3px;
+}
+
+// COLUNA 5
+.fuelCalc .FuelCalcMinuteNeedBox,
+.fuelCalc .FuelCalcMinuteNeedTextBox {
+  display: block;
+  width: 97px;
+  left: 364px;
+  top: 20%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcMinuteNeedTextBox {
+  height: 15%;
+}
+.fuelCalc .FuelCalcMinuteNeedTextBox .FuelCalcMinuteNeedText {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcMinuteNeedAmountBox {
+  display: block;
+  width: 97px;
+  height: 35%;
+  left: 364px;
+  top: 35%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcMinuteNeedAmountBox .FuelCalcMinuteNeedAmount {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcRoundNeedBox,
+.fuelCalc .FuelCalcRoundNeedTextBox {
+  display: block;
+  width: 97px;
+  left: 364px;
+  top: 60%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcRoundNeedTextBox {
+  height: 15%;
+}
+.fuelCalc .FuelCalcRoundNeedTextBox .FuelCalcRoundNeedText {
+  height: 15%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .FuelCalcRoundNeedAmountBox {
+  display: block;
+  width: 97px;
+  height: 35%;
+  left: 364px;
+  top: 75%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .FuelCalcRoundNeedAmountBox .FuelCalcRoundNeedAmount {
+  height: 35%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+// COLUNA 6
+.fuelCalc .VeCalcMinuteNeedBox,
+.fuelCalc .VeCalcMinuteNeedTextBox {
+  display: block;
+  width: 97px;
+  left: 463px;
+  top: 20%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .VeCalcMinuteNeedTextBox {
+  height: 15%;
+}
+.fuelCalc .VeCalcMinuteNeedTextBox .VeCalcMinuteNeedText {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .VeCalcMinuteNeedAmountBox {
+  display: block;
+  width: 97px;
+  height: 35%;
+  left: 463px;
+  top: 35%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .VeCalcMinuteNeedAmountBox .VeCalcMinuteNeedAmount {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .VeCalcRoundNeedBox,
+.fuelCalc .VeCalcRoundNeedTextBox {
+  display: block;
+  width: 97px;
+  left: 463px;
+  top: 60%;
+  background: #000;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .VeCalcRoundNeedTextBox {
+  height: 15%;
+}
+.fuelCalc .VeCalcRoundNeedTextBox .VeCalcRoundNeedText {
+  height: 15%;
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.fuelCalc .VeCalcRoundNeedAmountBox {
+  display: block;
+  width: 97px;
+  height: 35%;
+  padding: 2px;
+  left: 463px;
+  top: 75%;
+  background: #474747;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+}
+.fuelCalc .VeCalcRoundNeedAmountBox .VeCalcRoundNeedAmount {
+  white-space: pre;
+  color: #fff;
+  font-style: normal;
+  font-size: 28px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }

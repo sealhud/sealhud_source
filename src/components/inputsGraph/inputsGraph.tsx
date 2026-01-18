@@ -42,7 +42,7 @@ export default class InputsGraph extends React.Component<IProps> {
 		this.sessionPhase = r3e.data.SessionPhase;
 		const now = nowCheck;
 		// Parâmetro de suavização (1=sem suavizar | 0.1=curva ultra suave)
-		const smoothFactor = 0.20;
+		const smoothFactor = 0.40;
 		const smoothedThrottle =
 			this.throttleHistory.length > 0
 				? this.throttleHistory[this.throttleHistory.length - 1].v * (1 - smoothFactor) +

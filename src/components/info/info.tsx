@@ -10,7 +10,7 @@ import {
 	IWidgetSetting,
 	eIsLeaderboard,
 	eIsHillClimb,
-	eIsHyperCar,
+	eIsDynamicBbias,
 	lowPerformanceMode,
 	highPerformanceMode,
 	showAllMode
@@ -333,7 +333,7 @@ export default class Info extends React.Component<IProps, {}> {
 				:	tControl;
 			}
 
-			if (!eIsHyperCar || r3e.data.BrakeRaw === 0) {
+			if (!eIsDynamicBbias || r3e.data.BrakeRaw === 0) {
 				const bBias = Math.round((100 - 100 * r3e.data.BrakeBias)*10) / 10;
 				if (
 					bBias !== this.eValues.BrakeBias

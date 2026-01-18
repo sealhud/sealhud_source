@@ -133,7 +133,7 @@ let eLogoUrl = "./../../img/logo.png";
 let eResetId = "";
 let eIsLeaderboard = false;
 let eIsHillClimb = false;
-let eIsHyperCar = false;
+let eIsDynamicBbias = false;
 let isMenu = false;
 const eIsIngameBrowser = window.clientInformation.appVersion
   .toString()
@@ -156,7 +156,7 @@ export {
   eIsIngameBrowser,
   eIsLeaderboard,
   eIsHillClimb,
-  eIsHyperCar,
+  eIsDynamicBbias,
 };
 // Hud Version
 const currentVersion = 0.92;
@@ -2158,8 +2158,9 @@ export default class App extends React.Component<IProps> {
         r3e.data.RaceSessionLaps.Race3 === -1 &&
         r3e.data.SessionTimeDuration === -1 &&
         r3e.data.SessionTimeRemaining === -1;
-      eIsHyperCar =
-        r3e.data.VehicleInfo.ClassId === 13129;
+      eIsDynamicBbias =
+        r3e.data.VehicleInfo.ClassId === 13129 ||
+        r3e.data.VehicleInfo.ClassId === 10050;
       eIsHillClimb =
         r3e.data.LayoutId === 1682 ||
         r3e.data.LayoutId === 1709 ||
@@ -3083,7 +3084,7 @@ export default class App extends React.Component<IProps> {
             <div className="sealLogo">
               <img
                 className="oh_logo"
-                src={require("./../../img/sealhud_logo_xmas.png")}
+                src={require("./../../img/sealhud_logo.png")}
               />
             </div>
             <div className="sealTitle">{`${" Welcome to SealHud "}`}</div>
@@ -3100,7 +3101,7 @@ export default class App extends React.Component<IProps> {
             <div className="coffeePot">
               <img
                 className="coffeePotImg"
-                src={require("./../../img/donate_xmas.png")}
+                src={require("./../../img/donate.png")}
               />
             </div>
             <img className="paypalQRImg" src={require("./../../img/qr.png")} />
