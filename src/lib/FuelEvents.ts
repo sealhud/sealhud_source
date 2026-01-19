@@ -212,13 +212,21 @@ export class FuelEvents {
     if (valid) {
       const mult = this.getFuelMultiplier();
       const used1x = used / mult;
+
       this.lastLapFuel = used;
+
       this.updateFuelAvg(used1x);
+
+      // arma SEMPRE que a volta for válida
       this.pendingLapStats = true;
       this.pendingLapTries = 0;
+    } else {
+      // volta inválida quebra a sequência
+      this.pendingLapStats = false;
+      this.lastProcessedLapTime = -1;
     }
 
-    // Reset SEMPRE
+    // Reset SEMPRE após fechar
     this.lapStartFuel = fuelNow;
     this.lapPassedMid = false;
     this.lapInvalid = false;
@@ -246,15 +254,13 @@ export class FuelEvents {
     const lapSec = r3e.data.LapTimePreviousSelf;
 
     // Ainda não chegou ou é repetido
-    if (
-      lapSec <= 0 ||
-      lapSec === this.lastProcessedLapTime
-    ) {
-      this.pendingLapTries++;
-      if (this.pendingLapTries > 10) {
-        this.pendingLapStats = false;
-      }
-      return;
+    if (lapSec <= 0) {
+      return; // ainda não chegou
+    }
+
+    // Tempo repetido, mas pode ser por volta inválida no meio
+    if (lapSec === this.lastProcessedLapTime) {
+      return; // NÃO consome tentativas
     }
 
     // Agora temos o tempo NOVO da volta recém-fechada

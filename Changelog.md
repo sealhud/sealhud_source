@@ -1,10 +1,29 @@
 	1.00
-	----------		
-	GENERAL
-	- Pre-Race Countdown: Now the hud displays the countdown timer before the race starts and also RaceInfo widget will now show TC, BrakeBias, Engine Map, and other changes.
-	- Translations: A few fixes for German translations (Thank you, ShortyBuzzGER).
-	- Incident Points Counter: Removed from LeaderBoard and HillClimb sessions.
-	- Strength Of Field: Stopped working due to some server-side changes. Fixed. 
+	----------
+	Hello World... again.
+	SealHUD is not a fork anymore.
+	And now, the HUD supports all RaceRoom vehicles, including trucks!
+
+	UI:
+	- Praticamente todos os widgets foram refeitos. Destaque para Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, Relatives, Delta, TV Tower and Position Bar.
+	- Nova interface para a tela de configurações e seleção de widgets.
+	- Unidades de medida para temperatura, pressão e velocidade agora são definidas globalmente na tela de configurações.
+	- Grade de arrasto de widgets agora é CSS (mais leve e bonita).
+	- Novos widgets: Electronics and Consumption.
+	- Widgets removidos: P2P/DRS and Fuel.
+
+	WIDGETS:
+	- Fuel & Lap Details: Agora também exibe dados de consumo de energia virtual.
+	- Fuel & Lap Details: Calculadora também exibe estimativas de energia virtual.
+	- Fuel & Lap Details: Resolvido bug que causava o não registro de algumas voltas.
+	- Motec: Agora exibe as marchas corretamente para todos os veículos, inclusive caminhões.
+	- Motec: Barra de RPM removida (temporariamente).
+	- Electronics (novo): Este widget exibe condições de temperatura da água, estado das luzes dianteiras, engine map, brake bias, ABS e TC. Aqui também são exibidos assistências de ultrapassagem como DRS, Push To Pass e Overtake (usado pelo Formula X22 e outros).
+	- Consumption (novo): Este widget apresenta um resumo do consumo do veículo, incluindo suporte à combustível líquido, energia virtual e bateria. O widget exibe quanto está disponível, média por volta, e a estimativa do necessário para chegar até o final.
+	- Race Info: Adicionada exibição do consumo de água para resfriamento de freios (usado por caminhões).
+
+	PERFORMANCE:
+	- Todos os cálculo de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
 
 	0.92
 	----------		

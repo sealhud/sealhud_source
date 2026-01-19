@@ -717,6 +717,15 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	}, theTimeout);
 }
 
+export function debugLog(msg: string) {
+  const logs = JSON.parse(
+    localStorage.getItem("debug-log") || "[]"
+  );
+  logs.push(`[${Date.now()}] ${msg}`);
+  if (logs.length > 2000) logs.shift();
+  localStorage.setItem("debug-log", JSON.stringify(logs));
+}
+
 export function showDebugMessageSmall(
 	msg: string,
 	theTimeout = 1000,
