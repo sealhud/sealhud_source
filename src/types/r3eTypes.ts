@@ -909,7 +909,7 @@ export default interface IShared {
 
 	/** Unit: Celsius (C) */
 	/** Note: Not valid for AI or remote players */
-	EngineWaterTemp: number;
+	EngineTemp: number;
 	EngineOilTemp: number;
 	/** Unit: Kilopascals (KPa) */
 	/** Note: Not valid for AI or remote players */

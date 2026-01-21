@@ -133,7 +133,7 @@ export default class OvertakingAids extends React.Component<IProps, {}> {
 			this.brakeBias = Math.round((100 - 100 * r3e.data.BrakeBias) * 10) / 10;
 		}	
 		this.tcLevel = r3e.data.TractionControlSetting;
-		this.waterTemp = r3e.data.EngineWaterTemp;
+		this.waterTemp = r3e.data.EngineTemp;
 		this.headLights = r3e.data.HeadLights;
 	}
 
