@@ -16,13 +16,10 @@ import {
   ePlayerSlotId,
   ePlayerDriverDataIndex,
   ePlayerIsFocus,
-  eCurrentSlotId,
   getSlotIds,
   prettyDebugInfo,
   currentFocusIsInput,
-  getClassColor,
   getJason,
-  hSLToRGB,
   rankData,
   showDebugMessage,
   showDebugMessageSmall,
@@ -52,7 +49,6 @@ import Inputs from "../inputs/inputs";
 import InputsGraph from "../inputsGraph/inputsGraph";
 import IShared, {
   EControl,
-  IDriverData,
   ESession,
 } from "./../../types/r3eTypes";
 import Motec from "../motec/motec";
@@ -83,25 +79,6 @@ interface ISubSettings {
     text(): string;
   };
 }
-
-interface IDriverInfo {
-  isUser: boolean;
-  id: number;
-  userId: number;
-  engineState: number;
-  name: string;
-  modelId: number;
-  performanceIndex: number;
-  classId: number;
-  classColor: string;
-  finishStatus: number;
-  dPos: {
-    X: number;
-    Y: number;
-    Z: number;
-  };
-}
-
 export interface IWidgetSetting {
   id: string;
   enabled: boolean;
@@ -123,7 +100,9 @@ let supremePerformance = false;
 let showAllMode = false;
 let hideWidgets = false;
 let blockFuelCalc = false;
-let speedInMPH = false;
+let speedInKPH = false;
+let tempInCelsius = false;
+let pressureInPSI = false;
 let eDriverNum = 3;
 let eGainLossPermanentTower = false;
 let eGainLossPermanentBar = false;
@@ -146,7 +125,9 @@ export {
   showAllMode,
   hideWidgets,
   blockFuelCalc,
-  speedInMPH,
+  speedInKPH,
+  pressureInPSI,
+  tempInCelsius,
   eDriverNum,
   eGainLossPermanentTower,
   eGainLossPermanentBar,
@@ -165,19 +146,13 @@ const currentVersion = 0.92;
 export default class App extends React.Component<IProps> {
   appRef = React.createRef<HTMLDivElement>();
 
-  //@observable accessor playerSlotId = -1;
   @observable accessor playerDriverDataIndex = -1;
   @observable accessor playerIsFocus = false;
-  //@observable accessor currentSlotId = -1;
   @observable accessor storedVersion = -1;
-  //@observable accessor replayCheck = true;
-  //@observable accessor replayReloadDone = false;
-  //@observable accessor badReplay = false;
   @observable accessor changeLogRead = true;
   @observable accessor changeLogToggled = false;
   @observable accessor trackingString = "";
   @observable accessor tempTrackingString = "";
-  //@observable accessor drivers: IDriverInfo[] = [];
   @observable accessor loadTime = Date.now();
   // Deal with centering the main ui so it is always stays 16:9
   @observable accessor aspectHeight: number | null = null;
@@ -208,7 +183,18 @@ export default class App extends React.Component<IProps> {
       : false
     : false || false;
   @observable accessor elBlocko = blockFuelCalc || false;
-  @observable accessor mphSpeed = speedInMPH || false;
+  @observable accessor tempInCelsius =
+  localStorage.tempInCelsius !== undefined
+    ? localStorage.tempInCelsius === "1"
+    : true;
+  @observable accessor speedInKPH =
+    localStorage.speedInKPH !== undefined
+      ? localStorage.speedInKPH === "1"
+      : true;
+  @observable accessor pressureInPSI =
+    localStorage.pressureInPSI !== undefined
+      ? localStorage.pressureInPSI === "1"
+      : false;
   @observable accessor showAll = localStorage.showAllMode
     ? localStorage.showAllMode === "1"
       ? true
@@ -378,7 +364,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.97,
+      zoom: 1,
       name: __("Relative"),
 			subSettings: {
         showAllSessions: {
@@ -419,8 +405,8 @@ export default class App extends React.Component<IProps> {
         }
       },
 			position: {
-				x: 1324,
-				y: 917,
+				x: 330,
+				y: 770,
 			}
 		},
     tvTower: {
@@ -561,8 +547,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 90,
-        y: -210,
+        x: 0,
+        y: -200,
       },
     },
     tires: {
@@ -571,7 +557,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.06,
+      zoom: 1,
       name: __("Tires"),
       subSettings: {
         showDetails: {
@@ -580,10 +566,6 @@ export default class App extends React.Component<IProps> {
         },
         showTempNumbers: {
           text: __("Show Tire-Temp numbers"),
-          enabled: true,
-        },
-        showCelsius: {
-          text: __("Tire-Temp in Celsius"),
           enabled: true,
         },
         showWearNumbers: {
@@ -601,10 +583,6 @@ export default class App extends React.Component<IProps> {
         showPressureNumbers: {
           text: __("Show Tire-Pressure numbers"),
           enabled: true,
-        },
-        showPsi: {
-          text: __("Tire-Pressure in PSI"),
-          enabled: false,
         },
       },
       position: {
@@ -647,7 +625,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 180,
+        x: 170,
         y: 950,
       },
     },
@@ -705,7 +683,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 830,
+        x: 820,
         y: 570,
       },
     },
@@ -763,7 +741,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 600,
+        x: 770,
         y: 960,
       },
     },
@@ -780,14 +758,10 @@ export default class App extends React.Component<IProps> {
           text: __("PitLimiter Blink"),
           enabled: true,
         },
-        showMPH: {
-          text: __("Speed in MPH"),
-          enabled: false,
-        },
       },
       position: {
-        x: 1190,
-        y: 810,
+        x: 1110,
+        y: 890,
       },
     },
     inputs: {
@@ -809,7 +783,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1190,
+        x: 1110,
         y: 1000,
       },
     },
@@ -821,15 +795,10 @@ export default class App extends React.Component<IProps> {
       duration: 0,
       zoom: 1,
       name: __("Electronics"),
-      subSettings: {
-        tempCelsius: {
-          text: __("Temperture in Celsius"),
-          enabled: true,
-        },
-      },
+      subSettings: {},
       position: {
-        x: 1190,
-        y: 730,
+        x: 1110,
+        y: 810,
       },
     },
     fuel: {
@@ -842,8 +811,8 @@ export default class App extends React.Component<IProps> {
       name: __("Consumption"),
       subSettings: {},
       position: {
-        x: 1190,
-        y: 920,
+        x: 1340,
+        y: 860,
       },
     },
     gforce: {
@@ -852,12 +821,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.1800000000000002,
+      zoom: 1,
       name: __("G-Force"),
       subSettings: {},
       position: {
-        x: 1157,
-        y: 962,
+        x: 540,
+        y: 630,
       },
     },
     aids: {
@@ -870,8 +839,8 @@ export default class App extends React.Component<IProps> {
       name: __("Car assists"),
       subSettings: {},
       position: {
-        x: 1440,
-        y: 890,
+        x: 800,
+        y: 900,
       },
     },
     startingLights: {
@@ -898,8 +867,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race info"),
       subSettings: {},
       position: {
-        x: 0,
-        y: 540,
+        x: 40,
+        y: 420,
       },
     },
     pitLimiter: {
@@ -912,8 +881,8 @@ export default class App extends React.Component<IProps> {
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 820,
-        y: 227,
+        x: 810,
+        y: 300,
       },
     },
     damage: {
@@ -926,8 +895,8 @@ export default class App extends React.Component<IProps> {
       name: __("Damage"),
       subSettings: {},
       position: {
-        x: 500,
-        y: 500,
+        x: 1340,
+        y: 950,
       },
     },
     flags: {
@@ -974,7 +943,7 @@ export default class App extends React.Component<IProps> {
     },
     clock: {
       id: "clock",
-      enabled: false,
+      enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
@@ -982,8 +951,8 @@ export default class App extends React.Component<IProps> {
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1190,
-        y: 680,
+        x: 1340,
+        y: 810,
       },
     },
   };
@@ -1082,7 +1051,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.97,
+      zoom: 1,
       name: __("Relative"),
 			subSettings: {
         showAllSessions: {
@@ -1123,8 +1092,8 @@ export default class App extends React.Component<IProps> {
         }
       },
 			position: {
-				x: 1324,
-				y: 917,
+				x: 330,
+				y: 770,
 			}
 		},
     tvTower: {
@@ -1265,8 +1234,8 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 90,
-        y: -210,
+        x: 0,
+        y: -200,
       },
     },
     tires: {
@@ -1275,7 +1244,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.06,
+      zoom: 1,
       name: __("Tires"),
       subSettings: {
         showDetails: {
@@ -1284,10 +1253,6 @@ export default class App extends React.Component<IProps> {
         },
         showTempNumbers: {
           text: __("Show Tire-Temp numbers"),
-          enabled: true,
-        },
-        showCelsius: {
-          text: __("Tire-Temp in Celsius"),
           enabled: true,
         },
         showWearNumbers: {
@@ -1305,10 +1270,6 @@ export default class App extends React.Component<IProps> {
         showPressureNumbers: {
           text: __("Show Tire-Pressure numbers"),
           enabled: true,
-        },
-        showPsi: {
-          text: __("Tire-Pressure in PSI"),
-          enabled: false,
         },
       },
       position: {
@@ -1351,7 +1312,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 180,
+        x: 170,
         y: 950,
       },
     },
@@ -1409,7 +1370,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 830,
+        x: 820,
         y: 570,
       },
     },
@@ -1467,7 +1428,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 600,
+        x: 770,
         y: 960,
       },
     },
@@ -1484,14 +1445,10 @@ export default class App extends React.Component<IProps> {
           text: __("PitLimiter Blink"),
           enabled: true,
         },
-        showMPH: {
-          text: __("Speed in MPH"),
-          enabled: false,
-        },
       },
       position: {
-        x: 1190,
-        y: 810,
+        x: 1110,
+        y: 890,
       },
     },
     inputs: {
@@ -1513,7 +1470,7 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 1190,
+        x: 1110,
         y: 1000,
       },
     },
@@ -1525,15 +1482,10 @@ export default class App extends React.Component<IProps> {
       duration: 0,
       zoom: 1,
       name: __("Electronics"),
-      subSettings: {
-        tempCelsius: {
-          text: __("Temperture in Celsius"),
-          enabled: true,
-        },
-      },
+      subSettings: {},
       position: {
-        x: 1190,
-        y: 730,
+        x: 1110,
+        y: 810,
       },
     },
     fuel: {
@@ -1546,8 +1498,8 @@ export default class App extends React.Component<IProps> {
       name: __("Consumption"),
       subSettings: {},
       position: {
-        x: 1190,
-        y: 920,
+        x: 1340,
+        y: 860,
       },
     },
     gforce: {
@@ -1556,12 +1508,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.1800000000000002,
+      zoom: 1,
       name: __("G-Force"),
       subSettings: {},
       position: {
-        x: 1157,
-        y: 962,
+        x: 540,
+        y: 630,
       },
     },
     aids: {
@@ -1574,8 +1526,8 @@ export default class App extends React.Component<IProps> {
       name: __("Car assists"),
       subSettings: {},
       position: {
-        x: 1440,
-        y: 890,
+        x: 800,
+        y: 900,
       },
     },
     startingLights: {
@@ -1602,8 +1554,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race info"),
       subSettings: {},
       position: {
-        x: 0,
-        y: 540,
+        x: 40,
+        y: 420,
       },
     },
     pitLimiter: {
@@ -1616,8 +1568,8 @@ export default class App extends React.Component<IProps> {
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 820,
-        y: 227,
+        x: 810,
+        y: 300,
       },
     },
     damage: {
@@ -1630,8 +1582,8 @@ export default class App extends React.Component<IProps> {
       name: __("Damage"),
       subSettings: {},
       position: {
-        x: 500,
-        y: 500,
+        x: 1340,
+        y: 950,
       },
     },
     flags: {
@@ -1678,7 +1630,7 @@ export default class App extends React.Component<IProps> {
     },
     clock: {
       id: "clock",
-      enabled: false,
+      enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
@@ -1686,8 +1638,8 @@ export default class App extends React.Component<IProps> {
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1190,
-        y: 680,
+        x: 1340,
+        y: 810,
       },
     },
   };
@@ -1756,7 +1708,9 @@ export default class App extends React.Component<IProps> {
     showAllMode = this.showAll;
     hideWidgets = this.hide || this.tempHide;
     blockFuelCalc = this.elBlocko;
-    speedInMPH = this.mphSpeed;
+    speedInKPH = this.speedInKPH;
+    pressureInPSI = this.pressureInPSI;
+    tempInCelsius = this.tempInCelsius;
     eDriverNum = this.driverNum;
     eGainLossPermanentTower = this.gainLossPermanentTower;
     eGainLossPermanentBar = this.gainLossPermanentBar;
@@ -2465,9 +2419,6 @@ export default class App extends React.Component<IProps> {
               )
             ) {
               hasFaulty = true;
-            } else if (keya === "showMPH") {
-              this.mphSpeed = savedSettings[key].subSettings[keya].enabled;
-              speedInMPH = this.mphSpeed;
             }
           });
         });
@@ -2501,9 +2452,6 @@ export default class App extends React.Component<IProps> {
               )
             ) {
               hasFaulty = true;
-            } else if (keya === "showMPH") {
-              this.mphSpeed = savedSettings[key].subSettings[keya].enabled;
-              speedInMPH = this.mphSpeed;
             }
           });
         });
@@ -2537,9 +2485,6 @@ export default class App extends React.Component<IProps> {
               )
             ) {
               hasFaulty = true;
-            } else if (keya === "showMPH") {
-              this.mphSpeed = savedSettings[key].subSettings[keya].enabled;
-              speedInMPH = this.mphSpeed;
             }
           });
         });
@@ -2688,10 +2633,6 @@ export default class App extends React.Component<IProps> {
       this.showSettings = !this.showSettings;
       return;
     }
-    if (subName === "showMPH") {
-      this.mphSpeed = subSettings[subName].enabled;
-      speedInMPH = this.mphSpeed;
-    }
     this.saveSettings();
   };
 
@@ -2752,6 +2693,30 @@ export default class App extends React.Component<IProps> {
   private toggleSnap = () => {
     this.snapOn = !this.snapOn;
     localStorage.snapOn = this.snapOn ? "1" : "0";
+    this.saveSettings();
+  };
+
+  @action
+  private altTemp = () => {    
+    this.tempInCelsius = !this.tempInCelsius;
+    localStorage.tempInCelsius = this.tempInCelsius ? "1" : "0";
+    tempInCelsius = this.tempInCelsius;
+    this.saveSettings();
+  };
+
+  @action
+  private altSpeed = () => {    
+    this.speedInKPH = !this.speedInKPH;
+    localStorage.speedInKPH = this.speedInKPH ? "1" : "0";
+    speedInKPH= this.speedInKPH;
+    this.saveSettings();
+  };
+
+  @action
+  private altPressure = () => {    
+    this.pressureInPSI = !this.pressureInPSI;
+    localStorage.pressureInPSI = this.pressureInPSI ? "1" : "0";
+    pressureInPSI= this.pressureInPSI;
     this.saveSettings();
   };
 
@@ -3579,7 +3544,7 @@ export default class App extends React.Component<IProps> {
 
     return (
       <div className="optionGroup">
-        <div className="optionLabel">LANGUAGE</div>
+        <div className="optionLabel">{_("LANGUAGE")}</div>
         <div className="optionBody">
           {Object.keys(languageLookup).map((langKey) => (
             <button
@@ -3600,7 +3565,7 @@ export default class App extends React.Component<IProps> {
   private renderPerformanceOptions() {
     return (
       <div className="optionGroup">
-        <div className="optionLabel">PERFORMANCE</div>
+        <div className="optionLabel">{_("PERFORMANCE")}</div>
         <div className="optionBody">
           <button
             className={classNames("optionButton", { active: this.lowPerfo })}
@@ -3632,47 +3597,57 @@ export default class App extends React.Component<IProps> {
   private renderGlobalOptions() {
     return (
       <div className="optionGroup">
-        <div className="optionLabel">GLOBAL OPTIONS</div>
+        <div className="optionLabel">{_("GLOBAL OPTIONS")}</div>
 
         <div className="optionBody rows">
           {/* Speed */}
           <div className="optionRow">
-            <span>Speed:</span>
-            <button className="smallOption active">KpH</button>
-            <button className="smallOption">MpH</button>
+            <span>{_("Speed:")}</span>
+            <button
+              className={classNames("smallOption", {active: this.speedInKPH,})} onClick={this.altSpeed}>
+              KpH
+            </button>
+            <button
+              className={classNames("smallOption", {active: !this.speedInKPH,})} onClick={this.altSpeed}>
+              MpH
+            </button>
           </div>
 
           {/* Temperature */}
           <div className="optionRow">
-            <span>Temperature:</span>
-            <button className="smallOption active">ºC</button>
-            <button className="smallOption">ºF</button>
+            <span>{_("Temperature:")}</span>
+            <button
+              className={classNames("smallOption", {active: this.tempInCelsius,})} onClick={this.altTemp}>
+              ºC
+            </button>
+            <button
+              className={classNames("smallOption", {active: !this.tempInCelsius,})} onClick={this.altTemp}>
+              ºF
+            </button>
           </div>
 
           {/* Pressure */}
           <div className="optionRow">
-            <span>Pressure:</span>
-            <button className="smallOption active">kPa</button>
-            <button className="smallOption">PSI</button>
+            <span>{_("Pressure:")}</span>
+            <button
+              className={classNames("smallOption", {active: !this.pressureInPSI,})} onClick={this.altPressure}>
+              kPa
+            </button>
+            <button
+              className={classNames("smallOption", {active: this.pressureInPSI,})} onClick={this.altPressure}>
+              PSI
+            </button>
           </div>
 
           {/* Grid Snap */}
           <div className="optionRow">
-            <span>Grid-Snap:</span>
+            <span>{_("Snap To Grid:")}</span>
             <button
-              className={classNames("smallOption", {
-                active: this.snapOn,
-              })}
-              onClick={this.toggleSnap}
-            >
+              className={classNames("smallOption", {active: this.snapOn,})} onClick={this.toggleSnap}>
               ON
             </button>
             <button
-              className={classNames("smallOption", {
-                active: !this.snapOn,
-              })}
-              onClick={this.toggleSnap}
-            >
+              className={classNames("smallOption", {active: !this.snapOn,})} onClick={this.toggleSnap}>
               OFF
             </button>
           </div>

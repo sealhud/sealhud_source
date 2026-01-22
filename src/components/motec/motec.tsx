@@ -12,7 +12,8 @@ import {
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
-	showAllMode
+	showAllMode,
+	speedInKPH
 } from '../app/app';
 import { action, observable } from 'mobx';
 import { EEngineType } from './../../types/r3eTypes';
@@ -49,6 +50,7 @@ export default class Motec extends React.Component<IProps, {}> {
 	@observable accessor playerDriverDataIndex = -1;
 	@observable accessor playerIsFocus = false;
 	@observable accessor currentSlotId = -1;
+	@observable accessor speedKPH = speedInKPH || false;
 
 	constructor(props: IProps) {
 		super(props);
@@ -109,6 +111,7 @@ export default class Motec extends React.Component<IProps, {}> {
 			:	false;
 		this.sessionType = r3e.data.SessionType;
 		this.sessionPhase = r3e.data.SessionPhase;
+		this.speedKPH = speedInKPH;
 	};
 
 	render() {
@@ -124,7 +127,7 @@ export default class Motec extends React.Component<IProps, {}> {
 
 		const speedValue = showAllMode
 			? 65
-			: this.props.settings.subSettings.showMPH.enabled
+			: !this.speedKPH
 			? mpsToMph(this.speed).toFixed(0)
 			: mpsToKph(this.speed).toFixed(0);
 
@@ -164,7 +167,7 @@ export default class Motec extends React.Component<IProps, {}> {
 					<div className="motecBox speedBox">
 						<span className="speedValue">{speedValue}</span>
 						<span className="speedUnit">
-							{this.props.settings.subSettings.showMPH.enabled ? "MpH" : "KpH"}
+							{!this.speedKPH ? "MpH" : "KpH"}
 						</span>
 					</div>
 

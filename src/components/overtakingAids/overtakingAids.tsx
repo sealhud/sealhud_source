@@ -1,10 +1,12 @@
 import {
 	classNames,
-	widgetSettings
+	widgetSettings,
+	showDebugMessageSmall
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
 	showAllMode,
+	tempInCelsius,
 	eIsDynamicBbias
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -78,6 +80,7 @@ export default class OvertakingAids extends React.Component<IProps, {}> {
 	@observable accessor brakeBias = 0;
 	@observable accessor waterTemp = 0;
 	@observable accessor headLights = -1;
+	@observable accessor tempCelsius = tempInCelsius || false;
 
 	constructor(props: IProps) {
 		super(props);
@@ -135,6 +138,7 @@ export default class OvertakingAids extends React.Component<IProps, {}> {
 		this.tcLevel = r3e.data.TractionControlSetting;
 		this.waterTemp = r3e.data.EngineTemp;
 		this.headLights = r3e.data.HeadLights;
+		this.tempCelsius = tempInCelsius;
 	}
 
 	private roundTemp(num: number): number {
@@ -194,7 +198,7 @@ export default class OvertakingAids extends React.Component<IProps, {}> {
 								src={require("./../../img/icons/watertemp.svg")}
 								/>
 							</span>
-							{this.props.settings.subSettings.tempCelsius.enabled
+							{this.tempCelsius
 							? this.roundTemp(this.waterTemp) + '°C'
 							: this.roundTemp((this.waterTemp*1.8)+32) + '°F'
 							}

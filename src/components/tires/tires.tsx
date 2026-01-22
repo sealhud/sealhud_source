@@ -10,6 +10,8 @@ import {
 	IWidgetSetting,
 	lowPerformanceMode,
 	highPerformanceMode,
+	tempInCelsius,
+	pressureInPSI,
 	showAllMode
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -30,47 +32,41 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 @observer
 export default class Tires extends React.Component<IProps, {}> {
+	@observable accessor tempCelsius = tempInCelsius || false;
+	@observable accessor pressurePSI = pressureInPSI || false;
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor passed = false;
-
 	@observable accessor tireWear: ITireData<number> = {
 		FrontLeft: -1,
 		FrontRight: -1,
 		RearLeft: -1,
 		RearRight: -1
 	};
-
 	@observable accessor tireFlatSpot: ITireData<number> = {
 		FrontLeft: -1,
 		FrontRight: -1,
 		RearLeft: -1,
 		RearRight: -1
 	};
-
 	@observable accessor tirePuncture: any = {
 		FrontLeft: false,
 		FrontRight: false,
 		RearLeft: false,
 		RearRight: false
 	};
-
 	@observable accessor lapStartTireWear: ITireData<number> = {
 		FrontLeft: -1,
 		FrontRight: -1,
 		RearLeft: -1,
 		RearRight: -1
 	};
-
 	@observable accessor wearPerLap: ITireData<number> = {
 		FrontLeft: -1,
 		FrontRight: -1,
 		RearLeft: -1,
 		RearRight: -1
 	};
-
 	@observable accessor lastLapsWearFL: number[] = [];
 	@observable accessor lastLapsWearFR: number[] = [];
 	@observable accessor lastLapsWearRL: number[] = [];
@@ -92,18 +88,14 @@ export default class Tires extends React.Component<IProps, {}> {
 	@observable accessor layoutLength = -1;
 	@observable accessor lapTimeBestSelf = -1;
 	@observable accessor completedLaps = -1;
-
 	@observable accessor lowestWearLaps	= -1;
-
 	@observable accessor tireWearActive = 0;
-
 	@observable accessor tireDirt: ITireData<number> = {
 		FrontLeft: 0,
 		FrontRight: 0,
 		RearLeft: 0,
 		RearRight: 0
 	};
-
 	@observable accessor tireTemp: ITireData<ITireTemp> = {
 		FrontLeft: {
 			CurrentTemp: {
@@ -146,7 +138,6 @@ export default class Tires extends React.Component<IProps, {}> {
 			HotTemp: INVALID
 		}
 	};
-
 	@observable accessor brakeTemp: ITireData<IBrakeTemp> = {
 		FrontLeft: {
 			CurrentTemp: INVALID,
@@ -182,17 +173,11 @@ export default class Tires extends React.Component<IProps, {}> {
 	};
 
 	@observable accessor lastCheck = 0;
-
 	@observable accessor lastShortCheck = 0;
-
 	@observable accessor currentSession = -1;
-
 	@observable accessor actualFirstLap = false;
-
 	@observable accessor wasInPit = true;
-
 	@observable accessor updateTireWearRunning = false;
-
 	@observable accessor savedSession = localStorage.savedSessionTires
 		?	localStorage.savedSessionTires === '0'
 			?	0
@@ -202,13 +187,9 @@ export default class Tires extends React.Component<IProps, {}> {
 					?	2
 					:	0
 		:	-1;
-
 	@observable accessor blinkInterval: any = INVALID;
-
 	@observable accessor showPunctureImg = false;
-
 	@observable accessor playerIsFocus = false;
-
 	constructor(props: IProps) {
 		super(props);
 
@@ -265,6 +246,8 @@ export default class Tires extends React.Component<IProps, {}> {
 			this.layoutLength = r3e.data.LayoutLength;
 			this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
 			this.completedLaps = r3e.data.CompletedLaps;
+			this.tempCelsius = tempInCelsius;
+			this.pressurePSI = pressureInPSI;
 		}
 		if (
 			(
@@ -669,7 +652,7 @@ export default class Tires extends React.Component<IProps, {}> {
 								{this.props.settings.subSettings.showDetails.enabled && (
 									<div className="templeft">
 										{this.props.settings.subSettings.showTempNumbers.enabled
-											? this.props.settings.subSettings.showCelsius.enabled
+											? this.tempCelsius
 												? this.tireTemp[
 													property
 													].CurrentTemp.Left.toFixed(0).toString() + '°'
@@ -681,7 +664,7 @@ export default class Tires extends React.Component<IProps, {}> {
 								)}
 								<div className="tempcenter">
 									{this.props.settings.subSettings.showTempNumbers.enabled
-										? this.props.settings.subSettings.showCelsius.enabled
+										? this.tempCelsius
 											? this.tireTemp[
 												property
 												].CurrentTemp.Center.toFixed(0).toString() + '°'
@@ -693,7 +676,7 @@ export default class Tires extends React.Component<IProps, {}> {
 								{this.props.settings.subSettings.showDetails.enabled && (
 									<div className="tempright">
 										{this.props.settings.subSettings.showTempNumbers.enabled
-											? this.props.settings.subSettings.showCelsius.enabled
+											? this.tempCelsius
 												? this.tireTemp[
 													property
 													].CurrentTemp.Right.toFixed(0).toString() + '°'
@@ -807,11 +790,11 @@ export default class Tires extends React.Component<IProps, {}> {
 										this.props.settings.subSettings.showPressureNumbers.enabled &&
 										this.tirePressure[property] > 100 &&  (
 										<div className="tirePressureNumber">
-											{this.props.settings.subSettings.showPsi.enabled
+											{this.pressurePSI
 												? (this.tirePressure[property] * 0.145038).toFixed(1)
 												: this.tirePressure[property].toFixed(1)
 											}
-											{this.props.settings.subSettings.showPsi.enabled
+											{this.pressurePSI
 												? 'PSI'
 												: 'kPa'
 											}
@@ -868,7 +851,7 @@ export default class Tires extends React.Component<IProps, {}> {
 							>
 								<div className="temp mono">
 									{this.props.settings.subSettings.showTempNumbers.enabled
-										? this.props.settings.subSettings.showCelsius.enabled
+										? this.tempCelsius
 											? this.tireTemp[
 												property
 												].CurrentTemp.Center.toFixed(0).toString() + '°'

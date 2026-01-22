@@ -10,7 +10,7 @@ import {
 	IWidgetSetting,
 	lowPerformanceMode,
 	highPerformanceMode,
-	speedInMPH,
+	speedInKPH,
 	showAllMode
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -44,7 +44,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 	@observable accessor lastCheck = 0;
 	@observable accessor sessionType = -1;
 	@observable accessor sessionPhase = -1;
-	@observable accessor mphSpeed = speedInMPH || false;
+	@observable accessor speedKPH = speedInKPH || false;
 	@observable accessor lapDistance = -1;
 	@observable accessor pitEntrance = -1;
 	@observable accessor pitDistance = -1;
@@ -97,7 +97,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 			this.sessionPhase = r3e.data.SessionPhase;
 			this.inPitLane = r3e.data.InPitlane;
 			this.lapDistance = r3e.data.LapDistance;
-			this.mphSpeed = speedInMPH;
+			this.speedKPH = speedInKPH;
 			this.pitState = r3e.data.PitState;
 			if (this.pitState === 1) {
 				this.pitEntrance = getPitEntrance(r3e.data.TrackId, r3e.data.LayoutId);
@@ -105,16 +105,16 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 					this.lapDistance > this.pitEntrance
 					?	Math.ceil(this.pitEntrance + (r3e.data.LayoutLength - this.lapDistance))
 					:	Math.ceil(this.pitEntrance - this.lapDistance);
-				this.speed = this.mphSpeed ? mpsToMph(r3e.data.CarSpeed) : mpsToKph(r3e.data.CarSpeed);
-				this.pitlaneMax = this.mphSpeed ? mpsToMph(r3e.data.SessionPitSpeedLimit) : mpsToKph(r3e.data.SessionPitSpeedLimit);
+				this.speed = !this.speedKPH ? mpsToMph(r3e.data.CarSpeed) : mpsToKph(r3e.data.CarSpeed);
+				this.pitlaneMax = !this.speedKPH ? mpsToMph(r3e.data.SessionPitSpeedLimit) : mpsToKph(r3e.data.SessionPitSpeedLimit);
 			}
 			if (this.inPitLane < 1 && this.pitMaxDistance !== -1) {
 				this.pitMaxDistance = -1;
 			}
 			if (this.inPitLane) {
 				this.pitMenuSelection = r3e.data.PitMenuSelection;
-				this.speed = this.mphSpeed ? mpsToMph(r3e.data.CarSpeed) : mpsToKph(r3e.data.CarSpeed);
-				this.pitlaneMax = this.mphSpeed ? mpsToMph(r3e.data.SessionPitSpeedLimit) : mpsToKph(r3e.data.SessionPitSpeedLimit);
+				this.speed = !this.speedKPH ? mpsToMph(r3e.data.CarSpeed) : mpsToKph(r3e.data.CarSpeed);
+				this.pitlaneMax = !this.speedKPH ? mpsToMph(r3e.data.SessionPitSpeedLimit) : mpsToKph(r3e.data.SessionPitSpeedLimit);
 				if (this.pitState === 2 && this.pitMenuSelection !== 1) {
 					this.nowPos = r3e.data.CarCgLocation;
 					this.pitBoxSpotPos = getPitBoxSpot(r3e.data.LayoutId, r3e.data.VehicleInfo.SlotId);
@@ -189,7 +189,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 					<span className="mono">{this.pitlaneMax.toFixed(0)}</span>{' '}
 					{
 						`${
-							this.mphSpeed
+							!this.speedKPH
 							?	_('Mph')
 							:	_('Kph')
 						}`
@@ -202,7 +202,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 						:	this.speed.toFixed(0)}</span>{' '}
 					{
 						`${
-							this.mphSpeed
+							!this.speedKPH
 							?	_('Mph')
 							:	_('Kph')
 						}`

@@ -17,7 +17,7 @@ import {
 	showAllMode,
 	lowPerformanceMode,
 	highPerformanceMode,
-	speedInMPH,
+	speedInKPH,
 	blockFuelCalc,
 } from '../app/app';
 import { action, observable } from 'mobx';
@@ -56,13 +56,13 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 	@observable accessor fuelUseActive = false;
 	@observable accessor veUseActive = false;
 	@observable accessor veLeft = 0;
+	@observable accessor speedKPH = speedInKPH || false;
 
 	constructor(props: IProps) {
 		super(props);
 
 		registerUpdate(this.update);
 	}
-
 
 	@action
 	private update = () => {
@@ -99,6 +99,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 			if (this.props.settings.subSettings.clearAllData.enabled) {
 				this.clearData(true);
 			}
+			this.speedKPH = speedInKPH;
 		//}
 	};
 
@@ -413,9 +414,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 			);
 		}
 		this.displayMessageSwitch = false;
-		// this.displayMessage = 'Data for this Combination deleted';
 		clearTimeout(this.displayMessageTimer);
-		// this.displayMessageTimer = setTimeout(this.displayMessageReset, 3000);
 	}
 
 	private renderMessageSwitch() {
@@ -716,7 +715,9 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 
 		const avgSpeed =
 		FuelEvents.avgSpeedMs !== null
-			? mpsToKph(FuelEvents.avgSpeedMs).toFixed() + " km/h"
+			? this.speedKPH
+				? mpsToKph(FuelEvents.avgSpeedMs).toFixed() + " km/h"
+				: mpsToMph(FuelEvents.avgSpeedMs).toFixed() + " mi/h"
 			: "-";
 		return (
 			<>
@@ -822,6 +823,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 
 	render() {
 		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
+		if (!this.fuelUseActive && !this.veUseActive && !showAllMode) return null;
 
 		// ESTADO 1: MENSAGEM
 		if (this.displayMessageSwitch) {
