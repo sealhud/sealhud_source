@@ -28,10 +28,6 @@
 	PERFORMANCE:
 	- Todos os cálculo de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
 
-	Obrigado Otter! 
-	Continuaremos seu legado com o mesmo carinho que você teve por anos com o OtterHUD!
-	Moo!
-
 	0.92
 	----------		
 	GENERAL
