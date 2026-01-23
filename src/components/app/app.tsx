@@ -693,7 +693,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.5299999999999998,
+      zoom: 0.53,
       name: __("Track Info"),
       subSettings: {
         trackDetails: {
@@ -1380,7 +1380,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 0.5299999999999998,
+      zoom: 0.53,
       name: __("Track Info"),
       subSettings: {
         trackDetails: {
@@ -2400,6 +2400,92 @@ export default class App extends React.Component<IProps> {
 
   @action
   private recoverSettings = () => {
+    const layoutKey =
+      this.currentLayout === 1
+        ? "appSettings"
+        : this.currentLayout === 2
+        ? "appSettings2"
+        : "appSettings3";
+
+    const logoKey =
+      this.currentLayout === 1
+        ? "currentLogo"
+        : this.currentLayout === 2
+        ? "currentLogo2"
+        : "currentLogo3";
+
+    const raw = localStorage[layoutKey];
+
+    if (!raw) {
+      this.resetSettings();
+      this.restoreLogo(logoKey);
+      return;
+    }
+
+    let parsed: any;
+
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      this.resetSettings();
+      this.restoreLogo(logoKey);
+      return;
+    }
+
+    if (typeof parsed !== "object" || parsed === null) {
+      this.resetSettings();
+      this.restoreLogo(logoKey);
+      return;
+    }
+
+    // Filtragem resiliente
+    const safeSettings: any = {};
+
+    Object.keys(parsed).forEach((widgetKey) => {
+      if (!this.settings[widgetKey]) return;
+
+      const savedWidget = parsed[widgetKey];
+      const defaultWidget = this.settings[widgetKey];
+
+      if (
+        !savedWidget ||
+        typeof savedWidget !== "object" ||
+        !savedWidget.subSettings
+      ) {
+        return;
+      }
+
+      const safeSubSettings: any = {};
+
+      Object.keys(savedWidget.subSettings).forEach((subKey) => {
+        if (!defaultWidget.subSettings[subKey]) return;
+
+        safeSubSettings[subKey] = savedWidget.subSettings[subKey];
+      });
+
+      safeSettings[widgetKey] = {
+        ...savedWidget,
+        subSettings: safeSubSettings,
+      };
+    });
+
+    // Merge final (defaults + safe recovered)
+    this.settings = merge(this.settings, safeSettings);
+
+    this.restoreLogo(logoKey);
+  };
+
+  private restoreLogo(key: string) {
+    this.hLogoUrl = localStorage[key]
+      ? localStorage[key]
+      : "./../../img/logo.png";
+
+    eLogoUrl = this.hLogoUrl;
+  }
+
+  /*
+  @action
+  private recoverSettings = () => {
     let savedSettings: any = {};
     if (this.currentLayout === 1) {
       if (localStorage.appSettings) {
@@ -2502,6 +2588,7 @@ export default class App extends React.Component<IProps> {
       eLogoUrl = this.hLogoUrl;
     }
   };
+  */
 
   @action
   private setData = (clear = false) => {

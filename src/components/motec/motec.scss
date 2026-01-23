@@ -68,6 +68,64 @@
   animation: plBBlinker 0.5s linear infinite;
 }
 
+.truckGearWrapper {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+  left: -15px;
+  top: -10px;
+}
+
+.truckGearSplit {
+	position: absolute;	
+	font-size: 0.45em;
+  opacity: 0.20;
+  filter: grayscale(100%);
+	transition: opacity 0.15s ease, filter 0.15s ease, color 0.15s ease;
+}
+
+.truckGearSplit.active {
+	opacity: 1;
+	filter: none;
+}
+
+.truckGearSplit.high {
+  right: -0.7em;
+	top: 0.15em;
+}
+
+.truckGearSplit.low {
+  right: -0.6em;
+	bottom: 0.17em;
+}
+
+.truckGearRange {
+	position: absolute;	
+	font-size: 0.25em;
+  opacity: 0.30;
+  filter: grayscale(100%);
+	transition: opacity 0.15s ease, filter 0.15s ease, color 0.15s ease;
+}
+
+.truckGearRange.active {
+	opacity: 1;
+	filter: none;
+}
+
+.truckGearRange.high {
+  left: 2.2em;
+	bottom: -0.6em;
+  color: #29a849;
+}
+
+.truckGearRange.low {
+  left: 0.4em;
+	bottom: -0.6em;
+  color: #fc5353;
+}
+
+
 @keyframes plBBlinker {
   0% {
     background: rgba(216, 49, 49, 0.8);

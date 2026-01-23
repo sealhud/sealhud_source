@@ -57,20 +57,53 @@ export default class Motec extends React.Component<IProps, {}> {
 
 		registerUpdate(this.update);
 
-		const isElectric =
-			r3e.data.VehicleInfo.EngineType === EEngineType.Electric;
+		const isElectric = r3e.data.VehicleInfo.EngineType === EEngineType.Electric;
+		const isTruck = r3e.data.VehicleInfo.ClassPerformanceIndex === 217;
 
-		this.gearNameLookup = isElectric
-			? {
-					'-1': 'R',
-					0: 'N',
-					1: 'D',
-					2: 'S'
-			  }
-			: {
-					'-1': 'R',
-					0: 'N'
-			  };
+		if (isTruck) {
+			this.gearNameLookup = {
+				'-1': 'R',
+				0: 'N',
+				1: '1',
+				3: '2',
+				5: '3',
+				7: '4',
+				2: '1',
+				4: '2',
+				6: '3',
+				8: '4',
+				9: '5',
+				11: '6',
+				13: '7',
+				15: '8',
+				10: '5',
+				12: '6',
+				14: '7',
+				16: '8',
+			};
+		} else if (isElectric) {
+			this.gearNameLookup = {
+				'-1': 'R',
+				0: 'N',
+				1: 'D',
+				2: 'S',
+			};
+		} else {
+			this.gearNameLookup = {
+				'-1': 'R',
+				0: 'N',
+			};
+		}
+	}
+
+	private getTruckSplit(gearIndex: number): 'L' | 'H' | null {
+		if (gearIndex <= 0) return null;
+		return gearIndex % 2 === 0 ? 'H' : 'L';
+	}
+
+	private getTruckRange(gearIndex: number): 'LO' | 'HI' | null {
+		if (gearIndex <= 0) return null;
+		return gearIndex > 8 ? 'HI' : 'LO';
 	}
 
 	componentWillUnmount() {
@@ -118,6 +151,17 @@ export default class Motec extends React.Component<IProps, {}> {
 		if (this.sessionType === 2 && this.sessionPhase === 1) {
 			return null;
 		}
+
+		const isTruck = r3e.data.VehicleInfo.ClassPerformanceIndex === 217;
+		const gearLabel = this.gearNameLookup[this.gear] || this.gear;
+		const split = isTruck
+			? this.getTruckSplit(this.gear)
+			: null;
+
+		const range = isTruck
+			? this.getTruckRange(this.gear)
+			: null;
+
 		const showSpeed = this.speed !== INVALID;
 		/*
 		const isIgnition = this.engineState === 0 && !showAllMode;
@@ -150,18 +194,61 @@ export default class Motec extends React.Component<IProps, {}> {
 
 					{/* GEAR */}
 					<div
-					className={classNames("motecBox gearBox", {
-						upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
-						redline: this.rpm > this.maxRpm * 0.96,
-						disabled: this.engineState === 0 && !showAllMode
-					})}
+						className={classNames("motecBox gearBox", {
+							upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
+							redline: this.rpm > this.maxRpm * 0.96,
+							disabled: this.engineState === 0 && !showAllMode
+						})}
 					>
-					{showAllMode
-						? 2
-						: this.engineState >= 1
-						? this.gearNameLookup[this.gear] || this.gear
-						: ""}
+						{this.engineState >= 1 && (
+							isTruck ? (
+								<div className="truckGearWrapper">
+									<span>{gearLabel}</span>
+
+									<span
+										className={classNames(
+											"truckGearSplit",
+											"low",
+											{ active: split === 'L' }
+										)}
+									>
+										L
+									</span>
+									<span
+										className={classNames(
+											"truckGearSplit",
+											"high",
+											{ active: split === 'H' }
+										)}
+									>
+										H
+									</span>
+
+									<span
+										className={classNames(
+											"truckGearRange",
+											"low",
+											{ active: range === 'LO' }
+										)}
+									>
+										LO
+									</span>
+									<span
+										className={classNames(
+											"truckGearRange",
+											"high",
+											{ active: range === 'HI' }
+										)}
+									>
+										HI
+									</span>
+								</div>
+							) : (
+								gearLabel
+							)
+						)}
 					</div>
+
 
 					{/* SPEED */}
 					<div className="motecBox speedBox">

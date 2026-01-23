@@ -1,16 +1,19 @@
 	1.00
 	----------
-	Hello World... again.
+	DISCLAIMER:
 	SealHUD is not a fork anymore.
-	And now, the HUD supports all RaceRoom vehicles, including trucks!
+	And now the HUD supports all RaceRoom vehicles, including trucks!
+
+	ATTENTION:
+	Como esta é uma atualização grande no HUD, dados anteriores (consumo, tempos de volta, etc.) serão perdidos. Peço desculpas, mas é para seu próprio bem!
 
 	UI:
 	- Praticamente todos os widgets foram refeitos. Destaque para Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, Relatives, Delta, TV Tower and Position Bar.
 	- Nova interface para a tela de configurações e seleção de widgets.
 	- Unidades de medida para temperatura, pressão e velocidade agora são definidas globalmente na tela de configurações.
 	- Grade de arrasto de widgets agora é CSS (mais leve e bonita).
-	- Novos widgets: Electronics and Consumption.
-	- Widgets removidos: P2P/DRS and Fuel.
+	- Novos widgets: ELECTRONICS and CONSUMPTION.
+	- Widgets removidos: P2P/DRS and FUEL.
 
 	WIDGETS:
 	- Fuel & Lap Details: Agora também exibe dados de consumo de energia virtual.
@@ -24,6 +27,10 @@
 
 	PERFORMANCE:
 	- Todos os cálculo de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
+
+	Obrigado Otter! 
+	Continuaremos seu legado com o mesmo carinho que você teve por anos com o OtterHUD!
+	Moo!
 
 	0.92
 	----------		
