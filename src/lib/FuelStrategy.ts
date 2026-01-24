@@ -46,12 +46,18 @@ export class FuelStrategy {
     const secsRemain = r3e.data.SessionTimeRemaining;
     let fastestLapLeader = r3e.data.LapTimeBestLeader;
 
+    /*
     let fastestLap =
       FuelEvents.avgLapTimeSec ??
       FuelEvents.bestLapTimeSec ??
       (r3e.data.LapTimeBestSelf > 0
         ? r3e.data.LapTimeBestSelf
         : null);
+    */
+
+    let fastestLap =
+      FuelEvents.avgLapTimeSec ??
+      FuelEvents.bestLapTimeSec ?? null;
 
     if (!fastestLap || fastestLap <= 0) {
       this.reset();

@@ -3,6 +3,7 @@ import {
 	showDebugMessage,
 	showDebugMessageSmall,
 } from './../lib/utils';
+import { observable } from "mobx";
 
 interface FuelPersistedData {
   avgFuelPerLap1x?: number;
@@ -17,10 +18,10 @@ export class FuelEvents {
   // Estado interno
   // -----------------------
 
+  @observable static accessor lapStatsTick = 0;
   private static persistKey: string | null = null;
   private static persisted: FuelPersistedData | null = null;
   private static pendingLapStats = false;
-  private static pendingLapTries = 0;
   private static lastProcessedLapTime = -1;
 
   // Estado da volta atual
@@ -89,8 +90,7 @@ export class FuelEvents {
     }
     this.detectLap();
     this.tryUpdateLapStats();
-  }
-  
+  }  
 
   // -----------------------
   // Persistência
@@ -219,7 +219,6 @@ export class FuelEvents {
 
       // arma SEMPRE que a volta for válida
       this.pendingLapStats = true;
-      this.pendingLapTries = 0;
     } else {
       // volta inválida quebra a sequência
       this.pendingLapStats = false;
@@ -289,6 +288,7 @@ export class FuelEvents {
     this.savePersisted();
 
     // Finaliza
+    FuelEvents.lapStatsTick++;
     this.pendingLapStats = false;
     this.lastProcessedLapTime = lapSec;
     this.pendingLapStats = false;

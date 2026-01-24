@@ -1,3 +1,5 @@
+// Quadrinho de posição em branco e preto
+
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
 import { FlagEvents } from "../../lib/FlagEvents";

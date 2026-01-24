@@ -603,10 +603,6 @@ export default class App extends React.Component<IProps> {
           text: __("Show Lap Details"),
           enabled: true,
         },
-        showFuelTime: {
-          text: __("Show Estimate Time"),
-          enabled: true,
-        },
         clearAnySession: {
           text: __("Auto-Clear Data on Session-Change"),
           enabled: false,
@@ -1290,10 +1286,6 @@ export default class App extends React.Component<IProps> {
           text: __("Show Lap Details"),
           enabled: true,
         },
-        showFuelTime: {
-          text: __("Show Estimate Time"),
-          enabled: true,
-        },
         clearAnySession: {
           text: __("Auto-Clear Data on Session-Change"),
           enabled: false,
@@ -1842,12 +1834,9 @@ export default class App extends React.Component<IProps> {
     if (localStorage.gainLossPermanentTower === undefined) {
       this.toggleGainLossPermanentTower();
     }
-    //this.playerSlotId = ePlayerSlotId;
     this.playerDriverDataIndex = ePlayerDriverDataIndex;
     this.playerIsFocus = ePlayerIsFocus;
-    //this.currentSlotId = eCurrentSlotId;
     this.sessionType = r3e.data.SessionType;
-    //this.layoutLength = r3e.data.LayoutLength;
     LapEvents.update(r3e.data.DriverData); // SHARED LAP EVENTS FOR ALL WIDGETS
     PitEvents.update(r3e.data.DriverData); // PIT EVENTS FOR ALL WIDGETS
     FlagEvents.update(r3e.data.DriverData); // FLAG EVENTS FOR ALL WIDGETS

@@ -1044,6 +1044,9 @@ export default class Progress extends React.Component<IProps, {}> {
 		) {
 			return null;
 		}
+		const purple = 'rgb(150, 60, 150)';
+		const green = 'rgb(16, 170, 62)';
+		const gray = 'rgb(102, 102, 102)';
 
 		return (
 			<div
@@ -1089,321 +1092,119 @@ export default class Progress extends React.Component<IProps, {}> {
 					notDelta: !this.showDeltaOnLaptime
 				})}
 			>
-				<div className="estimateContainer">
-					<div className="estimate ">
-						{
-							this.props.settings.subSettings.deltaText.enabled &&
-							(showAllMode || this.playerIsFocus) &&
-							showDelta
-								?	(
+
+			
+			<div className="estimateContainer">
+				<div className="estimate ">
+					{
+						this.props.settings.subSettings.deltaText.enabled &&
+						(showAllMode || this.playerIsFocus) &&
+						showDelta
+							?	(
+									(
 										(
+											!this.gotLapped ||
 											(
-												!this.gotLapped ||
-												(
-													this.showDeltaOnLaptime &&
-													this.timeDeltaBestSelf !== -1000
-												)
-											) && (
-												<span className="mono">
-													{
-														showAllMode
-														?	`-1.234`
-														:	formatTime(
-																this.sessionType !== ESession.Race ||
-																this.showDeltaOnLaptime
-																	?	this.currentDifference
-																	:	-this.currentDifference,
-																this.currentDifference >= 60 ||
-																this.currentDifference <= -60
-																	?	'm:ss.SSS'
-																	:	's.SSS',
-																true
-															)
-													}
-												</span>
+												this.showDeltaOnLaptime &&
+												this.timeDeltaBestSelf !== -1000
 											)
-										) ||
-										(
-											this.gotLapped &&
-											!this.showDeltaOnLaptime && (
-												<span className="mono">
-													{'+'}{this.lappedAmount}{' '}
-													{
-														this.lappedAmount > 1
-															?	_('Laps')
-															:	_('Lap')
-													}
-												</span>
-											)
-										)
-									)
-								: null
-						}
-						{
-							this.sessionType !== ESession.Race &&
-							!firstRoundInQualy &&
-							this.props.settings.subSettings.deltaNextPosition.enabled &&
-							(showAllMode || (!this.isLeaderboard && !this.isHillClimb && this.playerIsFocus)) &&
-							showDelta &&
-							(
-								<div className="deltaNextContainer">
-									<div
-										className="deltaNext"
-										style={{
-											width: `${showAllMode
-												?	23
-												:	(1 -
-												this.estimatedDeltaNext) *
-												100}%`
-										}}
-									/>
-								</div>
-							)
-						}
-						{
-							this.sessionType !== ESession.Race &&
-							!firstRoundInQualy &&
-							(showAllMode || this.playerIsFocus) &&
-							showDelta &&
-							(
-								<div className="qualifyInfo">
-									{
-										this.props.settings.subSettings.estimatedLapTime.enabled &&
-										(
-											<div className="esimatedLapTime">
-												{_('Est. Time')}:{' '}
-												<span
-													className={classNames('Estmono', {
-														isGerman: localStorage.language === 'de',
-														isFrench: localStorage.language === 'fr',
-														isPortuguese: localStorage.language === 'pt',
-														isSpanish: localStorage.language === 'es',
-														isItalian: localStorage.language === 'it',
-														isPolish: localStorage.language === 'pl'
-													})}
-												>
+										) && (
+											<span className="mono">
 												{
 													showAllMode
-													?	`1:46.789`
+													?	`-1.234`
 													:	formatTime(
-															this.estimatedLaptime,
-															'm:ss.SSS'
+															this.sessionType !== ESession.Race ||
+															this.showDeltaOnLaptime
+																?	this.currentDifference
+																:	-this.currentDifference,
+															this.currentDifference >= 60 ||
+															this.currentDifference <= -60
+																?	'm:ss.SSS'
+																:	's.SSS',
+															true
 														)
 												}
-												</span>
-											</div>
+											</span>
 										)
-									}
-									{
-										this.props.settings.subSettings.estimatedPosition.enabled &&
-										((!this.isLeaderboard && !this.isHillClimb) || showAllMode) &&
-										(
-											<div className="esimatedPosition">
-												{_('Est. Pos')}:{' '}
-												<span className="mono">
-													{
-														showAllMode
-														?	`3`
-														:	this.estimatedPosition
-													}
-												</span>
-											</div>
+									) ||
+									(
+										this.gotLapped &&
+										!this.showDeltaOnLaptime && (
+											<span className="mono">
+												{'+'}{this.lappedAmount}{' '}
+												{
+													this.lappedAmount > 1
+														?	_('Laps')
+														:	_('Lap')
+												}
+											</span>
 										)
-									}
-								</div>
-							)
-						}
-					</div>
-
+									)
+								)
+							: null
+					}
 					{
-						this.props.settings.subSettings.lastLap.enabled &&
+						this.sessionType !== ESession.Race &&
+						!firstRoundInQualy &&
+						this.props.settings.subSettings.deltaNextPosition.enabled &&
+						(showAllMode || (!this.isLeaderboard && !this.isHillClimb && this.playerIsFocus)) &&
+						showDelta &&
 						(
-							(
-								(
-									firstRoundInQualy ||
-									firstRoundInRace
-								) &&
-								this.lapTimePreviousSelf > 0
-							) ||
-							(
-								!firstRoundInQualy &&
-								!firstRoundInRace
-							) ||
-							showAllMode
-						) && (
-							<div className="lastLapContainer">
+							<div className="deltaNextContainer">
+								<div
+									className="deltaNext"
+									style={{
+										width: `${showAllMode
+											?	23
+											:	(1 -
+											this.estimatedDeltaNext) *
+											100}%`
+									}}
+								/>
+							</div>
+						)
+					}
+					{
+						this.sessionType !== ESession.Race &&
+						!firstRoundInQualy &&
+						(showAllMode || this.playerIsFocus) &&
+						showDelta &&
+						(
+							<div className="qualifyInfo">
 								{
-									(this.laptimeStatus !== 0 || showAllMode) && (
-										<div className={classNames('laps')}>
-											<div className="lapLabel">
-												<span className="mono">
-													{_('Last Lap')}:{' '}
-												</span>
-											</div>
-											<div
-												className={classNames('lastLap', {
-													isGerman: localStorage.language === 'de',
-													isFrench: localStorage.language === 'fr',
-													isPortuguese: localStorage.language === 'pt',
-													isSpanish: localStorage.language === 'es',
-													isItalian: localStorage.language === 'it',
-													isPolish: localStorage.language === 'pl'
-												})}
-												style={{
-													color: (showAllMode || this.laptimeStatus) === 4
-														?	'fuchsia'
-														:	this.laptimeStatus === 3
-																?	getClassColor(this.classPerformanceIndex)
-																:	this.laptimeStatus === 2
-																		?	'lime'
-																		:	'white'
-												}}
+									this.props.settings.subSettings.estimatedLapTime.enabled &&
+									(
+										<div className="esimatedLapTime">
+											{_('Est. Time')}:{' '}
+											<span
+												className={classNames('Estmono')}
 											>
-												<span className="mono">
+											{
+												showAllMode
+												?	`1:46.789`
+												:	formatTime(
+														this.estimatedLaptime,
+														'm:ss.SSS'
+													)
+											}
+											</span>
+										</div>
+									)
+								}
+								{
+									this.props.settings.subSettings.estimatedPosition.enabled &&
+									((!this.isLeaderboard && !this.isHillClimb) || showAllMode) &&
+									(
+										<div className="esimatedPosition">
+											{_('Est. Pos')}:{' '}
+											<span className="mono">
 												{
 													showAllMode
-													?	`1:48.023`
-													:	this.lapTimePreviousSelf > 60
-														?	formatTime(Math.max(0, this.lapTimePreviousSelf), 'm:ss.SSS')
-														:	formatTime(Math.max(0, this.lapTimePreviousSelf), 'ss.SSS')
+													?	`3`
+													:	this.estimatedPosition
 												}
-												</span>
-											</div>
-										</div>
-									)
-								}
-							</div>
-						)
-					}
-					{
-						this.props.settings.subSettings.deltaBars.enabled &&
-						showDelta &&
-						(showAllMode || this.playerIsFocus) &&
-						!this.gotLapped &&
-						(
-							<div className={classNames('simple')}>
-								<div
-									className="bad"
-									style={{
-										width:
-											this.isImproving < 0
-											? this.getBarWidth(-1)
-											: 0
-									}}
-								/>
-								<div
-									className="good"
-									style={{
-										width:
-											showAllMode
-											?	80
-											:	this.isImproving > 0
-												? this.getBarWidth(1)
-												: 0
-									}}
-								/>
-							</div>
-						)
-					}
-					{
-						(
-							(
-								(
-									(
-										firstRoundInQualy ||
-										firstRoundInRace
-									) &&
-									this.lapTimeCurrentSelf > 0 &&
-									this.currentSectors.Sector1 > 0
-								) ||
-								!firstRoundInQualy &&
-								!firstRoundInRace
-							) ||
-							showAllMode
-						) && (
-							<div className="sectors">
-								{
-									this.sectorStatus.Sector1 !== 0 && (
-										<div
-											className={classNames('sector', {
-												pb:			this.sectorStatus.Sector1 === 2,
-												cb: 		this.sectorStatus.Sector1 === 3,
-												gb: 		this.sectorStatus.Sector1 === 4
-											})}
-											style={{
-												background: this.sectorStatus.Sector1 === 4
-													?	'purple'
-													:	this.sectorStatus.Sector1 === 3
-															?	getClassColor(this.classPerformanceIndex)
-															:	this.sectorStatus.Sector1 === 2
-																	?	'green'
-																	:	this.sectorStatus.Sector1 === 1
-																			?	'gray'
-																			:	'transparent'
-											}}
-										> {
-											showTimes
-												?	'S1: '
-													+ fancyTimeFormatGap(this.currentSectors.Sector1, 1, 0)
-												: ''
-										}
-										</div>
-									)
-								}
-								{
-									this.sectorStatus.Sector2 !== 0 && (
-										<div
-											className={classNames('sector', {
-												pb:			this.sectorStatus.Sector2 === 2,
-												cb: 		this.sectorStatus.Sector2 === 3,
-												gb: 		this.sectorStatus.Sector2 === 4
-											})}
-											style={{
-												background: this.sectorStatus.Sector2 === 4
-													?	'purple'
-													:	this.sectorStatus.Sector2 === 3
-															?	getClassColor(this.classPerformanceIndex)
-															:	this.sectorStatus.Sector2 === 2
-																	?	'green'
-																	:	this.sectorStatus.Sector2 === 1
-																			?	'gray'
-																			:	'transparent'
-											}}
-										> {
-											showTimes
-												?	'S2: '
-													+ fancyTimeFormatGap(this.currentSectors.Sector2, 1, 0)
-												: ''
-										}
-										</div>
-									)
-								}
-								{
-									this.sectorStatus.Sector3 !== 0 && (
-										<div
-											className={classNames('sector', {
-												pb:			this.sectorStatus.Sector3 === 2,
-												cb: 		this.sectorStatus.Sector3 === 3,
-												gb: 		this.sectorStatus.Sector3 === 4
-											})}
-											style={{
-												background:
-													this.sectorStatus.Sector3 === 4
-														?	'purple'
-														:	this.sectorStatus.Sector3 === 3
-																?	getClassColor(this.classPerformanceIndex)
-																:	this.sectorStatus.Sector3 === 2
-																		?	'green'
-																		:	this.sectorStatus.Sector3 === 1
-																				?	'gray'
-																				:	'transparent'
-											}}
-										> {
-											showTimes
-												?	'S3: '
-													+ fancyTimeFormatGap(this.currentSectors.Sector3, 1, 0)
-												: ''
-										}
+											</span>
 										</div>
 									)
 								}
@@ -1411,6 +1212,204 @@ export default class Progress extends React.Component<IProps, {}> {
 						)
 					}
 				</div>
+
+				{
+					this.props.settings.subSettings.lastLap.enabled &&
+					(
+						(
+							(
+								firstRoundInQualy ||
+								firstRoundInRace
+							) &&
+							this.lapTimePreviousSelf > 0
+						) ||
+						(
+							!firstRoundInQualy &&
+							!firstRoundInRace
+						) ||
+						showAllMode
+					) && (
+						<div className="lastLapContainer">
+							{
+								(this.laptimeStatus !== 0 || showAllMode) && (
+									<div className={classNames('laps')}>
+										<div className="lapLabel">
+											<span className="mono">
+												{_('Last Lap')}:{' '}
+											</span>
+										</div>
+										<div
+											className={classNames('lastLap', {
+												isGerman: localStorage.language === 'de',
+												isFrench: localStorage.language === 'fr',
+												isPortuguese: localStorage.language === 'pt',
+												isSpanish: localStorage.language === 'es',
+												isItalian: localStorage.language === 'it',
+												isPolish: localStorage.language === 'pl'
+											})}
+											style={{
+												color: (showAllMode || this.laptimeStatus) === 4
+													?	'fuchsia'
+													:	this.laptimeStatus === 3
+															?	getClassColor(this.classPerformanceIndex)
+															:	this.laptimeStatus === 2
+																	?	'lime'
+																	:	'white'
+											}}
+										>
+											<span className="mono">
+											{
+												showAllMode
+												?	`1:48.023`
+												:	this.lapTimePreviousSelf > 60
+													?	formatTime(Math.max(0, this.lapTimePreviousSelf), 'm:ss.SSS')
+													:	formatTime(Math.max(0, this.lapTimePreviousSelf), 'ss.SSS')
+											}
+											</span>
+										</div>
+									</div>
+								)
+							}
+						</div>
+					)
+				}
+				{
+					this.props.settings.subSettings.deltaBars.enabled &&
+					showDelta &&
+					(showAllMode || this.playerIsFocus) &&
+					!this.gotLapped &&
+					(
+						<div className={classNames('simple')}>
+							<div
+								className="bad"
+								style={{
+									width:
+										this.isImproving < 0
+										? this.getBarWidth(-1)
+										: 0
+								}}
+							/>
+							<div
+								className="good"
+								style={{
+									width:
+										showAllMode
+										?	80
+										:	this.isImproving > 0
+											? this.getBarWidth(1)
+											: 0
+								}}
+							/>
+						</div>
+					)
+				}
+				{
+					(
+						(
+							(
+								(
+									firstRoundInQualy ||
+									firstRoundInRace
+								) &&
+								this.lapTimeCurrentSelf > 0 &&
+								this.currentSectors.Sector1 > 0
+							) ||
+							!firstRoundInQualy &&
+							!firstRoundInRace
+						) ||
+						showAllMode
+					) && (
+						<div className="sectors">
+							{
+								this.sectorStatus.Sector1 !== 0 && (
+									<div
+										className={classNames('sector', {
+											pb:			this.sectorStatus.Sector1 === 2,
+											cb: 		this.sectorStatus.Sector1 === 3,
+											gb: 		this.sectorStatus.Sector1 === 4
+										})}
+										style={{
+											background: this.sectorStatus.Sector1 === 4
+												?	purple
+												:	this.sectorStatus.Sector1 === 3
+														?	getClassColor(this.classPerformanceIndex)
+														:	this.sectorStatus.Sector1 === 2
+																?	green
+																:	this.sectorStatus.Sector1 === 1
+																		?	gray
+																		:	'transparent'
+										}}
+									> {
+										showTimes
+											?	'S1: '
+												+ fancyTimeFormatGap(this.currentSectors.Sector1, 1, 0)
+											: ''
+									}
+									</div>
+								)
+							}
+							{
+								this.sectorStatus.Sector2 !== 0 && (
+									<div
+										className={classNames('sector', {
+											pb:			this.sectorStatus.Sector2 === 2,
+											cb: 		this.sectorStatus.Sector2 === 3,
+											gb: 		this.sectorStatus.Sector2 === 4
+										})}
+										style={{
+											background: this.sectorStatus.Sector2 === 4
+												?	purple
+												:	this.sectorStatus.Sector2 === 3
+														?	getClassColor(this.classPerformanceIndex)
+														:	this.sectorStatus.Sector2 === 2
+																?	green
+																:	this.sectorStatus.Sector2 === 1
+																		?	gray
+																		:	'transparent'
+										}}
+									> {
+										showTimes
+											?	'S2: '
+												+ fancyTimeFormatGap(this.currentSectors.Sector2, 1, 0)
+											: ''
+									}
+									</div>
+								)
+							}
+							{
+								this.sectorStatus.Sector3 !== 0 && (
+									<div
+										className={classNames('sector', {
+											pb:			this.sectorStatus.Sector3 === 2,
+											cb: 		this.sectorStatus.Sector3 === 3,
+											gb: 		this.sectorStatus.Sector3 === 4
+										})}
+										style={{
+											background:
+												this.sectorStatus.Sector3 === 4
+													?	purple
+													:	this.sectorStatus.Sector3 === 3
+															?	getClassColor(this.classPerformanceIndex)
+															:	this.sectorStatus.Sector3 === 2
+																	?	green
+																	:	this.sectorStatus.Sector3 === 1
+																			?	gray
+																			:	'transparent'
+										}}
+									> {
+										showTimes
+											?	'S3: '
+												+ fancyTimeFormatGap(this.currentSectors.Sector3, 1, 0)
+											: ''
+									}
+									</div>
+								)
+							}
+						</div>
+					)
+				}
+			</div>
+
 			</div>
 		);
 	}

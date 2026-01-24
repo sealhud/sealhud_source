@@ -1,6 +1,3 @@
-// extracted by mini-css-extract-plugin
-// module.exports = {"progress":"progress","shouldShow":"shouldShow","estimateContainer":"estimateContainer","estimate":"estimate","qualifyInfo":"qualifyInfo","esimatedLapTime":"esimatedLapTime","Estmono":"Estmono","isGerman":"isGerman","isPortuguese":"isPortuguese","isFrench":"isFrench","isSpanish":"isSpanish","isPolish":"isPolish","esimatedPosition":"esimatedPosition","lastLapContainer":"lastLapContainer","laps":"laps","lapLabel":"lapLabel","lastLap":"lastLap","isItalian":"isItalian","deltaNextContainer":"deltaNextContainer","deltaTextOn":"deltaTextOn","deltaNext":"deltaNext","simple":"simple","good":"good","bad":"bad","overallGaining":"overallGaining","overallLoosing":"overallLoosing","notDelta":"notDelta","sectors":"sectors","sector":"sector","estims":"estims","showAsTime":"showAsTime","pbl":"pbl","gbl":"gbl"};
-
 .progress {
   display: none;
   position: relative;
@@ -10,7 +7,7 @@
 }
 .progress .estimateContainer {
   top: 350px;
-  width: 299px;
+  width: 300px;
 }
 .progress .estimate,
 .progress .estimateContainer {
@@ -20,11 +17,10 @@
 }
 .progress .estimate {
   top: 0;
-  border-radius: 10px;
   font-size: 30px;
   padding: 5px 10px;
   color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.3px 2px rgba(50, 50, 50, 0.7);
 }
 .progress .estimate .qualifyInfo {
   position: absolute;
@@ -42,38 +38,37 @@
   padding: 2px;
 }
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono {
-  margin-left: 1px;
+  margin-left: 6px;
 }
+/*
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono.isGerman {
-  margin-left: 2px;
+  left: 100px;
 }
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono.isPortuguese {
-  margin-left: 10px;
+  left: 100px;
 }
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono.isFrench {
-  margin-left: 26px;
+  left: 100px;
 }
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono.isSpanish {
-  margin-left: 15px;
+  left: 100px;
 }
 .progress .estimate .qualifyInfo .esimatedLapTime .Estmono.isPolish {
-  margin-left: 17px;
+  left: 100px;
 }
+*/
 .progress .estimate .qualifyInfo .esimatedPosition {
   position: absolute;
   right: 0;
   padding: 2px;
 }
+
 .progress .lastLapContainer {
-  position: absolute;
   top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 10px;
   font-size: 30px;
   padding: 5px 10px;
   color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.3px 2px rgba(50, 50, 50, 0.7);
 }
 .progress .lastLapContainer .laps {
   position: absolute;
@@ -93,43 +88,47 @@
   display: inline-block;
   position: absolute;
   top: 0;
-  left: 55px;
+  left: 65px;
   padding: 2px;
 }
+
 .progress .lastLapContainer .laps .lastLap.isGerman {
-  left: 77px;
+  left: 92px;
 }
 .progress .lastLapContainer .laps .lastLap.isPortuguese {
-  left: 73px;
+  left: 84px;
 }
 .progress .lastLapContainer .laps .lastLap.isFrench {
-  left: 88px;
+  left: 103px;
 }
 .progress .lastLapContainer .laps .lastLap.isSpanish {
-  left: 82px;
+  left: 94px;
 }
 .progress .lastLapContainer .laps .lastLap.isItalian {
-  left: 72px;
+  left: 84px;
 }
 .progress .lastLapContainer .laps .lastLap.isPolish {
-  margin-left: 23px;
+  left: 93px;
 }
+
 .progress .deltaNextContainer {
   position: absolute;
-  top: 54px;
-  width: 299px;
+  //top: 49px;
+  width: 300px;
   background: #000;
   left: 50%;
   transform: translate(-50%);
 }
+/*
 .progress.deltaTextOn .deltaNextContainer {
-  top: 69px;
+  top: 64px;
 }
 .progress.deltaTextOn .qualifyInfo {
-  top: 75px;
+  top: 70px;
 }
+*/
 .progress .deltaNext {
-  height: 3px;
+  height: 6px;
   background: #fff;
 }
 .progress .simple {
@@ -137,55 +136,45 @@
   left: 50%;
   transform: translate(-50%);
   top: 25px;
-  height: 21px;
+  height: 16px;
   width: 300px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px 5px 0 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.7);
 }
 .progress .simple .bad,
 .progress .simple .good {
   height: 100%;
   position: absolute;
-  top: 0;
   background: #fff;
 }
 .progress .simple .good {
-  border-left: 1px solid #222;
   left: 50%;
-  background: #09d83d;
-  border-radius: 0 4px 0 0;
+  background: #1bd84a;
 }
 .progress .simple .bad {
-  border-right: 1px solid #222;
   right: 50%;
-  background: #7a1616;
-  border-radius: 4px 0 0 0;
+  background: #be2e2e;
 }
 .progress.overallGaining .estimate {
-  color: #09d83d;
+  color: #1bd84a;
 }
 .progress.overallLoosing .estimate {
-  color: #de1616;
+  color: #be2e2e;
 }
 .progress.notDelta .estimate {
   color: #fff;
 }
 .progress .sectors {
   position: absolute;
-  top: 35px;
   width: 100%;
   left: 0;
 }
 .progress .sectors .sector {
-  height: 5px;
   background: #292929;
   display: inline-block;
-  width: 10%;
-  position: relative;
-  width: 33.333%;
+  width: 100px;
+  padding-top: 2px;
   text-align: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.3px 2px rgba(50, 50, 50, 0.7);
 }
 .progress .sectors .sector:after {
   position: absolute;
@@ -195,13 +184,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border-right: 1px solid hsla(0, 0%, 100%, 0.1);
-  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
-  border-top: 1px solid hsla(0, 0%, 100%, 0.1);
 }
+/*
 .progress .sectors .sector:first-child:after {
-  border-left: 1px solid hsla(0, 0%, 100%, 0.1);
+  border-left: 0px solid hsla(0, 0%, 100%, 0.1);
 }
+*/
 .progress.estims .laps {
   top: 79px;
 }
@@ -209,29 +197,29 @@
   top: 76px;
 }
 .progress.showAsTime .sectors {
-  top: 45px;
+  top: 41px;
 }
 .progress.showAsTime .sector {
-  height: 20px;
+  height: 22px;
 }
 .progress.showAsTime .deltaNextContainer {
   top: 71px;
 }
 .progress.showAsTime.deltaTextOn .deltaNextContainer {
-  top: 85px;
+  top: 84px;
 }
 .progress.showAsTime.deltaTextOn .qualifyInfo {
-  top: 91px;
+  top: 95px;
 }
 .progress.showAsTime .laps {
   top: 76px;
 }
 .progress.showAsTime.estims .laps {
-  top: 95px;
+  top: 97px;
 }
 .progress.pbl .lastLap {
-  color: #0f0;
+  color: #1bd84a;
 }
 .progress.gbl .lastLap {
-  color: #f0f;
+  color: rgb(199, 93, 199);
 }

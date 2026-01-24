@@ -1,3 +1,5 @@
+// Acertar as traduções
+
 import { FuelEvents } from "../../lib/FuelEvents";
 import { FuelStrategy } from '../../lib/FuelStrategy'
 import { EnergyEvents } from "../../lib/EnergyEvents";
@@ -133,7 +135,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 			? (FuelEvents.avgFuelPerLap ?? this.fuelPerLap).toFixed(2)
 			: "-",
 			lastLapFuelUsed:
-			FuelEvents.lastLapFuelUsed !== null
+			active && FuelEvents.lastLapFuelUsed !== null
 				? FuelEvents.lastLapFuelUsed.toFixed(2)
 				: "-",
 			fuelToEnd:
@@ -390,6 +392,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 		this.showConfirmButtons = false;
 		if (FuelEvents.avgLapTimeSec !== null) {
 			FuelEvents.clearAllPersisted();
+			EnergyEvents.clearAllPersisted();
 			showDebugMessage(
 				_('All Fuel/Lap Tracking data got deleted!'),
 				3000
@@ -408,6 +411,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 			this.showDeleteCombo = false;
 			this.showConfirmButtons = false;
 			FuelEvents.clearCurrentPersisted();
+			EnergyEvents.clearCurrentPersisted();
 			showDebugMessage(
 				_('Fuel/Lap Tracking data for this Combination got deleted!'),
 				3000
@@ -701,6 +705,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 	}
 
 	private renderFuelDetails () {
+		FuelEvents.lapStatsTick;
 		const fuel = this.getFuelDetails();
 		const ve = this.getVEDetails();
 		const bestLapTimeSelf =
@@ -724,31 +729,33 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 				<div className="fuelTable">
 
 					{/* ROW 1 — OVERVIEW */}
+					{ this.props.settings.subSettings.showStoredInfo.enabled && (
 					<div className="fuelRow">
-					<div className="cell label span-1">Avg.</div>
-					<div className={classNames("cell data span-2",this.cellClass(avgSpeed, false))}>
-						{avgSpeed}
-					</div>
-					<div className={classNames("cell data span-2",this.cellClass(avgLapTimeSelf, false))}>
-						{avgLapTimeSelf}
-					</div>
-					<div className="cell label span-1">Best</div>
-					<div className={classNames("cell data span-2",this.cellClass(bestLapTimeSelf, false))}>
-						{bestLapTimeSelf}
-					</div>
+						<div className="cell label span-1">{_('Avg.')}</div>
+						<div className={classNames("cell data span-2",this.cellClass(avgSpeed, false))}>
+							{avgSpeed}
+						</div>
+						<div className={classNames("cell data span-2",this.cellClass(avgLapTimeSelf, false))}>
+							{avgLapTimeSelf}
+						</div>
+						<div className="cell label span-1">{_('Best')}</div>
+						<div className={classNames("cell data span-2",this.cellClass(bestLapTimeSelf, false))}>
+							{bestLapTimeSelf}
+						</div>
 					<div className="cell empty span-1" />
 					</div>
+					) }
 
 					{/* ROW 2 — HEADER */}
 					<div className="fuelRow">
 					<div className="cell data span-1" />
-					<div className="cell label">Remain</div>
-					<div className="cell label">Per Lap</div>
-					<div className="cell label">Last Lap</div>
-					<div className="cell label">To End</div>
-					<div className="cell label">Laps Estim.</div>
-					<div className="cell label">Time Estim.</div>
-					<div className="cell label">To Add</div>
+					<div className="cell label">{_('Remain')}</div>
+					<div className="cell label">{_('Per Lap')}</div>
+					<div className="cell label">{_('Last Lap')}</div>
+					<div className="cell label">{_('To End')}</div>
+					<div className="cell label">{_('Laps Estim.')}</div>
+					<div className="cell label">{_('Time Estim.')}</div>
+					<div className="cell label">{_('To Add')}</div>
 					</div>
 
 					{/* ROW 3 — FUEL */}
@@ -823,7 +830,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 
 	render() {
 		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
-		if (!this.fuelUseActive && !this.veUseActive && !showAllMode) return null;
+		if (r3e.data.FuelUseActive <= 0 && !showAllMode) return null;
 
 		// ESTADO 1: MENSAGEM
 		if (this.displayMessageSwitch) {

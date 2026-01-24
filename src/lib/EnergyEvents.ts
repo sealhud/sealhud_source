@@ -222,7 +222,7 @@ export class EnergyEvents {
   }
 
   // -----------------------
-  // Atualizações persistidas
+  // Persistências
   // -----------------------
 
   private static updateBattAvg(used: number) {
@@ -248,4 +248,28 @@ export class EnergyEvents {
     this.persisted.samplesVE++;
     this.savePersisted();
   }
+
+  static clearCurrentPersisted() {
+    if (!this.persistKey) return;
+
+    localStorage.removeItem(`energy-${this.persistKey}`);
+
+    // reset em memória
+    this.persisted = { samplesBatt: 0, samplesVE: 0 };
+    this.lastLapBatt = null;
+    this.lastLapVE = null;
+  }
+
+  static clearAllPersisted() {
+    Object.keys(localStorage)
+      .filter(k => k.startsWith("energy-"))
+      .forEach(k => localStorage.removeItem(k));
+
+    // reset total
+    this.persistKey = null;
+    this.persisted = null;
+    this.lastLapBatt = null;
+    this.lastLapVE = null;
+  }
+
 }
