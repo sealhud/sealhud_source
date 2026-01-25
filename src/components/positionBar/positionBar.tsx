@@ -1,5 +1,3 @@
-// Quadrinho de posição em branco e preto
-
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
 import { FlagEvents } from "../../lib/FlagEvents";
@@ -1729,12 +1727,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							(showAll || (enterTs !== null && sessionType === ESession.Race));
 						const bg =
 							sessionType !== ESession.Race
-							? "rgba(0, 176, 255, 0.8)"
+							? "rgba(4, 132, 192, 0.9)"
 							: showAll || (stopTs && stopTs > 0)
 								? showAll || (leaveTs && leaveTs > 0)
-									? "rgba(0, 221, 23, 0.8)" // leaving
-									: "rgba(255, 70, 0, 0.8)" // stopped
-								: "rgba(0, 176, 255, 0.8)";   // entering
+									? "rgba(50, 163, 62, 0.9)" // leaving
+									: "rgba(199, 85, 44, 0.9)" // stopped
+								: "rgba(4, 132, 192, 0.9)";   // entering
 						const laneTime = enterTs
 							? showAll
 							? 52.9
@@ -1756,12 +1754,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 									color:
 									showAll || (stopTs && stopTs > 0)
 										? showAll || (leaveTs && leaveTs > 0)
-										? "rgba(0, 221, 23, 1)"
+										? "rgb(109, 255, 123)"
 										: "rgba(255, 255, 255, 1)"
 										: "rgba(255, 255, 255, 0)",
 									background:
 									showAll || (stopTs && stopTs > 0)
-										? "rgba(0, 100, 255, 0.8)"
+										? "rgba(12, 64, 141, 0.9)"
 										: "rgba(0, 100, 255, 0)",
 								}}
 								>
@@ -1794,7 +1792,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							(gameInReplay && sessionType === ESession.Race))
 						) {
 						const isGreen = player.mandatoryPit === 2;
-						const bg = isGreen ? "rgba(0,221,23,0.8)" : "rgba(255,70,0,0.8)";
+						const bg = isGreen ? "rgba(40, 168, 53, 0.8)" : "rgba(204, 90, 49, 0.8)";
 						const hasExit = exitTs != null;
 						const hasEnter = enterTs != null;
 						const total =
@@ -1819,10 +1817,10 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 								<div
 								className="pittimea"
 								style={{
-									color: spot != null ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
+									color: spot != null ? "rgb(29, 143, 40)" : "rgba(0,221,23,0)",
 									background:
 									spot != null
-										? "rgba(0,100,255,0.8)"
+										? "rgba(13, 82, 185, 0.8)"
 										: "rgba(0,100,255,0)",
 								}}
 								>
@@ -1861,7 +1859,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							<div
 								className="pitting"
 								style={{
-								background: "rgba(0,221,23,0.8)",
+								background: "rgba(40, 168, 53, 0.8)",
 								color: "#fff",
 								width: "25px",
 								}}
@@ -1871,8 +1869,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 								<div
 								className="pittimea"
 								style={{
-									color: spot ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
-									background: spot ? "rgba(0,100,255,0.8)" : "rgba(0,100,255,0)",
+									color: spot ? "rgba(29, 143, 40)" : "rgba(0,221,23,0)",
+									background: spot ? "rgba(13, 82, 185, 0.8)" : "rgba(0,100,255,0)",
 								}}
 								>
 								{spot ? fmt(spot) : " "}
@@ -1884,7 +1882,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							<div
 							className="pitting"
 							style={{
-								background: "rgba(0,221,23,0.8)",
+								background: "rgba(40, 168, 53, 0.8)",
 								color: "#fff",
 								width: "25px",
 							}}
