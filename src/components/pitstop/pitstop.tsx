@@ -33,41 +33,23 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 @observer
 export default class Pitstop extends React.Component<IProps, {}> {
 	@observable accessor pitWindowStatus = -1;
-
 	@observable accessor pitState = -1;
-
 	@observable accessor pitMenuState = -1;
-
 	@observable accessor pitWindowStart = -1;
-
 	@observable accessor pitWindowEnd = -1;
-
 	@observable accessor currentLap = -1;
-
 	@observable accessor numberOfLaps = -1;
-
 	@observable accessor sessionTimeRemaining = -1;
-
 	@observable accessor sessionTimeDuration = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor inPitLane = -1;
-
 	@observable accessor pitMenuStatePenalty = -1;
-
 	@observable accessor mandatoryActive = false;
-
 	@observable accessor pitTotalDuration = -1;
-
 	@observable accessor pitElapsedTime = -1;
-
 	@observable accessor pitTotalMinDuration = -1;
-
 	@observable accessor pitLeftMinDuration = -1;
-
 	@observable accessor pit = {
 		preparing: false,
 		driverChange: false,
@@ -78,49 +60,27 @@ export default class Pitstop extends React.Component<IProps, {}> {
 		rearWing: false,
 		suspension: false
 	};
-
 	@observable accessor pitWorkingDriverChange = false;
-
 	@observable accessor pitWorkingRefueling = false;
-
 	@observable accessor pitWorkingFrontTires = false;
-
 	@observable accessor pitWorkingRearTires = false;
-
 	@observable accessor pitWorkingFrontWing = false;
-
 	@observable accessor pitWorkingRearWing = false;
-
 	@observable accessor pitWorkingSuspension = false;
-
 	@observable accessor pitActionDriverChange = false;
-
 	@observable accessor pitActionRefueling = false;
-
 	@observable accessor pitActionFrontTires = false;
-
 	@observable accessor pitActionRearTires = false;
-
 	@observable accessor pitActionFrontWing = false;
-
 	@observable accessor pitActionRearWing = false;
-
 	@observable accessor pitActionSuspension = false;
-
 	@observable accessor carSpeed = 0;
-
 	@observable accessor avgSpeed = -1;
-
 	@observable accessor estimatedPitTime = -1;
-
 	@observable accessor estimatedPosPitExit = -1;
-
 	@observable accessor pitLength = -1;
-
 	@observable accessor inPitSince = -1;
-
 	@observable accessor pitEntryToStop = -1;
-
 	@observable accessor pitDone = {
 		driverChange: false,
 		refueling: false,
@@ -130,15 +90,10 @@ export default class Pitstop extends React.Component<IProps, {}> {
 		rearWing: false,
 		suspension: false
 	};
-
 	@observable accessor mandatoryServed = false;
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor performanceTime = -1;
-
 	@observable accessor playerIsFocus = false;
-
 	constructor(props: IProps) {
 		super(props);
 
@@ -282,41 +237,11 @@ export default class Pitstop extends React.Component<IProps, {}> {
 				};
 				if (this.pitEntryToStop === -1) {
 					this.pitEntryToStop = (nowCheck - this.inPitSince) / 1000;
-					/* showDebugMessageSmall(`Pit Entry to Stop: ${
-							Math.abs(
-								this.pitTotalDuration -
-								Math.round(this.pitTotalDuration)
-							)
-						}`,
-					10000);*/
 				}
 			}
 
 			this.mandatoryServed = this.pitWindowStatus === 4;
-
-			/* if (this.pitLength === -1) {
-				this.pitLength = getPitlaneLength(r3e.data.LayoutId);
-			}
-			if (r3e.data.LapTimeBestSelf !== -1 || personalBestTime > 0) {
-				this.avgSpeed = personalBestTime > 0
-					?	r3e.data.LayoutLength / personalBestTime
-					:	r3e.data.LayoutLength / r3e.data.LapTimeBestSelf;
-				this.calculatePitTime();
-			} else {
-				this.avgSpeed = -1;
-			}*/
 		}
-		/* if (this.performanceTime === -1) {
-			this.performanceTime = nowCheck;
-		}
-		if (nowCheck !== this.performanceTime) {
-			showDebugMessageSmall(
-				`UpdateTime: ${
-					nowCheck - this.performanceTime
-				}`, 1000
-			);
-			this.performanceTime = nowCheck;
-		}*/
 		if (showAllMode) {
 			this.pitWorkingDriverChange = false;
 			this.pitWorkingRefueling = true;
@@ -354,17 +279,6 @@ export default class Pitstop extends React.Component<IProps, {}> {
 		}
 	};
 
-	private calculatePitTime() {
-
-		this.estimatedPitTime = -1;
-		this.estimatedPosPitExit = -1;
-		/* const pitLimit = r3e.data.SessionPitSpeedLimit;
-		const pitStopTime = this.pitTotalDuration;
-		const pitDriveTime = this.pitLength / pitLimit;
-		const pitTotalTime = Math.round((pitStopTime + pitDriveTime) * 1e1) / 1e1;
-		showDebugMessageSmall(`Total Pit time: ${pitTotalTime}`, 100);*/
-	}
-
 	private getTimeUntilPit(lapBased = false) {
 		// time based races
 		return lapBased
@@ -395,6 +309,12 @@ export default class Pitstop extends React.Component<IProps, {}> {
 		if (r3e.data.GameInReplay > 0 && r3e.data.SessionTimeRemaining <= 0) { return null; }
 		const invalidStartAndEnd =
 			this.pitWindowStart === -1 && this.pitWindowEnd === -1;
+		
+		const green = 'rgba(48, 180, 48, 0.8)';
+		const red = 'rgba(214, 27, 27, 0.8)';
+		const purple = 'rgba(139, 24, 192, 0.8)';
+		const blue = 'rgba(40, 55, 190, 0.8)';
+		const black = 'rgba(0, 0, 0, 0)';
 
 		return (
 			<div className={classNames('pitstop', this.props.className)}>
@@ -428,17 +348,17 @@ export default class Pitstop extends React.Component<IProps, {}> {
 								className="inner"
 								style={{
 									background: showAllMode
-									?	'rgba(213, 0, 0, 0.6)'
+									?	red
 									:	this.pitWindowStatus === 2
 										?	this.getTimeUntilPitClosed(this.numberOfLaps !== -1) > 3
-											?	'rgba(100, 221, 23, 0.6)'
-											:	'rgba(213, 0, 0, 0.6)'
+											?	green
+											:	red
 										:	this.getTimeUntilPit(this.numberOfLaps !== -1) <= 3 &&
 											this.getTimeUntilPit(this.numberOfLaps !== -1) >= 1
-											?	'rgba(213, 0, 249, 0.6)'
+											?	purple
 											:	this.pitWindowStatus === 3
-												?	'rgba(0, 176, 255, 0.6)'
-												:	'rgba(213, 0, 0, 0)'
+												?	blue
+												:	black
 								}}
 							>
 								<div className="title">
@@ -629,7 +549,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -686,7 +606,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language === 'fr'
 																?	'1px 10px 13px'
 																:	undefined
@@ -744,7 +664,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -803,7 +723,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -862,7 +782,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -920,7 +840,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -965,7 +885,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)'
+															background: green
 														}}
 													>
 														{_('Suspension')}
@@ -1097,7 +1017,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -1154,7 +1074,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language === 'fr'
 																?	'1px 10px 13px'
 																:	undefined
@@ -1211,7 +1131,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -1270,7 +1190,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -1329,7 +1249,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -1387,7 +1307,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)',
+															background: green,
 															padding: localStorage.language ===  'pt' ||
 																localStorage.language === 'fr' || localStorage.language === 'es' || localStorage.language === 'pl'
 																?	'1px 10px 13px'
@@ -1432,7 +1352,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 														})}
 														style={{
 															border: '2px solid #fff',
-															background: 'rgba(0, 230, 0, 0.7)'
+															background: green
 														}}
 													>
 														{_('Suspension')}
@@ -1532,7 +1452,7 @@ export default class Pitstop extends React.Component<IProps, {}> {
 								style={{
 										color: this.pitLeftMinDuration > 0
 											?	'white'
-											:	'rgb(0, 255, 0)'
+											:	'rgb(0, 15, 0)'
 								}}
 							>
 								{`${

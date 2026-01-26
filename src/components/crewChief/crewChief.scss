@@ -1,44 +1,83 @@
-// extracted by mini-css-extract-plugin
-// module.exports = {"crewChief":"crewChief","driverName":"driverName","meta":"meta","inner":"inner","waveForm":"waveForm"};
-
 .crewChief {
   position: absolute;
   top: 300px;
   left: 1690px;
   transform: translate(-50%, -50%);
+  width: 197px;
+  color: #fff;
+  font-weight: 100;
 }
-.crewChief * {
-  text-align: top;
+
+.accentBar {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #ff4d06,
+    #0e0d01
+  );
 }
-.crewChief .driverName,
-.crewChief .meta {
-  padding: 5px 15px;
-  margin: 1px;
-  position: relative;
+
+.crewChief > div:not(.accentBar) {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 3px 10px;
 }
-.crewChief .driverName:after,
-.crewChief .meta:after {
-  display: block;
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #000;
-  transform: skew(-20deg, 0);
-  z-index: -1;
-}
-.crewChief .driverName .inner {
+
+.driverName {
+  font-size: 17px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  width: 150px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
-.crewChief .meta .waveForm {
-  position: relative;
-  top: 2px;
-  margin-left: 10px;
-  height: 14px;
+
+.waveContainer {
+  display: flex;
+  justify-content: center;
+  padding: 0px 0;
+}
+
+.waveForm {
+  height: 30px;
+}
+
+.meta {
+  font-size: 13px;
+  opacity: 0.7;
+  text-align: right;
+  letter-spacing: 0.8px;
+  //text-transform: uppercase;
+}
+/*
+.crewChief.enter {
+  animation: radioIn 0.3s ease-out forwards;
+}
+
+@keyframes radioIn {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+  */
+
+.waveContainer {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
+.crewChief {
+  box-shadow: 0 0 12px rgba(255, 45, 45, 0.25);
+}
+
+.crewChief.idle {
+  opacity: 0.4;
 }

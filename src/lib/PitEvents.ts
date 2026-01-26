@@ -1,5 +1,3 @@
-// PitEvents.ts — Sistema moderno de detecção e estado de Pit no SealHud
-
 import { IDriverData } from "./../types/r3eTypes";
 
 // Cada piloto terá um registro completo de estado do pit:

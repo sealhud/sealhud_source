@@ -25,15 +25,10 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 @observer
 export default class CrewChief extends React.Component<IProps, {}> {
 	@observable accessor driverName = '';
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor isActive = false;
-
 	pingInterval: any;
 
 	cachedNames: any = {};
@@ -129,23 +124,25 @@ export default class CrewChief extends React.Component<IProps, {}> {
 
 		return (
 			<div
-				{...widgetSettings(this.props)}
-				className={classNames('crewChief', this.props.className)}
+			{...widgetSettings(this.props)}
+			className={classNames('crewChief', this.props.className, 'enter')}
 			>
-				<div className="driverName">
-					<div className="inner">
-						{showAllMode
-							?	'N. Lauda'
-							:	this.driverName}
-					</div>
-				</div>
-				<div className="meta">
-					{_('Team Radio')}
-					<img
-						className="waveForm"
-						src={require('./../../img/crewchief.gif')}
-					/>
-				</div>
+			<div className="accentBar" />
+
+			<div className="driverName">
+				{showAllMode ? 'N. LAUDA' : this.driverName}
+			</div>
+
+			<div className="waveContainer">
+				<img
+				className="waveForm"
+				src={require('./../../img/radio.gif')}
+				/>
+			</div>
+
+			<div className="meta">
+				{_('Team Radio')}
+			</div>
 			</div>
 		);
 	}

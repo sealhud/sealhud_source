@@ -11,7 +11,7 @@
 }
 
 .tvTowerContainer .tvTower .header {
-	background-color: rgba(0, 0, 0, .8);
+	background-color: rgba(0, 0, 0, .9);
 	text-align: center
 }
 
@@ -21,7 +21,7 @@
 }
 
 .tvTowerContainer .tvTower .standingsSessionInfo {
-	background: rgba(0, 0, 0, .8);
+	background: rgba(0, 0, 0, .9);
 	width: 155px;
 	height: 28px
 }
@@ -98,13 +98,40 @@
 	text-align: center;
 	font-size: 12px;
 	padding: 2px;
-	line-height: 20px
+	position: relative;
+  	overflow: hidden;
+  	white-space: nowrap;
+}
+
+.ticker {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.tickerContent {
+  display: inline-block;
+  padding-left: 100%;
+  animation: pitTickerMove 12s linear infinite;
 }
 
 .tvTowerContainer .tvTower .mandatoryPitHeaderText {
 	color: #fff;
 	z-index: 4;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	padding-top: 3px;
+	display: inline-block;
+	padding-right: 50px; /* espaço entre repetições */
+	letter-spacing: 0.5px;
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+}
+
+@keyframes pitTickerMove {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .tvTowerContainer .tvTower .player {
@@ -112,16 +139,18 @@
 	white-space: nowrap;
 	height: 23px;
 	line-height: 23px;
-	background: rgba(0, 0, 0, .6)
+	background: rgba(0, 0, 0, .8);
 }
 
+/*
 .tvTowerContainer .tvTower .player:nth-child(odd) {
 	background: rgba(0, 0, 0, .65)
 }
+*/
 
 .tvTowerContainer .tvTower .player .position {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
-	background: rgba(0, 0, 0, .5);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	background: rgba(0, 0, 0, .7);
 	width: 30px;
 	text-align: center;
 	display: inline-block;
@@ -131,7 +160,7 @@
 
 .tvTowerContainer .tvTower .player .gainLossImg {
 	width: 30px;
-	padding-left: 16px;
+	padding-left: 15px;
 	background: rgba(0, 0, 0, .9)
 }
 
@@ -142,7 +171,7 @@
 	margin-top: -23px;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
-	vertical-align: top
+	vertical-align: top;
 }
 
 .tvTowerContainer .tvTower .player .positionGainLoss {
@@ -151,29 +180,28 @@
 }
 
 .tvTowerContainer .tvTower .player .name {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 	display: inline-block;
 	position: relative;
 	text-align: center;
-	padding: 0 12px;
 	overflow: hidden;
 	white-space: nowrap;
 	vertical-align: top;
 	width: 51px;
-	margin-left: -1px
+	margin-left: 2px
 }
 
 .tvTowerContainer .tvTower .player .rankData {
 	display: inline-block;
 	position: relative;
 	border-radius: 2px;
-	font-size: 16px;
+	font-size: 15px;
 	padding: 0 0 0 2px;
-	height: 21px;
-	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
+	height: 20px;
+	//text-shadow: 2px 2px 2px transparent, 0 0 10px transparent;
 	background: #000;
 	color: #fff;
-	width: 78px;
+	width: 75px;
 	vertical-align: top;
 	margin: 1px 2px 0 0;
 	line-height: 20px
@@ -215,7 +243,7 @@
 }
 
 .tvTowerContainer .tvTower .player .diff {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 	display: inline-block;
 	width: 76px;
 	text-align: center;
@@ -246,10 +274,9 @@
 .tvTowerContainer .tvTower .player .penalties .penaltiesText {
 	display: inline-block;
 	width: 25px;
-	color: #fff;
-	border-radius: 2px;
-	background: rgba(255, 200, 0, .8);
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	color: #212700;
+	background: rgba(255, 230, 7, 0.8);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 	text-align: center;
 	vertical-align: top;
 	position: relative
@@ -292,11 +319,11 @@
 	top: 0;
 	height: 23px;
 	line-height: 23px;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
 
 .tvTowerContainer .tvTower .player .pitting.noShadow {
-	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
+	//text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
 
 .tvTowerContainer .tvTower .player .pitting .pittinga {
@@ -316,15 +343,15 @@
 	padding: 0;
 	text-align: center;
 	color: #fff;
-	background: rgba(0, 100, 255, .6);
+	background: rgba(0, 18, 46, 0.8);
 	top: 0;
 	height: 23px;
 	left: 0;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
 
 .tvTowerContainer .tvTower .player .pitting .pittime.noShadow {
-	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
+	//text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
 
 .tvTowerContainer .tvTower .player .pitting .pittimea {
@@ -335,14 +362,14 @@
 	padding: 0;
 	text-align: center;
 	color: #fff;
-	background: rgba(0, 100, 255, .6);
+	background: rgba(0, 18, 46, 0.8);
 	top: 0;
 	height: 23px;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 }
 
 .tvTowerContainer .tvTower .player .pitting .pittimea.noShadow {
-	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
+	//text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
 
 .tvTowerContainer .tvTower .player .notFinishBlock {
@@ -393,7 +420,7 @@
 	width: 21px;
 	height: 21px;
 	color: #fff;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
+	//text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0px -0.5px 6px rgba(50, 50, 50, 0.7);
 	overflow: visible;
 	text-align: center;
 	white-space: nowrap;
@@ -464,17 +491,18 @@
 
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo {
 	width: 176px;
-	height: 32px
+	height: 32px;
 }
 
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText {
-	font-size: 18px
+	font-size: 18px;
 }
 
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainHoursText,
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainMinutesText,
 .tvTowerContainer.tireInfoCont .tvTower .standingsSessionInfo .standingsSessionInfoText .sessionRemainSecondsText {
-	font-size: 10px
+	font-size: 10px;
+	color: #fff;
 }
 
 .tvTowerContainer.tireInfoCont .tvTower .sessionFlags {
@@ -486,7 +514,7 @@
 .tvTowerContainer.tireInfoCont .tvTower .mandatoryPitHeader {
 	height: 28px;
 	font-size: 13.5px;
-	line-height: 24px
+	line-height: 24px;
 }
 
 .tvTowerContainer.carLogosCont.tireInfoCont {

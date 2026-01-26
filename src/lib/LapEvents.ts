@@ -98,15 +98,15 @@ export class LapEvents {
 
     // Prioridades de cor (avaliadas com dados ATUAIS)
     if (sessionBest > 0 && lapTime === sessionBest) {
-      return "#8718c7ff"; // melhor volta da sessão (única por definição)
+      return "rgb(202, 122, 255)"; // melhor volta da sessão (única por definição)
     }
 
     if (classBest < Infinity && lapTime === classBest) {
-      return "#ba7edfff"; // melhor volta da classe
+      return "rgb(203, 138, 243)"; // melhor volta da classe
     }
 
     if (personalBest > 0 && lapTime === personalBest) {
-      return "#00CC66"; // melhor volta pessoal
+      return "#15db78"; // melhor volta pessoal
     }
 
     return "#46d7ffff"; // volta comum

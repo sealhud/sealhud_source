@@ -140,7 +140,7 @@ export {
   eIsDynamicBbias,
 };
 // Hud Version
-const currentVersion = 0.92;
+const currentVersion = 0.95;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -415,7 +415,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1,
+      zoom: 0.9,
       name: __("TV Tower"),
       subSettings: {
         showLogo: {
@@ -432,7 +432,7 @@ export default class App extends React.Component<IProps> {
         },
         showCarLogos: {
           text: __("Show Manufacturer Logos"),
-          enabled: true,
+          enabled: false,
         },
         showTireInfo: {
           text: __("Show Tire Infos"),
@@ -859,7 +859,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.3600000000000003,
+      zoom: 1.3,
       name: __("Race info"),
       subSettings: {},
       position: {
@@ -873,12 +873,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.6800000000000006,
+      zoom: 1.4,
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 810,
-        y: 300,
+        x: 834,
+        y: 320,
       },
     },
     damage: {
@@ -901,7 +901,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.4400000000000004,
+      zoom: 1.3,
       name: __("Flags"),
       subSettings: {},
       position: {
@@ -920,7 +920,7 @@ export default class App extends React.Component<IProps> {
       subSettings: {},
       position: {
         x: 1430,
-        y: 270,
+        y: 150,
       },
     },
     graphs: {
@@ -1098,7 +1098,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1,
+      zoom: 0.9,
       name: __("TV Tower"),
       subSettings: {
         showLogo: {
@@ -1542,7 +1542,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.3600000000000003,
+      zoom: 1.3,
       name: __("Race info"),
       subSettings: {},
       position: {
@@ -1556,12 +1556,12 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.6800000000000006,
+      zoom: 1.4,
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 810,
-        y: 300,
+        x: 834,
+        y: 320,
       },
     },
     damage: {
@@ -1584,7 +1584,7 @@ export default class App extends React.Component<IProps> {
       resetIt: false,
       volume: 0,
       duration: 0,
-      zoom: 1.4400000000000004,
+      zoom: 1.3,
       name: __("Flags"),
       subSettings: {},
       position: {
@@ -1603,7 +1603,7 @@ export default class App extends React.Component<IProps> {
       subSettings: {},
       position: {
         x: 1430,
-        y: 270,
+        y: 150,
       },
     },
     graphs: {

@@ -8,7 +8,7 @@
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   transform: translate(-50%);
-  border-radius: 10px;
+  //border-radius: 10px;
 }
 .pitInfo {
   position: absolute;
@@ -23,7 +23,7 @@
 .pitInfo .inner {
   background: rgba(0, 0, 0, 0.75);
   padding: 10px;
-  border-radius: 10px;
+  //border-radius: 10px;
 }
 .pitInfo .title {
   font-size: 40px;
@@ -44,7 +44,7 @@
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   transform: translate(-50%);
-  border-radius: 10px;
+  //border-radius: 10px;
 }
 .pitInfoFixed .tasks {
   display: flex;
@@ -53,13 +53,13 @@
 .pitInfoFixed .tasks .task {
   flex: auto;
   margin: 10px;
-  border: 2px solid #fff;
-  padding: 10px 0;
-  border-radius: 10px;
+  border: 3px solid #fff;
+  padding: 12px 0;
+  //border-radius: 10px;
   vertical-align: center;
   overflow: hidden;
   white-space: pre;
-  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 0, 0, 0.4);
+  //text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 0, 0, 0.4);
 }
 .pitInfoFixed .title {
   font-size: 20px;
@@ -69,16 +69,15 @@
   opacity: 0.5;
 }
 .pitInfoFixed .barContainer {
-  background: #00f;
+  background: rgb(0, 0, 0);
   display: inline-block;
   width: 700px;
-  background: hsla(0, 0%, 100%, 0.2);
-  border-radius: 5px;
+  //border-radius: 5px;
   margin: 0 10px 10px;
 }
 .pitInfoFixed .barContainer .bar {
   height: 4px;
-  border-radius: 5px;
+  //border-radius: 5px;
   background: #fff;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
@@ -89,7 +88,7 @@
   left: 50%;
   font-size: 30px;
   transform: translate(-50%, 10px);
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.4);
+  //text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.4);
 }
 .pitMinInfoFixed {
   background: rgba(0, 0, 0, 0.5);
@@ -102,22 +101,21 @@
 .pitMinInfoFixed .inner {
   padding: 10px;
   transform: translate(-50%);
-  border-radius: 10px;
+  //border-radius: 10px;
 }
 .pitMinInfoFixed .inner {
   background: rgba(0, 0, 0, 0.5);
 }
 .pitMinInfoFixed .pitMinBarContainer {
-  background: #00f;
   display: inline-block;
   width: 700px;
-  background: hsla(0, 0%, 100%, 0.8);
-  border-radius: 5px;
+  background: hsla(0, 0%, 81%, 0.6);
+  //border-radius: 5px;
   margin: 90px 10px 10px;
 }
 .pitMinInfoFixed .pitMinBarContainer .minBar {
   height: 40px;
-  border-radius: 5px;
+  //border-radius: 5px;
   background: #fff;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
@@ -128,7 +126,7 @@
   width: 100%;
   font-size: 30px;
   transform: translate(-50%, 10px);
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.8);
+  //text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.8);
 }
 .pitMenuInfoBox {
   position: absolute;
@@ -136,8 +134,8 @@
   height: 33%;
   right: 0.5%;
   top: 30.5%;
-  border: 1px solid #fff;
-  background: hsla(0, 0%, 100%, 0.75);
+  border: 1px solid #1a1a1a;
+  background: hsla(0, 0%, 35%, 0.6)
 }
 .pitMenuInfoBox .pitMenuInfoText {
   position: relative;
@@ -145,23 +143,22 @@
   height: 100%;
   right: 0;
   white-space: wrap;
-  font-family: Segoe UI;
-  font-weight: 700;
+  font-weight: 500;
   color: #000;
   font-style: normal;
-  font-size: 64px;
+  font-size: 50px;
   text-align: center;
   align-items: center;
   vertical-align: center;
-  margin: 20% 0 0;
+  margin: 30% 0 0;
 }
 @keyframes blinkero {
   50% {
-    border: 2px solid green;
-    color: green;
+    border: 3px solid rgb(36, 104, 56);
+    color: rgb(142, 255, 142)
   }
   0% {
-    border: 2px solid #fff;
+    border: 3px solid #fff;
     color: #fff;
   }
 }

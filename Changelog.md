@@ -8,7 +8,7 @@
 	Como esta é uma atualização grande no HUD, dados anteriores (consumo, tempos de volta, etc.) serão perdidos. Peço desculpas, mas é para seu próprio bem!
 
 	UI:
-	- Praticamente todos os widgets foram refeitos. Destaque para Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, Relatives, Delta, TV Tower and Position Bar.
+	- Praticamente todos os widgets foram refeitos. Destaque para Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, abd Delta.
 	- Nova interface para a tela de configurações e seleção de widgets.
 	- Unidades de medida para temperatura, pressão e velocidade agora são definidas globalmente na tela de configurações.
 	- Grade de arrasto de widgets agora é CSS (mais leve e bonita).
@@ -24,9 +24,10 @@
 	- Electronics (novo): Este widget exibe condições de temperatura da água, estado das luzes dianteiras, engine map, brake bias, ABS e TC. Aqui também são exibidos assistências de ultrapassagem como DRS, Push To Pass e Overtake (usado pelo Formula X22 e outros).
 	- Consumption (novo): Este widget apresenta um resumo do consumo do veículo, incluindo suporte à combustível líquido, energia virtual e bateria. O widget exibe quanto está disponível, média por volta, e a estimativa do necessário para chegar até o final.
 	- Race Info: Adicionada exibição do consumo de água para resfriamento de freios (usado por caminhões).
+	- CrewChief: Widget redesenhado.
 
 	PERFORMANCE:
-	- Todos os cálculo de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
+	- Todos os cálculos de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
 
 	0.92
 	----------		

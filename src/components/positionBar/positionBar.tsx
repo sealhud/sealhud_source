@@ -1233,7 +1233,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				<div
 				className={classNames("incidentPoints")}
 				style={{
-					color: warnInc && this.maxIncidentPoints > 1 ? "rgba(255, 0, 0, 1)" : "rgba(255,255,255,1)",
+					color: warnInc && this.maxIncidentPoints > 1 ? "rgb(228, 50, 50)" : "rgba(255,255,255,1)",
 					right:
 					this.props.settings.subSettings.sessionTime.enabled &&
 					((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
@@ -1516,8 +1516,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 						display: "inline-block",
 						background:
 						player.mandatoryPit === 2
-							? "rgba(0, 221, 23, 0.8)"
-							: "rgba(255, 0, 0, 0.8)",
+							? "rgba(57, 216, 73, 0.8)"
+							: "rgba(214, 39, 39, 0.8)",
 						width: "5px",
 						left: "25px",
 						height: "40px",
@@ -1536,7 +1536,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					<div className="cheqFlag">
 						<img
 						className="cheqFlagImg"
-						src={require("./../../img/checkered.png")}
+						src={require("./../../img/checkered.svg")}
 						width="21"
 						height="25"
 						/>
@@ -1584,7 +1584,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 						showAllMode
 						? 2.22
 						: (player.rankingData.Rating / 1000).toFixed(2)
-					}K / ${
+					}K | ${
 						showAllMode ? 94.6 : player.rankingData.Reputation.toFixed(1)
 					}`}
 					</div>
@@ -1906,11 +1906,11 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 					style={{
 						background:
 						player.mandatoryPit === 2
-							? "green"
+							? "rgb(81, 206, 53)"
 							: player.mandatoryPit === 0 || player.mandatoryPit === 1
-							? "red"
+							? "rgb(209, 63, 63)"
 							: player.inPit
-							? "red"
+							? "rgb(209, 63, 63)"
 							: "dimgray",
 						color:
 						player.numStops > 0
@@ -1918,11 +1918,11 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							: player.inPit
 							? "white"
 							: player.mandatoryPit === 2
-							? "green"
+							? "rgb(81, 206, 53)"
 							: player.mandatoryPit === 0 || player.mandatoryPit === 1
-							? "red"
+							? "rgb(209, 63, 63)"
 							: player.inPit
-							? "red"
+							? "rgb(209, 63, 63)"
 							: "dimgray",
 					}}
 					>

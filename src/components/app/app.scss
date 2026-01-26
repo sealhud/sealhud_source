@@ -429,15 +429,19 @@ html.debug .viewport {
 .toggleSettings,
 .toggleVisibility {
   position: absolute;
-  top: 150px;
-  left: 10px;
+  top: 300px;
+  left: 3px;
   background: rgba(0, 0, 0, 0.8);
-  border-radius: 100%;
-  opacity: 0;
+  //border-radius: 100%;
+  //opacity: 0;
 }
-.toggleSettings:hover .svgIcon svg,
-.toggleVisibility:hover .svgIcon svg {
-  fill: #ffa;
+.toggleSettings:hover,
+.toggleVisibility:hover,
+.lockHud:hover,
+.toggleLayout1:hover,
+.toggleLayout2:hover,
+.toggleLayout3:hover  {
+  background: rgba(5, 5, 5, 1);
 }
 .toggleSettings .svgIcon,
 .toggleVisibility .svgIcon {
@@ -454,22 +458,22 @@ html.debug .viewport {
   opacity: 1;
 }
 .toggleVisibility {
-  top: 210px;
+  top: 350px;
 }
 .lockHud,
 .toggleLayout1,
 .toggleLayout2,
 .toggleLayout3 {
   position: absolute;
-  top: 270px;
-  left: 10px;
+  top: 400px;
+  left: 3px;
   width: 50px;
   height: 50px;
-  background: #000;
+  background: #000000c7;
   color: #fff;
-  border-radius: 100%;
-  font-size: 38px;
-  padding: 4px;
+  //border-radius: 100%;
+  font-size: 30px;
+  padding: 10px;
   text-align: center;
   vertical-align: middle;
   opacity: 0;
@@ -478,7 +482,7 @@ html.debug .viewport {
 .toggleLayout1.showIcon,
 .toggleLayout2.showIcon,
 .toggleLayout3.showIcon {
-  opacity: 1;
+  opacity: 0;
 }
 .lockHud.active,
 .toggleLayout1.active,
@@ -488,21 +492,21 @@ html.debug .viewport {
   color: #000;
 }
 .toggleLayout2 {
-  top: 330px;
+  top: 450px;
 }
 .toggleLayout2.active {
   background: #fff;
   color: #000;
 }
 .toggleLayout3 {
-  top: 390px;
+  top: 500px;
 }
 .toggleLayout3.active {
   background: #fff;
   color: #000;
 }
 .lockHud {
-  top: 450px;
+  top: 550px;
 }
 .lockHud.active {
   background: #fff;

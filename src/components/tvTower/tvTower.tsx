@@ -512,32 +512,32 @@ export default class TvTower extends React.Component<IProps, {}> {
     const flags = FlagEvents.getFlags();
     
     if (!flags) {
-        return require("./../../img/transparent.png");
+        return require("./../../img/transparent.svg");
     }
 
     if (FlagEvents.isYellow()) {
-        return require("./../../img/yellow.png");
+        return require("./../../img/yellow.svg");
     }
     if (FlagEvents.whiteReason() > 0) {
-        return require("./../../img/white.png");
+        return require("./../../img/white.svg");
     }
     if (FlagEvents.isBlue()) {
-        return require("./../../img/blue.png");
+        return require("./../../img/blue.svg");
     }
     if (FlagEvents.isBlack()) {
-        return require("./../../img/black.png");
+        return require("./../../img/black.svg");
     }
     if (FlagEvents.isGreen()) {
-        return require("./../../img/green.png");
+        return require("./../../img/green.svg");
     }
     if (FlagEvents.isCheckered()) {
-        return require("./../../img/checkered.png");
+        return require("./../../img/checkered.svg");
     }
     if (FlagEvents.blackAndWhiteReason() > 0) {
-        return require("./../../img/diagonal.png");
+        return require("./../../img/diagonal.svg");
     }
 
-    return require("./../../img/transparent.png");
+    return require("./../../img/transparent.svg");
   }
 
 
@@ -693,15 +693,17 @@ export default class TvTower extends React.Component<IProps, {}> {
                       background:
                         showAllMode || this.pitWindowStatus === 2
                           ? timeUntilClosed > 3
-                            ? "rgba(100, 221, 23, 0.6)"
-                            : "rgba(213, 0, 0, 0.6)"
+                            ? "rgba(44, 194, 39, 0.8)"
+                            : "rgba(172, 0, 0, 0.8)"
                           : isRange(timeUntilPit, 1, 3)
-                            ? "rgba(213, 0, 249, 0.6)"
+                            ? "rgba(170, 25, 196, 0.8)"
                             : this.pitWindowStatus === 3
-                              ? "rgba(0, 176, 255, 0.6)"
-                              : "rgba(213, 0, 0, 0.6)",
+                              ? "rgba(21, 74, 219, 0.8)"
+                              : "rgba(172, 0, 0, 0.8)",
                     }}
                   >
+                    <div className="ticker">
+                    <div className="tickerContent">
                     {showAllMode || this.pitWindowStatus === 2 ? (
                       timeUntilClosed > 3 ? (
                         <div className="mandatoryPitHeaderText">
@@ -769,9 +771,12 @@ export default class TvTower extends React.Component<IProps, {}> {
                       </div>
                     ) : null}
                   </div>
+                  </div>
+                </div>
                 ) : null}
               </div>
-            ) : null}
+            ) : null
+            }
 
             
             {this.drivers.map((player, i) => {
@@ -877,7 +882,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
     if (tyreChoice === 4) {
       return require("./../../img/hard.svg");
     }
-    return require("./../../img/transparent.png");
+    return require("./../../img/transparent.svg");
   }
 
   /*
@@ -1126,7 +1131,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           >
             {`${
               showAllMode ? 2.22 : (player.rankingData.Rating / 1000).toFixed(2)
-            }K / ${
+            }K | ${
               showAllMode ? 94.6 : player.rankingData.Reputation.toFixed(1)
             }`}
           </div>
@@ -1215,8 +1220,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
               display: "inline-block",
               background:
                 player.numPitstops > 0 && player.mandatoryPit === 2
-                  ? "rgba(0, 221, 23, 0.8)"
-                  : "rgba(255, 0, 0, 0.8)",
+                  ? "rgba(40, 168, 53, 0.9)"
+                  : "rgba(214, 21, 21, 0.9)",
               width: "5px",
               height: "23px",
               lineHeight: "23px",
@@ -1233,7 +1238,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           <div className="cheqFlag">
             <img
               className="cheqFlagImg"
-              src={require("./../../img/checkered.png")}
+              src={require("./../../img/checkered.svg")}
               width="25"
               height="20"
             />
@@ -1327,12 +1332,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
             // background selection: entering (blue), stopped (red), leaving/clean (green)
             const bg =
               sessionType !== ESession.Race
-              ? "rgba(0, 176, 255, 0.8)"
+              ? "rgba(4, 132, 192, 0.9)"
               : showAll || (stopTs && stopTs > 0)
                 ? showAll || (leaveTs && leaveTs > 0)
-                  ? "rgba(0, 221, 23, 0.8)" // leaving
-                  : "rgba(255, 70, 0, 0.8)" // stopped
-                : "rgba(0, 176, 255, 0.8)";   // entering
+                  ? "rgba(40, 168, 53, 0.8)" // leaving
+                  : "rgba(204, 90, 49, 0.8)" // stopped
+                : "rgba(4, 132, 192, 0.9)";   // entering
             // compute lane time and spot time similarly to original behavior
             const laneTime =
               enterTs !== null ? (showAll ? 52.9 : (now - enterTs) / 1000) : null;
@@ -1361,12 +1366,12 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                       color:
                         showAll || (stopTs && stopTs > 0)
                           ? showAll || (leaveTs && leaveTs > 0)
-                            ? "rgba(0, 221, 23, 1)"
+                            ? "rgba(109, 255, 123)"
                             : "rgba(255, 255, 255, 1)"
                           : "rgba(255, 255, 255, 0)",
                       background:
                         showAll || (stopTs && stopTs > 0)
-                          ? "rgba(0, 100, 255, 0.8)"
+                          ? "rgba(12, 64, 141, 0.9)"
                           : "rgba(0, 100, 255, 0)",
                     }}
                   >
@@ -1410,7 +1415,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
           ) {
             // cor: green (feito), red (pendente)
             const isGreen = player.mandatoryPit === 2;
-            const bg = isGreen ? "rgba(0, 221, 23, 0.8)" : "rgba(255, 70, 0, 0.8)";
+            const bg = isGreen ? "rgba(40, 168, 53, 0.8)" : "rgba(204, 90, 49, 0.8)";
             // narrowing explícito
             const hasExit = exitTs != null;
             const hasEnter = enterTs != null;
@@ -1439,9 +1444,9 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
                   <div
                     className={classNames("pittimea", { noShadow: !spot })}
                     style={{
-                      color: spot != null ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)",
+                      color: spot != null ? "rgba(29, 143, 40)" : "rgba(0,221,23,0)",
                       background: spot != null
-                        ? "rgba(0,100,255,0.8)"
+                        ? "rgba(13, 82, 185, 0.8)"
                         : "rgba(0,100,255,0)"
                     }}
                   >
@@ -1472,19 +1477,19 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
               const total = pitTotal ?? (enterTs ? (exitTs - enterTs) / 1000 : null);
               const spot = spotDuration ?? (stopTs && leaveTs ? (leaveTs - stopTs) / 1000 : null);
               return (
-                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(0,221,23,0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
+                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(40, 168, 53, 0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
                   <div className="pittinga">{player.numPitstops}</div>
                   <div className={classNames("pittime", { noShadow: false })}>
                     {total ? fancyTimeFormatGap(total, 1, 1, false, true) : fancyTimeFormatGap(0, 1, 1, false, true)}
                   </div>
-                  <div className={classNames("pittimea", { noShadow: !spot })} style={{ color: spot ? "rgba(0,221,23,1)" : "rgba(0,221,23,0)", background: spot ? "rgba(0,100,255,0.8)" : "rgba(0,100,255,0)" }}>
+                  <div className={classNames("pittimea", { noShadow: !spot })} style={{ color: spot ? "rgba(29, 143, 40)" : "rgba(0,221,23,0)", background: spot ? "rgba(13, 82, 185, 0.8)" : "rgba(0,100,255,0)" }}>
                     {spot ? fancyTimeFormatGap(spot, 1, 1, false, true) : "|"}
                   </div>
                 </div>
               );
             } else {
               return (
-                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(0,221,23,0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
+                <div className={classNames("pitting", { noShadow: false })} style={{ background: "rgba(40, 168, 53, 0.8)", color: "rgba(255,255,255,1)", width: "25px" }}>
                   <div className="pittinga">{player.numPitstops}</div>
                 </div>
               );
