@@ -22,6 +22,8 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	settings: IWidgetSetting;
 }
 
+type AidKey = keyof IAidSettings;
+
 @observer
 export default class Aids extends React.Component<IProps, {}> {
 	@observable accessor aids: IAidSettings = {
@@ -38,11 +40,8 @@ export default class Aids extends React.Component<IProps, {}> {
 	};
 
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor sessionPhase = -1;
 
 	constructor(props: IProps) {
@@ -81,92 +80,69 @@ export default class Aids extends React.Component<IProps, {}> {
 	};
 
 	render() {
-		if (
-			this.sessionType === 2 &&
-			this.sessionPhase === 1
-		) { return null; }
-		if (
-			(!this.playerIsFocus && !showAllMode) ||
-			(
-				this.aids.Abs < 1 &&
-				this.aids.Esp < 1 &&
-				this.aids.Tc < 1 &&
-				this.aids.Countersteer < 1 &&
-				this.aids.Cornering < 1 &&
-				!showAllMode
-			) ||
-			r3e.data.GameInReplay > 0
-		) {
-			return null;
-		}
-		return (
-			<div
-				{...widgetSettings(this.props)}
-				className={classNames('aids', this.props.className)}
-			>
-				<div className="inner">
-					{(this.aids.Abs > 0 || showAllMode) && (
-						<div
-							className={classNames(
-								'aid abs',
-								`state-${this.aids.Abs}`
-							)}
-						>
-							<SvgIcon
-								src={require('./../../img/icons/abs.svg')}
-							/>
-						</div>
-					)}
-					{(this.aids.Esp > 0 || showAllMode) && (
-						<div
-							className={classNames(
-								'aid esp',
-								`state-${this.aids.Esp}`
-							)}
-						>
-							<SvgIcon
-								src={require('./../../img/icons/esp.svg')}
-							/>
-						</div>
-					)}
-					{(this.aids.Tc > 0 || showAllMode) && (
-						<div
-							className={classNames(
-								'aid tc',
-								`state-${this.aids.Tc}`
-							)}
-						>
-							<SvgIcon
-								src={require('./../../img/icons/tc.svg')}
-							/>
-						</div>
-					)}
-					{(this.aids.Countersteer > 0 || showAllMode) && (
-						<div
-							className={classNames(
-								'aid countersteer',
-								`state-${this.aids.Countersteer}`
-							)}
-						>
-							<SvgIcon
-								src={require('./../../img/icons/countersteer.svg')}
-							/>
-						</div>
-					)}
-					{(this.aids.Cornering > 0 || showAllMode) && (
-						<div
-							className={classNames(
-								'aid cornering',
-								`state-${this.aids.Cornering}`
-							)}
-						>
-							<SvgIcon
-								src={require('./../../img/icons/cornering.svg')}
-							/>
-						</div>
-					)}
-				</div>
-			</div>
-		);
+	if (
+		(this.sessionType === 2 && this.sessionPhase === 1) ||
+		(!this.playerIsFocus && !showAllMode) ||
+		r3e.data.GameInReplay > 0
+	) {
+		return null;
 	}
+
+	const aidsConfig: {
+	key: AidKey;
+	class: string;
+	icon: string;
+	}[] = [
+		{ key: 'Abs', class: 'abs', icon: 'abs.svg' },
+		{ key: 'Esp', class: 'esp', icon: 'esp.svg' },
+		{ key: 'Tc', class: 'tc', icon: 'tc.svg' },
+		{ key: 'Countersteer', class: 'countersteer', icon: 'countersteer.svg' },
+		{ key: 'Cornering', class: 'cornering', icon: 'cornering.svg' },
+	];
+
+
+	return (
+		<div
+		{...widgetSettings(this.props)}
+		className={classNames(
+			'aids',
+			this.props.className,
+			{
+				'layout-vertical':
+					this.props.settings.subSettings.verticalLayout.enabled,
+				'layout-horizontal':
+					!this.props.settings.subSettings.verticalLayout.enabled
+			}
+		)}
+	>
+			<div className="inner">
+				{aidsConfig.map(aid => {
+					const value = this.aids[aid.key];
+					const isDisabled = value < 1;
+					const isWorking = value >= 5;
+
+					return (
+						<div
+							key={aid.key}
+							className={classNames(
+								'aid',
+								aid.class,
+								{
+									'is-disabled': isDisabled,
+									'is-active': !isDisabled,
+									'is-working': isWorking
+								}
+							)}
+						>
+							<SvgIcon
+								src={require(`./../../img/icons/${aid.icon}`)}
+							/>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+}
+
 }

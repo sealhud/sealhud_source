@@ -183,6 +183,7 @@ html.debug .viewport {
 .viewport .rankingSite .rankingSiteFrame {
   cursor: url(./../../img/cursor1.cur), auto;
 }
+/*
 .viewport .changelog {
   position: relative;
   top: 2.5%;
@@ -289,14 +290,14 @@ html.debug .viewport {
   font-size: 18px;
   line-height: 22px;
   position: absolute;
-  border: 2px solid #fff;
+  border: 3px solid #fff;
   border-radius: 2px;
-  top: 14%;
-  left: 16%;
+  top: 12%;
+  left: 20%;
   overflow: auto;
   max-height: 80%;
   min-height: 80%;
-  width: 82%;
+  width: 75%;
   white-space: pre;
 }
 
@@ -321,6 +322,152 @@ html.debug .viewport {
 }
 .viewport .changelog .gotIt:focus {
   outline: none;
+}
+*/
+
+.viewport .welcome {
+  position: absolute;
+  inset: 8%;
+  background: rgba(15, 15, 15, 0.9);
+  border-radius: 16px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.welcomeHeader {
+  display: flex;
+  align-items: center;
+  padding: 32px 32px 4px 32px;
+  gap: 20px;
+}
+
+.welcomeLogo {
+  height: 200px;
+  margin-left: 15px;
+}
+
+.welcomeVersion {
+  position: absolute;
+  top: 193px;
+  left: 25%;
+  font-size: 25px;
+}
+
+/* CONTENT */
+.welcomeContent {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 0px;
+  padding: 0 32px;
+}
+
+/* LEFT */
+.welcomeLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.welcomeSectionTitle {
+  font-size: 26px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding: 20px;
+}
+
+.forumBlock,
+.donationBlock {
+  background: rgba(0,0,0,0.8);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.forumText {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.forumQR {
+  zoom: 0.6;
+
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 8px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.donationTitle {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.donationIcon {
+  zoom: 0.25;
+  margin-right: 50px;
+}
+
+.donationQR {
+  zoom: 0.6;
+  margin: 25px;
+
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 8px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* RIGHT */
+.welcomeRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.changeLogTitle {
+  position: absolute;
+  font-size: 40px;
+  top: 5%;
+  left: 33%;
+}
+
+.theLog {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  font-size: 18px;
+  line-height: 22px;
+  position: absolute;
+  border-radius: 10px;
+  top: 110px;
+  left: 33%;
+  overflow: auto;
+  max-height: 78%;
+  min-height: 78%;
+  width: 65%;
+  white-space: pre;
+}
+
+/* FOOTER */
+.welcomeClose {
+  margin: 16px 32px 24px;
+  height: 56px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.85);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.welcomeClose:hover {
+  background: #00c832;
 }
 
 .help {

@@ -2,7 +2,9 @@ import {
 	classNames,
 	widgetSettings,
 	getInitials,
-	base64ToString
+	base64ToString,
+	getRankingData,
+	rankData	
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
@@ -29,6 +31,7 @@ export default class CrewChief extends React.Component<IProps, {}> {
 	@observable accessor sessionType = -1;
 	@observable accessor sessionPhase = -1;
 	@observable accessor isActive = false;
+	@observable accessor teamName: string | null = null;
 	pingInterval: any;
 
 	cachedNames: any = {};
@@ -105,6 +108,26 @@ export default class CrewChief extends React.Component<IProps, {}> {
 					)
 				);
 			}
+
+			// já pegou o team? não faz mais nada
+			if (this.teamName !== null) return;
+
+			const driver =
+				r3e.data.DriverData[r3e.data.Position - 1];
+
+			if (!driver) return;
+
+			const userId = driver.DriverInfo.UserId;
+			if (userId === -1) return;
+
+			// ranking ainda não carregou
+			if (rankData.length === 0) return;
+
+			const ranking = getRankingData(userId);
+
+			if (ranking.Team !== 'none') {
+				this.teamName = ranking.Team;
+			}
 		}
 	};
 
@@ -130,7 +153,7 @@ export default class CrewChief extends React.Component<IProps, {}> {
 			<div className="accentBar" />
 
 			<div className="driverName">
-				{showAllMode ? 'N. LAUDA' : this.driverName}
+				{showAllMode ? 'S. BELLOF' : this.driverName}
 			</div>
 
 			<div className="waveContainer">
@@ -141,7 +164,7 @@ export default class CrewChief extends React.Component<IProps, {}> {
 			</div>
 
 			<div className="meta">
-				{_('Team Radio')}
+				{this.teamName ?? _('Team Radio')}
 			</div>
 			</div>
 		);

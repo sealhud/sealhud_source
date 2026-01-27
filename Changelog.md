@@ -1,33 +1,40 @@
 	1.00
 	----------
-	DISCLAIMER:
 	SealHUD is not a fork anymore.
 	And now the HUD supports all RaceRoom vehicles, including trucks!
 
 	ATTENTION:
-	Como esta é uma atualização grande no HUD, dados anteriores (consumo, tempos de volta, etc.) serão perdidos. Peço desculpas, mas é para seu próprio bem!
+	As this is a major HUD update, previous data (fuel consumption, lap times, etc.) will be lost.
+	I apologize for this, but it is for your own good!
 
 	UI:
-	- Praticamente todos os widgets foram refeitos. Destaque para Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, abd Delta.
-	- Nova interface para a tela de configurações e seleção de widgets.
-	- Unidades de medida para temperatura, pressão e velocidade agora são definidas globalmente na tela de configurações.
-	- Grade de arrasto de widgets agora é CSS (mais leve e bonita).
-	- Novos widgets: ELECTRONICS and CONSUMPTION.
-	- Widgets removidos: P2P/DRS and FUEL.
+	- Nearly all widgets have been redesigned. Highlights include: Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, and Delta.
+	- New interface for the settings screen and widget selection.
+	- Units for temperature, pressure, and speed are now defined globally in the settings screen.
+	- Widget drag grid is now CSS-based (lighter and cleaner).
+	- New widgets added: **ELECTRONICS** and **CONSUMPTION**.
+	- Removed widgets: **P2P/DRS** and **FUEL**.
 
 	WIDGETS:
-	- Fuel & Lap Details: Agora também exibe dados de consumo de energia virtual.
-	- Fuel & Lap Details: Calculadora também exibe estimativas de energia virtual.
-	- Fuel & Lap Details: Resolvido bug que causava o não registro de algumas voltas.
-	- Motec: Agora exibe as marchas corretamente para todos os veículos, inclusive caminhões.
-	- Motec: Barra de RPM removida (temporariamente).
-	- Electronics (novo): Este widget exibe condições de temperatura da água, estado das luzes dianteiras, engine map, brake bias, ABS e TC. Aqui também são exibidos assistências de ultrapassagem como DRS, Push To Pass e Overtake (usado pelo Formula X22 e outros).
-	- Consumption (novo): Este widget apresenta um resumo do consumo do veículo, incluindo suporte à combustível líquido, energia virtual e bateria. O widget exibe quanto está disponível, média por volta, e a estimativa do necessário para chegar até o final.
-	- Race Info: Adicionada exibição do consumo de água para resfriamento de freios (usado por caminhões).
-	- CrewChief: Widget redesenhado.
+	- Fuel & Lap Details: Now also displays virtual energy consumption data.
+	- Fuel & Lap Details: Calculator now includes virtual energy estimates.
+	- Fuel & Lap Details: Fixed a bug that caused some laps not to be recorded.
+	- Motec: Now correctly displays gears for all vehicles, including trucks.
+	- Motec: RPM bar temporarily removed.
+	- Electronics (new):
+		Displays water temperature conditions, headlight status, engine map, brake bias, ABS, and TC.
+		Also shows overtaking assists such as DRS, Push To Pass, and Overtake (used by Formula X22 and others).
+	- Consumption (new):
+		Provides a vehicle consumption overview, with support for liquid fuel, virtual energy, and battery.
+		Displays available amount, per-lap average, and estimated requirement to reach the finish.
+	- Race Info: Added display of brake cooling water consumption (used by trucks).
+	- CrewChief: Widget redesigned.
+	- CrewChief: Now displays your team name.
+	- Driving Aids: Allows switching between HORIZONTAL and VERTICAL modes.
+	- Inputs Graph: Line smoothing removed for more accurate telemetry representation.
 
 	PERFORMANCE:
-	- Todos os cálculos de consumo de combustível, virtual energy e battery foi recriado do zero, e agora corre de forma centralizada, sendo executada uma única vez e compartilhado com os widgets.
+	- All fuel, virtual energy, and battery consumption calculations were rebuilt from scratch. They are now centralized, executed once, and shared across widgets for better performance and consistency.
 
 	0.92
 	----------		

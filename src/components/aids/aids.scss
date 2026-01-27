@@ -1,32 +1,70 @@
-.aids,
-.spotting .blib {
-  position: absolute;
-  left: 50%;
-}
-
 .aids {
-  top: 1030px;
+	position: absolute;
+	left: 50%;
+	top: 1030px;
+	transform: translateX(-50%);
 }
 
 .aids .inner {
-  transform: translate(0);
-  border-radius: 50px;
-  padding: 5px;
-  background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 3px;
+	padding: 3px 7px;
+	border-radius: 15px;
+	background: rgba(0, 0, 0, 0.8);
+	backdrop-filter: blur(4px);
+}
+
+.aids.layout-vertical .inner {
+	flex-direction: column;
+  gap: 3px;
+	padding: 7px 3px;
+}
+
+.aids.layout-vertical .aid {
+	margin: 0;
 }
 
 .aids .aid {
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-  fill: hsla(0, 0%, 100%, 0.3);
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
 }
 
-.aids .aid.state-5 svg {
-  fill: #c41b1b;
+.aids .aid svg {
+	width: 32px;
+	height: 32px;
+	fill: hsla(0, 0%, 100%, 0.45);
 }
 
-.aids .svgIcon svg {
-  height: 35px;
-  width: 35px;
+.aids .aid.is-disabled {
+	opacity: 0.25;
+	filter: grayscale(1);
 }
+
+.aids .aid.is-active svg {
+	fill: hsla(0, 0%, 100%, 0.85);
+}
+
+.aids .aid.is-working svg {
+	fill: #ff3b3b;
+	animation: aidPulse 0.6s ease-in-out infinite;
+}
+
+@keyframes aidPulse {
+	0% {
+		filter: drop-shadow(0 0 0 rgba(255, 60, 60, 0));
+	}
+	50% {
+		filter: drop-shadow(0 0 6px rgba(255, 60, 60, 0.9));
+	}
+	100% {
+		filter: drop-shadow(0 0 0 rgba(255, 60, 60, 0));
+	}
+}
+
+

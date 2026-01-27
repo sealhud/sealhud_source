@@ -140,7 +140,7 @@ export {
   eIsDynamicBbias,
 };
 // Hud Version
-const currentVersion = 0.95;
+const currentVersion = 1.0;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -737,8 +737,27 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 770,
+        x: 750,
         y: 960,
+      },
+    },
+    aids: {
+      id: "aids",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Car assists"),
+      subSettings: {
+        verticalLayout: {
+          text: __("Vertical Layout"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1050,
+        y: 830,
       },
     },
     motec: {
@@ -823,20 +842,6 @@ export default class App extends React.Component<IProps> {
       position: {
         x: 540,
         y: 630,
-      },
-    },
-    aids: {
-      id: "aids",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("Car assists"),
-      subSettings: {},
-      position: {
-        x: 800,
-        y: 900,
       },
     },
     startingLights: {
@@ -1420,8 +1425,27 @@ export default class App extends React.Component<IProps> {
         },
       },
       position: {
-        x: 770,
+        x: 750,
         y: 960,
+      },
+    },
+    aids: {
+      id: "aids",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Car assists"),
+      subSettings: {
+        verticalLayout: {
+          text: __("Vertical Layout"),
+          enabled: true,
+        },
+      },
+      position: {
+        x: 1050,
+        y: 830,
       },
     },
     motec: {
@@ -1506,20 +1530,6 @@ export default class App extends React.Component<IProps> {
       position: {
         x: 540,
         y: 630,
-      },
-    },
-    aids: {
-      id: "aids",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("Car assists"),
-      subSettings: {},
-      position: {
-        x: 800,
-        y: 900,
       },
     },
     startingLights: {
@@ -3117,48 +3127,72 @@ export default class App extends React.Component<IProps> {
       return (
         <div
           className="viewport"
-          style={{
-            zoom: this.appZoom,
-          }}
+          style={{ zoom: this.appZoom }}
         >
-          <div className="changelog">
-            <div className="sealLogo">
+          <div className="welcome">
+
+            {/* HEADER */}
+            <div className="welcomeHeader">
               <img
-                className="oh_logo"
+                className="welcomeLogo"
                 src={require("./../../img/sealhud_logo.png")}
               />
+              <div className="welcomeTitles">
+                <div className="welcomeVersion">Version {currentVersion}</div>
+              </div>
             </div>
-            <div className="sealTitle">{`${" Welcome to SealHud "}`}</div>
-            <div className="sealVersion">{`Version: ${currentVersion}`}</div>
-            <div className="forumTitle">
-              {`${"For issues and bugs, visit the\nSealHud forum thread:"}`}
-            </div>
-            <img
-              className="forumQRImg"
-              src={require("./../../img/qr_forum.png")}
-            />
-            <div className="line" />
-            <div className="payPal_1">{`Donations:`}</div>
-            <div className="coffeePot">
-              <img
-                className="coffeePotImg"
-                src={require("./../../img/donate.png")}
-              />
-            </div>
-            <img className="paypalQRImg" src={require("./../../img/qr.png")} />
-            <div className="changeLogTitle">{`${"CHANGELOG"}`}</div>
 
-            {this.getChangelog()}
+            {/* CONTENT */}
+            <div className="welcomeContent">
 
+              {/* LEFT */}
+              <div className="welcomeLeft">
+                <div className="welcomeSectionTitle">
+                  Support & Community
+                </div>
+
+                <div className="forumBlock">
+                  <div className="forumText">
+                    For issues, feedback and updates<br />
+                    visit the SealHUD forum thread:
+                  </div>
+                  <img
+                    className="forumQR"
+                    src={require("./../../img/qr_forum.png")}
+                  />
+                </div>
+
+                <div className="donationBlock">
+                  <div className="donationTitle">Donations</div>
+                  <img
+                    className="donationIcon"
+                    src={require("./../../img/donate.png")}
+                  />
+                  <img
+                    className="donationQR"
+                    src={require("./../../img/qr.png")}
+                  />
+                </div>
+              </div>
+
+              {/* RIGHT */}
+              <div className="welcomeRight">
+                <div className="changeLogTitle">
+                  WELCOME TO SEALHUD
+                </div>
+
+                <div className="theLog">
+                  {this.getChangelog()}
+                </div>
+              </div>
+            </div>
+
+            {/* FOOTER */}
             <div
-              className="gotIt"
+              className="welcomeClose"
               onClick={this.toggleChangeLog}
-              style={{
-                lineHeight: localStorage.language === "de" ? "52px" : "42px",
-                fontSize: localStorage.language === "de" ? "40px" : "42px",
-              }}
             >
-              {_("PRESS CLUTCH / BRAKE / THROTTLE - OR CLICK HERE - TO CLOSE")}
+              {_("PRESS CLUTCH / BRAKE / THROTTLE OR CLICK TO CONTINUE")}
             </div>
           </div>
         </div>
@@ -4323,28 +4357,70 @@ export default class App extends React.Component<IProps> {
 
 private getChangelog() {
   return (
-  <div className="theLog">
+  <div className="">
     <span style={{fontSize: "27px",}}>
-      {`${"DECEMBER 23, 2025"}`}
+      {`${"VERSION 1.0"}`}
     </span>
 {`
-
+JANUARY 27, 2025
 
 WHAT'S NEW:
-------------------
-- Pre-Race Countdown: Now the hud displays the countdown timer before the race starts and also RaceInfo widget will now show TC, BrakeBias, Engine Map, and other changes.
-- Translations: A few fixes for German translations (Thank you, ShortyBuzzGER).
-- Incident Points Counter: Removed from LeaderBoard and HillClimb sessions.
-- Strength Of Field: Stopped working due to some server-side changes. Fixed. 
+-------------------------
+SealHUD is not a fork anymore. And now the HUD supports all RaceRoom vehicles, including trucks.
+
+ATTENTION:
+-------------------------
+As this is a major HUD update, previous data (fuel consumption, lap times, etc.) will be lost.
+I apologize for this, but it is for your own good!
+
+UI:
+-------------------------
+- Entirely redesigned Widgets: Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, and Delta.
+- New interface for the settings screen and widget selection.
+- Units for temperature, pressure, and speed are now defined globally in the settings screen.
+- Widget drag grid is now CSS-based (lighter and cleaner).
+- New widgets added: ELECTRONICS and CONSUMPTION.
+- Removed widgets: P2P/DRS and FUEL.
+
+WIDGETS:
+-------------------------
+- Fuel & Lap Details: Now also displays virtual energy consumption data.
+- Fuel & Lap Details: Calculator now includes virtual energy estimates.
+- Fuel & Lap Details: Fixed a bug that caused some laps not to be recorded.
+- Motec: Now correctly displays gears for all vehicles, including trucks.
+- Motec: RPM bar temporarily removed.
+- Electronics (new):
+  Displays water temperature conditions, headlight status, engine map, brake bias, ABS, and TC.
+  Also shows overtaking assists such as DRS, Push To Pass, and Overtake (used by Formula X22 and others).
+- Consumption (new):
+  Provides a vehicle consumption overview, with support for liquid fuel, virtual energy, and battery.
+  Displays available amount, per-lap average, and estimated requirement to reach the finish.
+- Race Info: Added display of brake cooling water consumption (used by trucks).
+- CrewChief: Now displays your team name.
+- Driving Aids: Allows switching between HORIZONTAL and VERTICAL modes.
+- Inputs Graph: Line smoothing reduced for more accurate telemetry representation.
+
+PERFORMANCE:
+-------------------------
+All fuel, virtual energy, and battery consumption calculations were rebuilt from scratch. 
+They are now centralized, executed once, and shared across widgets for better performance and consistency.
+
+
+Thank you to everyone who contributed in any way to this project.
+Thank you, Otter (and Sector3/KW), for the care put into creating such a well-thought-out web HUD!
+Moo.
+
 
 THANK YOU:
 ------------------
-Everyone on the forum who has been reporting bugs and helping improve SealHud. 
-Special thanks to some fellas who made suggestions:
-• Jos Snijder
-• Mad Day Man
-• Niismo
-• Pedro Santana
+• Mad Day Man: for creating and designing the prototype of this layout. I'm happy to be able to bring many of your ideas to "code".
+• Pedro Santana: for all the help from the beginning, back when we thought we were going to spend the rest of our lives collecting data.
+• Leonardo Santana: for teaching me how to use GitHub =)
+• Georg Ortner & KW Studios: for assisting and encouraging this project, providing all the means for us to expand the HUD's functionalities! 
+• Many others that welcomed SealHud since day one, and pushed me to fix things and add new features: 
+  Maskerader, S3MØG, Jos Snijder, Mike Kara, Spidybite, ShortyBuzzGER, Niismo, Shay, Marcus, 
+  and so so many others (too many people, BUT THANK YOU!) 
+
 
 SUPPORTERS:
 ------------------
@@ -4359,104 +4435,8 @@ SUPPORTERS:
 If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!
 
 Thanks for using SealHUD! Thanks for driving RaceRoom!
-Diego Junges
-
-
-
-`}
-
-<span style={{fontSize: "27px",}}>
-  {`${"COMPLETE CHANGELOG:"}`}
-</span>
-
-{`
-EVERYTHING WE'VE DONE, SINCE SEPTEMBER 2025
-
-
-VERSION 0.91
-------------------
-- TV Tower / Position Bar: Pit times were being summed, so when a driver performed more than one stop, the pit time was displayed incorrectly. Fixed.
-- Standings Bar: The "position info" block was exploding upwards when showing the position gained/lost. Fixed.
-- Yellow-flag detection: Some improvements for better detection quality.
-- Position Bar: If a race has no incident limit, it will now display "N/A", so the track cut counter remains enabled.
-
-VERSION 0.9
-------------------
-- TV Tower: Intervals between players are now displayed in M:SS.S format. Showing M:SS.SSS was unnecessary.
-- TV Tower / Position Bar: In multiclass races, the pit counter (number of pitstops per driver) was not working. Fixed.
-- TV Tower / Position Bar / Relatives: During yellow-flag situations, slower drivers are now highlighted in yellow.
-- Position Bar: Strength of Field was not accounting for drivers on invalid laps, causing the value to change during the race. The calculation is now consistent and accurate for all drivers.
-- Position Bar: Added information on how many times the player cut the track.
-- Relatives: No new car names had been mapped since 2021. All car names are now up to date.
-- Relatives: The player's name was missing when only two drivers were on track. Fixed.
-- Relatives: The gap was being calculated incorrectly when drivers were one lap ahead or one lap behind. Now, the HUD estimates the gap using the player's best lap.
-- Performance: SealHUD has been restructured. Driver data such as lap information, pit events, and flag events is now centralized, making the HUD lighter and more CPU-efficient.
-
-VERSION 0.8
-------------------
-- Position Bar / TV Tower / Relatives timings: HUGE amount of work went into getting this to work correctly. Now, the gaps between drivers are identical to those in RaceRoom telemetry.
-  Furthermore, there's no more delay in generating times, as everything is done in "live mode". We also no longer need to collect track data for this!
-- Performance modes: Fixed! They simply weren't working and it made no difference which one you chose. Now you can select one of the 3 available modes: 
-  Low Performance (30 fps), Normal (60 fps) and High Performance (90 fps).
-- Inputs Graph Widget: Now user can change the duration time telemetry data will be kept.
-- Inputs Graph Widget: Included "input meters" option, for clutch, brake, throttle and steering wheel. This option extends the widget.
-- Position Bar: "Show penalties" option included. This will show penalties for all drivers in the field.
-- Position Bar: "Show Positions Gain/Loss" option included. 
-- Position Bar: "Show Pit-Status" option included. This will show the number of pit stops for all drivers.
-- TV Tower: "Show penalties" option included. This will show penalties for all drivers in the field.
-- TV Tower: "Show Positions Gain/Loss" option included.
-- Translations: Added and fixed a bunch of things.
-
-VERSION 0.7
-------------------
-- Added track relative timings for Zandvoort 2025.
-- RaceInfo Widget: Now shows "Pit limiter" status info.
-- New Widget: INPUTS GRAPH - Realtime graphic telemetry for throttle, brake and clutch inputs.
-- New donation link.
-
-VERSION 0.6
-------------------
-- Added track data (Name, Layouts, Length, Corner Names, Pit entrance and Pit Spots) for: Circuit de Charade, Circuit De Pau Ville, Circuit Zandvoort (2025),
-  DEKRA Lausitzring GP Course Oval T1, Estoril Circuit, Fliegerhorst Diepholz and Hockenheimring Classic.
-- Added track relative timings for: Interlagos and Circuit de Pau Ville.
-- RaceInfo Widget: Now shows headlights info.
-- Motec Widget: Now always shows electronics, even for cars that doesn't have any (for those it will show: NA)
-- Motec Widget: RPM bar wasn't working. Fixed.
-- Correction on some translations
-
-VERSION 0.5
-------------------
-- RaceInfo Widget: DriveThrough penalties were not working due to a failure to read data from the new API. Now it's fixed!
-- RaceInfo Widget: Slow down penalties now display both the time to give back and the time remaining to serve the penalty.
-- RaceInfo and Motec widgets now displays ABS level changes.
-- Radar now uses an SVG format for better image quality. Thanks to Mad Day Man for the art.
-- Some tweaks on fonts and shadows to make it look cleaner.
-
-VERSION 0.4
-------------------
-- Widgets were moving away from the mouse cursor when dragging them in resolutions other than 1080p. The HUD now supports all resolutions.
-- Added - Track data (Name, Layouts, Length, Corner Names, Pit entrance and Pit Spots) for: AVUS, Alemanring and Donington Park.
-
-VERSION 0.3
-------------------
-- New PNG images for starting lights, more modern-looking, for a change.
-- Fix for retrieving driver rating and reputation from Raceroom (used by SoF and TV Tower)
-
-VERSION 0.2
-------------------
-- Brakebias for hypercars were being displayed during automatic changes. Now it's for manual changes only.
-- For new hypercars, Motec was displaying all automatic changes in brake bias. Now it's manual changes only, as well.
-- Multiplayer ranking button removed, since this feature was no longer working.
-
-VERSION 0.1
-------------------
-- SEALHUD FORK RELEASE: Hello World! =)
-- Added - Interlagos track info (corner names, length, pit spot positions, etc.)
-- Changed QR code to new KW studios forum
-- Embedded fonts (it doesn't load from Google anymore)
-
-      `}
-      </div>
+Diego Junges`}
+    </div>
     );
   }
 
