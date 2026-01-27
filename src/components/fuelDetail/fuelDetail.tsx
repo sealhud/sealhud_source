@@ -760,7 +760,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 
 					{/* ROW 3 — FUEL */}
 					<div className="fuelRow">
-					<div className="cell label">Fuel (L)</div>
+					<div className="cell label">{_('Fuel (L)')}</div>
 
 					<div className={classNames("cell data",this.cellClass(fuel.fuelLeft, fuel.needsFuel))}>
 						{fuel.fuelLeft}

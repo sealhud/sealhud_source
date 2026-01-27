@@ -4362,7 +4362,7 @@ private getChangelog() {
       {`${"VERSION 1.0"}`}
     </span>
 {`
-JANUARY 27, 2025
+JANUARY 27, 2026
 
 WHAT'S NEW:
 -------------------------

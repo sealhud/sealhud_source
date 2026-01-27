@@ -205,47 +205,21 @@ export default class Motec extends React.Component<IProps, {}> {
 								<div className="truckGearWrapper">
 									<span>{gearLabel}</span>
 
-									<span
-										className={classNames(
-											"truckGearSplit",
-											"low",
-											{ active: split === 'L' }
-										)}
-									>
+									<span className={classNames("truckGearSplit","low",{ active: split === 'L' })}>
 										L
 									</span>
-									<span
-										className={classNames(
-											"truckGearSplit",
-											"high",
-											{ active: split === 'H' }
-										)}
-									>
+									<span className={classNames("truckGearSplit","high",{ active: split === 'H' })}>
 										H
 									</span>
 
-									<span
-										className={classNames(
-											"truckGearRange",
-											"low",
-											{ active: range === 'LO' }
-										)}
-									>
+									<span className={classNames("truckGearRange","low",{ active: range === 'LO' })}>
 										LO
 									</span>
-									<span
-										className={classNames(
-											"truckGearRange",
-											"high",
-											{ active: range === 'HI' }
-										)}
-									>
+									<span className={classNames("truckGearRange","high",{ active: range === 'HI' })}>
 										HI
 									</span>
 								</div>
-							) : (
-								gearLabel
-							)
+							) : (gearLabel)
 						)}
 					</div>
 
@@ -259,6 +233,21 @@ export default class Motec extends React.Component<IProps, {}> {
 					</div>
 
 				</div>
+				{/* RPM BAR*/}
+				{((this.engineState > 0) || showAllMode) && (
+					<div className="rpm">
+						<div
+						className={classNames("rpmBar", {
+							upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
+							redline: this.rpm > this.maxRpm * 0.96,
+							disabled: this.engineState === 0 && !showAllMode,
+						})}
+						style={{
+							width: `${showAllMode ? 50 : (this.rpm / this.maxRpm) * 100}%`,
+						}}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}

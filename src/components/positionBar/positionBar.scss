@@ -295,7 +295,6 @@
 .positionBarContainer.normal .sessionTime .sessionRemainHoursText {
 	display: inline-block;
 	font-size: 15px;
-	font-weight: 700;
 	color: silver
 }
 
@@ -307,7 +306,6 @@
 .positionBarContainer.normal .sessionTime .sessionRemainMinutesText {
 	display: inline-block;
 	font-size: 15px;
-	font-weight: 700;
 	color: silver
 }
 
@@ -319,7 +317,6 @@
 .positionBarContainer.normal .sessionTime .sessionRemainSecondsText {
 	display: inline-block;
 	font-size: 15px;
-	font-weight: 700;
 	color: silver
 }
 
@@ -338,8 +335,8 @@
 }
 
 .positionBarContainer.normal .sessionTime {
-	width: 120px;
-	right: 10px
+	width: 125px;
+	right: 8px
 }
 
 .positionBarContainer.normal .incidentPoints {

@@ -1272,7 +1272,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 					<span className="mono">
 					<div className="sessionRemainHours">
 						{showAllMode
-						? "2"
+						? "23"
 						: formatTime(this.sessionTimeRemaining, "H")}
 					</div>
 					<div className="sessionRemainHoursText">{`${"H"}`}</div>
