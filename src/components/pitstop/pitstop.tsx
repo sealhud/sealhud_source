@@ -310,8 +310,8 @@ export default class Pitstop extends React.Component<IProps, {}> {
 		const invalidStartAndEnd =
 			this.pitWindowStart === -1 && this.pitWindowEnd === -1;
 		
-		const green = 'rgba(48, 180, 48, 0.8)';
-		const red = 'rgba(214, 27, 27, 0.8)';
+		const green = 'rgba(44, 148, 44, 0.8)';
+		const red = 'rgba(161, 36, 36, 0.8)';
 		const purple = 'rgba(139, 24, 192, 0.8)';
 		const blue = 'rgba(40, 55, 190, 0.8)';
 		const black = 'rgba(0, 0, 0, 0)';

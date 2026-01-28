@@ -26,11 +26,11 @@
   //border-radius: 10px;
 }
 .pitInfo .title {
-  font-size: 40px;
+  font-size: 35px;
   padding: 0 0 5px;
 }
 .pitInfo .left {
-  font-size: 28px;
+  font-size: 23px;
   opacity: 0.75;
 }
 .pitInfoFixed {
@@ -49,6 +49,7 @@
 .pitInfoFixed .tasks {
   display: flex;
   height: 70px;
+  margin-top: 20px;
 }
 .pitInfoFixed .tasks .task {
   flex: auto;
@@ -63,7 +64,6 @@
 }
 .pitInfoFixed .title {
   font-size: 20px;
-  padding: 0 0 5px;
 }
 .pitInfoFixed .left {
   opacity: 0.5;
@@ -73,7 +73,7 @@
   display: inline-block;
   width: 700px;
   //border-radius: 5px;
-  margin: 0 10px 10px;
+  margin: 0px 10px 10px;
 }
 .pitInfoFixed .barContainer .bar {
   height: 4px;
@@ -111,29 +111,29 @@
   width: 700px;
   background: hsla(0, 0%, 81%, 0.6);
   //border-radius: 5px;
-  margin: 90px 10px 10px;
+  margin: 102px 10px 10px;
 }
 .pitMinInfoFixed .pitMinBarContainer .minBar {
-  height: 40px;
+  height: 34px;
   //border-radius: 5px;
   background: #fff;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 .pitMinInfoFixed .minPitTime {
   position: absolute;
-  top: 95px;
+  top: 105px;
   left: 50%;
   width: 100%;
-  font-size: 30px;
+  font-size: 28px;
   transform: translate(-50%, 10px);
   //text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.8);
 }
 .pitMenuInfoBox {
   position: absolute;
   width: 25.3%;
-  height: 33%;
+  height: 36%;
   right: 0.5%;
-  top: 30.5%;
+  top: 29%;
   border: 1px solid #1a1a1a;
   background: hsla(0, 0%, 35%, 0.6)
 }
@@ -144,7 +144,7 @@
   right: 0;
   white-space: wrap;
   font-weight: 500;
-  color: #000;
+  color: #000000;
   font-style: normal;
   font-size: 50px;
   text-align: center;

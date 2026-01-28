@@ -1045,7 +1045,7 @@ export default class Progress extends React.Component<IProps, {}> {
 			return null;
 		}
 		const purple = 'rgb(150, 60, 150)';
-		const green = 'rgb(16, 170, 62)';
+		const green = 'rgb(19, 131, 53)';
 		const gray = 'rgb(102, 102, 102)';
 
 		return (

@@ -1,7 +1,6 @@
 # SealHUD
 
-SealHUD is an advanced web-based HUD for **RaceRoom Racing Experience**, originally inspired by the discontinued **OtterHud** project.  
-Since its creation, SealHUD has evolved far beyond the original code — featuring redesigned widgets, updated telemetry integration, and many improvements and fixes.
+SealHUD is an advanced web-based HUD for **RaceRoom Racing Experience** featuring redesigned widgets, updated telemetry integration, and many improvements and fixes.
 
 ---
 

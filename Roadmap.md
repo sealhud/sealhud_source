@@ -1,16 +1,13 @@
-- Temperatura de Oleo
-- Temperatura de Motor
 - Alterar o widget dos pneus
-- Musica quando ganha corrida
 - Delta a partir da primeira volta
-- (Pedro) - Delta continua quando invalida ((no Rehud existe essa função que é configurada ou não)) - Relative-Times Branch
-- (Diego) - so for example i would like to see tyre wear instead 99% to be 99,11% this way i can see on which corner i have the most wear and so i can try how to dave tyre
+- Delta usando all time best
+- Delta continua quando invalida ((no Rehud existe essa função que é configurada ou não))
+- So for example i would like to see tyre wear instead 99% to be 99,11% this way i can see on which corner i have the most wear and so i can try how to dave tyre
 - Something else for suggestions.TXT: could you make the “all widgets off” setting an option when cycling through views 1,2,3? I’d like to have just one button bound to cycle through all the views, but don’t want to sacrifice one of the three layouts. Thanks!
-- Verificar glitch relatado com overlay discord. (Relatado no canal por vipersonix: Dear Sealhudders, is there a way to fix discord glitching when focused on the game? i have a great time when focused on the game but then on 2nd screen discord visually glitches out to black or gray, until certain amount of time passed or i focus on it.) Pode ser comportamento causado pelo webhud em si (raceroom browser), e não pelo sealhud.
-- Some Ideas: Is it possible to show the HUD after a race is finished? When i play Multiplayer and finish the race, i sometimes want to check how much fuel is left or tire use, sure could look shortly before finishing but just forget it sometimes :D
-Another thing: Would it be possible to show a widget just when crossing start finish, like the vanilla standings, when you set the HUD to important information only? Maybe as an option to the widgets in general. Would be great if you look for immersion in general and just need info from time to time. Sure could also be made with hiding the HUD manually, but as before, would be just cool to have. Thinking about it, this might get a new visualization. 
+- Another thing: Would it be possible to show a widget just when crossing start finish, like the vanilla standings, when you set the HUD to important information only? Maybe as an option to the widgets in general. Would be great if you look for immersion in general and just need info from time to time. Sure could also be made with hiding the HUD manually, but as before, would be just cool to have. Thinking about it, this might get a new visualization. 
 - RaceInfo: Corrigir bug do Driver Through. Está resetando o contador de voltas quando pausa a corrida.
-- RaceInfo (MP): Precisa estar ativo antes da corrida iniciar 
-- Corrigir comportamento do Delta na corrida. quando entra no box , aparece 1 Lap
-- Delta exibe uma linha preta estranha, verificar.
 - Position Bar: está travada no formato 16:9
+- Separar Position Bar e Criar a Standings Bar
+- Melhorar visual do widget de danos, fontes são finas demais
+- Rever cores do widget delta. O verde está muito claro?
+- Fuel Details: Habilitar novamente as opções de clear na troca de sessão
