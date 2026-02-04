@@ -897,7 +897,7 @@ const translations = {
 		"Team Radio": "Radio Equipe",
 		"Telemetry": "Télémétrie",
 		"This lap will not count": "Ce tour ne comptera pas",
-		"Throttle": "Étrangler",
+		"Throttle": "Accélérateur",
 		"Time Deduction Penalty": "Pénalité - de Temps",
 		"Time Estim.": "Temps Est",
 		"Time Estimate": "Est. du Temps",
