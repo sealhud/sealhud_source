@@ -1,3 +1,23 @@
+	1.02
+	----------
+	WIDGETS:
+	- Pit Limiter: Widget was redesigned.
+	- Fuel Details: Lap times were being incorrectly registered sometimes. Fixed.
+
+	1.01
+	----------
+	WIDGETS:
+	- Delta: A few color changes to make it less green.
+	- Motec: RPM bar is fixed.
+
+	HOTFIX:
+	- Fuel Details: V.E. consumption for last lap was not being converted to %. Fixed. (thanks I ///M Back for report this)
+	- Translations: 'km/h' and 'mph' are the international standards, so any 'KpH' and 'MPH' were removed. (thanks Linx-ESP)
+
+	PERFORMANCE:
+	This is very important. Previously, the HUD obtained player ratings directly from the RaceRoom API. This generated very high consumption and was very bad to the game's ecosystem and servers. 
+	Now, we use a mirror database, updated every 3 hours.
+
 	1.00
 	----------
 	SealHUD is not a fork anymore.

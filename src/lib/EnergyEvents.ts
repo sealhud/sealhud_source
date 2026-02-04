@@ -209,7 +209,7 @@ export class EnergyEvents {
       const veUsed = this.lapStartVE - veNow;
 
       if (!this.lapInvalid && veUsed > 0) {
-        this.lastLapVE = veUsed;
+        this.lastLapVE = (veUsed / r3e.data.VirtualEnergyCapacity) * 100;
         this.updateVEAvg(veUsed);
       }
     }

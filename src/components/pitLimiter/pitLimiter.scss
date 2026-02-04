@@ -5,25 +5,63 @@
   display: none;
   position: absolute;
   top: 200px;
-  background: rgba(0, 0, 0, 0.75);
-  border-radius: 0px;
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgb(163, 163, 163, 0.7));
+  border: 3px solid rgb(37, 37, 37);
+  border-radius: 5px;
   transform: translateX(-50%);
   text-align: center;
-  padding: 10px;
+  padding: 8px;
+  width: 200px;
+  font-size: 13px;	
+  color: #222222;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 .pitLimiter * {
   margin: 0;
 }
+
+.pitLimiter .label {
+	margin-bottom: 5px;  
+	font-weight: bold;
+    text-transform: uppercase;    
+	letter-spacing: 1px;  
+}
+
+.pitLimiter .speedSign {
+	width: 75px;
+	height: 75px;
+	margin: 0 auto;
+	background: #fff;
+	border: 6px solid rgb(133, 0, 0);
+	border-radius: 50%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
+
+.pitLimiter .speedValue {
+	font-size: 32px;
+	font-weight: bold;
+	line-height: 1;
+}
+
+.pitLimiter .speedUnit {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: lowercase;
+}
+
 .pitLimiter.shouldShow {
   display: block;
 }
 .pitLimiter .max {
-  font-size: 20px;
-  padding: 0 5px 5px;
+  padding: 0px 0 5px;
 }
 .pitLimiter .current {
-  opacity: 0.75;
+  color: #222222;
 }
 .pitLimiter.warning {
-  background: rgba(119, 0, 0, 0.75);
+  background: rgba(255, 156, 156, 0.719);
 }

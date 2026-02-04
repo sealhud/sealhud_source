@@ -4,6 +4,7 @@ import {
 	showDebugMessageSmall,
 } from './../lib/utils';
 import { observable } from "mobx";
+import { EEngineType } from './../types/r3eTypes';
 
 interface FuelPersistedData {
   avgFuelPerLap1x?: number;
@@ -203,11 +204,11 @@ export class FuelEvents {
   private static closeLap() {
     const fuelNow = r3e.data.FuelLeft;
     const used = this.lapStartFuel - fuelNow;
+    const isElectric = r3e.data.VehicleInfo.EngineType === EEngineType.Electric;
 
-    const valid =
-      !this.lapInvalid &&
-      used >= 0 &&
-      used <= r3e.data.FuelCapacity;
+    const valid = isElectric
+      ? !this.lapInvalid
+      : !this.lapInvalid && used > 0 && used <= r3e.data.FuelCapacity;
 
     if (valid) {
       const mult = this.getFuelMultiplier();

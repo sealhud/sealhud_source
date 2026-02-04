@@ -228,7 +228,7 @@ export default class Motec extends React.Component<IProps, {}> {
 					<div className="motecBox speedBox">
 						<span className="speedValue">{speedValue}</span>
 						<span className="speedUnit">
-							{!this.speedKPH ? "MpH" : "KpH"}
+							{!this.speedKPH ? "mph" : "km/h"}
 						</span>
 					</div>
 

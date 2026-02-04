@@ -722,7 +722,7 @@ export default class FuelDetail extends React.Component<IProps, {}> {
 		FuelEvents.avgSpeedMs !== null
 			? this.speedKPH
 				? mpsToKph(FuelEvents.avgSpeedMs).toFixed() + " km/h"
-				: mpsToMph(FuelEvents.avgSpeedMs).toFixed() + " mi/h"
+				: mpsToMph(FuelEvents.avgSpeedMs).toFixed() + " mph"
 			: "-";
 		return (
 			<>

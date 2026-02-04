@@ -131,11 +131,67 @@ export function getSlotIds() {
 	eCurrentSlotId = currentSlotId;
 }
 
+
+const RATINGS_URL =
+  'https://raw.githubusercontent.com/sealhud/sealhud.github.io/ratings-cache/public/raceroom/ratings.json';
+let ratingsCache: any[] | null = null;
+let ratingsLoading: Promise<any[]> | null = null;
+
+async function loadRatings(): Promise<any[]> {
+  if (ratingsCache) return ratingsCache;
+
+  if (!ratingsLoading) {
+    ratingsLoading = fetch(RATINGS_URL,{ cache: 'force-cache' })
+      .then((r: Response) => r.json())
+      .then((json: any) => {
+        if (!Array.isArray(json)) {
+          throw new Error('ratings.json is not an array');
+        }
+        ratingsCache = json;
+        return json;
+      })
+      .finally(() => {
+        ratingsLoading = null;
+      });
+  }
+
+  return ratingsLoading!;
+}
+
+export async function getJason() {
+  rankData = [];
+
+  let allRatings: any[];
+
+  try {
+    allRatings = await loadRatings();
+  } catch (err) {
+    console.warn('[getJason] Failed to load ratings cache', err);
+    return;
+  }
+
+  const sessionUserIds = new Set<number>();
+
+  for (const driver of r3e.data.DriverData) {
+    const userId = driver.DriverInfo.UserId;
+    if (userId !== -1) {
+      sessionUserIds.add(userId);
+    }
+  }
+
+  for (const rating of allRatings) {
+    if (sessionUserIds.has(rating.UserId)) {
+      rankData.push(rating);
+    }
+  }
+}
+
+/*
 export async function getJason() {
   if (rankList.length === 0) {
     try {
       const res = await fetch(
-        `https://corsproxy.io/?${encodeURIComponent(
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
           'https://game.raceroom.com/multiplayer-rating/ratings.json'
         )}`
       );
@@ -172,7 +228,7 @@ export async function getJason() {
     ) {
       try {
         const resp = await fetch(
-          `https://corsproxy.io/?${encodeURIComponent(
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
             `https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
           )}`
         );
@@ -191,6 +247,31 @@ export async function getJason() {
     }
   }
 }
+*/
+
+export function getRankingData(userId: number) {
+  if (userId === -1 || rankData.length === 0) {
+    return defaultRanking(userId);
+  }
+
+  const found = rankData.find(r => r.UserId === userId);
+  return found ?? defaultRanking(userId);
+}
+
+function defaultRanking(userId: number) {
+  return {
+    UserId: userId,
+    Username: 'none',
+    Fullname: 'none',
+    Rating: 1500,
+    ActivityPoints: 0,
+    RacesCompleted: 0,
+    Reputation: 0,
+    Country: 'none',
+    Team: 'none'
+  };
+}
+
 
 export function computeRealLapDiff(
   meLaps: number,
@@ -204,41 +285,6 @@ export function computeRealLapDiff(
   else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
 
   return lapDiff;
-}
-
-
-export function getRankingData(userId: number) {
-  if (userId === -1 || rankData.length === 0) {
-    return {
-      UserId: userId,
-      Username: 'none',
-      Fullname: 'none',
-      Rating: 1500,
-      ActivityPoints: 0,
-      RacesCompleted: 0,
-      Reputation: 0,
-      Country: 'none',
-      Team: 'none'
-    };
-  }
-
-  for (let i = rankData.length; i--;) {
-    if (rankData[i].UserId === userId) {
-      return rankData[i];
-    }
-  }
-
-  return {
-    UserId: userId,
-    Username: 'none',
-    Fullname: 'none',
-    Rating: 1500,
-    ActivityPoints: 0,
-    RacesCompleted: 0,
-    Reputation: 0,
-    Country: 'none',
-    Team: 'none'
-  };
 }
 
 export function fancyTimeFormatGap(
@@ -695,7 +741,7 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	el.style.color = '#fff';
 	el.style.fontSize = '30px';
 	el.style.position = 'fixed';
-	el.style.top = '50%';
+	el.style.top = '790px';
 	el.style.left = '50%';
 	el.style.background = 'rgba(0,0,0,0.6)';
 	el.style.textShadow = '2px 2px 0 rgba(0,0,0,0.5)';

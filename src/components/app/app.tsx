@@ -140,7 +140,7 @@ export {
   eIsDynamicBbias,
 };
 // Hud Version
-const currentVersion = 1.0;
+const currentVersion = 1.01;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -2183,7 +2183,7 @@ export default class App extends React.Component<IProps> {
   @action
   private parseRankingData = () => {
     // console.log('TRYING TO FETCH RANKING DATA');
-    if (rankData.length <= 0) {
+    if (rankData.length <= 0 && !showAllMode) {
       getJason();
     }
     if (rankData.length <= 0) {
@@ -3715,11 +3715,11 @@ export default class App extends React.Component<IProps> {
             <span>{_("Speed:")}</span>
             <button
               className={classNames("smallOption", {active: this.speedInKPH,})} onClick={this.altSpeed}>
-              KpH
+              km/h
             </button>
             <button
               className={classNames("smallOption", {active: !this.speedInKPH,})} onClick={this.altSpeed}>
-              MpH
+              mph
             </button>
           </div>
 
@@ -4359,21 +4359,81 @@ private getChangelog() {
   return (
   <div className="">
     <span style={{fontSize: "27px",}}>
-      {`${"VERSION 1.0"}`}
+      {`${"VERSION "}`+currentVersion}
     </span>
 {`
-JANUARY 27, 2026
+JANUARY 31, 2026
+
+
+PLEASE READ:
+-------------------------
+After the SealHUD 1.0 update, some widgets became too large, too small or are not showing up. 
+To fix this, use the button 'RESET SETTINGS' (settings menu) and all widgets will be repositioned correctly.
+
 
 WHAT'S NEW:
 -------------------------
-SealHUD is not a fork anymore. And now the HUD supports all RaceRoom vehicles, including trucks.
+HOTFIX:
+- Fuel Details: V.E. consumption for last lap was not being converted to %. Fixed. (thanks I ///M Back for report this)
+- Translations: 'km/h' and 'mph' are the international standards, so any 'KpH' and 'MPH' were removed. (thanks Linx-ESP)
 
-ATTENTION:
+WIDGETS:
+- Delta: A few color changes to make it less green.
+- Motec: RPM bar is fixed.
+
+PERFORMANCE:
+This is very important. Previously, the HUD obtained player ratings directly from the RaceRoom API. 
+This generated very high consumption and was very bad to the game's ecosystem and servers. 
+Now, we use a mirror database, updated every 3 hours.
+
+
+Thanks for using SealHUD. Thanks for driving RaceRoom.
+Drive safe.
+Diego Junges
+
+
+THANK YOU:
 -------------------------
-As this is a major HUD update, previous data (fuel consumption, lap times, etc.) will be lost.
-I apologize for this, but it is for your own good!
+• Mad Day Man: for creating and designing the prototype of this layout. I'm happy to be able to bring many of your ideas to "code".
+• Pedro Santana: for all the help from the beginning, back when we thought we were going to spend the rest of our lives collecting data.
+• Leonardo Santana: for teaching me how to use GitHub =)
+• Georg Ortner & KW Studios: for assisting and encouraging this project, providing all the means for us to expand the HUD's functionalities! 
+• Many others that welcomed SealHud since day one, and pushed me to fix things and add new features: 
+  Maskerader, S3MØG, Jos Snijder, Mike Kara, Spidybite, ShortyBuzzGER, Niismo, Shay, Marcus, 
+  and so so many others (too many people, BUT THANK YOU!) 
 
-UI:
+
+SUPPORTERS:
+-------------------------
+• Christian Birkenbach
+• Martin Prinda
+• Rado Obrtal
+• Alexander Samardzic
+• Martin Decker
+• Marcus Stoffels
+• Stuart Tennant
+• Donald Hunter
+• Hans-Jörg Mächler
+• Jos Snijder
+
+If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!
+
+Thanks for using SealHUD! Thanks for driving RaceRoom!
+Diego Junges
+
+
+
+`}
+
+<span style={{fontSize: "27px",}}>
+  {`${"COMPLETE CHANGELOG:"}`}
+</span>
+
+{`
+PAST CHANGES:
+
+
+VERSION 1.0
 -------------------------
 - Entirely redesigned Widgets: Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, and Delta.
 - New interface for the settings screen and widget selection.
@@ -4381,9 +4441,6 @@ UI:
 - Widget drag grid is now CSS-based (lighter and cleaner).
 - New widgets added: ELECTRONICS and CONSUMPTION.
 - Removed widgets: P2P/DRS and FUEL.
-
-WIDGETS:
--------------------------
 - Fuel & Lap Details: Now also displays virtual energy consumption data.
 - Fuel & Lap Details: Calculator now includes virtual energy estimates.
 - Fuel & Lap Details: Fixed a bug that caused some laps not to be recorded.
@@ -4399,43 +4456,13 @@ WIDGETS:
 - CrewChief: Now displays your team name.
 - Driving Aids: Allows switching between HORIZONTAL and VERTICAL modes.
 - Inputs Graph: Line smoothing reduced for more accurate telemetry representation.
-
-PERFORMANCE:
--------------------------
-All fuel, virtual energy, and battery consumption calculations were rebuilt from scratch. 
-They are now centralized, executed once, and shared across widgets for better performance and consistency.
+- Performance: All fuel, virtual energy, and battery consumption calculations were rebuilt from scratch. 
+  They are now centralized, executed once, and shared across widgets for better performance and consistency.
 
 
-Thank you to everyone who contributed in any way to this project.
-Thank you, Otter (and Sector3/KW), for the care put into creating such a well-thought-out web HUD!
-Moo.
+`}
 
 
-THANK YOU:
-------------------
-• Mad Day Man: for creating and designing the prototype of this layout. I'm happy to be able to bring many of your ideas to "code".
-• Pedro Santana: for all the help from the beginning, back when we thought we were going to spend the rest of our lives collecting data.
-• Leonardo Santana: for teaching me how to use GitHub =)
-• Georg Ortner & KW Studios: for assisting and encouraging this project, providing all the means for us to expand the HUD's functionalities! 
-• Many others that welcomed SealHud since day one, and pushed me to fix things and add new features: 
-  Maskerader, S3MØG, Jos Snijder, Mike Kara, Spidybite, ShortyBuzzGER, Niismo, Shay, Marcus, 
-  and so so many others (too many people, BUT THANK YOU!) 
-
-
-SUPPORTERS:
-------------------
-• Alexander Samardzic
-• Martin Decker
-• Marcus Stoffels
-• Stuart Tennant
-• Donald Hunter
-• Hans-Jörg Mächler
-• Jos Snijder
-
-If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!
-
-Thanks for using SealHUD! Thanks for driving RaceRoom!
-Diego Junges`}
     </div>
     );
   }

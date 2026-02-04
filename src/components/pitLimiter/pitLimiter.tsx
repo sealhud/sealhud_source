@@ -77,7 +77,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		/*if (
+		if (
 			(
 				highPerformanceMode &&
 				nowCheck - this.lastCheck >= 33
@@ -91,7 +91,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 				!highPerformanceMode &&
 				nowCheck - this.lastCheck >= 66
 			)
-		)*/ {
+		) {
 			this.lastCheck = nowCheck;
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;
@@ -136,7 +136,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 		// this.currentDifference
 		let proc = Math.min(
 			((this.pitBoxSpotDistance / this.pitMaxDistance) * 100) + 2,
-			100
+			90
 		);
 		if (minus) { proc -= 1; }
 		return `${showAllMode
@@ -185,15 +185,22 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 				})}
 			>
 				<div className="max">
-					{_('In Pit Lane')}:{' '}
-					<span className="mono">{this.pitlaneMax.toFixed(0)}</span>{' '}
-					{
-						`${
-							!this.speedKPH
-							?	_('Mph')
-							:	_('Kph')
-						}`
-					}
+					<div className="label">
+						{_('In Pit Lane')}
+					</div>
+
+					<div className="speedSign">
+						<div className="speedValue mono">
+							{this.pitlaneMax.toFixed(0)}
+						</div>
+						<div className="speedUnit">
+							{
+								!this.speedKPH
+								? 'mph'
+								: 'km/h'
+							}
+						</div>
+					</div>
 				</div>
 				<div className="current">
 					{_('Current speed')}:{' '}
@@ -203,8 +210,8 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 					{
 						`${
 							!this.speedKPH
-							?	_('Mph')
-							:	_('Kph')
+							?	'mph'
+							:	'km/h'
 						}`
 					}
 				</div>
@@ -222,7 +229,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 						<div
 							className="boxEntranceDistance"
 							style={{
-								padding: '10px'
+								padding: '5px'
 							}}
 						>
 							{_('Pit-Entrance')}:{' '}
@@ -245,9 +252,6 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 					(
 						<div
 							className="spotDistance"
-							style={{
-								padding: '5px 0 0 0'
-							}}
 						>
 							{_('Pit-Spot in')}:{' '}
 							<span className="mono">
@@ -292,9 +296,9 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 									top: '50%',
 									left: '50%',
 									transform: 'translate(-50%, -50%)',
-									backgroundColor: 'white',
+									backgroundColor: '#202020',
 									overflow: 'hidden',
-									position: 'relative'
+									position: 'relative',
 								}}
 							/>
 							<div
@@ -307,7 +311,7 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 									top: '50%',
 									left: '50%',
 									transform: 'translate(-50%, -50%)',
-									backgroundColor: 'rgb(0, 140, 0)',
+									backgroundColor: 'rgb(19, 19, 19)',
 									overflow: 'hidden',
 									position: 'absolute'
 								}}
@@ -316,11 +320,11 @@ export default class PitLimiter extends React.Component<IProps, {}> {
 								className="MovingBlocks"
 								style={{
 									display: 'block',
-									borderRight: '1px solid white',
-									borderLeft: '1px solid white',
-									borderRadius: '3px',
+									borderRight: '1px solid #202020',
+									borderLeft: '1px solid #202020',
+									borderRadius: '0px',
 									width: this.getBarWidth(),
-									height: '11px',
+									height: '5px',
 									top: '50%',
 									left: '50%',
 									transform: 'translate(-50%, -50%)',
