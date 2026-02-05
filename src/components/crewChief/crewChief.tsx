@@ -4,7 +4,8 @@ import {
 	getInitials,
 	base64ToString,
 	getRankingData,
-	rankData	
+	rankData,
+	showDebugMessageSmall
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
@@ -128,6 +129,9 @@ export default class CrewChief extends React.Component<IProps, {}> {
 			if (ranking.Team !== 'none') {
 				this.teamName = ranking.Team;
 			}
+			//const usr = getRankingData(9112515);
+			//showDebugMessageSmall(`id:${usr.UserId} n:${usr.Fullname} r:${usr.Rating} r:${usr.Reputation}`, 10000);
+
 		}
 	};
 

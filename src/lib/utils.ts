@@ -132,8 +132,11 @@ export function getSlotIds() {
 }
 
 
-const RATINGS_URL =
-  'https://raw.githubusercontent.com/sealhud/sealhud.github.io/ratings-cache/public/raceroom/ratings.json';
+const RATINGS_BASE_URL =
+  'https://raw.githubusercontent.com/sealhud/sealhud.github.io/ratings-cache/public/raceroom';
+const RATINGS_URL = `${RATINGS_BASE_URL}/ratings.json`;
+const RATINGS_VERSION_URL = `${RATINGS_BASE_URL}/ratings.version`;
+
 let ratingsCache: any[] | null = null;
 let ratingsLoading: Promise<any[]> | null = null;
 
@@ -141,22 +144,36 @@ async function loadRatings(): Promise<any[]> {
   if (ratingsCache) return ratingsCache;
 
   if (!ratingsLoading) {
-    ratingsLoading = fetch(RATINGS_URL,{ cache: 'force-cache' })
-      .then((r: Response) => r.json())
-      .then((json: any) => {
-        if (!Array.isArray(json)) {
-          throw new Error('ratings.json is not an array');
-        }
-        ratingsCache = json;
-        return json;
+    ratingsLoading = (async () => {
+      // 1) Search for version without cache
+      const version = await fetch(RATINGS_VERSION_URL, {
+        cache: 'no-store'
       })
-      .finally(() => {
-        ratingsLoading = null;
-      });
+        .then((r: Response) => r.text())
+        .then((v: string) => v.trim());
+
+      // 2) Use the version to break big JSON cache
+      const url = `${RATINGS_URL}?v=${version}`;
+
+      // 3) Search on JSON (now cached)
+      const json = await fetch(url, {
+        cache: 'force-cache'
+      }).then((r: Response) => r.json());
+
+      if (!Array.isArray(json)) {
+        throw new Error('ratings.json is not an array');
+      }
+
+      ratingsCache = json;
+      return json;
+    })().finally(() => {
+      ratingsLoading = null;
+    });
   }
 
-  return ratingsLoading!;
+  return ratingsLoading;
 }
+
 
 export async function getJason() {
   rankData = [];
@@ -176,6 +193,7 @@ export async function getJason() {
     const userId = driver.DriverInfo.UserId;
     if (userId !== -1) {
       sessionUserIds.add(userId);
+	  //sessionUserIds.add(9112515);
     }
   }
 
