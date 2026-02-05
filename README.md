@@ -1,19 +1,21 @@
 # SealHUD
 
-SealHUD is an advanced web-based HUD for **RaceRoom Racing Experience** featuring redesigned widgets, updated telemetry integration, and many improvements and fixes.
+**SealHUD** is a modern and advanced web-based HUD for **RaceRoom Racing Experience**.
+
+Originally inspired by the OtterHud project, SealHUD is now a fully independent project with its own identity, architecture, and long-term vision, focused on stability, customization, and continuous evolution.
 
 ---
 
 ## 🧩 About the Project
 
-SealHUD continues the legacy of OtterHud while introducing major updates, such as:
+SealHUD is an actively maintained project that delivers a modern HUD experience for the RaceRoom community, featuring:
 
-- Reworked and modernized widgets  
-- Additional telemetry data and improved accuracy  
-- Updated compatibility with the latest RaceRoom versions  
-- Ongoing improvements and maintenance by the SealHUD Team  
+- Redesigned and modernized widgets  
+- Improved telemetry integration and data accuracy  
+- Compatibility with the latest RaceRoom versions  
+- Ongoing maintenance and feature improvements by the SealHUD Team  
 
-This project aims to provide a stable, customizable, and modern HUD experience for the RaceRoom community.
+The goal is to provide a reliable, flexible, and future-proof HUD for sim racers.
 
 ---
 
@@ -34,16 +36,17 @@ Every improvement helps the community.
 
 ---
 
-## 💬 Discussion
+## 💬 Discussion & Updates
 
-You can follow updates and discussions about SealHUD here:  
+You can follow news, updates, and discussions about SealHUD here:
+
 🔗 [KW Studios Forum Thread](https://forum.kw-studios.com/index.php?threads/sealhud-webhud.20675/)
 
 ---
 
 ## ⚖️ License & Credits
 
-> **Note:** All the code in this project is licensed under the [MIT License](LICENSE).
+> **Note:** All code in this project is licensed under the [MIT License](LICENSE).
 
 © 2026 **Diego Junges** and SealHUD contributors.
 
@@ -51,8 +54,8 @@ You can follow updates and discussions about SealHUD here:
 
 ## ☕ Support the Project
 
-If you enjoy using SealHUD and would like to support continued development, you can contribute to future updates and improvements.  
-Donations will help maintain the project and reward ongoing development efforts.
+If you enjoy using SealHUD and would like to support continued development, donations are greatly appreciated.  
+Your support helps maintain the project and fund future improvements.
 
 🔗 [PayPal Donation Link](https://www.paypal.com/donate/?hosted_button_id=85SPZAJT797MS)
 
