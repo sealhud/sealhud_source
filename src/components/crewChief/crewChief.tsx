@@ -5,7 +5,7 @@ import {
 	base64ToString,
 	getRankingData,
 	rankData,
-	showDebugMessageSmall
+	//showDebugMessageSmall
 } from './../../lib/utils';
 import {
 	IWidgetSetting,

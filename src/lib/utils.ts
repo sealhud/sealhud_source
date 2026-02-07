@@ -26,7 +26,7 @@ let ePlayerDriverDataIndex = -1;
 let ePlayerIsFocus = false;
 let eCurrentSlotId = -1;
 let rankData: IRatingData[] = [] as any;
-const rankList: number[] = [];
+//const rankList: number[] = [];
 
 export {
 	rankData,

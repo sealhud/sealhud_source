@@ -1,8 +1,11 @@
 	1.02
 	----------
 	WIDGETS:
-	- Pit Limiter: Widget was redesigned.
-	- Fuel Details: Lap times were being incorrectly registered sometimes. Fixed.
+	- Pit Limiter: Widget has been redesigned.
+	- Fuel Details: Lap times were being recorded incorrectly in some cases. Fixed.
+
+	PERFORMANCE:
+	- Ratings and SoF: Data was frozen due to the RaceRoom browser's caching system. A timestamp system was created to force the browser to update. (Thanks Steven Savino and Samuel Travieso)
 
 	1.01
 	----------
