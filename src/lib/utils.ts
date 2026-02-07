@@ -26,7 +26,7 @@ let ePlayerDriverDataIndex = -1;
 let ePlayerIsFocus = false;
 let eCurrentSlotId = -1;
 let rankData: IRatingData[] = [] as any;
-//const rankList: number[] = [];
+const rankList: number[] = [];
 
 export {
 	rankData,
@@ -132,164 +132,65 @@ export function getSlotIds() {
 }
 
 
-const RATINGS_BASE_URL =
-  'https://raw.githubusercontent.com/sealhud/sealhud.github.io/ratings-cache/public/raceroom';
-const RATINGS_URL = `${RATINGS_BASE_URL}/ratings.json`;
-const RATINGS_VERSION_URL = `${RATINGS_BASE_URL}/ratings.version`;
+// se parar de funcionar, precisa achar novo proxy cors ... antes era usado o https://corsproxy.io/? que parecia ser mais rápido
+export async function getJason() {
+	rankData = [];
 
-let ratingsCache: any[] | null = null;
-let ratingsLoading: Promise<any[]> | null = null;
+	const requests = r3e.data.DriverData
+		.map(d => d.DriverInfo.UserId)
+		.filter(id => id !== -1)
+		.map(userId =>
+		fetch(
+			`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
+			`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
+			)}`
+		)
+			.then((r: Response) => r.json())
+			.catch(() => null)
+		);
 
-async function loadRatings(): Promise<any[]> {
-  if (ratingsCache) return ratingsCache;
+	const results = await Promise.all(requests);
 
-  if (!ratingsLoading) {
-    ratingsLoading = (async () => {
-      // 1) Search for version without cache
-      const version = await fetch(RATINGS_VERSION_URL, {
-        cache: 'no-store'
-      })
-        .then((r: Response) => r.text())
-        .then((v: string) => v.trim());
-
-      // 2) Use the version to break big JSON cache
-      const url = `${RATINGS_URL}?v=${version}`;
-
-      // 3) Search on JSON (now cached)
-      const json = await fetch(url, {
-        cache: 'force-cache'
-      }).then((r: Response) => r.json());
-
-      if (!Array.isArray(json)) {
-        throw new Error('ratings.json is not an array');
-      }
-
-      ratingsCache = json;
-      return json;
-    })().finally(() => {
-      ratingsLoading = null;
-    });
-  }
-
-  return ratingsLoading;
+	for (const data of results) {
+		if (data && typeof data.UserId === 'number') {
+		rankData.push(data);
+		}
+	}
 }
 
-
+/* getJason() BACKUP
 export async function getJason() {
-  rankData = [];
+	rankData = [];
 
-  let allRatings: any[];
+	for (const driver of r3e.data.DriverData) {
+		const userId = driver.DriverInfo.UserId;
 
-  try {
-    allRatings = await loadRatings();
-  } catch (err) {
-    console.warn('[getJason] Failed to load ratings cache', err);
-    return;
-  }
+		if (
+		userId !== -1 &&
+		(rankList.length === 0 || rankList.includes(userId))
+		) {
+			try {
+				const resp = await fetch(
+				`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
+					`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
+				)}`
+				);
 
-  const sessionUserIds = new Set<number>();
+				const data = await resp.json();
 
-  for (const driver of r3e.data.DriverData) {
-    const userId = driver.DriverInfo.UserId;
-    if (userId !== -1) {
-      sessionUserIds.add(userId);
-	  //sessionUserIds.add(9112515);
-    }
-  }
-
-  for (const rating of allRatings) {
-    if (sessionUserIds.has(rating.UserId)) {
-      rankData.push(rating);
-    }
-  }
-}
-
-/*
-export async function getJason() {
-  if (rankList.length === 0) {
-    try {
-      const res = await fetch(
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
-          'https://game.raceroom.com/multiplayer-rating/ratings.json'
-        )}`
-      );
-
-      const json = await res.json();
-
-      if (Array.isArray(json)) {
-        json.forEach((driver: any) => {
-          if (typeof driver?.UserId === 'number') {
-            rankList.push(driver.UserId);
-          }
-        });
-      } else {
-        console.warn(
-          '[getJason] ratings.json did not return an array, fallback to per-user fetch',
-          json
-        );
-      }
-    } catch (err) {
-      console.warn(
-        '[getJason] Failed to fetch ratings.json, fallback to per-user fetch',
-        err
-      );
-    }
-  }
-  rankData = [];
-
-  for (const driver of r3e.data.DriverData) {
-    const userId = driver.DriverInfo.UserId;
-
-    if (
-      userId !== -1 &&
-      (rankList.length === 0 || rankList.includes(userId))
-    ) {
-      try {
-        const resp = await fetch(
-          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
-            `https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
-          )}`
-        );
-
-        const data = await resp.json();
-
-        if (data && typeof data.UserId === 'number') {
-          rankData.push(data);
-        }
-      } catch (err) {
-        console.warn(
-          `[getJason] Failed to fetch rating for user ${userId}`,
-          err
-        );
-      }
-    }
-  }
+				if (data && typeof data.UserId === 'number') {
+				rankData.push(data);
+				}
+			} catch (err) {
+				console.warn(
+				`[getJason] Failed to fetch rating for user ${userId}`,
+				err
+				);
+			}
+		}
+	}
 }
 */
-
-export function getRankingData(userId: number) {
-  if (userId === -1 || rankData.length === 0) {
-    return defaultRanking(userId);
-  }
-
-  const found = rankData.find(r => r.UserId === userId);
-  return found ?? defaultRanking(userId);
-}
-
-function defaultRanking(userId: number) {
-  return {
-    UserId: userId,
-    Username: 'none',
-    Fullname: 'none',
-    Rating: 1500,
-    ActivityPoints: 0,
-    RacesCompleted: 0,
-    Reputation: 0,
-    Country: 'none',
-    Team: 'none'
-  };
-}
-
 
 export function computeRealLapDiff(
   meLaps: number,
@@ -303,6 +204,41 @@ export function computeRealLapDiff(
   else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
 
   return lapDiff;
+}
+
+
+export function getRankingData(userId: number) {
+  if (userId === -1 || rankData.length === 0) {
+    return {
+      UserId: userId,
+      Username: 'none',
+      Fullname: 'none',
+      Rating: 1500,
+      ActivityPoints: 0,
+      RacesCompleted: 0,
+      Reputation: 0,
+      Country: 'none',
+      Team: 'none'
+    };
+  }
+
+  for (let i = rankData.length; i--;) {
+    if (rankData[i].UserId === userId) {
+      return rankData[i];
+    }
+  }
+
+  return {
+    UserId: userId,
+    Username: 'none',
+    Fullname: 'none',
+    Rating: 1500,
+    ActivityPoints: 0,
+    RacesCompleted: 0,
+    Reputation: 0,
+    Country: 'none',
+    Team: 'none'
+  };
 }
 
 export function fancyTimeFormatGap(
@@ -759,7 +695,7 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	el.style.color = '#fff';
 	el.style.fontSize = '30px';
 	el.style.position = 'fixed';
-	el.style.top = '790px';
+	el.style.top = '50%';
 	el.style.left = '50%';
 	el.style.background = 'rgba(0,0,0,0.6)';
 	el.style.textShadow = '2px 2px 0 rgba(0,0,0,0.5)';

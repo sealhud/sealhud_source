@@ -4378,8 +4378,9 @@ WIDGETS:
 - Fuel Details: Lap times were being recorded incorrectly in some cases. Fixed.
 
 PERFORMANCE:
-- Ratings and SoF: Data was frozen due to the RaceRoom browser's caching system. A timestamp system was created to force the 
-  browser to update our mirrored JSON. (Thanks Steven Savino and Samuel Travieso for reporting)
+- Ratings and SoF: Data was frozen due to the RaceRoom browser's caching system. SealHUD is again obtaining data directly from the
+  RaceRoom API, but with some code improvements to make lightier than before (8KB max.).
+  (Thanks Steven Savino and Samuel Travieso for reporting)
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
