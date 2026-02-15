@@ -12,8 +12,6 @@ import { EnergyEvents } from "../../lib/EnergyEvents";
 import { EnergyStrategy } from "../../lib/EnergyStrategy";
 import {
   classNames,
-  base64ToString,
-  ePlayerSlotId,
   ePlayerDriverDataIndex,
   ePlayerIsFocus,
   getSlotIds,
@@ -32,7 +30,6 @@ import _, {
   dynamicTranslate as __,
   setLocale,
   Locales,
-  getTranslations,
 } from "./../../translate";
 import Aids from "../aids/aids";
 import Clock from "../clock/clock";
@@ -56,6 +53,7 @@ import OvertakingAids from "../overtakingAids/overtakingAids";
 import PitLimiter from "../pitLimiter/pitLimiter";
 import Pitstop from "../pitstop/pitstop";
 import PositionBar from "../positionBar/positionBar";
+import PositionsBar from "../positionsBar/positionsBar";
 import Progress from "../progress/progress";
 import r3e, {
   registerUpdate,
@@ -86,9 +84,12 @@ export interface IWidgetSetting {
   duration: number;
   resetIt: boolean;
   zoom: number;
-  position: {
-    x: number;
-    y: number;
+  position: { x: number; y: number };
+  layout?: {
+    [key: string]: {
+      x: number;
+      y: number;
+    };
   };
   subSettings: ISubSettings;
   name(): string;
@@ -114,6 +115,7 @@ let eIsLeaderboard = false;
 let eIsHillClimb = false;
 let eIsDynamicBbias = false;
 let isMenu = false;
+let hudApp: App;
 const eIsIngameBrowser = window.clientInformation.appVersion
   .toString()
   .match(/64.0/);
@@ -138,6 +140,7 @@ export {
   eIsLeaderboard,
   eIsHillClimb,
   eIsDynamicBbias,
+  hudApp,
 };
 // Hud Version
 const currentVersion = 1.02;
@@ -267,9 +270,6 @@ export default class App extends React.Component<IProps> {
   @observable accessor gameInMenus = false;
   @observable accessor gameInReplay = false;
 
-  // @observable
-  // theError = '';
-
   @observable accessor defaultsettings: { [key: string]: IWidgetSetting } = {
     positionBar: {
       id: "positionBar",
@@ -357,6 +357,75 @@ export default class App extends React.Component<IProps> {
         x: INVALID,
         y: INVALID,
       },
+    },
+    positionsBar: {
+      id: "positionsBar",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Position Bar"),
+      subSettings: {
+        showBackground: {
+					text: __('Dark Background'),
+					enabled: false
+				},
+        lapTime: {
+					text: __('Show Lap-Time'),
+					enabled: true
+				},
+        showLastLap: {
+          text: __("Show Last-Lap"),
+          enabled: true,
+        },
+        showBestLap: {
+          text: __("Show Best-Lap"),
+          enabled: true,
+        },
+        sessionLapsRemain: {
+          text: __("Show Estimated Laps left"),
+          enabled: true,
+        },
+        sessionLaps: {
+          text: __("Show Completed Laps"),
+          enabled: true,
+        },
+        sessionLapsTotal: {
+          text: __("Show Estimated Laps"),
+          enabled: true,
+        },
+				currentPosition: {
+					text: __('Show Current Position'),
+					enabled: true
+				},
+        showSOF: {
+          text: __("Show Strength of Field"),
+          enabled: true,
+        },  
+        showIncidentPoints: {
+          text: __("Show Incident Points"),
+          enabled: true,
+        },          
+        showCuts: {
+          text: __("Show Track Limits Counter"),
+          enabled: false,
+        },
+				sessionTime: {
+					text: __("Show Session-Time"),
+					enabled: true,
+				}
+			},
+      position: {
+        x: 0,
+        y: 70,
+      },
+      layout: {
+        right: {
+          x: -1920,
+          y: 0,
+        }
+      }
     },
     positionBarRelative: {
 			id: "positionBarRelative",
@@ -854,8 +923,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race start lights"),
       subSettings: {},
       position: {
-        x: 702,
-        y: 227,
+        x: 700,
+        y: 220,
       },
     },
     info: {
@@ -882,8 +951,8 @@ export default class App extends React.Component<IProps> {
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 834,
-        y: 320,
+        x: 820,
+        y: 280,
       },
     },
     damage: {
@@ -1046,6 +1115,75 @@ export default class App extends React.Component<IProps> {
         y: INVALID,
       },
     },
+    positionsBar: {
+      id: "positionsBar",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Position Bar"),
+      subSettings: {
+        showBackground: {
+					text: __('Dark Background'),
+					enabled: false
+				},
+        lapTime: {
+					text: __('Show Lap-Time'),
+					enabled: true
+				},
+        showLastLap: {
+          text: __("Show Last-Lap"),
+          enabled: true,
+        },
+        showBestLap: {
+          text: __("Show Best-Lap"),
+          enabled: true,
+        },
+        sessionLapsRemain: {
+          text: __("Show Estimated Laps left"),
+          enabled: true,
+        },
+        sessionLaps: {
+          text: __("Show Completed Laps"),
+          enabled: true,
+        },    
+        sessionLapsTotal: {
+          text: __("Show Estimated Laps"),
+          enabled: true,
+        },    
+				currentPosition: {
+					text: __('Show Current Position'),
+					enabled: true
+				},
+        showSOF: {
+          text: __("Show Strength of Field"),
+          enabled: true,
+        },  
+        showIncidentPoints: {
+          text: __("Show Incident Points"),
+          enabled: true,
+        },          
+        showCuts: {
+          text: __("Show Track Limits Counter"),
+          enabled: false,
+        },
+				sessionTime: {
+					text: __("Show Session-Time"),
+					enabled: true,
+				}
+			},
+      position: {
+        x: 0,
+        y: 70,
+      },
+      layout: {
+        right: {
+          x: -1920,
+          y: 0,
+        }
+      }
+    },
     positionBarRelative: {
 			id: "positionBarRelative",
       enabled: true,
@@ -1542,8 +1680,8 @@ export default class App extends React.Component<IProps> {
       name: __("Race start lights"),
       subSettings: {},
       position: {
-        x: 702,
-        y: 227,
+        x: 700,
+        y: 220,
       },
     },
     info: {
@@ -1570,8 +1708,8 @@ export default class App extends React.Component<IProps> {
       name: __("Pit limiter"),
       subSettings: {},
       position: {
-        x: 834,
-        y: 320,
+        x: 820,
+        y: 280,
       },
     },
     damage: {
@@ -1666,11 +1804,7 @@ export default class App extends React.Component<IProps> {
   @observable accessor tempSavePerfo: boolean[] = [];
   @observable accessor debugData: IShared | null = null;
   @observable accessor resetString = _("Reset Settings");
-  //@observable accessor nowDriverDataSize = -1;
   @observable accessor forceCheck = false;
-  //@observable accessor lastDriverDataSize = -1;
-  //@observable accessor slowDiff = -1;
-  //@observable accessor lapStartTime = -1;
   @observable accessor oneRefresh = false;
 
   currentCursorWidgetOffset: null | {
@@ -1684,12 +1818,7 @@ export default class App extends React.Component<IProps> {
   > | null = null;
   @observable accessor sessionType = -1;
   @observable accessor singleplayerRace = false;
-  //@observable accessor bestLapTimeLeader = -1;
-  //@observable accessor lapTimeCurrentSelf = -1;
-  //@observable accessor layoutLength = -1;
-  //@observable accessor lapTimePreviousSelf = -1;
   @observable accessor tractionControlPercentUndefined = true;
-  //@observable accessor pitStoppedTime = -1;
 
   updateFunction: Function | null = null;
 
@@ -1703,6 +1832,7 @@ export default class App extends React.Component<IProps> {
 
     this.handleResize();
     this.recoverSettings();
+    hudApp = this;
 
     setLocale(this.language as Locales);
     lowPerformanceMode = this.lowPerfo;
@@ -1720,39 +1850,11 @@ export default class App extends React.Component<IProps> {
     eRankInvertRelative = this.rankInvertRelative;
     eLogoUrl = this.hLogoUrl;
 
-    // if (localStorage.theError !== undefined) {
-    // this.theError = localStorage.theError;
-    // }
-
-    // Deal with errors by clearing app settings, hopefully it solves the issue...
     window.onerror = () => {
-      /* (msg, url, lineNo, columnNo, error) => {
-			showDebugMessage(`waaaaaaaaaaaaaaaaaaaaaaaaaaah! ${
-				msg
-			} ${
-				url
-			} ${
-				lineNo
-			} ${
-				columnNo
-			} ${
-				error
-			}`);
-			showDebugMessage('waaaaaaaaaaaaaaaaaaaaaaaaaaah!');*/
-      // delete localStorage.appSettings;
       setTimeout(() => {
         window.location.reload();
       }, 1000);
-      // console.log('Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah!');
     };
-
-    /* window.onerror = () => {
-			delete localStorage.appSettings;
-
-			setTimeout(() => {
-				window.location.reload();
-			}, 3000);
-		}; */
     registerUpdate(this.updatePerformance);
   }
 
@@ -1921,18 +2023,6 @@ export default class App extends React.Component<IProps> {
     // localStorage.changeLogRead = '0';
     this.forceCheck = false;
 
-    /*
-    this.nowDriverDataSize = r3e.data.DriverData.length;
-    const driverSizeDiff = Math.abs(
-      this.nowDriverDataSize - this.lastDriverDataSize
-    );
-    if (driverSizeDiff > 0 && driverSizeDiff < 10) {
-      this.lastDriverDataSize = this.nowDriverDataSize;
-      this.forceCheck = true;
-    }
-    this.currentNumDrivers = r3e.data.NumCars;
-    */
-
     if (localStorage.stateJson) {
       showDebugMessage(
         _(`UI is paused! Press SHIFT+SPACEBAR to Unpause`),
@@ -1974,7 +2064,11 @@ export default class App extends React.Component<IProps> {
       setting.position.y = defaultSettings.position.y;
       setting.volume = defaultSettings.volume;
       setting.zoom = defaultSettings.zoom;
-
+      if (defaultSettings.layout) {
+        setting.layout = JSON.parse(
+          JSON.stringify(defaultSettings.layout)
+        );
+      }
       Object.keys(setting.subSettings).forEach((keya) => {
         const subSetting = setting.subSettings[keya];
         const defaultSubSetting = defaultSettings.subSettings[keya];
@@ -2078,22 +2172,6 @@ export default class App extends React.Component<IProps> {
       // showDebugMessageSmall(`${this.trackingString}`);
       this.singleplayerRace = false;
       this.lastCheck = nowCheck;
-
-      /*
-      const driverData = r3e.data.DriverData.map(this.formatDriverData);
-      this.drivers = driverData.map((driver) => {
-        return driver;
-      });
-      if (
-        (this.currentNumDrivers !== this.lastNumDrivers ||
-          this.lastNumDrivers === 0) &&
-        this.drivers.length &&
-        !this.singleplayerRace
-      ) {
-        this.lastNumDrivers = this.currentNumDrivers;
-        getJason();
-      }
-      */
       if (
         !this.singleplayerRace &&
         rankData.length <= 0 &&
@@ -2126,8 +2204,7 @@ export default class App extends React.Component<IProps> {
 
       // this.runBooboo();
     }
-  };
-  
+  };  
   
   // Shortcut keys
   private showKey = (e: KeyboardEvent) => {
@@ -2170,10 +2247,7 @@ export default class App extends React.Component<IProps> {
       e.ctrlKey &&
       e.altKey
     ) {
-      // showDebugMessage(`Key: ${e.key} | Code: ${e.code}`);
       this.toggleLockHud();
-      /*} else {
-			showDebugMessage(`Key: ${e.key} | Code: ${e.code}`);*/
     }
     if (!e.shiftKey) {
       this.shiftModifier = false;
@@ -2247,7 +2321,7 @@ export default class App extends React.Component<IProps> {
     }
   };
   // Ajustado para aceitar qualquer resolução
-  private getPositionRelative = (x: number, y: number) => {
+  public getPositionRelative = (x: number, y: number) => {
     if (!this.appRef.current) {
       return { x: 0, y: 0 };
     }
@@ -2482,113 +2556,6 @@ export default class App extends React.Component<IProps> {
     eLogoUrl = this.hLogoUrl;
   }
 
-  /*
-  @action
-  private recoverSettings = () => {
-    let savedSettings: any = {};
-    if (this.currentLayout === 1) {
-      if (localStorage.appSettings) {
-        savedSettings = JSON.parse(localStorage.appSettings);
-        let hasFaulty = false;
-        Object.keys(savedSettings).forEach((key) => {
-          if (!Object.prototype.hasOwnProperty.call(this.settings, key)) {
-            hasFaulty = true;
-          }
-          Object.keys(savedSettings[key].subSettings).forEach((keya) => {
-            if (this.settings[key] === undefined) {
-              hasFaulty = true;
-            } else if (
-              !Object.prototype.hasOwnProperty.call(
-                this.settings[key].subSettings,
-                keya
-              )
-            ) {
-              hasFaulty = true;
-            }
-          });
-        });
-        if (hasFaulty) {
-          this.resetSettings();
-        } else {
-          this.settings = merge(this.settings, savedSettings);
-        }
-      } else {
-        this.resetSettings();
-      }
-      this.hLogoUrl = localStorage.currentLogo
-        ? localStorage.currentLogo
-        : (this.hLogoUrl = "./../../img/logo.png");
-      eLogoUrl = this.hLogoUrl;
-    } else if (this.currentLayout === 2) {
-      if (localStorage.appSettings2) {
-        savedSettings = JSON.parse(localStorage.appSettings2);
-        let hasFaulty = false;
-        Object.keys(savedSettings).forEach((key) => {
-          if (!Object.prototype.hasOwnProperty.call(this.settings, key)) {
-            hasFaulty = true;
-          }
-          Object.keys(savedSettings[key].subSettings).forEach((keya) => {
-            if (this.settings[key] === undefined) {
-              hasFaulty = true;
-            } else if (
-              !Object.prototype.hasOwnProperty.call(
-                this.settings[key].subSettings,
-                keya
-              )
-            ) {
-              hasFaulty = true;
-            }
-          });
-        });
-        if (hasFaulty) {
-          this.resetSettings();
-        } else {
-          this.settings = merge(this.settings, savedSettings);
-        }
-      } else {
-        this.resetSettings();
-      }
-      this.hLogoUrl = localStorage.currentLogo2
-        ? localStorage.currentLogo2
-        : (this.hLogoUrl = "./../../img/logo.png");
-      eLogoUrl = this.hLogoUrl;
-    } else if (this.currentLayout === 3) {
-      if (localStorage.appSettings3) {
-        savedSettings = JSON.parse(localStorage.appSettings3);
-        let hasFaulty = false;
-        Object.keys(savedSettings).forEach((key) => {
-          if (!Object.prototype.hasOwnProperty.call(this.settings, key)) {
-            hasFaulty = true;
-          }
-          Object.keys(savedSettings[key].subSettings).forEach((keya) => {
-            if (this.settings[key] === undefined) {
-              hasFaulty = true;
-            } else if (
-              !Object.prototype.hasOwnProperty.call(
-                this.settings[key].subSettings,
-                keya
-              )
-            ) {
-              hasFaulty = true;
-            }
-          });
-        });
-        if (hasFaulty) {
-          this.resetSettings();
-        } else {
-          this.settings = merge(this.settings, savedSettings);
-        }
-      } else {
-        this.resetSettings();
-      }
-      this.hLogoUrl = localStorage.currentLogo3
-        ? localStorage.currentLogo3
-        : (this.hLogoUrl = "./../../img/logo.png");
-      eLogoUrl = this.hLogoUrl;
-    }
-  };
-  */
-
   @action
   private setData = (clear = false) => {
     this.debugData = !clear ? r3e.data : null;
@@ -2621,15 +2588,26 @@ export default class App extends React.Component<IProps> {
     this.logoUrlEdit = true;
   };
 
+  // -> these 2 functions are used for drag the right block on positionsBar
+  @action
+  public setInternalEditing(state: boolean) {
+    if (this.lockHud) return;
+    this.showEditGrid = state;
+    if (!state) {
+      this.saveSettings();
+    }
+  }
+
+  public applySnap(value: number): number {
+    return this.snapOn ? value - (value % 10) : value;
+  }
+  // -> end
+
   @action
   private onMouseMove = (e: MouseEvent) => {
     if (this.lockHud) {
       return;
     }
-    // showDebugMessage(`${this.hLogoUrl}`);
-
-    // const x1 = e.clientX;
-    // const x2 = 0;
     this.nowMousemovement = e.clientX + e.clientY;
 
     if (
@@ -2933,6 +2911,11 @@ export default class App extends React.Component<IProps> {
       setting.volume = defaultSettings.volume;
       setting.zoom = defaultSettings.zoom;
       setting.enabled = defaultSettings.enabled;
+      if (defaultSettings.layout) {
+        setting.layout = JSON.parse(
+          JSON.stringify(defaultSettings.layout)
+        );
+      }
       Object.keys(setting.subSettings).forEach((keya) => {
         const subSetting = setting.subSettings[keya];
         const defaultSubSetting = defaultSettings.subSettings[keya];
@@ -3353,6 +3336,13 @@ export default class App extends React.Component<IProps> {
             onMouseDown={this.onMouseDown}
             onWheel={this.onWheel}
             relative={false}
+          />
+        )}
+        {this.settings.positionsBar.enabled && (
+          <PositionsBar
+            settings={this.settings.positionsBar}
+            onMouseDown={this.onMouseDown}
+            onWheel={this.onWheel}
           />
         )}
         {this.settings.positionBarRelative.enabled && (

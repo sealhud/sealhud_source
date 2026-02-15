@@ -27,7 +27,7 @@
 /* label (60%) */
 .damageLabel {
   width: 114px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   padding-left: 6px;
@@ -38,7 +38,7 @@
 /* valor (80%) */
 .damageValue {
   flex: 1;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,4 +52,8 @@
 
 .damageRow.broken {
   color: rgb(236, 91, 91);
+}
+
+.damageRow.na {
+  color: rgb(100, 100, 100);
 }

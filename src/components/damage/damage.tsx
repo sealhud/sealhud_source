@@ -2,7 +2,7 @@ import {
 	classNames,
 	ePlayerIsFocus,
 	widgetSettings,
-	INVALID
+	INVALID,
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
@@ -73,7 +73,7 @@ export default class Damage extends React.Component<IProps, {}> {
 		}
 	};
 
-	render() {return (
+	render() {return (		
 		<div
 			{...widgetSettings(this.props)}
 			className={classNames("damageNew", this.props.className)}
@@ -81,9 +81,10 @@ export default class Damage extends React.Component<IProps, {}> {
 			<div className="carDamageNew">
 
 			{/* Engine */}
-			{(this.carDamage.Engine !== INVALID || showAllMode) && (
+			{
 				<div
 					className={classNames("damageRow", {
+					na: this.carDamage.Engine === INVALID,
 					bad: !showAllMode && this.carDamage.Engine < 0.98,
 					broken: showAllMode || this.carDamage.Engine < 0.3
 					})}
@@ -93,15 +94,19 @@ export default class Damage extends React.Component<IProps, {}> {
 					<div className="damageValue">
 					{showAllMode
 						? "75%"
-						: `${Math.round((1 - this.carDamage.Engine) * 100)}%`}
+						: this.carDamage.Engine !== INVALID
+							? `${Math.round((1 - this.carDamage.Engine) * 100)}%`
+							: "N/A"
+						}
 					</div>
 				</div>
-			)}
+			}
 
 			{/* Transmission */}
-			{(this.carDamage.Transmission !== INVALID || showAllMode) && (
+			{
 				<div
 					className={classNames("damageRow", {
+					na: this.carDamage.Transmission === INVALID,
 					bad: showAllMode || this.carDamage.Transmission < 0.98,
 					broken: !showAllMode && this.carDamage.Transmission < 0.3
 					})}
@@ -111,15 +116,19 @@ export default class Damage extends React.Component<IProps, {}> {
 					<div className="damageValue">
 					{showAllMode
 						? "49%"
-						: `${Math.round((1 - this.carDamage.Transmission) * 100)}%`}
+						: this.carDamage.Transmission !== INVALID
+							? `${Math.round((1 - this.carDamage.Transmission) * 100)}%`
+							: "N/A"
+						}
 					</div>
 				</div>
-			)}
+			}
 
 			{/* Aerodynamics */}
-			{(this.carDamage.Aerodynamics !== INVALID || showAllMode) && (
+			{
 				<div
 					className={classNames("damageRow", {
+					na: this.carDamage.Aerodynamics === INVALID,
 					bad: !showAllMode && this.carDamage.Aerodynamics < 0.98,
 					broken: !showAllMode && this.carDamage.Aerodynamics < 0.3
 					})}
@@ -129,15 +138,19 @@ export default class Damage extends React.Component<IProps, {}> {
 					<div className="damageValue">
 					{showAllMode
 						? "0%"
-						: `${Math.round((1 - this.carDamage.Aerodynamics) * 100)}%`}
+						: this.carDamage.Aerodynamics !== INVALID
+							? `${Math.round((1 - this.carDamage.Aerodynamics) * 100)}%`
+							: "N/A"
+						}
 					</div>
 				</div>
-			)}
+			}
 
 			{/* Suspension */}
-			{(this.carDamage.Suspension !== INVALID || showAllMode) && (
+			{
 				<div
 					className={classNames("damageRow", {
+					na: this.carDamage.Suspension === INVALID,
 					bad: !showAllMode && this.carDamage.Suspension < 0.98,
 					broken: !showAllMode && this.carDamage.Suspension < 0.3
 					})}
@@ -147,10 +160,13 @@ export default class Damage extends React.Component<IProps, {}> {
 					<div className="damageValue">
 					{showAllMode
 						? "0%"
-						: `${Math.round((1 - this.carDamage.Suspension) * 100)}%`}
+						: this.carDamage.Suspension !== INVALID
+							? `${Math.round((1 - this.carDamage.Suspension) * 100)}%`
+							: "N/A"
+						}
 					</div>
 				</div>
-			)}
+			}
 
 			</div>
 		</div>

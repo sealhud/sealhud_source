@@ -1,3 +1,18 @@
+	1.03
+	----------
+	WIDGETS:
+	- All widgets: The background colors have been slightly darkened for virtual reality users.
+	- Position Bar: This widget has been split into two widgets: POSITION BAR and SESSION INFO.
+	- Session Info: There are now two information blocks, the left block and the right block.
+	  You can move and position them wherever you want.
+	- Session Info: Added option to display a dark background to provide contrast to the text.
+	- Session Info: Added AVERAGE LAP TIME info.
+	- Motec: RPM bar moved to the top of the widget.
+	- Damage: Now the widget is shown even when damage option is set to DISABLED for a session.
+
+	TRANSLATIONS:
+	- French: "Throttle" translation changed to "accélérateur" (thanks Mat Blanchard)
+
 	1.02
 	----------
 	WIDGETS:

@@ -1,10 +1,14 @@
 import {
 	classNames,
-	widgetSettings
+	widgetSettings,
 } from './../../lib/utils';
 import {
 	IWidgetSetting,
 } from '../app/app';
+import r3e from './../../lib/r3e';
+import {
+	ESessionPhase
+} from './../../types/r3eTypes';
 import {
 	registerUpdate,
 	unregisterUpdate,
@@ -21,13 +25,12 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 @observer
 export default class Clock extends React.Component<IProps, {}> {
-
+	@observable accessor sessionPhase = -1;
 	@observable accessor localTime = '';
 	lastCheck = 0;
 
 	constructor(props: IProps) {
 		super(props);
-
 		registerUpdate(this.update);
 	}
 
@@ -38,6 +41,7 @@ export default class Clock extends React.Component<IProps, {}> {
 	@action
 	private update = () => {
 			this.lastCheck = nowCheck;
+			this.sessionPhase = r3e.data.SessionPhase;
 			const theTime = new Date();
 			const hours = theTime.getHours();
 			const minutes = theTime.getMinutes();
@@ -60,7 +64,11 @@ export default class Clock extends React.Component<IProps, {}> {
 				}`;
 	};
 
-	render() {
+	render() {		
+		const notInRacePhase = this.sessionPhase < ESessionPhase.Countdown;
+		if (notInRacePhase) {
+			return null;
+		}
 		return (
 			<div
 				{...widgetSettings(this.props)}

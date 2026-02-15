@@ -18,7 +18,7 @@
 .inputsWheel {
   width: 72px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +60,7 @@
 /* VALUE */
 .inputValue {
   width: 39px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,7 +75,7 @@
 /* METER */
 .inputMeter {
   flex: 1;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   position: relative;
   overflow: hidden;
 }
@@ -99,5 +99,5 @@
 }
 
 .inputRow.throttle .inputFill {
-  background: rgba(33, 170, 70, 0.8);
+  background: rgba(33, 170, 70, 0.9);
 }

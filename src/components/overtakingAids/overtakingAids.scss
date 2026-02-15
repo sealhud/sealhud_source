@@ -23,11 +23,11 @@
   padding: 6px 0px 4px;
   text-align: center;
   font-size: 14px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .electronicsTopRow .electronicsBox:nth-child(even) {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
 }
 
 /* MIDDLE ROW */
@@ -39,7 +39,7 @@
 }
 
 .infoBox {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   padding: 3px 0px 0px;
   display: flex;
   justify-content: center;
@@ -49,7 +49,7 @@
 }
 
 .electronicsMidRow .infoBox:nth-child(even) {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 /* SVG ICONS */
@@ -66,7 +66,7 @@
 
 .label.headlights-flashing svg {
   fill: rgb(78, 190, 255);
-  animation: headlightsBlink 0.6s linear infinite;
+  animation: headlightsBlink 0.7s linear infinite;
 }
 
 @keyframes headlightsBlink {
@@ -103,7 +103,7 @@
 }
 
 .electronicsBigBox {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   padding: 6px 0px 3px;
   display: flex;
   justify-content: center;
@@ -113,7 +113,7 @@
 }
 
 .electronicsBottomRow .electronicsBigBox:nth-child(2) {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
 }
 
 /* AVAILABLE DRS/P2P */
@@ -142,7 +142,7 @@
 }
 
 .electronicsContainer .disabled {
-  color: rgba(140, 140, 140);
+  color: rgba(100, 100, 100);
 }
 
 /* ANIMATION: AVAILABLE */

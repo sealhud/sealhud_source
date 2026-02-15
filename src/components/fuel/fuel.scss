@@ -5,7 +5,7 @@
   position: fixed;
   width: 227px;
   height: 77px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   padding: 3px;
   color: white;
   pointer-events: auto;
@@ -27,7 +27,7 @@
 
 /* BASE CELL */
 .fuelCell {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,8 +65,8 @@
 
 /* Estado neutro */
 .fuel-na {
-  color: #ffffff;
-  opacity: 0.7;
+  color: #999999;
+  //opacity: 0.7;
 }
 
 /* Precisa abastecer */

@@ -189,6 +189,22 @@ export default class Motec extends React.Component<IProps, {}> {
 					}
 				)}
 			>
+				{/* RPM BAR*/}
+				{((this.engineState > 0) || showAllMode) && (
+					<div className="rpm">
+						<div
+						className={classNames("rpmBar", {
+							upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
+							redline: this.rpm > this.maxRpm * 0.96,
+							disabled: this.engineState === 0 && !showAllMode,
+						})}
+						style={{
+							width: `${showAllMode ? 50 : (this.rpm / this.maxRpm) * 100}%`,
+						}}
+						/>
+					</div>
+				)}
+				
 				{/* TOP ROW */}
 				<div className="motecTopRow">
 
@@ -233,21 +249,6 @@ export default class Motec extends React.Component<IProps, {}> {
 					</div>
 
 				</div>
-				{/* RPM BAR*/}
-				{((this.engineState > 0) || showAllMode) && (
-					<div className="rpm">
-						<div
-						className={classNames("rpmBar", {
-							upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
-							redline: this.rpm > this.maxRpm * 0.96,
-							disabled: this.engineState === 0 && !showAllMode,
-						})}
-						style={{
-							width: `${showAllMode ? 50 : (this.rpm / this.maxRpm) * 100}%`,
-						}}
-						/>
-					</div>
-				)}
 			</div>
 		);
 	}

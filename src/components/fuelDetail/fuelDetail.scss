@@ -30,12 +30,12 @@
 }
 
 .fuelDetails .cell.label {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   color: rgb(190, 190, 190);
 }
 
 .fuelDetails .cell.data {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   font-size: 20px;
 }
 
@@ -50,7 +50,7 @@
 
 /* Estados de background de célula e font color*/
 .cell.data.fueldetail-na {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   color: #ffffff80;
 }
 .cell.data.fueldetail-need {
@@ -135,7 +135,7 @@
   height: 117px;
   overflow: hidden;
   position: absolute;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
 }
 .fuelCalc .FuelCalcTitleBox,
 .fuelCalc .FuelCalcTitleTextBox {

@@ -77,8 +77,8 @@ export default class Fuel extends React.Component<IProps, {}> {
 			this.batteryLeft = r3e.data.BatterySoC;
 			this.fuelPerLap = r3e.data.FuelPerLap;
 			this.fuelUseActive = r3e.data.FuelUseActive > 0 && r3e.data.FuelPressure > 0;
-			this.veUseActive = r3e.data.VirtualEnergyCapacity > 0;
-			this.battUseActive = r3e.data.BatterySoC >= 0;
+			this.veUseActive = r3e.data.FuelUseActive > 0 && r3e.data.VirtualEnergyCapacity > 0;
+			this.battUseActive = r3e.data.FuelUseActive > 0 && r3e.data.BatterySoC >= 0;
 			this.fuelLeft = r3e.data.FuelLeft;
 			this.isAI = r3e.data.ControlType === 1;
 			this.sessionType = r3e.data.SessionType;
@@ -98,7 +98,6 @@ export default class Fuel extends React.Component<IProps, {}> {
 		// FUEL
 		const FuelToAdd = FuelStrategy.FuelToAdd;
 		const needsFuel = FuelToAdd !== null && FuelToAdd > 0;
-		const lastLapFuelUsed = FuelEvents.lastLapFuelUsed;
 		const avgFuelPerLap = FuelEvents.avgFuelPerLap === null
 			? this.fuelPerLap
 			: FuelEvents.avgFuelPerLap;
@@ -117,12 +116,11 @@ export default class Fuel extends React.Component<IProps, {}> {
 		const VENow = EnergyStrategy.veNowValue;
 		const VEToAdd = EnergyStrategy.veToAddValue;
 		const needsVE = VEToAdd !== null && VEToAdd > 0;
-		const lastLapVEUsed = EnergyEvents.lastLapVEUsed;
 		const avgVEPerLap = EnergyStrategy.veAvgValue === null
 			? this.vePerLap
 			: EnergyStrategy.veAvgValue;
 		const veStatusClass =
-			VEToAdd === null
+			!this.veUseActive || VEToAdd === null
 				? "fuel-na"
 				: needsVE
 				? "fuel-need"
@@ -136,7 +134,7 @@ export default class Fuel extends React.Component<IProps, {}> {
 		const BattToEnd = EnergyStrategy.battToEndValue;
 		const avgBattPerLap = EnergyEvents.avgBattPerLap;
 		const battStatusClass =
-			BattToEnd === null
+			!this.battUseActive || BattToEnd === null
 				? "fuel-na"
 				: BattToEnd > 0
 				? "fuel-need"

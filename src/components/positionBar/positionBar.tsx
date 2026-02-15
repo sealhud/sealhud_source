@@ -186,7 +186,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.isLeaderboard = eIsLeaderboard;
 		this.isHillClimb = eIsHillClimb;
 		this.sessionTimeRemaining = showAllMode ? 1 : r3e.data.SessionTimeRemaining;
-		this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
 		// ATIVAR ESSE TRECHO NOVAMENTE QUANDO HABILITAR SHORTBAR
 		// if (!this.props.relative) {
 		//  this.vrGame = this.props.settings.subSettings.shortBar.enabled;
@@ -438,18 +437,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			: formatTime(diff, 's.SSS', true);
 		});
 	}
-
-	/*
-	private computeRealLapDiff = (
-			meLaps: number, meDist: number,
-			otherLaps: number, otherDist: number
-		) => {
-			let lapDiff = meLaps - otherLaps;
-			if (lapDiff < 0 && otherDist < meDist) lapDiff++;
-			else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
-			return lapDiff;
-		};
-		*/
 
 	// STANDINGS BAR: Calculate Gaps Between Drivers (Race)
 	private previousLapDiff = new Map<number, number>();
@@ -1249,9 +1236,11 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							: this.myIncidentPoints === -1
 								? "N/A"
 								: this.myIncidentPoints
-						}${showAllMode ? "/"+200 : this.maxIncidentPoints < 1 
-							? ""
-							: "/"+this.maxIncidentPoints
+						}
+						${showAllMode 
+							? "/"+200 : this.maxIncidentPoints < 1 
+								? ""
+								: "/"+this.maxIncidentPoints
 						}`}								
 					</span>
 					{(this.sessionType === ESession.Race || showAllMode) && (
@@ -1674,7 +1663,7 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 							}`
 							: FlagEvents.shouldHighlight(player.id)
 								? "3px solid yellow"
-								: '3px solid #252525ff'
+								: '3px solid rgb(15, 15, 15)'
 							: undefined,							
 						borderLeft:
 							this.props.relative && multiClass

@@ -112,16 +112,7 @@ export function getSlotIds() {
 					break;
 				}
 			}
-		} /* else {
-				for (let i = 0; i < r3e.data.DriverData.length; i++) {
-					if (r3e.data.DriverData[i].DriverInfo.SlotId === currentSlotId) {
-						playerDriverDataIndex = i;
-						break;
-					}
-				}
-			}
-		} */
-		// if (playerSlotId === -1) { playerSlotId = currentSlotId };
+		} 
 	}
 	// showDebugMessageSmall(`playerInServer:${playerInServer ? 'yes' : 'no'} - playerSlotId:${playerSlotId} - playerDriverDataIndex:${playerDriverDataIndex} - currentSlotId:${currentSlotId} - playerIsFocus:${playerIsFocus ? 'yes' : 'no'}`);
 	ePlayerInServer = playerInServer;
@@ -695,7 +686,7 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	el.style.color = '#fff';
 	el.style.fontSize = '30px';
 	el.style.position = 'fixed';
-	el.style.top = '50%';
+	el.style.top = '52%';
 	el.style.left = '50%';
 	el.style.background = 'rgba(0,0,0,0.6)';
 	el.style.textShadow = '2px 2px 0 rgba(0,0,0,0.5)';
@@ -703,7 +694,7 @@ export function showDebugMessage(msg: string, theTimeout = 1000, zIndex = 100) {
 	el.style.height = '60px';
 	el.style.lineHeight = '60px';
 	el.style.textAlign = 'center';
-	el.style.borderRadius = '00px';
+	el.style.borderRadius = '4px';
 	el.style.transform = 'translate(-50%, -50%)';
 	el.style.zIndex = `${zIndex}`;
 	el.style.whiteSpace = 'nowrap';
@@ -756,7 +747,7 @@ export function showDebugMessageSmall(
 	el.style.height = `${bHeight}px`;
 	el.style.lineHeight = `${lHeight}px`;
 	el.style.textAlign = 'center';
-	el.style.borderRadius = '0px';
+	el.style.borderRadius = '5px';
 	el.style.transform = 'translate(-50%, -50%)';
 	el.style.zIndex = `${zIndex}`;
 	el.style.whiteSpace = 'pre';

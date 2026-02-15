@@ -183,147 +183,6 @@ html.debug .viewport {
 .viewport .rankingSite .rankingSiteFrame {
   cursor: url(./../../img/cursor1.cur), auto;
 }
-/*
-.viewport .changelog {
-  position: relative;
-  top: 2.5%;
-  left: 2.5%;
-  width: 95%;
-  height: 95%;
-  background: rgba(0, 0, 0, 0.8);
-  border: 10px solid hsla(0, 0%, 48.2%, 0.8);
-  border-radius: 10px;
-  font-size: 40px;
-}
-.viewport .changelog .line {
-  top: 74%;
-}
-.viewport .changelog .line,
-.viewport .changelog .line2 {
-  left: 1%;
-  width: 14%;
-  height: 1px;
-  color: #fff;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-radius: 1px;
-  position: absolute;
-}
-.viewport .changelog .line2 {
-  top: 95%;
-}
-.viewport .changelog .sealLogo {
-  position: absolute;
-  top: 8%;
-  left: 2%;
-  zoom: 0.5;
-}
-.viewport .changelog .sealTitle {
-  position: absolute;
-  left: 49%;
-  text-decoration: underline;
-  top: 2%;
-  color: #fff;
-  font-weight: 700;
-}
-.viewport .changelog .sealVersion {
-  position: absolute;
-  top: 43%;
-  left: 3.4%;
-  color: silver;
-}
-.viewport .changelog .forumTitle {
-  position: absolute;
-  top: 50%;
-  left: 20px;
-  color: #fff;
-  font-size: 24px;
-  white-space: pre;
-  text-align: center;
-}
-.viewport .changelog .forumQRImg {
-  position: absolute;
-  top: 57%;
-  left: 3.8%;
-  zoom: 0.70;
-}
-.viewport .changelog .coffeePot {
-  position: absolute;
-  zoom: 0.20;
-  top: 80.5%;
-  left: 0.74%;
-  background: hsla(0, 0%, 100%, 0.0);
-  border: 1px solid transparent;
-  border-radius: 10px;
-}
-.viewport .changelog .paypalQRImg {
-  position: absolute;
-  top: 81.5%;
-  left: 7.85%;
-  zoom: 0.55;
-}
-.viewport .changelog .payPal_1 {
-  position: absolute;
-  font-size: 34px;
-  top: 76%;
-  left: 4.3%;
-  color: #fff;
-  white-space: pre;
-}
-.viewport .changelog .payPal_2 {
-  position: absolute;
-  font-size: 34px;
-  top: 91%;
-  left: 1%;
-  white-space: pre;
-}
-.viewport .changelog .changeLogTitle {
-  position: absolute;
-  font-size: 36px;
-  left: 54%;
-  top: 10%;
-  transform: translate(-14%);
-}
-.viewport .changelog .theLog {
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.9);
-  font-size: 18px;
-  line-height: 22px;
-  position: absolute;
-  border: 3px solid #fff;
-  border-radius: 2px;
-  top: 12%;
-  left: 20%;
-  overflow: auto;
-  max-height: 80%;
-  min-height: 80%;
-  width: 75%;
-  white-space: pre;
-}
-
-.viewport .changelog .gotIt {
-  height: 50px;
-  width: 75%;
-  position: absolute;
-  color: #000;
-  left: 20%;
-  top: 94.5%;
-  border: 2px solid #000;
-  border-radius: 10px;
-  text-align: center;
-  background: hsla(0, 0%, 100%, 0.8);
-  text-transform: uppercase;
-  font-size: 42px;
-  line-height: 42px;
-}
-.viewport .changelog .gotIt:hover {
-  background: #00c832;
-  color: #000;
-}
-.viewport .changelog .gotIt:focus {
-  outline: none;
-}
-*/
 
 .viewport .welcome {
   position: absolute;
@@ -578,7 +437,7 @@ html.debug .viewport {
   position: absolute;
   top: 300px;
   left: 3px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   //border-radius: 100%;
   //opacity: 0;
 }
@@ -616,7 +475,7 @@ html.debug .viewport {
   left: 3px;
   width: 50px;
   height: 50px;
-  background: #000000c7;
+  background: rgba(0, 0, 0, 0.7);
   color: #fff;
   //border-radius: 100%;
   font-size: 30px;

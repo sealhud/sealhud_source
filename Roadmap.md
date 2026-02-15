@@ -11,3 +11,4 @@
 - Melhorar visual do widget de danos, fontes são finas demais
 - Rever cores do widget delta. O verde está muito claro?
 - Fuel Details: Habilitar novamente as opções de clear na troca de sessão
+- Relatives: Remover cores de voltas quando em prática e quali

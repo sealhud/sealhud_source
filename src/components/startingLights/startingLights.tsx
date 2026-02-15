@@ -10,7 +10,6 @@ import {
 	showAllMode
 } from '../app/app';
 import { action, observable } from 'mobx';
-// import { eFormationLap } from '../manualStart/manualStart';
 import { ESession } from './../../types/r3eTypes';
 import { observer } from 'mobx-react';
 import { times } from 'lodash-es';
@@ -34,18 +33,12 @@ export default class StartingLights extends React.Component<IProps, {}> {
 	@observable accessor lastCheck = 0;
 	@observable accessor isGridStage = false;
 	@observable accessor gridTimerText = '';
-	// @observable accessor 
-	// manualFormation = eFormationLap || -1;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor isHillClimb = false;
 
 	constructor(props: IProps) {
 		super(props);
-
 		registerUpdate(this.update);
 	}
 
@@ -59,20 +52,18 @@ export default class StartingLights extends React.Component<IProps, {}> {
 			nowCheck - this.lastCheck >= 1
 		) {
 			this.lastCheck = nowCheck;
+			this.isHillClimb = eIsHillClimb;
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;
 			this.isRace = this.sessionType === ESession.Race;
-			this.isHillClimb = eIsHillClimb;
 			this.isGridStage = this.isRace && this.sessionPhase === 1;
-			// this.manualFormation = eFormationLap;
-			// if (this.manualFormation === -1) {
 			if (this.isGridStage) {
 				const gTime = Math.floor(r3e.data.SessionTimeRemaining);
 				this.gridTimerText =
 					`SealHUD Started - Grid Formation\nForced Race Start in: ${
 						Math.floor(r3e.data.SessionTimeRemaining)
 					}s`;
-				if (gTime > 0) { showDebugMessageSmall(this.gridTimerText, 60, 36, 100, 50, 36); }
+				if (gTime > 0) { showDebugMessageSmall(this.gridTimerText, 60, 36, 100, 50, 30); }
 			}
 			this.startLights = r3e.data.StartLights;
 			if (this.startLights < 6) {
@@ -91,7 +82,6 @@ export default class StartingLights extends React.Component<IProps, {}> {
 				) {
 					this.wentGreen = 1;
 			}
-			// }
 		}
 	}
 
