@@ -248,6 +248,7 @@
 	text-shadow: 2px 2px 2px transparent, 0 0 10px transparent
 }
 
+/*
 .positionBarContainer.normal .bestLap,
 .positionBarContainer.normal .currentLap,
 .positionBarContainer.normal .currentLapTime,
@@ -383,6 +384,7 @@
 .positionBarContainer.normal.noStandings .strengthOfField {
 	top: 20px
 }
+*/
 
 .positionBarContainer.normal.gameIsVR {
 	width: 84.9%
@@ -585,14 +587,4 @@
 
 .positionBarContainer.relative .player.sGapsInSeconds .diff {
 	width: 45px
-}
-
-
-.positionBarContainer.relative .bestLap,
-.positionBarContainer.relative .currentLap,
-.positionBarContainer.relative .currentPosition,
-.positionBarContainer.relative .incidentPoints,
-.positionBarContainer.relative .lastLap,
-.positionBarContainer.relative .sessionTime {
-	display: none
 }

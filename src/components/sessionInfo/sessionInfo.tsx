@@ -32,7 +32,7 @@ import { observer } from "mobx-react";
 import { action, observable } from 'mobx';
 import React from "react";
 import _ from './../../translate';
-import "./positionsBar.scss";
+import "./sessionInfo.scss";
 
 interface IDriverInfo {
   isUser: boolean;
@@ -50,7 +50,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 @observer
-export default class PositionsBar extends React.Component<IProps> {
+export default class SessionInfo extends React.Component<IProps> {
   private startOffsetX = 0;
   private startOffsetY = 0;
   private startCursorX = 0;
@@ -377,7 +377,8 @@ export default class PositionsBar extends React.Component<IProps> {
         label: _("Completed Laps"), 
         value: showAllMode 
           ? 6 
-          : this.completedLaps 
+          : this.completedLaps , 
+        conditions: [() => !this.isLeaderboard]
       },
       { 
         id: "remain", 
@@ -440,7 +441,11 @@ export default class PositionsBar extends React.Component<IProps> {
         label: _("Strength of Field"), 
         value: showAllMode 
           ? "2.22K" 
-          : this.getStrengthOfField() 
+          : this.getStrengthOfField(),
+        conditions: [
+          () => !this.isHillClimb && !this.isLeaderboard,
+          () => !this.singleplayerRace  
+        ]
       },
       {
         id: "incidents", 
@@ -451,6 +456,7 @@ export default class PositionsBar extends React.Component<IProps> {
           : this.myIncidentPoints === -1
             ? "N/A"
             : `${this.myIncidentPoints}`+`${this.maxIncidentPoints < 1 ? "" : "/"+this.maxIncidentPoints}`,
+        conditions: [() => !this.isLeaderboard],
         color: () => {
           if (warnInc && this.maxIncidentPoints > 1) {
             return "rgb(228, 50, 50)";
@@ -467,7 +473,7 @@ export default class PositionsBar extends React.Component<IProps> {
           ? "8" 
           : this.myCutTrackWarnings ,
         conditions: [
-          () => (this.myCutTrackWarnings > -1),
+          () => this.myCutTrackWarnings > -1,
         ]
       },
       {
@@ -482,7 +488,7 @@ export default class PositionsBar extends React.Component<IProps> {
             ? formatTime(this.sessionTimeRemaining, "H:mm:ss")
             : `${this.currentLap}/${this.maxLaps}`,
         conditions: [
-          () => (!this.isLeaderboard && !this.isHillClimb),
+          () => !this.isLeaderboard,
           () => this.sessionTimeRemaining !== INVALID || this.maxLaps !== INVALID,
         ]
       },
@@ -491,7 +497,7 @@ export default class PositionsBar extends React.Component<IProps> {
     return (
       <div
         {...widgetSettings(this.props)}
-        className={classNames("positionsBar", this.props.className)}
+        className={classNames("sessionInfo", this.props.className)}
       >
         {/* LEFT BLOCK */}
         <div className="pbBlock left">

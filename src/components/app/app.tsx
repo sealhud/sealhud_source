@@ -53,7 +53,7 @@ import OvertakingAids from "../overtakingAids/overtakingAids";
 import PitLimiter from "../pitLimiter/pitLimiter";
 import Pitstop from "../pitstop/pitstop";
 import PositionBar from "../positionBar/positionBar";
-import PositionsBar from "../positionsBar/positionsBar";
+import SessionInfo from "../sessionInfo/sessionInfo";
 import Progress from "../progress/progress";
 import r3e, {
   registerUpdate,
@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.02;
+const currentVersion = 1.03;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -280,10 +280,6 @@ export default class App extends React.Component<IProps> {
       zoom: 1,
       name: __("Position Bar"),
       subSettings: {
-        showStandings: {
-          text: __("Show Standings"),
-          enabled: true,
-        },
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
@@ -311,61 +307,21 @@ export default class App extends React.Component<IProps> {
         showLastLaps: {
           text: __("Show Last-Lap-Times"),
           enabled: true,
-        },
-				lapTime: {
-					text: __('Show Lap-Time'),
-					enabled: true
-				},
-				currentPosition: {
-					text: __('Show Current Position'),
-					enabled: true
-				},
-        sessionLaps: {
-          text: __("Show Completed Laps"),
-          enabled: true,
-        },
-        sessionLapsRemain: {
-          text: __("Show Estimated Laps left"),
-          enabled: true,
-        },
-        sessionLapsTotal: {
-          text: __("Show Estimated Laps"),
-          enabled: true,
-        },
-        showSOF: {
-          text: __("Show Strength of Field"),
-          enabled: true,
-        },
-        showLastLap: {
-          text: __("Show Last-Lap"),
-          enabled: true,
-        },
-        showBestLap: {
-          text: __("Show Best-Lap"),
-          enabled: true,
-        },        
-        showIncidentPoints: {
-          text: __("Show Incident Points"),
-          enabled: true,
-        },
-				sessionTime: {
-					text: __("Show Session-Time"),
-					enabled: true,
-				}
+        }
 			},
       position: {
         x: INVALID,
         y: INVALID,
       },
     },
-    positionsBar: {
-      id: "positionsBar",
+    sessionInfo: {
+      id: "sessionInfo",
       enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
       zoom: 1,
-      name: __("Position Bar"),
+      name: __("Session Info"),
       subSettings: {
         showBackground: {
 					text: __('Dark Background'),
@@ -694,27 +650,35 @@ export default class App extends React.Component<IProps> {
         y: 950,
       },
     },
-    pitstop: {
-      id: "pitstop",
+    inputsGraph: {
+      id: "inputsGraph",
       enabled: true,
       resetIt: false,
       volume: 0,
-      duration: 0,
-      zoom: 0.6899999999999997,
-      name: __("Pitstop"),
+      duration: 6,
+      zoom: 1,
+      name: __("Inputs Graph"),
       subSettings: {
-        pitWindow: {
-          text: __("Show Pit-Window"),
+        showInputThrottle: {
+          text: __("Throttle"),
           enabled: true,
         },
-        pitTimeOnly: {
-          text: __("Show Pit-Time only"),
+        showInputBrake: {
+          text: __("Brake"),
+          enabled: true,
+        },
+        showInputClutch: {
+          text: __("Clutch"),
+          enabled: false,
+        },
+        showInputMeters: {
+          text: __("Input Meters"),
           enabled: false,
         },
       },
       position: {
-        x: 1410,
-        y: 680,
+        x: 750,
+        y: 960,
       },
     },
     spotting: {
@@ -779,35 +743,27 @@ export default class App extends React.Component<IProps> {
         y: 870,
       },
     },
-    inputsGraph: {
-      id: "inputsGraph",
+    pitstop: {
+      id: "pitstop",
       enabled: true,
       resetIt: false,
       volume: 0,
-      duration: 6,
-      zoom: 1,
-      name: __("Inputs Graph"),
+      duration: 0,
+      zoom: 0.6899999999999997,
+      name: __("Pitstop"),
       subSettings: {
-        showInputThrottle: {
-          text: __("Throttle"),
+        pitWindow: {
+          text: __("Show Pit-Window"),
           enabled: true,
         },
-        showInputBrake: {
-          text: __("Brake"),
-          enabled: true,
-        },
-        showInputClutch: {
-          text: __("Clutch"),
-          enabled: false,
-        },
-        showInputMeters: {
-          text: __("Input Meters"),
+        pitTimeOnly: {
+          text: __("Show Pit-Time only"),
           enabled: false,
         },
       },
       position: {
-        x: 750,
-        y: 960,
+        x: 1410,
+        y: 680,
       },
     },
     aids: {
@@ -1037,10 +993,6 @@ export default class App extends React.Component<IProps> {
       zoom: 1,
       name: __("Position Bar"),
       subSettings: {
-        showStandings: {
-          text: __("Show Standings"),
-          enabled: true,
-        },
         showOverallPos: {
           text: __("Show Overall Positions"),
           enabled: true,
@@ -1068,61 +1020,21 @@ export default class App extends React.Component<IProps> {
         showLastLaps: {
           text: __("Show Last-Lap-Times"),
           enabled: true,
-        },
-				lapTime: {
-					text: __('Show Lap-Time'),
-					enabled: true
-				},
-				currentPosition: {
-					text: __('Show Current Position'),
-					enabled: true
-				},
-        sessionLaps: {
-          text: __("Show Completed Laps"),
-          enabled: true,
-        },
-        sessionLapsRemain: {
-          text: __("Show Estimated Laps left"),
-          enabled: true,
-        },
-        sessionLapsTotal: {
-          text: __("Show Estimated Laps"),
-          enabled: true,
-        },
-        showSOF: {
-          text: __("Show Strength of Field"),
-          enabled: true,
-        },
-        showLastLap: {
-          text: __("Show Last-Lap"),
-          enabled: true,
-        },
-        showBestLap: {
-          text: __("Show Best-Lap"),
-          enabled: true,
-        },        
-        showIncidentPoints: {
-          text: __("Show Incident Points"),
-          enabled: true,
-        },
-				sessionTime: {
-					text: __("Show Session-Time"),
-					enabled: true,
-				}
+        }
 			},
       position: {
         x: INVALID,
         y: INVALID,
       },
     },
-    positionsBar: {
-      id: "positionsBar",
+    sessionInfo: {
+      id: "sessionInfo",
       enabled: true,
       resetIt: false,
       volume: 0,
       duration: 0,
       zoom: 1,
-      name: __("Position Bar"),
+      name: __("Session Info"),
       subSettings: {
         showBackground: {
 					text: __('Dark Background'),
@@ -1451,27 +1363,35 @@ export default class App extends React.Component<IProps> {
         y: 950,
       },
     },
-    pitstop: {
-      id: "pitstop",
+    inputsGraph: {
+      id: "inputsGraph",
       enabled: true,
       resetIt: false,
       volume: 0,
-      duration: 0,
-      zoom: 0.6899999999999997,
-      name: __("Pitstop"),
+      duration: 6,
+      zoom: 1,
+      name: __("Inputs Graph"),
       subSettings: {
-        pitWindow: {
-          text: __("Show Pit-Window"),
+        showInputThrottle: {
+          text: __("Throttle"),
           enabled: true,
         },
-        pitTimeOnly: {
-          text: __("Show Pit-Time only"),
+        showInputBrake: {
+          text: __("Brake"),
+          enabled: true,
+        },
+        showInputClutch: {
+          text: __("Clutch"),
+          enabled: false,
+        },
+        showInputMeters: {
+          text: __("Input Meters"),
           enabled: false,
         },
       },
       position: {
-        x: 1410,
-        y: 680,
+        x: 750,
+        y: 960,
       },
     },
     spotting: {
@@ -1536,35 +1456,27 @@ export default class App extends React.Component<IProps> {
         y: 870,
       },
     },
-    inputsGraph: {
-      id: "inputsGraph",
+    pitstop: {
+      id: "pitstop",
       enabled: true,
       resetIt: false,
       volume: 0,
-      duration: 6,
-      zoom: 1,
-      name: __("Inputs Graph"),
+      duration: 0,
+      zoom: 0.6899999999999997,
+      name: __("Pitstop"),
       subSettings: {
-        showInputThrottle: {
-          text: __("Throttle"),
+        pitWindow: {
+          text: __("Show Pit-Window"),
           enabled: true,
         },
-        showInputBrake: {
-          text: __("Brake"),
-          enabled: true,
-        },
-        showInputClutch: {
-          text: __("Clutch"),
-          enabled: false,
-        },
-        showInputMeters: {
-          text: __("Input Meters"),
+        pitTimeOnly: {
+          text: __("Show Pit-Time only"),
           enabled: false,
         },
       },
       position: {
-        x: 750,
-        y: 960,
+        x: 1410,
+        y: 680,
       },
     },
     aids: {
@@ -1883,44 +1795,38 @@ export default class App extends React.Component<IProps> {
 
   @action
   private handlePaste = (event: ClipboardEvent) => {
-    if (!event.clipboardData) {
-      return;
-    }
+    if (!event.clipboardData) return;
     const clipText = event.clipboardData.getData("Text");
-    const isSettings = clipText.includes("positionBar");
-    if (isSettings) {
+    if (!clipText.includes("positionBar")) return;
+    try {
       let savedSettings: any = JSON.parse(clipText);
-      savedSettings = JSON.parse(clipText);
-      let hasFaulty = false;
-      Object.keys(savedSettings).forEach((key) => {
-        if (!Object.prototype.hasOwnProperty.call(this.settings, key)) {
-          hasFaulty = true;
+      Object.keys(savedSettings).forEach((widgetKey) => {
+        // Se o widget não existe mais, ignora
+        if (!this.settings[widgetKey]) return;
+        const currentWidget = this.settings[widgetKey];
+        const pastedWidget = savedSettings[widgetKey];
+        // Sanitiza subSettings
+        if (pastedWidget.subSettings) {
+          Object.keys(pastedWidget.subSettings).forEach((subKey) => {
+            if (!currentWidget.subSettings[subKey]) {
+              delete pastedWidget.subSettings[subKey];
+            }
+          });
         }
-        Object.keys(savedSettings[key].subSettings).forEach((keya) => {
-          if (
-            !Object.prototype.hasOwnProperty.call(
-              this.settings[key].subSettings,
-              keya
-            )
-          ) {
-            hasFaulty = true;
-          }
-        });
       });
-      if (hasFaulty) {
-        showDebugMessage(
-          _("Received Layout-Settings: [ERROR] Data was corrupt"),
-          5000
-        );
-      } else {
-        this.settings = merge(this.settings, savedSettings);
-        showDebugMessage(
-          _("Received Layout-Settings: Saved to Layout") +
-            ` ${this.currentLayout}`,
-          5000
-        );
-        setTimeout(this.timerSaveSettings, 3000);
-      }
+      // Merge seguro
+      this.settings = merge(this.settings, savedSettings);
+      showDebugMessage(
+        _("Received Layout-Settings: Saved to Layout") +
+          ` ${this.currentLayout}`,
+        5000
+      );
+      setTimeout(this.timerSaveSettings, 3000);
+    } catch (err) {
+      showDebugMessage(
+        _("Received Layout-Settings: [ERROR] Invalid JSON"),
+        5000
+      );
     }
   };
   
@@ -2588,7 +2494,7 @@ export default class App extends React.Component<IProps> {
     this.logoUrlEdit = true;
   };
 
-  // -> these 2 functions are used for drag the right block on positionsBar
+  // -> these 2 functions are used for drag the right block on sessionInfo
   @action
   public setInternalEditing(state: boolean) {
     if (this.lockHud) return;
@@ -3338,9 +3244,9 @@ export default class App extends React.Component<IProps> {
             relative={false}
           />
         )}
-        {this.settings.positionsBar.enabled && (
-          <PositionsBar
-            settings={this.settings.positionsBar}
+        {this.settings.sessionInfo.enabled && (
+          <SessionInfo
+            settings={this.settings.sessionInfo}
             onMouseDown={this.onMouseDown}
             onWheel={this.onWheel}
           />
@@ -4352,7 +4258,7 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-FEBRUARY 06, 2026
+FEBRUARY 17, 2026
 
 
 PLEASE READ:
@@ -4364,13 +4270,16 @@ To fix this, use the button 'RESET SETTINGS' (settings menu) and all widgets wil
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Pit Limiter: Widget has been redesigned.
-- Fuel Details: Lap times were being recorded incorrectly in some cases. Fixed.
+- All widgets: Background colors have been slightly darkened for better visibility in VR.
+- Position Bar: This widget has been split into two separate widgets: POSITION BAR and SESSION INFO.
+- Session Info: The widget now includes two information blocks (left and right), which can be moved and positioned freely.
+- Session Info: Added an option to display a dark background to improve text contrast.
+- Session Info: Added an option to enable/disable the Track Limits Counter.
+- MoTeC: The RPM bar has been moved to the top of the widget.
+- Damage: The widget is now displayed even when the damage option is set to DISABLED for the session.
 
-PERFORMANCE:
-- Ratings and SoF: Data was frozen due to the RaceRoom browser's caching system. SealHUD is again obtaining data directly from the
-  RaceRoom API, but with some code improvements to make lightier than before (8KB max.).
-  (Thanks Steven Savino and Samuel Travieso for reporting)
+TRANSLATIONS:
+- French: "Throttle" has been changed to "accélérateur" (thanks to Mat Blanchard).
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4416,8 +4325,16 @@ Diego Junges
 </span>
 
 {`
-PAST CHANGES:
+PAST CHANGES (since v.1.00)
 
+
+VERSION 1.02
+-------------------------
+- Pit Limiter: Widget has been redesigned.
+- Fuel Details: Lap times were being recorded incorrectly in some cases. Fixed.
+- Ratings and SoF: Data was frozen due to the RaceRoom browser's caching system. SealHUD is again obtaining data directly from the
+  RaceRoom API, but with some code improvements to make lightier than before (8KB max.).
+  (Thanks Steven Savino and Samuel Travieso for reporting)
 
 VERSION 1.01
 -------------------------
@@ -4427,8 +4344,7 @@ VERSION 1.01
 - Motec: RPM bar is fixed.
 - Performance: Created a mirrored database for user's standings, updated every 3 hours.
 
-
-VERSION 1.0
+VERSION 1.00
 -------------------------
 - Entirely redesigned Widgets: Motec, Fuel & Lap Details, Damage, Inputs, Race Info, Clock, CrewChief, and Delta.
 - New interface for the settings screen and widget selection.
@@ -4453,8 +4369,6 @@ VERSION 1.0
 - Inputs Graph: Line smoothing reduced for more accurate telemetry representation.
 - Performance: All fuel, virtual energy, and battery consumption calculations were rebuilt from scratch. 
   They are now centralized, executed once, and shared across widgets for better performance and consistency.
-
-
 `}
 
 

@@ -152,10 +152,8 @@ export async function getJason() {
 /* getJason() BACKUP
 export async function getJason() {
 	rankData = [];
-
 	for (const driver of r3e.data.DriverData) {
 		const userId = driver.DriverInfo.UserId;
-
 		if (
 		userId !== -1 &&
 		(rankList.length === 0 || rankList.includes(userId))
@@ -166,9 +164,7 @@ export async function getJason() {
 					`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
 				)}`
 				);
-
 				const data = await resp.json();
-
 				if (data && typeof data.UserId === 'number') {
 				rankData.push(data);
 				}

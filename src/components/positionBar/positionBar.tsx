@@ -1,19 +1,15 @@
 import { LapEvents } from "../../lib/LapEvents";
 import { PitEvents } from "../../lib/PitEvents";
 import { FlagEvents } from "../../lib/FlagEvents";
-import { FuelEvents } from "../../lib/FuelEvents";
-import { FuelStrategy } from '../../lib/FuelStrategy';
 import {
   classNames,
   base64ToString,
   ePlayerIsFocus,
-  eCurrentSlotId,
   fancyTimeFormatGap,
   formatTime,
   getInitials,
   getRankingData,
   getTimeUntilPit,
-  getRoundsLeft,
   isRange,
   isEven,
   rankData,
@@ -39,8 +35,8 @@ import {
 	// IDriverPitInfo,
 	eDriverNum,
 	// eDriverPitInfo,
-	eIsLeaderboard,
-	eIsHillClimb,
+	// eIsLeaderboard,
+	// eIsHillClimb,
 	eGainLossPermanentBar,
 	eRankInvertRelative
 } from '../app/app';
@@ -82,7 +78,7 @@ interface IDriverInfo {
 	userId: number;
 	logoUrl: string;
 	classUrl: string;
-	bestLapTime: number;
+	//bestLapTime: number;
 	lapsDone: number;
 	rankingData: IRatingData;
 	penalties: ICutTrackPenalties;
@@ -92,44 +88,44 @@ export default class PositionBar extends React.Component<IProps, {}> {
   	@observable accessor vrGame = false;
 	@observable accessor drivers: IDriverInfo[] = [];
 	@observable accessor formattedDrivers: IDriverInfo[] = [];
-	@observable accessor currentLap = INVALID;
-	@observable accessor maxLaps = INVALID;
+	//@observable accessor currentLap = INVALID;
+	//@observable accessor maxLaps = INVALID;
 	@observable accessor pitState = INVALID;
 	@observable accessor sessionPhase = INVALID;
-	@observable accessor sessionTimeRemaining = INVALID;
+	//@observable accessor sessionTimeRemaining = INVALID;
 	@observable accessor position = INVALID;
 	@observable accessor positionClass = INVALID;
 	@observable accessor multiClass = false;
 	@observable accessor classDriverCount = INVALID;
 	@observable accessor sessionType = INVALID;
-	@observable accessor lapTimeCurrentSelf = INVALID;
+	//@observable accessor lapTimeCurrentSelf = INVALID;
 	@observable accessor playerCount = INVALID;
-	@observable accessor isLeaderboard = false;
-	@observable accessor isHillClimb = false;
+	//@observable accessor isLeaderboard = false;
+	//@observable accessor isHillClimb = false;
 	@observable accessor strengthOF = "";
 	@observable accessor logoUrlp1 = "https://game.raceroom.com/store/image_redirect?id=";
 	@observable accessor logoUrlp2 = "&size=small";
 	@observable accessor startingLights = -1;
 	@observable accessor singleplayerRace = false;
 	@observable accessor startPositions: IStartPositions = {};	
-	@observable accessor lapTimePreviousSelf = -1;
-	@observable accessor lapTimeBestSelf = -1;
-	@observable accessor bestSelfSector3 = -1;
-	@observable accessor completedLaps = -1;
-	@observable accessor currentSlotId = -1;
-	@observable accessor myIncidentPoints = -1;
+	//@observable accessor lapTimePreviousSelf = -1;
+	//@observable accessor lapTimeBestSelf = -1;
+	//@observable accessor bestSelfSector3 = -1;
+	//@observable accessor completedLaps = -1;
+	//@observable accessor currentSlotId = -1;
+	//@observable accessor myIncidentPoints = -1;
 	@observable accessor playerIsFocus = false;
-	@observable accessor maxIncidentPoints = -1;
-	@observable accessor myCutTrackWarnings = -1;
-	@observable accessor actualRoundsLeft = -1;
-	@observable accessor bestLapSelf = -1;
-	@observable accessor sessionTimeDuration = -1;
-	@observable accessor layoutLength = -1;
+	//@observable accessor maxIncidentPoints = -1;
+	//@observable accessor myCutTrackWarnings = -1;
+	//@observable accessor actualRoundsLeft = -1;
+	//@observable accessor bestLapSelf = -1;
+	//@observable accessor sessionTimeDuration = -1;
+	//@observable accessor layoutLength = -1;
 	@observable accessor pitWindowStatus = -1;
 	@observable accessor lastCheck = 0;
-	@observable accessor lapDistance = -1;
+	//@observable accessor lapDistance = -1;
 	@observable accessor notInRacePhase = true;
-	@observable accessor personalBestTime = FuelEvents.bestLapTimeSec;
+	//@observable accessor personalBestTime = FuelEvents.bestLapTimeSec;
 
 	playerPosition = INVALID;
 	positionBarCount = 15;
@@ -154,6 +150,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
+		/*
 		this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
 		this.bestLapSelf =
 			this.personalBestTime !== null
@@ -167,38 +164,42 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			: r3e.data.SectorTimesSessionBestLap.Sector3 > -1
 			? r3e.data.SectorTimesSessionBestLap.Sector3
 			: -1;
-		this.lapDistance = r3e.data.LapDistance;
-		this.completedLaps = r3e.data.CompletedLaps;
+		*/
+		//this.lapDistance = r3e.data.LapDistance;
+		//this.completedLaps = r3e.data.CompletedLaps;
 		this.sessionPhase = r3e.data.SessionPhase;
-		this.currentLap = this.completedLaps + 1;
-		this.maxLaps = r3e.data.NumberOfLaps;
+		//this.currentLap = this.completedLaps + 1;
+		//this.maxLaps = r3e.data.NumberOfLaps;
 		this.position = r3e.data.Position;
 		this.positionClass = r3e.data.PositionClass;
 		this.sessionType = r3e.data.SessionType;
-		this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
-		this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
+		//this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
+		//this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
+		/*
 		this.actualRoundsLeft = 
 			FuelStrategy.RoundsLeft !== null 
 			? Math.round(FuelStrategy.RoundsLeft* 10) / 10 
 			: getRoundsLeft(this.lapTimeBestSelf);
 		this.bestSelfSector3 = r3e.data.SectorTimesBestSelf.Sector3;
-		this.layoutLength = r3e.data.LayoutLength;
-		this.isLeaderboard = eIsLeaderboard;
-		this.isHillClimb = eIsHillClimb;
-		this.sessionTimeRemaining = showAllMode ? 1 : r3e.data.SessionTimeRemaining;
+		*/
+		//this.layoutLength = r3e.data.LayoutLength;
+		//this.isLeaderboard = eIsLeaderboard;
+		//this.isHillClimb = eIsHillClimb;
+		//this.sessionTimeRemaining = showAllMode ? 1 : r3e.data.SessionTimeRemaining;
 		// ATIVAR ESSE TRECHO NOVAMENTE QUANDO HABILITAR SHORTBAR
 		// if (!this.props.relative) {
 		//  this.vrGame = this.props.settings.subSettings.shortBar.enabled;
 		// }
 		this.lastCheck = nowCheck;
 		this.playerIsFocus = ePlayerIsFocus;
-		this.currentSlotId = eCurrentSlotId;
-		this.sessionTimeDuration = r3e.data.SessionTimeDuration;
+		//this.currentSlotId = eCurrentSlotId;
+		//this.sessionTimeDuration = r3e.data.SessionTimeDuration;
 		this.notInRacePhase =
 			(this.sessionPhase < 4 && r3e.data.CarSpeed < 5) ||
 			this.sessionPhase < 3;
 		this.pitState = r3e.data.PitState;
 		this.pitWindowStatus = r3e.data.PitWindowStatus;
+		/*
 		this.maxIncidentPoints =
 			r3e.data.MaxIncidentPoints !== undefined
 			? r3e.data.MaxIncidentPoints
@@ -207,6 +208,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			r3e.data.IncidentPoints !== undefined ? r3e.data.IncidentPoints : -1;
 		this.myCutTrackWarnings =
 			r3e.data.CutTrackWarnings !== undefined ? r3e.data.CutTrackWarnings : -1;
+		*/
 		this.classDriverCount = 0;
 		this.playerCount = r3e.data.DriverData.length;
 		this.multiClass = false;
@@ -347,10 +349,13 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.singleplayerRace = true;
 		}
 
-		const decName =
-		!isUser && (this.isLeaderboard || this.isHillClimb)
-		? "Ghost-Car"
-		: base64ToString(driver.DriverInfo.Name);
+		/*
+		const decName = !isUser && (this.isLeaderboard || this.isHillClimb)
+			? "Ghost-Car"
+			: base64ToString(driver.DriverInfo.Name);
+		*/
+
+		const decName = base64ToString(driver.DriverInfo.Name);
 
 		const driverData = {
 			isUser,
@@ -384,7 +389,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				driver.DriverInfo.ClassId.toString() +
 				this.logoUrlp2
 				: `${this.logoUrlp1}1717${this.logoUrlp2}`,
-			bestLapTime: driver.SectorTimeBestSelf.Sector3,
+			//bestLapTime: driver.SectorTimeBestSelf.Sector3,
 			lapsDone: driver.CompletedLaps,
 			rankingData: getRankingData(driver.DriverInfo.UserId),
 			classColor:  getClassColor(driver.DriverInfo.ClassPerformanceIndex),
@@ -747,7 +752,7 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			: '-';
 	}
 
-	// *POSITION BAR* //
+	// STANDINGS BAR & RELATIVES //
 
 	render() {
 		const playerIsAlone = this.playerCount === 1;
@@ -774,32 +779,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		const positionOffset = this.vrGame
 		? 6 - this.playerPosition
 		: 7 - this.playerPosition;
-		
-		let sessionName = '';
-		switch (this.sessionType) {
-			case 0:
-				sessionName = _('Practice');
-				break;
-			case 1:
-				sessionName = _('Qualification');
-				break;
-			case 2:
-				sessionName = _('Race');
-				break;
-			case 3:
-				sessionName = _('Warmup');
-				break;
-		}
-		const showIncPoints =
-			!this.props.relative &&
-			this.props.settings.subSettings.showIncidentPoints.enabled &&
-			(showAllMode ||
-				(this.playerIsFocus &&
-				// this.maxIncidentPoints > 0 &&
-				sessionName !== _("Practice") &&
-				sessionName !== _("Warmup"))
-			);
-		const warnInc =	showIncPoints && this.myIncidentPoints >= this.maxIncidentPoints * 0.9;
 
 		return (
 			<div
@@ -809,10 +788,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				{
 				shouldShow: !!this.drivers.length || showAllMode,
 				gameIsVR: this.vrGame,
-				noStandings:
-					!this.props.relative &&
-					(!this.props.settings.subSettings.showStandings.enabled ||
-					((this.isLeaderboard || this.isHillClimb) && !showAllMode)),
 				sGapsInSeconds:
 					this.props.relative &&
 					this.props.settings.subSettings.showGapsInSeconds.enabled,
@@ -831,22 +806,25 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				noMultiClass: !this.multiClass,
 				}
 			)}
+
 			{...widgetSettings(this.props)}
 			>
-			{(this.props.relative ||
+			{
+			/*
+			(this.props.relative ||
 				(!this.props.relative &&
-				this.props.settings.subSettings.showStandings.enabled &&
 				((!this.isLeaderboard && !this.isHillClimb) || showAllMode))
 			) &&
+			 */
             this.sessionPhase !== INVALID && (
 				<div
               	className={classNames("positionBar", this.props.className, {
                 gameIsVR: this.vrGame,
 			})}
             >
-			{times(!this.props.relative ? positionOffset : 0).map((i: number) => {
-				return <div key={`empty-${i}`} className="player" />;
-			}
+				{times(!this.props.relative ? positionOffset : 0).map((i: number) => {
+					return <div key={`empty-${i}`} className="player" />;
+					}
 				)}
 				{this.drivers.map((player, i) => {
 					return (
@@ -861,8 +839,8 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							sessionPhase={this.sessionPhase}
 							position={this.position}
 							multiClass={this.multiClass}
-							isLeaderboard={this.isLeaderboard}
-							isHillClimb={this.isHillClimb}
+							//isLeaderboard={this.isLeaderboard}
+							//isHillClimb={this.isHillClimb}
 							startingLights={this.startingLights}
 							startPosition={this.startPositions}
 						/>
@@ -870,436 +848,10 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				})}
 				</div>
 			)}
-
-			{/*PB: Overall Position / Position Class*/}
-			{!this.props.relative &&
-			this.props.settings.subSettings.currentPosition.enabled &&
-			(showAllMode ||
-			(this.position !== INVALID &&
-				!this.isLeaderboard &&
-				!this.isHillClimb)) && (
-			<div
-				className={classNames("currentPosition", {
-				gameIsVR: this.vrGame,
-				})}
-				style={{
-				left:
-					this.props.settings.subSettings.lapTime.enabled &&
-					(r3e.data.GameInReplay <= 0 || showAllMode)
-					? "160px"
-					: "10px",
-				}}
-			>
-				<div className="label">{_("Position")}</div>
-				<span className="mono">
-				{showAllMode ? "9/12" : `${this.position}/${this.playerCount}`}
-				</span>
-			</div>
-			)}
-
-			{/*PB: Show Current Position*/}
-			{!this.props.relative &&
-			this.props.settings.subSettings.currentPosition.enabled &&
-			((this.positionClass !== INVALID &&
-				this.multiClass &&
-				!this.isLeaderboard &&
-				!this.isHillClimb) ||
-				showAllMode) && (
-				<div
-				className={classNames("currentPositionClass", {
-					gameIsVR: this.vrGame,
-				})}
-				style={{
-					left:
-					this.props.settings.subSettings.lapTime.enabled &&
-					(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "270px"
-						: "120px",
-				}}
-				>
-					<div className="label">{_("Position Class")}</div>
-					<span className="mono">
-						{showAllMode
-						? "3/6"
-						: `${this.positionClass}/${this.classDriverCount}`}
-					</span>				
-				</div>
-			)}
-
-			{/*PB: Show Completed Laps*/}
-			{!this.props.relative &&
-			this.props.settings.subSettings.sessionLaps.enabled &&
-			((this.completedLaps > 0 &&
-				this.maxLaps === INVALID &&
-				!this.isLeaderboard &&
-				!this.isHillClimb) ||
-				showAllMode) && (
-				<div
-				className="sessionLaps"
-				style={{
-					left:
-					this.props.settings.subSettings.lapTime.enabled &&
-					(r3e.data.GameInReplay <= 0 || showAllMode)
-						? this.props.settings.subSettings.currentPosition.enabled
-						? "380px"
-						: "160px"
-						: this.props.settings.subSettings.currentPosition.enabled
-						? "230px"
-						: "10px",
-					}}
-				>
-					<div className="label">{_("Completed Laps")}</div>
-					<span className="mono">
-						{showAllMode ? 6 : this.completedLaps}
-					</span>				
-				</div>
-			)}
-
-			{/*PB: Show Estimated Laps & Estimated Laps Left*/}
-			{!this.props.relative &&
-			((this.maxLaps === INVALID &&
-			this.playerIsFocus &&
-			((this.props.settings.subSettings.sessionLapsRemain.enabled &&
-				this.actualRoundsLeft > -1) ||
-				(this.props.settings.subSettings.sessionLapsTotal.enabled &&
-				this.bestLapSelf > 0) ||
-				(this.props.settings.subSettings.sessionLapsRemain.enabled &&
-				this.actualRoundsLeft > -1 &&
-				this.props.settings.subSettings.sessionLapsTotal.enabled &&
-				this.bestLapSelf > 0)) &&
-			((this.props.settings.subSettings.sessionLapsTotal.enabled &&
-				this.bestLapSelf > 0) ||
-				(this.props.settings.subSettings.sessionLapsRemain.enabled &&
-				this.actualRoundsLeft > -1))) ||
-			showAllMode) && (
-			<div
-				className="sessionLapsRemain"
-				style={{
-				left:
-					this.props.settings.subSettings.lapTime.enabled &&
-					(r3e.data.GameInReplay <= 0 || showAllMode)
-					? this.props.settings.subSettings.currentPosition.enabled
-						? this.props.settings.subSettings.sessionLaps.enabled
-						? this.actualRoundsLeft > 99 ||
-							Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-							? "490px"
-							: "480px"
-						: this.actualRoundsLeft > 99 ||
-							Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-						? "380px"
-						: "370px"
-						: this.props.settings.subSettings.sessionLaps.enabled
-						? this.actualRoundsLeft > 99 ||
-						Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-						? "280px"
-						: "270px"
-						: this.actualRoundsLeft > 99 ||
-						Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-						? "180px"
-						: "180px"
-					: this.props.settings.subSettings.currentPosition.enabled
-					? this.props.settings.subSettings.sessionLaps.enabled
-						? this.actualRoundsLeft > 99 ||
-						Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-						? "340px"
-						: "330px"
-						: this.actualRoundsLeft > 99 ||
-						Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-						? "230px"
-						: "220px"
-					: this.props.settings.subSettings.sessionLaps.enabled
-					? this.actualRoundsLeft > 99 ||
-						Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >=
-						100
-						? "120px"
-						: "110px"
-					: "10px",
-				width:
-					this.actualRoundsLeft > 99 ||
-					Math.ceil(this.sessionTimeDuration / this.bestLapSelf) >= 100
-					? "180px"
-					: "160px",
-				}}
-			>
-				<div className="label">
-				{this.props.settings.subSettings.sessionLapsRemain.enabled ||
-				this.props.settings.subSettings.sessionLapsTotal.enabled
-					? this.props.settings.subSettings.sessionLapsTotal.enabled &&
-					(this.bestLapSelf > 0 || showAllMode)
-					? !this.props.settings.subSettings.sessionLapsRemain.enabled
-						? _("Estimated Laps total")
-						: _("Est.L. left / Est.L. total")
-					: _("Estimated Laps left")
-					: ""}
-				</div>
-				<span className="mono">
-				{this.props.settings.subSettings.sessionLapsTotal.enabled ||
-				this.props.settings.subSettings.sessionLapsRemain.enabled
-					? this.props.settings.subSettings.sessionLapsTotal.enabled &&
-					(this.bestLapSelf > 0 || showAllMode) &&
-					this.props.settings.subSettings.sessionLapsRemain.enabled &&
-					(this.actualRoundsLeft > -1 || showAllMode)
-					? `${showAllMode ? 6 : this.actualRoundsLeft}/${
-						showAllMode
-							? 12
-							: Math.ceil(this.sessionTimeDuration / this.bestLapSelf)
-						}`
-					: this.props.settings.subSettings.sessionLapsTotal
-						.enabled &&
-						(this.bestLapSelf > 0 || showAllMode)
-					? `${
-						showAllMode
-							? 12
-							: Math.ceil(this.sessionTimeDuration / this.bestLapSelf)
-						}`
-					: `${showAllMode ? 6 : this.actualRoundsLeft}`
-					: ""}
-				</span>				
-			</div>
-			)}
-
-			{/*PB: Show Setrength Of Field*/}
-			{!this.props.relative &&
-			this.props.settings.subSettings.showSOF.enabled &&
-			(!this.singleplayerRace || showAllMode) && (
-			<div
-				className="strengthOfField"
-				style={{
-				right:
-					this.props.settings.subSettings.sessionTime.enabled &&
-					((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-					? showIncPoints
-						? this.props.settings.subSettings.showLastLap.enabled
-						? this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-							? "585px"
-							: "430px"
-						: this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "430px"
-						: "275px"
-						: this.props.settings.subSettings.showLastLap.enabled
-						? this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "445px"
-						: "290px"
-						: this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "290px"
-						: "135px"
-					: showIncPoints
-					? this.props.settings.subSettings.showLastLap.enabled
-						? this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "460px"
-						: "305px"
-						: this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "305px"
-						: "150px"
-					: this.props.settings.subSettings.showLastLap.enabled
-					? this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "320px"
-						: "165px"
-					: this.props.settings.subSettings.showBestLap.enabled &&
-						(r3e.data.GameInReplay <= 0 || showAllMode)
-					? "165px"
-					: "10px",
-				}}
-			>
-				<div className="label">{_("Strength of Field")}</div>
-				<span className="mono">
-				{showAllMode ? "2.22K" : this.getStrengthOfField()}
-				</span>				
-			</div>
-			)}
-
-			{/*PB: Show Lap-Time*/}
-			{!this.props.relative &&
-				this.props.settings.subSettings.lapTime.enabled &&
-				(r3e.data.GameInReplay <= 0 || showAllMode) && (
-				<div
-					className={classNames("currentLapTime", {
-					noTime: this.lapTimeCurrentSelf <= 0,
-					})}
-				>
-					<div className="label">{_("Lap time")}</div>
-					<span className="mono">
-					{this.lapTimeCurrentSelf !== INVALID
-						? formatTime(this.lapTimeCurrentSelf, "mm:ss.SSS")
-						: "-:--.---"}
-					</span>					
-				</div>
-			)}
-
-			{/*PB: Show Last Lap*/}
-			{!this.props.relative &&
-				this.props.settings.subSettings.showLastLap.enabled && (
-				<div
-					className={classNames("lastLap", {
-					noTime: !showAllMode && this.lapTimePreviousSelf <= 0,
-					})}
-					style={{
-					color: showAllMode
-						? "rgba(255, 255, 255, 1)"
-						: !(
-							(this.sessionType === 2 && this.completedLaps < 1) ||
-							(this.sessionType !== 2 && this.lapTimeBestSelf < 0)
-						) && LapEvents.shouldShowLapTime(this.currentSlotId)
-						? LapEvents.getLapTimeColor(this.currentSlotId)
-						: "rgba(255, 255, 255, 1)",
-					right:
-						this.props.settings.subSettings.sessionTime.enabled &&
-						((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-						? showIncPoints
-							? this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-							? "430px"
-							: "275px"
-							: this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-							? "290px"
-							: "135px"
-						: showIncPoints
-						? this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-							? "305px"
-							: "150px"
-						: this.props.settings.subSettings.showBestLap.enabled &&
-							(r3e.data.GameInReplay <= 0 || showAllMode)
-						? "165px"
-						: "10px",
-					}}
-				>
-					<div className="label">{_("Last Lap")}</div>
-					<span className="mono">
-					{this.lapTimePreviousSelf !== -1
-						? formatTime(this.lapTimePreviousSelf, "mm:ss.SSS")
-						: showAllMode
-						? "01:48.023"
-						: "-:--.---"}
-					</span>					
-				</div>
-			)}
-
-			{/*PB: Show Best Lap*/}		  
-			{!this.props.relative &&
-			this.props.settings.subSettings.showBestLap.enabled &&
-			(r3e.data.GameInReplay <= 0 || showAllMode) && (
-				<div
-				className={classNames("bestLap", {
-					noTime: !showAllMode && this.bestSelfSector3 <= 0,
-				})}
-				style={{
-					color: "white",
-					right:
-					this.props.settings.subSettings.sessionTime.enabled &&
-					((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-						? showIncPoints
-						? "275px"
-						: "135px"
-						: showIncPoints
-						? "150px"
-						: "10px",
-				}}
-				>
-					<div className="label">{_("Best Lap")}</div>
-					<span className="mono">
-						{this.bestSelfSector3 !== -1
-						? formatTime(this.bestSelfSector3, "mm:ss.SSS")
-						: showAllMode
-						? "01:48.023"
-						: "-:--.---"}
-					</span>				
-				</div>
-			)}
-
-			{/*PB: Show Incident Points*/}
-			{(!this.isLeaderboard && !this.isHillClimb) && !this.props.relative && showIncPoints && (
-				<div
-				className={classNames("incidentPoints")}
-				style={{
-					color: warnInc && this.maxIncidentPoints > 1 ? "rgb(228, 50, 50)" : "rgba(255,255,255,1)",
-					right:
-					this.props.settings.subSettings.sessionTime.enabled &&
-					((!this.isLeaderboard && !this.isHillClimb) || showAllMode)
-						? "135px"
-						: "10px",
-				}}
-				>
-					<div className="label">{_("Incidents")}</div>
-					<span className="mono">
-						{`${
-						showAllMode
-							? 135
-							: this.myIncidentPoints === -1
-								? "N/A"
-								: this.myIncidentPoints
-						}
-						${showAllMode 
-							? "/"+200 : this.maxIncidentPoints < 1 
-								? ""
-								: "/"+this.maxIncidentPoints
-						}`}								
-					</span>
-					{(this.sessionType === ESession.Race || showAllMode) && (
-						<div className="details">
-							{`( ${this.myCutTrackWarnings} ${_("cuts")} )`}
-						</div>
-					)}
-				</div>
-			)}
-
-			{/*PB: Show Session-Time*/}
-			{!this.props.relative &&
-				this.props.settings.subSettings.sessionTime.enabled &&
-				((!this.isLeaderboard && !this.isHillClimb) || showAllMode) &&
-				this.sessionTimeRemaining !== INVALID && (
-				<div className="sessionTime">
-					<div className="label">{sessionName}</div>
-					<span className="mono">
-					<div className="sessionRemainHours">
-						{showAllMode
-						? "23"
-						: formatTime(this.sessionTimeRemaining, "H")}
-					</div>
-					<div className="sessionRemainHoursText">{`${"H"}`}</div>
-					<div className="sessionRemainMinutes">
-						{showAllMode
-						? "34"
-						: formatTime(this.sessionTimeRemaining, "mm")}
-					</div>
-					<div className="sessionRemainMinutesText">{`${"M"}`}</div>
-					<div className="sessionRemainSeconds">
-						{showAllMode
-						? "56"
-						: formatTime(this.sessionTimeRemaining, "ss")}
-					</div>
-					<div className="sessionRemainSecondsText">{`${"S"}`}</div>
-					</span>					
-				</div>
-				)
-			}
-
-			{/*PB: Show Session Duration (# Laps)*/}
-			{!this.props.relative &&
-			this.props.settings.subSettings.sessionTime.enabled &&
-			this.maxLaps !== INVALID && (
-				<div className="currentLap">
-					<div className="label">{_('Lap')}</div>
-					<span className="mono">
-						{this.currentLap}/{this.maxLaps}
-					</span>					
-				</div>
-			)}
-
 			</div>
 		);
 	}
 }
-
-{/*STANDINGS BAR & RELATIVES*/}
 
 interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
 	player: IDriverInfo;
@@ -1311,8 +863,8 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
 	sessionPhase: number;
 	position: number;
 	multiClass: boolean;
-	isLeaderboard: boolean;
-	isHillClimb: boolean;
+	//isLeaderboard: boolean;
+	//isHillClimb: boolean;
 	startingLights: number;
 	startPosition: IStartPositions;
 }
@@ -1328,20 +880,10 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 		const gameInReplay = r3e.data.GameInReplay > 0;
 		const position = this.props.position;
 		const player = this.props.player;
-		/*
-		const playerPitInfo =
-			r3e.data.GameInReplay > 0 &&
-			((r3e.data.SessionTimeDuration !== -1 &&
-				r3e.data.SessionTimeRemaining <= 0) ||
-				(r3e.data.NumberOfLaps !== -1 &&
-				r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
-				? {}
-				: this.props.playerPitInfo;
-		*/
 		const singleplayerRace = this.props.singleplayerRace;
 		const multiClass = this.props.multiClass;
-		const isLeaderboard = this.props.isLeaderboard;
-		const isHillClimb = this.props.isHillClimb;
+		//const isLeaderboard = this.props.isLeaderboard;
+		//const isHillClimb = this.props.isHillClimb;
 		const pitWindow = getTimeUntilPit(r3e.data.NumberOfLaps !== INVALID);
 		const startPositions = this.props.startPosition;
 		// CN=Car Names and CL=Car Logos
@@ -1404,12 +946,11 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 		startPosition !== -1 ? Math.abs(startPosition - player.position) : -1;
 
 		// If Relative/Standings are Off or is not HillClimb/LeaderBoard
-		if (
+		/*if (
 		  this.props.relative ||
 		  (!this.props.relative &&
-			this.props.settings.subSettings.showStandings.enabled &&
 			((!isLeaderboard && !isHillClimb) || showAllMode))
-		) {	
+		)*/ {	
 
 		return (
 			<div className={classNames('player', {
@@ -1546,12 +1087,14 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 						this.props.settings.subSettings.showCarLogos.enabled ||
 						(this.props.settings.subSettings.showRanking.enabled &&
 						(!singleplayerRace || showAllMode))
-						? player.shortName
-						: player.name
-						: this.props.settings.subSettings.showStandings.enabled &&
-						((!isLeaderboard && !isHillClimb) || showAllMode)
-						? player.shortName
-						: ""
+							? player.shortName
+							: player.name
+								: player.shortName
+								/*
+								: showAllMode // || !isLeaderboard
+									? player.shortName
+									: ""
+									*/
 					}
 				</div>
 
@@ -1613,8 +1156,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 
 				{/*STANDINGS: GAP BETWEEN DRIVERS*/}
 				{!this.props.relative &&
-				this.props.settings.subSettings.showStandings.enabled &&
-				((!isLeaderboard && !isHillClimb) || showAllMode) && (
+				//((!isLeaderboard && !isHillClimb) || showAllMode) && ((showAllMode) &&
+				(
 					<div
 					className="diff mono"
 					style={{
