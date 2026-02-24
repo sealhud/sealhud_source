@@ -23,8 +23,6 @@ import r3e, {
   unregisterUpdate 
 } from "./../../lib/r3e";
 import {
-  //ESession,
-	//EPitState,
   IDriverData,
 	ESessionPhase,
 } from "./../../types/r3eTypes";
@@ -86,23 +84,10 @@ export default class SessionInfo extends React.Component<IProps> {
   @observable accessor isHillClimb = false;
   @observable accessor isLeaderboard = false;  
   @observable accessor sessionPhase = INVALID;
-  //@observable accessor pitState = INVALID;
 
   constructor(props: IProps) {
     super(props);
     registerUpdate(this.update);
-
-    /*
-    // Garante que layout exista
-    if (!this.props.settings.layout) {
-      this.props.settings.layout = {
-        right: { x: 0, y: 0 },
-      };
-    }
-    if (!this.props.settings.layout.right) {
-      this.props.settings.layout.right = { x: 0, y: 0 };
-    }
-    */
   }
 
   componentWillUnmount() {
@@ -193,7 +178,6 @@ export default class SessionInfo extends React.Component<IProps> {
     this.bestSelfSector3 = r3e.data.SectorTimesBestSelf.Sector3;
     this.sessionTimeDuration = r3e.data.SessionTimeDuration;
     this.sessionPhase = r3e.data.SessionPhase;
-    //this.pitState = r3e.data.PitState;
     this.maxIncidentPoints =
 			r3e.data.MaxIncidentPoints !== undefined
 			? r3e.data.MaxIncidentPoints
@@ -473,7 +457,7 @@ export default class SessionInfo extends React.Component<IProps> {
           ? "8" 
           : this.myCutTrackWarnings ,
         conditions: [
-          () => this.myCutTrackWarnings > -1,
+          () => this.myCutTrackWarnings > -1 && this.sessionType === 2,
         ]
       },
       {

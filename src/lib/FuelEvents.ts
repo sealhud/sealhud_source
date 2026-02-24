@@ -20,10 +20,10 @@ export class FuelEvents {
   // -----------------------
 
   @observable static accessor lapStatsTick = 0;
+  private static lastSeenLapTime = -1;
   private static persistKey: string | null = null;
   private static persisted: FuelPersistedData | null = null;
   private static pendingLapStats = false;
-  private static lastProcessedLapTime = -1;
 
   // Estado da volta atual
   private static lapStartFuel = -1;
@@ -87,7 +87,6 @@ export class FuelEvents {
       )
     ) {
       this.lapInvalid = true;
-      this.lastProcessedLapTime = -1;
     }
     this.detectLap();
     this.tryUpdateLapStats();
@@ -110,6 +109,7 @@ export class FuelEvents {
     this.lapPassedMid = false;
     this.lapInvalid = false;
     this.lastLapFuel = null;
+    this.lastSeenLapTime = r3e.data.LapTimePreviousSelf;
   }
 
   private static buildPersistKey(): string {
@@ -197,7 +197,16 @@ export class FuelEvents {
       frac < 0.05 &&
       this.lapPassedMid
     ) {
-      this.closeLap();
+      const prevLap = r3e.data.LapTimePreviousSelf;
+
+      // Só fecha quando o tempo realmente mudou
+      if (
+        prevLap > 0 &&
+        prevLap !== this.lastSeenLapTime
+      ) {
+        this.lastSeenLapTime = prevLap;
+        this.closeLap();
+      }
     }
   }
 
@@ -207,15 +216,13 @@ export class FuelEvents {
     const isElectric = r3e.data.VehicleInfo.EngineType === EEngineType.Electric;
 
     const valid = isElectric
-      ? !this.lapInvalid
-      : !this.lapInvalid && used > 0 && used <= r3e.data.FuelCapacity;
+      ? !this.lapInvalid // needed for electric cars
+      : !this.lapInvalid && used > 0 && used <= r3e.data.FuelCapacity; // needed for fuel cars
 
     if (valid) {
       const mult = this.getFuelMultiplier();
       const used1x = used / mult;
-
       this.lastLapFuel = used;
-
       this.updateFuelAvg(used1x);
 
       // arma SEMPRE que a volta for válida
@@ -223,7 +230,6 @@ export class FuelEvents {
     } else {
       // volta inválida quebra a sequência
       this.pendingLapStats = false;
-      this.lastProcessedLapTime = -1;
     }
 
     // Reset SEMPRE após fechar
@@ -253,16 +259,6 @@ export class FuelEvents {
 
     const lapSec = r3e.data.LapTimePreviousSelf;
 
-    // Ainda não chegou ou é repetido
-    if (lapSec <= 0) {
-      return; // ainda não chegou
-    }
-
-    // Tempo repetido, mas pode ser por volta inválida no meio
-    if (lapSec === this.lastProcessedLapTime) {
-      return; // NÃO consome tentativas
-    }
-
     // Agora temos o tempo NOVO da volta recém-fechada
 
     const len = r3e.data.LayoutLength;
@@ -290,8 +286,6 @@ export class FuelEvents {
 
     // Finaliza
     FuelEvents.lapStatsTick++;
-    this.pendingLapStats = false;
-    this.lastProcessedLapTime = lapSec;
     this.pendingLapStats = false;
   }
 

@@ -1110,7 +1110,7 @@ const translations = {
 		"Position": "Posição",
 		"Position Class": "Posição na Classe",
 		"Position Bar": "Barra de Posição",
-		"Practice": "Praticar",
+		"Practice": "Prática",
 		"Preparing": "Preparo",
 		"PRESS CLUTCH / BRAKE / THROTTLE - OR CLICK HERE - TO CLOSE": "Pressione embreagem / Freio / Acelerador - ou clique aqui - para fechar",
 		"Pressure:": "Pressão:",
