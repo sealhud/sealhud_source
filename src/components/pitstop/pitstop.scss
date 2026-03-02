@@ -8,7 +8,7 @@
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   transform: translate(-50%);
-  //border-radius: 10px;
+  border-radius: 4px;
 }
 .pitInfo {
   position: absolute;
@@ -23,7 +23,7 @@
 .pitInfo .inner {
   background: rgba(0, 0, 0, 0.75);
   padding: 10px;
-  //border-radius: 10px;
+  border-radius: 4px;
 }
 .pitInfo .title {
   font-size: 35px;
@@ -44,7 +44,7 @@
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   transform: translate(-50%);
-  //border-radius: 10px;
+  border-radius: 4px;
 }
 .pitInfoFixed .tasks {
   display: flex;
@@ -56,7 +56,7 @@
   margin: 10px 13px 10px 13px;
   border: 3px solid #fff;
   padding: 12px 0;
-  //border-radius: 10px;
+  border-radius: 4px;
   vertical-align: center;
   overflow: hidden;
   white-space: pre;
@@ -101,7 +101,7 @@
 .pitMinInfoFixed .inner {
   padding: 10px;
   transform: translate(-50%);
-  //border-radius: 10px;
+  border-radius: 4px;
 }
 .pitMinInfoFixed .inner {
   background: rgba(0, 0, 0, 0.5);

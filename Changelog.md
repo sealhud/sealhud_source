@@ -1,3 +1,22 @@
+	1.04
+	----------
+	WIDGETS:
+	- Fuel Details: There was a bug that sometimes caused lap times to be recorded incorrectly, affecting average calculations. Fixed.
+	- Clock: The font has been changed to give the widget a digital clock look.
+
+	TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
+	Track details, corner names, and pit spot positions have been added for all remaining circuits:
+	- Indianapolis: All layouts.
+	- Motorsport Arena Oschersleben 2024: All layouts.
+	- Nogaro Circuit Paul Armagnac: All layouts.
+	- Silverstone Circuit Classic: All layouts.
+	- TT Circuit Assen: All layouts.
+	- Twin Forest: Duel.
+	- Motorland Aragón: WTCR.
+	- Nürburgring: Müllenbachschleife.
+	- Paul Ricard: Solution 1A.
+	- Red Bull Ring Spielberg: Moto.
+
 	1.03
 	----------
 	WIDGETS:

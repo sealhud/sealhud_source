@@ -110,6 +110,10 @@ export const trackDetails: ITrackDetails = {
 			3377: {
 				Name: 'Sprint',
 				BoxEntrance: 3467.658
+			},
+			9847: {
+				Name: 'Müllenbachschleife',
+				BoxEntrance: 820
 			}
 		}
 	},
@@ -373,6 +377,10 @@ export const trackDetails: ITrackDetails = {
 			5794: {
 				Name: 'Südschleife National Circuit',
 				BoxEntrance: 2106.269
+			},
+			11296: {
+				Name: 'Moto',
+				BoxEntrance: 4106
 			}
 		}
 	},
@@ -401,8 +409,12 @@ export const trackDetails: ITrackDetails = {
 				BoxEntrance: 3729.108
 			},
 			4246: {
-				Name: 'Solution 1A',
+				Name: 'Solution 1A-V2',
 				BoxEntrance: 5656.714
+			},			
+			11909: {
+				Name: 'Solution 1A',
+				BoxEntrance: 5478
 			},
 			4247: {
 				Name: 'Solution 1C-V2',
@@ -741,6 +753,10 @@ export const trackDetails: ITrackDetails = {
 			9043: {
 				Name: 'Fast Circuit',
 				BoxEntrance: 4720.391
+			},
+			9483: {
+				Name: 'WTCR',
+				BoxEntrance: 5159
 			}
 		}
 	},
@@ -819,11 +835,11 @@ export const trackDetails: ITrackDetails = {
 		Layouts: {
 			10394: {
 				Name: 'Grand Prix',
-				BoxEntrance: 3864
+				BoxEntrance: 3863
 			},
 			10725: {
 				Name: 'National',
-				BoxEntrance: 3062
+				BoxEntrance: 3061
 			}
 		}
 	},
@@ -885,6 +901,104 @@ export const trackDetails: ITrackDetails = {
 			12236: {
 				Name: 'Short',
 				BoxEntrance: 2551
+			}
+		}
+	},
+	9942: {
+		Name: 'Indianapolis Motor Speedway',
+		Layouts: {
+			9943: {
+				Name: 'Road Course',
+				BoxEntrance: 3530
+			},
+			9957: {
+				Name: 'Historic',
+				BoxEntrance: 3765
+			},
+			9958: {
+				Name: 'Oval',
+				BoxEntrance: 3872
+			}
+		}
+	},
+	9838: {
+		Name: 'Twin Forest',
+		Layouts: {
+			9839: {
+				Name: 'Duel',
+				BoxEntrance: 3590
+			}
+		}
+	},
+	12505: {
+		Name: 'M.A. Oschersleben 2024',
+		Layouts: {
+			12506: {
+				Name: 'Grand Prix',
+				BoxEntrance: 3565
+			},
+			12571: {
+				Name: 'Alternate',
+				BoxEntrance: 3589
+			},
+			12572: {
+				Name: 'Short',
+				BoxEntrance: 2342
+			}
+		}
+	},
+	9657: {
+		Name: 'Nogaro Circuit Paul Armagnac',
+		Layouts: {
+			9659: {
+				Name: 'Grand Prix Circuit',
+				BoxEntrance: 3451
+			},
+			10258: {
+				Name: 'Club Circuit',
+				BoxEntrance: 1559
+			},
+			10392: {
+				Name: 'Caupenne Circuit',
+				BoxEntrance: 1581
+			},
+			12573: {
+				Name: 'Moto Circuit',
+				BoxEntrance: 3405
+			}
+		}
+	},
+	12267: {
+		Name: 'Silverstone Circuit Classic',
+		Layouts: {
+			12268: {
+				Name: 'Grand Prix',
+				BoxEntrance: 4808
+			},
+			12389: {
+				Name: 'National',
+				BoxEntrance: 2313
+			},
+			12390: {
+				Name: 'International',
+				BoxEntrance: 3294
+			}
+		}
+	},
+	9984: {
+		Name: 'TT Circuit Assen',
+		Layouts: {
+			9985: {
+				Name: 'Grand Prix',
+				BoxEntrance: 4364
+			},
+			10351: {
+				Name: 'North Course',
+				BoxEntrance: 2184
+			},
+			10355: {
+				Name: 'Motorcycle Course',
+				BoxEntrance: 4365
 			}
 		}
 	},
@@ -1761,6 +1875,32 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 2485 && lDist <= 3170) { return 'Turn 11'; }
 		if (lDist >= 4220 && lDist <= 4615) { return 'Turn 12'; }
 
+		// Motorland Aragaon WTCR
+	} else if (layoutId === 9483) {
+		if (lDist >= 5100 || lDist <= 200) { return 'Start-Finish'; }
+		if (lDist >= 215 && lDist <= 308) { return 'Turn 1'; }
+		if (lDist >= 373 && lDist <= 535) { return 'Turn 2'; }
+		if (lDist >= 636 && lDist <= 775) { return 'Turn 3'; }
+		if (lDist >= 930 && lDist <= 1055) { return 'Turn 4'; }
+		if (lDist >= 1095 && lDist <= 1210) { return 'Turn 5'; }
+		if (lDist >= 1280 && lDist <= 1400) { return 'Turn 6'; }
+		if (lDist >= 1505 && lDist <= 1630) { return 'Turn 7'; }
+		if (lDist >= 1874 && lDist <= 1960) { return 'Turn 8'; }
+		if (lDist >= 1961 && lDist <= 2055) { return 'Turn 9'; }
+		if (lDist >= 2120 && lDist <= 2385) { return 'Turn 10'; }
+		if (lDist >= 2485 && lDist <= 2785) { return 'Turn 11'; }
+		if (lDist >= 2850 && lDist <= 2950) { return 'Turn 12'; }
+		if (lDist >= 3000 && lDist <= 3150) { return 'Turn 13'; }
+		if (lDist >= 3265 && lDist <= 3335) { return 'Turn 14'; }
+		if (lDist >= 3365 && lDist <= 3450) { return 'Turn 15'; }
+		if (lDist >= 3890 && lDist <= 3940) { return 'Turn 16'; }
+		if (lDist >= 3950 && lDist <= 4000) { return 'Turn 17'; }
+		if (lDist >= 4080 && lDist <= 4160) { return 'Turn 18'; }
+		if (lDist >= 4200 && lDist <= 4300) { return 'Turn 19'; }
+		if (lDist >= 4600 && lDist <= 4685) { return 'Turn 20'; }
+		if (lDist >= 4720 && lDist <= 4795) { return 'Turn 21'; }
+		if (lDist >= 4885 && lDist <= 5000) { return 'Turn 22'; }
+
 		// Motorsport Arena Oschersleben A Course
 	} else if (layoutId === 2384) {
 		if (lDist >= 3500 || lDist <= 360) { return 'Start-Finish'; }
@@ -2167,6 +2307,16 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 2950 && lDist <= 3090) { return 'Veedol-Schikane'; }
 		if (lDist >= 3230 && lDist <= 3430) { return 'Jaguar Kurve'; }
 
+		// Nürburgring Müllenbachschleife
+	} else if (layoutId === 9847) {
+		if (lDist >= 1340 || lDist <= 45) { return 'Start-Finish'; }
+		if (lDist >= 130 && lDist <= 320) { return 'Dunlop Kehre'; }
+		if (lDist >= 520 && lDist <= 740) { return 'Michael-Schumacher-S'; }
+		if (lDist >= 780 && lDist <= 850) { return 'Turn 3'; }
+		if (lDist >= 870 && lDist <= 920) { return 'Turn 4'; }
+		if (lDist >= 950 && lDist <= 990) { return 'Valvoline Kurve'; }
+		if (lDist >= 1050 && lDist <= 1220) { return 'Ford Kurve'; }
+
 		// Paul Ricard Solution 3C
 	} else if (layoutId === 2867) {
 		if (lDist >= 3645 || lDist <= 300) { return 'Start-Finish'; }
@@ -2180,10 +2330,25 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 3276 && lDist <= 3485) { return 'Tour'; }
 		if (lDist >= 3486 && lDist <= 3580) { return 'Virage du Pont'; }
 
-		// Paul Ricard Solution 1A
+		// Paul Ricard Solution 1A-V2
 	} else if (layoutId === 4246) {
 		if (lDist >= 5580 || lDist <= 300) { return 'Start-Finish'; }
-		if (lDist >= 600 && lDist <= 950) { return 'Verriere'; }
+		if (lDist >= 600 && lDist <= 950) { return 'Verrerie'; }
+		if (lDist >= 1230 && lDist <= 1450) { return 'Chicane'; }
+		if (lDist >= 1460 && lDist <= 1815) { return 'Saint-Beaurne'; }
+		if (lDist >= 1816 && lDist <= 1960) { return 'Lecole'; }
+		if (lDist >= 1961 && lDist <= 3720) { return 'Mistral Straight'; }
+		if (lDist >= 3721 && lDist <= 4000) { return 'Signes'; }
+		if (lDist >= 4170 && lDist <= 4580) { return 'Beausset'; }
+		if (lDist >= 4665 && lDist <= 4880) { return 'Bendor'; }
+		if (lDist >= 4881 && lDist <= 5200) { return 'Village'; }
+		if (lDist >= 5201 && lDist <= 5415) { return 'Tour'; }
+		if (lDist >= 5416 && lDist <= 5515) { return 'Virage du Pont'; }
+
+		// Paul Ricard Solution 1A
+	} else if (layoutId === 11909) {
+		if (lDist >= 5580 || lDist <= 300) { return 'Start-Finish'; }
+		if (lDist >= 600 && lDist <= 950) { return 'Verrerie'; }
 		if (lDist >= 1230 && lDist <= 1450) { return 'Chicane'; }
 		if (lDist >= 1460 && lDist <= 1815) { return 'Saint-Beaurne'; }
 		if (lDist >= 1816 && lDist <= 1960) { return 'Lecole'; }
@@ -2198,7 +2363,7 @@ export function getCornerName(layoutId: number, lDist: number) {
 		// Paul Ricard Solution 1C-V2
 	} else if (layoutId === 4247) {
 		if (lDist >= 5665 || lDist <= 300) { return 'Start-Finish'; }
-		if (lDist >= 590 && lDist <= 890) { return 'Verriere'; }
+		if (lDist >= 590 && lDist <= 890) { return 'Verrerie'; }
 		if (lDist >= 1280 && lDist <= 1490) { return 'Chicane'; }
 		if (lDist >= 1500 && lDist <= 1860) { return 'Saint-Beaurne'; }
 		if (lDist >= 1861 && lDist <= 1995) { return 'Lecole'; }
@@ -2376,7 +2541,7 @@ export function getCornerName(layoutId: number, lDist: number) {
 		// RedBull Ring GP
 	} else if (layoutId === 2556) {
 		if (lDist >= 4020 || lDist <= 180) { return 'Start-Finish'; }
-		if (lDist >= 285 && lDist <= 390) { return 'Castrol Edge'; }
+		if (lDist >= 285 && lDist <= 390) { return 'Niki Lauda Kurve'; }
 		if (lDist >= 1220 && lDist <= 1330) { return 'Remus'; }
 		if (lDist >= 2025 && lDist <= 2135) { return 'Schlossgold'; }
 		if (lDist >= 2485 && lDist <= 2720) { return 'Rauch'; }
@@ -2387,11 +2552,23 @@ export function getCornerName(layoutId: number, lDist: number) {
 		// RedBull Ring Südschleife National
 	} else if (layoutId === 5794) {
 		if (lDist >= 2040 || lDist <= 180) { return 'Start-Finish'; }
-		if (lDist >= 285 && lDist <= 390) { return 'Castrol Edge'; }
+		if (lDist >= 285 && lDist <= 390) { return 'Niki Lauda Kurve'; }
 		if (lDist >= 650 && lDist <= 845) { return 'Turn 2'; }
 		if (lDist >= 846 && lDist <= 1040) { return 'Würth Kurve'; }
 		if (lDist >= 1605 && lDist <= 1740) { return 'Rindt'; }
 		if (lDist >= 1840 && lDist <= 2010) { return 'Red Bull Mobile'; }
+
+		// RedBull Ring Moto
+	} else if (layoutId === 11296) {
+		if (lDist >= 4020 || lDist <= 180) { return 'Start-Finish'; }
+		if (lDist >= 285 && lDist <= 390) { return 'Niki Lauda Kurve'; }
+		if (lDist >= 710 && lDist <= 950) { return 'Schikane'; }
+		if (lDist >= 1220 && lDist <= 1330) { return 'Remus'; }
+		if (lDist >= 2025 && lDist <= 2135) { return 'Schlossgold'; }
+		if (lDist >= 2485 && lDist <= 2720) { return 'Rauch'; }
+		if (lDist >= 2820 && lDist <= 3015) { return 'Würth Kurve'; }
+		if (lDist >= 3580 && lDist <= 3720) { return 'Rindt'; }
+		if (lDist >= 3810 && lDist <= 3990) { return 'Red Bull Mobile'; }
 
 		// Road America GP
 	} else if (layoutId === 5276) {
@@ -3280,6 +3457,246 @@ export function getCornerName(layoutId: number, lDist: number) {
         if (lDist >= 1963 && lDist <= 2079) { return "Turn 6"; }
         if (lDist >= 2140 && lDist <= 2223) { return "Turn 7"; }
         if (lDist >= 2284 && lDist <= 2373) { return "Opel"; }
+
+	// Indianapolis Motor Speedway Road Course
+	} else if (layoutId === 9943) {
+        if (lDist >= 3730 || lDist <= 350) { return "Start-Finish"; }
+        if (lDist >= 600 && lDist <= 685) { return "Turn 1"; }
+        if (lDist >= 690 && lDist <= 800) { return "Turn 2"; }
+        if (lDist >= 810 && lDist <= 962) { return "Turn 3"; }
+        if (lDist >= 1000 && lDist <= 1150) { return "Turn 4"; }
+        if (lDist >= 1210 && lDist <= 1370) { return "Chicane 1"; }
+        if (lDist >= 1980 && lDist <= 2120) { return "Turn 6"; }
+        if (lDist >= 2140 && lDist <= 2350) { return "Chicane 2"; }
+        if (lDist >= 2380 && lDist <= 2540) { return "Turn 8"; }
+        if (lDist >= 2690 && lDist <= 2840) { return "Turn 9"; }
+        if (lDist >= 3020 && lDist <= 3120) { return "Turn 10"; }
+        if (lDist >= 3170 && lDist <= 3295) { return "Turn 11"; }
+        if (lDist >= 3345 && lDist <= 3620) { return "Turn 12"; }
+
+	// Indianapolis Motor Speedway Historic
+	} else if (layoutId === 9957) {
+        if (lDist >= 3844 || lDist <= 190) { return "Start-Finish"; }
+        if (lDist >= 601 && lDist <= 690) { return "Turn 1"; }
+		if (lDist >= 700 && lDist <= 820) { return "Turn 2"; }
+		if (lDist >= 850 && lDist <= 970) { return "Turn 3"; }
+		if (lDist >= 1020 && lDist <= 1140) { return "Turn 4"; }
+		if (lDist >= 1220 && lDist <= 1340) { return "Turn 5"; }
+		if (lDist >= 1420 && lDist <= 1630) { return "Turn 6"; }
+		if (lDist >= 1640 && lDist <= 1780) { return "Turn 7"; }
+		if (lDist >= 2250 && lDist <= 2395) { return "Turn 8"; }
+		if (lDist >= 2400 && lDist <= 2490) { return "Turn 9"; }
+		if (lDist >= 2500 && lDist <= 2590) { return "Turn 10"; }
+		if (lDist >= 2620 && lDist <= 2770) { return "Turn 11"; }
+		if (lDist >= 2880 && lDist <= 3150) { return "Turn 12"; }
+		if (lDist >= 3350 && lDist <= 3710) { return "Turn 13"; }
+
+	// Indianapolis Motor Speedway Oval
+	} else if (layoutId === 9958) {
+        if (lDist >= 3700 || lDist <= 180) { return "Start-Finish"; }
+        if (lDist >= 280 && lDist <= 760) { return "Turn 1"; }
+        if (lDist >= 940 && lDist <= 1360) { return "Turn 2"; }
+        if (lDist >= 2310 && lDist <= 2770) { return "Turn 3"; }
+        if (lDist >= 2940 && lDist <= 3340) { return "Turn 4"; }
+
+	// Twin Forest Duel
+	} else if (layoutId === 9839) {
+        if (lDist >= 3700 || lDist <= 100) { return "Start-Finish"; }
+        if (lDist >= 150 && lDist <= 450) { return "SimBin"; }
+        if (lDist >= 530 && lDist <= 780) { return "Sector 3"; }
+        if (lDist >= 880 && lDist <= 1010) { return "KW Hairpin"; }
+        if (lDist >= 1150 && lDist <= 1250) { return "Chardon"; }
+        if (lDist >= 1390 && lDist <= 1530) { return "Sonat"; }
+        if (lDist >= 1620 && lDist <= 1800) { return "GTR Esses"; }
+        if (lDist >= 2020 && lDist <= 2200) { return "Gpt C"; }
+        if (lDist >= 2400 && lDist <= 2600) { return "Race'07"; }
+        if (lDist >= 2710 && lDist <= 3000) { return "Belowski"; }
+        if (lDist >= 3260 && lDist <= 3415) { return "Otter"; }
+        if (lDist >= 3553 && lDist <= 3670) { return "Seal S"; }
+
+	// Motorsport Arena Oschersleben 2024 - Grand Prix
+	} else if (layoutId === 12506) {
+		if (lDist >= 3500 || lDist <= 270) { return 'Start-Finish'; }
+		if (lDist >= 380 && lDist <= 475) { return 'Turn 1'; }
+		if (lDist >= 495 && lDist <= 720) { return 'Hotel'; }
+		if (lDist >= 940 && lDist <= 1140) { return 'Hasseröder'; }
+		if (lDist >= 1400 && lDist <= 1650) { return 'Tripel'; }
+		if (lDist >= 1700 && lDist <= 1880) { return 'Turn 7'; }
+		if (lDist >= 1980 && lDist <= 2090) { return 'Schikane'; }
+		if (lDist >= 2110 && lDist <= 2240) { return 'MC Donald´s'; }
+		if (lDist >= 2700 && lDist <= 2900) { return 'Shell-S'; }
+		if (lDist >= 3060 && lDist <= 3165) { return 'Bauer'; }
+		if (lDist >= 3255 && lDist <= 3390) { return 'Zeppelin'; }
+
+	// Motorsport Arena Oschersleben 2024 - Alternate
+	} else if (layoutId === 12571) {
+		if (lDist >= 3500 || lDist <= 270) { return 'Start-Finish'; }
+		if (lDist >= 460 && lDist <= 510) { return 'Turn 1'; }
+		if (lDist >= 550 && lDist <= 750) { return 'Hotel'; }
+		if (lDist >= 960 && lDist <= 1150) { return 'Hasseröder'; }
+		if (lDist >= 1410 && lDist <= 1685) { return 'Tripel'; }
+		if (lDist >= 1725 && lDist <= 1890) { return 'Turn 7'; }
+		if (lDist >= 2005 && lDist <= 2100) { return 'Schikane'; }
+		if (lDist >= 2110 && lDist <= 2250) { return 'MC Donald´s'; }
+		if (lDist >= 2730 && lDist <= 2920) { return 'Shell-S'; }
+		if (lDist >= 3090 && lDist <= 3195) { return 'Bauer'; }
+		if (lDist >= 3280 && lDist <= 3400) { return 'Zeppelin'; }
+
+	// Motorsport Arena Oschersleben 2024 - Short
+	} else if (layoutId === 12572) {
+		if (lDist >= 2260 || lDist <= 220) { return 'Start-Finish'; }
+		if (lDist >= 410 && lDist <= 490) { return 'Turn 1'; }
+		if (lDist >= 500 && lDist <= 720) { return 'Hotel'; }
+		if (lDist >= 940 && lDist <= 1130) { return 'Hasseröder'; }
+		if (lDist >= 1190 && lDist <= 1300) { return 'Turn 4'; }		
+		if (lDist >= 1480 && lDist <= 1670) { return 'Shell-S'; }
+		if (lDist >= 1845 && lDist <= 1960) { return 'Bauer'; }
+		if (lDist >= 2035 && lDist <= 2173) { return 'Zeppelin'; }
+
+	// Nogaro - Grand Prix
+	} else if (layoutId === 9659) {
+		if (lDist >= 3400 || lDist <= 115) { return 'Start-Finish'; }
+		if (lDist >= 190 && lDist <= 330) { return 'La Ferme'; }
+		if (lDist >= 375 && lDist <= 630) { return 'Caupenne'; }
+		if (lDist >= 720 && lDist <= 870) { return 'Turn 4'; }
+		if (lDist >= 900 && lDist <= 1020) { return 'Turn 5'; }
+		if (lDist >= 1100 && lDist <= 1240) { return 'L´aviation'; }
+		if (lDist >= 1330 && lDist <= 1780) { return 'L´aérodrome'; }
+		if (lDist >= 1900 && lDist <= 2000) { return 'L´école'; }
+		if (lDist >= 2020 && lDist <= 2100) { return 'Turn 8'; }
+		if (lDist >= 2175 && lDist <= 2260) { return 'Roger Dubos'; }
+		if (lDist >= 2320 && lDist <= 2430) { return 'Henri Oreiller'; }
+		if (lDist >= 2650 && lDist <= 2850) { return 'Claude Storez'; }
+		if (lDist >= 3070 && lDist <= 3340) { return 'Le S du Lac'; }
+
+	// Nogaro - Club 
+	} else if (layoutId === 10258) {
+		if (lDist >= 1570 || lDist <= 60) { return 'Start-Finish'; }
+		if (lDist >= 110 && lDist <= 230) { return 'Turn 1'; }
+		if (lDist >= 340 && lDist <= 460) { return 'Turn 2'; }
+		if (lDist >= 470 && lDist <= 590) { return 'L´aérodrome'; }
+		if (lDist >= 620 && lDist <= 725) { return 'L´école'; }
+		if (lDist >= 750 && lDist <= 845) { return 'Turn 4'; }
+		if (lDist >= 900 && lDist <= 990) { return 'Roger Dubos'; }
+		if (lDist >= 1030 && lDist <= 1160) { return 'Henri Oreiller'; }
+		if (lDist >= 1380 && lDist <= 1545) { return 'Claude Storez'; }
+
+	// Nogaro - Caupenne 
+	} else if (layoutId === 10392) {
+		if (lDist >= 1590 || lDist <= 140) { return 'Start-Finish'; }
+		if (lDist >= 200 && lDist <= 330) { return 'La Ferme'; }
+		if (lDist >= 375 && lDist <= 635) { return 'Caupenne'; }
+		if (lDist >= 720 && lDist <= 870) { return 'Turn 4'; }
+		if (lDist >= 900 && lDist <= 1020) { return 'Turn 5'; }
+		if (lDist >= 1100 && lDist <= 1240) { return 'L´aviation'; }
+		if (lDist >= 1330 && lDist <= 1440) { return 'L´aérodrome'; }
+		if (lDist >= 1465 && lDist <= 1570) { return 'Turn 7'; }
+
+	// Nogaro - Moto Circuit
+	} else if (layoutId === 12573) {
+		if (lDist >= 3400 || lDist <= 115) { return 'Start-Finish'; }
+		if (lDist >= 190 && lDist <= 330) { return 'La Ferme'; }
+		if (lDist >= 375 && lDist <= 630) { return 'Caupenne'; }
+		if (lDist >= 720 && lDist <= 870) { return 'Turn 4'; }
+		if (lDist >= 900 && lDist <= 1020) { return 'Turn 5'; }
+		if (lDist >= 1100 && lDist <= 1240) { return 'L´aviation'; }
+		if (lDist >= 1330 && lDist <= 1780) { return 'L´aérodrome'; }
+		if (lDist >= 1900 && lDist <= 2000) { return 'L´école'; }
+		if (lDist >= 2020 && lDist <= 2100) { return 'Turn 8'; }
+		if (lDist >= 2175 && lDist <= 2260) { return 'Roger Dubos'; }
+		if (lDist >= 2320 && lDist <= 2430) { return 'Henri Oreiller'; }
+		if (lDist >= 2625 && lDist <= 2790) { return 'Claude Storez'; }
+		if (lDist >= 3025 && lDist <= 3290) { return 'Le S du Lac'; }
+		
+	// TT Circuit Assen - Grand Prix
+	} else if (layoutId === 9985) {
+		if (lDist >= 4450 || lDist <= 215) { return 'Start-Finish'; }
+		if (lDist >= 380 && lDist <= 490) { return 'Haarbocht'; }
+		if (lDist >= 550 && lDist <= 635) { return 'Madijk'; }
+		if (lDist >= 730 && lDist <= 970) { return 'Ossebroeken'; }
+		if (lDist >= 1000 && lDist <= 1120) { return 'Strubben'; }
+		if (lDist >= 1330 && lDist <= 1800) { return 'Veenslang'; }
+		if (lDist >= 1880 && lDist <= 2095) { return 'Ruskenhoek'; }
+		if (lDist >= 2220 && lDist <= 2350) { return 'Stekkenwal'; }
+		if (lDist >= 2650 && lDist <= 2780) { return 'De Bult'; }
+		if (lDist >= 2880 && lDist <= 3000) { return 'Mandeven'; }
+		if (lDist >= 3060 && lDist <= 3215) { return 'Duikersloot'; }
+		if (lDist >= 3340 && lDist <= 3470) { return 'Meeuwenmeer'; }
+		if (lDist >= 3630 && lDist <= 3810) { return 'Hoge Heide'; }
+		if (lDist >= 3880 && lDist <= 4060) { return 'Ramshoek'; }		
+		if (lDist >= 4250 && lDist <= 4370) { return 'Geert Timmer Bocht'; }
+
+	// TT Circuit Assen - North Course
+	} else if (layoutId === 10351) {
+		if (lDist >= 2340 || lDist <= 215) { return 'Start-Finish'; }
+		if (lDist >= 380 && lDist <= 490) { return 'Haarbocht'; }
+		if (lDist >= 550 && lDist <= 635) { return 'Madijk'; }
+		if (lDist >= 730 && lDist <= 970) { return 'Ossebroeken'; }
+		if (lDist >= 1000 && lDist <= 1120) { return 'Strubben'; }
+		if (lDist >= 1330 && lDist <= 1700) { return 'Veenslang'; }		
+		if (lDist >= 1710 && lDist <= 1820) { return 'Turn 5'; }	
+		if (lDist >= 1915 && lDist <= 2000) { return 'Turn 6'; }	
+		if (lDist >= 2080 && lDist <= 2215) { return 'Geert Timmer Bocht'; }
+		
+	// TT Circuit Assen - Motorcycle Course
+	} else if (layoutId === 10355) {
+		if (lDist >= 4500 || lDist <= 270) { return 'Start-Finish'; }
+		if (lDist >= 380 && lDist <= 490) { return 'Haarbocht'; }
+		if (lDist >= 550 && lDist <= 635) { return 'Madijk'; }
+		if (lDist >= 730 && lDist <= 970) { return 'Ossebroeken'; }
+		if (lDist >= 1000 && lDist <= 1120) { return 'Strubben'; }
+		if (lDist >= 1310 && lDist <= 1725) { return 'Veenslang'; }
+		if (lDist >= 1910 && lDist <= 2100) { return 'Ruskenhoek'; }
+		if (lDist >= 2190 && lDist <= 2350) { return 'Stekkenwal'; }
+		if (lDist >= 2650 && lDist <= 2780) { return 'De Bult'; }
+		if (lDist >= 2850 && lDist <= 2990) { return 'Mandeven'; }
+		if (lDist >= 3030 && lDist <= 3225) { return 'Duikersloot'; }
+		if (lDist >= 3340 && lDist <= 3470) { return 'Meeuwenmeer'; }
+		if (lDist >= 3630 && lDist <= 3810) { return 'Hoge Heide'; }
+		if (lDist >= 3870 && lDist <= 4070) { return 'Ramshoek'; }
+		if (lDist >= 4240 && lDist <= 4400) { return 'Geert Timmer Bocht'; }
+		
+	// Silverstone Classic - Grand Prix
+	} else if (layoutId === 12268) {
+		if (lDist >= 5000 || lDist <= 100) { return 'Start-Finish'; }
+		if (lDist >= 185 && lDist <= 365) { return 'Copse'; }
+		if (lDist >= 750 && lDist <= 1020) { return 'Maggotts'; }
+		if (lDist >= 1115 && lDist <= 1270) { return 'Becketts'; }
+		if (lDist >= 1300 && lDist <= 1460) { return 'Chapel'; }
+		if (lDist >= 1500 && lDist <= 2050) { return 'Hangar Straight'; }
+		if (lDist >= 2145 && lDist <= 2350) { return 'Stowe'; }
+		if (lDist >= 2430 && lDist <= 2590) { return 'Vale'; }
+		if (lDist >= 2660 && lDist <= 2950) { return 'Club'; }
+		if (lDist >= 3440 && lDist <= 3630) { return 'Abbey'; }
+		if (lDist >= 3680 && lDist <= 3765) { return 'Farm Straight'; }
+		if (lDist >= 3795 && lDist <= 3905) { return 'Bridge'; }
+		if (lDist >= 4020 && lDist <= 4145) { return 'Priory'; }
+		if (lDist >= 4230 && lDist <= 4355) { return 'Brooklands'; }
+		if (lDist >= 4400 && lDist <= 4600) { return 'Luffield'; }		
+		if (lDist >= 4675 && lDist <= 4975) { return 'Woodcote'; }
+		
+	// Silverstone Classic - National
+	} else if (layoutId === 12389) {
+		if (lDist >= 2580 || lDist <= 100) { return 'Start-Finish'; }
+		if (lDist >= 170 && lDist <= 365) { return 'Copse'; }
+		if (lDist >= 750 && lDist <= 1090) { return 'Maggotts'; }
+		if (lDist >= 1690 && lDist <= 1865) { return 'Brooklands'; }
+		if (lDist >= 1900 && lDist <= 2110) { return 'Luffield'; }		
+		if (lDist >= 2250 && lDist <= 2480) { return 'Woodcote'; }
+		
+	// Silverstone Classic - International
+	} else if (layoutId === 12390) {
+		if (lDist >= 3500 || lDist <= 100) { return 'Start-Finish'; }
+		if (lDist >= 180 && lDist <= 365) { return 'Copse'; }
+		if (lDist >= 750 && lDist <= 1050) { return 'Maggotts'; }
+		if (lDist >= 1135 && lDist <= 1340) { return 'Ireland'; }
+		if (lDist >= 1790 && lDist <= 1930) { return 'Abbey'; }
+		if (lDist >= 2000 && lDist <= 2200) { return 'Farm Straight'; }
+		if (lDist >= 2255 && lDist <= 2415) { return 'Bridge'; }
+		if (lDist >= 2515 && lDist <= 2655) { return 'Priory'; }
+		if (lDist >= 2725 && lDist <= 2835) { return 'Brooklands'; }
+		if (lDist >= 2890 && lDist <= 3090) { return 'Luffield'; }		
+		if (lDist >= 3245 && lDist <= 3465) { return 'Woodcote'; }
 
 	// The End
 	}

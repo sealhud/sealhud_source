@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.03;
+const currentVersion = 1.04;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -792,7 +792,7 @@ export default class App extends React.Component<IProps> {
       volume: 0,
       duration: 0,
       zoom: 1.0,
-      name: __("Motec"),
+      name: __("MoTeC"),
       subSettings: {
         plBBlink: {
           text: __("PitLimiter Blink"),
@@ -1505,7 +1505,7 @@ export default class App extends React.Component<IProps> {
       volume: 0,
       duration: 0,
       zoom: 1.0,
-      name: __("Motec"),
+      name: __("MoTeC"),
       subSettings: {
         plBBlink: {
           text: __("PitLimiter Blink"),
@@ -4258,7 +4258,7 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-FEBRUARY 17, 2026
+MARCH 02, 2026
 
 
 PLEASE READ:
@@ -4269,17 +4269,22 @@ To fix this, use the button 'RESET SETTINGS' (settings menu) and all widgets wil
 
 WHAT'S NEW:
 -------------------------
-WIDGETS:
-- All widgets: Background colors have been slightly darkened for better visibility in VR.
-- Position Bar: This widget has been split into two separate widgets: POSITION BAR and SESSION INFO.
-- Session Info: The widget now includes two information blocks (left and right), which can be moved and positioned freely.
-- Session Info: Added an option to display a dark background to improve text contrast.
-- Session Info: Added an option to enable/disable the Track Limits Counter.
-- MoTeC: The RPM bar has been moved to the top of the widget.
-- Damage: The widget is now displayed even when the damage option is set to DISABLED for the session.
+WIDGETS
+- Fuel Details: There was a bug that sometimes caused lap times to be recorded incorrectly, affecting average calculations. Fixed.
+- Clock: The font has been changed to give the widget a digital clock look.
 
-TRANSLATIONS:
-- French: "Throttle" has been changed to "accélérateur" (thanks to Mat Blanchard).
+TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets)
+Track details, corner names, and pit spot positions have been added for all remaining circuits:
+- Indianapolis: All layouts.
+- Motorsport Arena Oschersleben 2024: All layouts.
+- Nogaro Circuit Paul Armagnac: All layouts.
+- Silverstone Circuit Classic: All layouts.
+- TT Circuit Assen: All layouts.
+- Twin Forest: Duel.
+- Motorland Aragón: WTCR.
+- Nürburgring: Müllenbachschleife.
+- Paul Ricard: Solution 1A.
+- Red Bull Ring Spielberg: Moto.
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4327,6 +4332,17 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.03
+-------------------------
+- All widgets: Background colors have been slightly darkened for better visibility in VR.
+- Position Bar: This widget has been split into two separate widgets: POSITION BAR and SESSION INFO.
+- Session Info: The widget now includes two information blocks (left and right), which can be moved and positioned freely.
+- Session Info: Added an option to display a dark background to improve text contrast.
+- Session Info: Added an option to enable/disable the Track Limits Counter.
+- MoTeC: The RPM bar has been moved to the top of the widget.
+- Damage: The widget is now displayed even when the damage option is set to DISABLED for the session.
+- French: "Throttle" has been changed to "accélérateur" (thanks to Mat Blanchard).
 
 VERSION 1.02
 -------------------------

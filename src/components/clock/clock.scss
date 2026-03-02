@@ -2,23 +2,25 @@
 // module.exports = {"theClock":"theClock","shouldShow":"shouldShow","theTime":"theTime"};
 
 .theClock {
-  font-family: 'Bitcount Grid Single';
+  font-family: 'LCD Time';
   display: none;
   position: absolute;
   top: 100px;
   width: 227px;
   height: 47px;
   left: 50%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 0px;
   transform: translate(-50%, -50%);
   text-align: center;
   padding: 2px;
+  color:rgb(242, 255, 121);
+  //border-radius: 5px;
 }
 .theClock.shouldShow {
   display: block;
 }
 .theClock .theTime {
-  font-size: 35px;
-  padding: 3% ;
+  font-size: 45px;
+  //padding: 0% ;
 }
