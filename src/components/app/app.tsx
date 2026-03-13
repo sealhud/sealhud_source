@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.04;
+const currentVersion = 1.05;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4292,33 +4292,19 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-MARCH 02, 2026
-
-
-PLEASE READ:
--------------------------
-After the SealHUD 1.0 update, some widgets became too large, too small or are not showing up. 
-To fix this, use the button 'RESET SETTINGS' (settings menu) and all widgets will be repositioned correctly.
+MARCH 13, 2026
 
 
 WHAT'S NEW:
 -------------------------
-WIDGETS
-- Fuel Details: There was a bug that sometimes caused lap times to be recorded incorrectly, affecting average calculations. Fixed.
-- Clock: The font has been changed to give the widget a digital clock look.
-
-TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets)
-Track details, corner names, and pit spot positions have been added for all remaining circuits:
-- Indianapolis: All layouts.
-- Motorsport Arena Oschersleben 2024: All layouts.
-- Nogaro Circuit Paul Armagnac: All layouts.
-- Silverstone Circuit Classic: All layouts.
-- TT Circuit Assen: All layouts.
-- Twin Forest: Duel.
-- Motorland Aragón: WTCR.
-- Nürburgring: Müllenbachschleife.
-- Paul Ricard: Solution 1A.
-- Red Bull Ring Spielberg: Moto.
+WIDGETS:
+- TvTower / PositionBar: The pit-stop detection system has been improved to prevent false pit-stop detections.
+- MoTeC: Added a new option to display a circular MoTeC layout.
+- MoTeC: The speed limiter indicator light now has more vibrant colors. (Thanks, Jos)
+- Damage: Added option to display damage as bars.
+- Damage: Added option to display icons instead of text for each item's labels.
+- InputsGraph: Added option to display steering inputs on live telemetry. (Thanks, AzagThoth Realrace)
+- Clock: Minor style adjustments.
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4366,6 +4352,22 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.04
+-------------------------
+- Fuel Details: There was a bug that sometimes caused lap times to be recorded incorrectly, affecting average calculations. Fixed.
+- Clock: The font has been changed to give the widget a digital clock look.
+- Track details, corner names, and pit spot positions have been added for all remaining circuits:
+  Indianapolis: All layouts.
+  Motorsport Arena Oschersleben 2024: All layouts.
+  Nogaro Circuit Paul Armagnac: All layouts.
+  Silverstone Circuit Classic: All layouts.
+  TT Circuit Assen: All layouts.
+  Twin Forest: Duel.
+  Motorland Aragón: WTCR.
+  Nürburgring: Müllenbachschleife.
+  Paul Ricard: Solution 1A.
+  Red Bull Ring Spielberg: Moto.
 
 VERSION 1.03
 -------------------------

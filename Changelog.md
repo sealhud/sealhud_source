@@ -2,11 +2,12 @@
 	----------
 	WIDGETS:
 	- TvTower / PositionBar: The pit-stop detection system has been improved to prevent false pit-stop detections.
-	- MoTeC: The speed limiter indicator light now has more vibrant colors. (Thanks, Jos)
 	- MoTeC: Added a new option to display a circular MoTeC layout.
+	- MoTeC: The speed limiter indicator light now has more vibrant colors. (Thanks, Jos)
 	- Damage: Added option to display damage as bars.
 	- Damage: Added option to display icons instead of text for each item's labels.
 	- InputsGraph: Added option to display steering inputs on live telemetry. (Thanks, AzagThoth Realrace)
+	- Clock: Minor style adjustments.
 
 	1.04
 	----------
