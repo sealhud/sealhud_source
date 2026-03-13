@@ -671,6 +671,10 @@ export default class App extends React.Component<IProps> {
           text: __("Clutch"),
           enabled: false,
         },
+        showInputSteering: {
+          text: __("Steering"),
+          enabled: false,
+        },
         showInputMeters: {
           text: __("Input Meters"),
           enabled: false,
@@ -766,6 +770,29 @@ export default class App extends React.Component<IProps> {
         y: 680,
       },
     },
+    damage: {
+      id: "damage",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Damage"),
+      subSettings: {
+        showBars: {
+          text: __("Show Bars"),
+          enabled: true,
+        },
+        showIcons: {
+          text: __("Show Icons"),
+          enabled: false,
+        }
+      },
+      position: {
+        x: 1340,
+        y: 950,
+      },
+    },
     aids: {
       id: "aids",
       enabled: true,
@@ -798,6 +825,10 @@ export default class App extends React.Component<IProps> {
           text: __("PitLimiter Blink"),
           enabled: true,
         },
+        circularMotec: {
+          text: __("Circular Layout"),
+          enabled: false,
+        }
       },
       position: {
         x: 1110,
@@ -911,20 +942,6 @@ export default class App extends React.Component<IProps> {
         y: 280,
       },
     },
-    damage: {
-      id: "damage",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("Damage"),
-      subSettings: {},
-      position: {
-        x: 1340,
-        y: 950,
-      },
-    },
     flags: {
       id: "flags",
       enabled: true,
@@ -977,7 +994,7 @@ export default class App extends React.Component<IProps> {
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1340,
+        x: 1370,
         y: 810,
       },
     },
@@ -1384,6 +1401,10 @@ export default class App extends React.Component<IProps> {
           text: __("Clutch"),
           enabled: false,
         },
+        showInputSteering: {
+          text: __("Steering"),
+          enabled: false,
+        },
         showInputMeters: {
           text: __("Input Meters"),
           enabled: false,
@@ -1479,6 +1500,29 @@ export default class App extends React.Component<IProps> {
         y: 680,
       },
     },
+    damage: {
+      id: "damage",
+      enabled: true,
+      resetIt: false,
+      volume: 0,
+      duration: 0,
+      zoom: 1,
+      name: __("Damage"),
+      subSettings: {
+        showBars: {
+          text: __("Show Bars"),
+          enabled: true,
+        },
+        showIcons: {
+          text: __("Show Icons"),
+          enabled: false,
+        }
+      },
+      position: {
+        x: 1340,
+        y: 950,
+      },
+    },
     aids: {
       id: "aids",
       enabled: true,
@@ -1511,6 +1555,10 @@ export default class App extends React.Component<IProps> {
           text: __("PitLimiter Blink"),
           enabled: true,
         },
+        circularMotec: {
+          text: __("Circular Layout"),
+          enabled: false,
+        }
       },
       position: {
         x: 1110,
@@ -1624,20 +1672,6 @@ export default class App extends React.Component<IProps> {
         y: 280,
       },
     },
-    damage: {
-      id: "damage",
-      enabled: true,
-      resetIt: false,
-      volume: 0,
-      duration: 0,
-      zoom: 1,
-      name: __("Damage"),
-      subSettings: {},
-      position: {
-        x: 1340,
-        y: 950,
-      },
-    },
     flags: {
       id: "flags",
       enabled: true,
@@ -1690,7 +1724,7 @@ export default class App extends React.Component<IProps> {
       name: __("Clock"),
       subSettings: {},
       position: {
-        x: 1340,
+        x: 1370,
         y: 810,
       },
     },

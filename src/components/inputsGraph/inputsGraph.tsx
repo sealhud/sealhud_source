@@ -24,6 +24,7 @@ export default class InputsGraph extends React.Component<IProps> {
 	@observable accessor throttleHistory: { t: number; v: number }[] = [];
 	@observable accessor brakeHistory: { t: number; v: number }[] = [];
 	@observable accessor clutchHistory: { t: number; v: number }[] = [];
+	@observable accessor steeringHistory: { t: number; v: number }[] = [];
 	@observable accessor sessionPhase = -1;
 	@observable accessor sessionType = -1;
 
@@ -58,9 +59,18 @@ export default class InputsGraph extends React.Component<IProps> {
 				? this.clutchHistory[this.clutchHistory.length - 1].v * (1 - smoothFactor) +
 				r3e.data.ClutchRaw * smoothFactor
 				: r3e.data.ClutchRaw;
+		// ajustar escala para steering inputs
+		const rawSteer = r3e.data.SteerInputRaw;
+		const normalizedSteer = (rawSteer + 1) / 2;
+		const smoothedSteering =
+			this.steeringHistory.length > 0
+				? this.steeringHistory[this.steeringHistory.length - 1].v * (1 - smoothFactor) +
+				normalizedSteer * smoothFactor
+				: normalizedSteer;
 		this.throttleHistory.push({ t: now, v: smoothedThrottle });
 		this.brakeHistory.push({ t: now, v: smoothedBrake });
 		this.clutchHistory.push({ t: now, v: smoothedClutch });
+		this.steeringHistory.push({ t: now, v: smoothedSteering });
 		// Mantém somente o tempo configurado na memória
 		while (this.throttleHistory.length && now - this.throttleHistory[0].t > this.maxHistoryMs)
 			this.throttleHistory.shift();
@@ -68,6 +78,8 @@ export default class InputsGraph extends React.Component<IProps> {
 			this.brakeHistory.shift();
 		while (this.clutchHistory.length && now - this.clutchHistory[0].t > this.maxHistoryMs)
 			this.clutchHistory.shift();
+		while (this.steeringHistory.length && now - this.steeringHistory[0].t > this.maxHistoryMs)
+			this.steeringHistory.shift();
 	};
 
 	private renderPath(history: { t: number; v: number }[], color: string) {
@@ -136,7 +148,7 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#cd5c5c"
-									strokeWidth="3"
+									strokeWidth="2"
 									points={this.renderPath(this.brakeHistory, "red")}
 								/>
 							)
@@ -147,7 +159,7 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#30b65d"
-									strokeWidth="3"
+									strokeWidth="2"
 									points={this.renderPath(this.throttleHistory, "green")}
 								/>
 							)
@@ -158,8 +170,19 @@ export default class InputsGraph extends React.Component<IProps> {
 								<polyline
 									fill="none"
 									stroke="#707070"
-									strokeWidth="3"
+									strokeWidth="2"
 									points={this.renderPath(this.clutchHistory, "gray")}
+								/>
+							)
+						}
+						{/* Steering PURPLE */}
+						{
+							this.props.settings.subSettings.showInputSteering.enabled && (
+								<polyline
+									fill="none"
+									stroke="#9f85ff"
+									strokeWidth="1"
+									points={this.renderPath(this.steeringHistory, "purple")}
 								/>
 							)
 						}

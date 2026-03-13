@@ -1,6 +1,7 @@
 // extracted by mini-css-extract-plugin
 // module.exports = {"motec":"motec","shouldShow":"shouldShow","speed":"speed","rpm":"rpm","rpmBar":"rpmBar","gear":"gear","noElectronics":"noElectronics","engineMapBox":"engineMapBox","engineMapLabel":"engineMapLabel","engineMap":"engineMap","engineBrakeBox":"engineBrakeBox","engineBrakeLabel":"engineBrakeLabel","engineBrake":"engineBrake","tractionLevelBox":"tractionLevelBox","tractionLevelLabel":"tractionLevelLabel","tractionLevel":"tractionLevel","brakeBiasBox":"brakeBiasBox","brakeBiasLabel":"brakeBiasLabel","brakeBias":"brakeBias","showEM":"showEM","showTC":"showTC","plBBlink":"plBBlink","plBBlinker":"plBBlinker"};
 
+// LINEAR MoTeC
 .motecContainer {
   position: fixed;
   width: 227px;
@@ -60,15 +61,6 @@
   line-height: 1;
 }
 
-.motecContainer .motecTopRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.motecContainer.plBBlink {
-  animation: plBBlinker 0.5s linear infinite;
-}
-
 .motecContainer .rpm {
   position: absolute;
   top: 0px;
@@ -90,7 +82,7 @@
 }
 
 .motecContainer .rpm .rpmBar.disabled {
-  background: silver;
+  background: rgb(255, 0, 0);
 }
 
 .truckGearWrapper {
@@ -150,16 +142,30 @@
   color: #fc5353;
 }
 
+// LINEAR LAYOUT FX
+.motecContainer.plBBlink {
+  animation: plBBlinker 0.5s linear infinite;
+}
+.motecContainer.plBBlink .gearBox {
+  background: rgba(0, 0, 0, 0.3);
+}
+.motecContainer.plBBlink .speedBox {
+  background: rgba(0, 0, 0, 0.6);
+}
+.motecContainer.plBBlink .rpm{
+  background: rgba(0, 0, 0, 0.4);
+}
+
 
 @keyframes plBBlinker {
   0% {
-    background: rgb(255, 71, 71);
+    background: rgb(15, 20, 97);
   }
   50% {
-    background: rgb(0, 102, 255);
+    background: rgb(199, 26, 84);
   }
   100% {
-    background: rgb(255, 0, 0);
+    background: rgb(9, 14, 75);
   }
 }
 
@@ -173,5 +179,154 @@
   }
   100% {
     color: #fe0000;
+  }
+}
+
+// Circular MoTeC
+
+.motecCircular {
+  position: fixed;
+  width: 150px;
+  height: 150px;
+  pointer-events: auto;
+}
+.motecBackground {
+  fill: rgba(0, 0, 0, 0.7);
+  stroke-dashoffset: 0;
+}
+.rpmRing {
+  width: 100%;
+  height: 100%;
+  transform: rotate(153deg);
+}
+.rpmBackground {
+  fill: none;
+  stroke: rgba(0,0,0,0.7);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+.rpmProgress {
+  fill: none;
+  stroke: white;
+  stroke-width: 10;
+  transition: stroke-dashoffset 0.1s linear;
+  stroke-linecap: round;
+}
+.rpmProgress.upshift {
+  stroke: rgb(23,236,51);
+}
+.rpmProgress.redline {
+  stroke: rgb(255, 47, 47);
+}
+
+.motecCircular.upshift .motecCenter {
+  color: rgb(23, 236, 51);
+  //fill: rgba(0, 0, 0, 0.6);
+}
+.motecCircular.redline .motecBackground,
+.motecCircular.redline .motecCenter {
+  animation: gearRedlineBlinkCirc  0.35s linear infinite;
+}
+
+.motecCenter .gear.disabled {
+  background: silver;
+}
+
+.motecCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.motecCenter .gear {
+  font-size: 70px;
+  font-weight: 700;
+}
+.speed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.motecCenter .speedValue {
+  font-size: 28px;
+}
+.motecCenter .speedUnit {
+  font-size: 16px;
+}
+
+.truckGearSplitCirc {
+	position: absolute;	
+	font-size: 0.4em;
+  color: white;
+  opacity: 0.20;
+  filter: grayscale(100%);
+	transition: opacity 0.15s ease, filter 0.15s ease, color 0.15s ease;
+}
+.truckGearSplitCirc.active {
+	opacity: 1;
+	filter: none;
+}
+.truckGearSplitCirc.high {
+  right: 1.1em;
+	top: 1.0em;
+}
+.truckGearSplitCirc.low {
+  right: 1.17em;
+	bottom: 2.4em;
+}
+
+.truckGearRangeCirc {
+	position: absolute;	
+	font-size: 0.3em;
+  opacity: 0.30;
+  filter: grayscale(100%);
+	transition: opacity 0.15s ease, filter 0.15s ease, color 0.15s ease;
+}
+.truckGearRangeCirc.active {
+	opacity: 1;
+	filter: none;
+}
+.truckGearRangeCirc.high {
+  left: 1.45em;
+	bottom: 4.65em;
+  color: #29a849;
+}
+.truckGearRangeCirc.low {
+  left: 1.4em;
+	bottom: 3.26em;
+  color: #fc5353;
+}
+
+
+.motecCircular.plBBlink .motecBackground,
+.motecCircular.plBBlink .motecCenter {
+  animation: plBBlinkerCircular 0.5s linear infinite;}
+
+// CIRCULAR LAYOUT FX
+
+@keyframes plBBlinkerCircular {
+  0% {
+    fill: rgba(17, 24, 124, 0.9);
+  }
+  50% {
+    fill: rgba(161, 12, 62, 0.9);
+  }
+  100% {
+    fill: rgba(6, 13, 92, 0.9);
+  }
+}
+
+@keyframes gearRedlineBlinkCirc {
+  0% {
+    color: #520000;
+  }
+  50% {
+    color: white;    
+    fill: rgba(99, 0, 0, 0.9);
+  }
+  100% {
+    color: #ff0000;
   }
 }

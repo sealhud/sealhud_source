@@ -147,34 +147,122 @@ export default class Motec extends React.Component<IProps, {}> {
 		this.speedKPH = speedInKPH;
 	};
 
-	render() {
-		if (this.sessionType === 2 && this.sessionPhase === 1) {
-			return null;
-		}
-
+	renderCircularMotec() {
 		const isTruck = r3e.data.VehicleInfo.ClassPerformanceIndex === 217;
 		const gearLabel = this.gearNameLookup[this.gear] || this.gear;
 		const split = isTruck
 			? this.getTruckSplit(this.gear)
 			: null;
-
 		const range = isTruck
 			? this.getTruckRange(this.gear)
 			: null;
-
-		const showSpeed = this.speed !== INVALID;
-		/*
-		const isIgnition = this.engineState === 0 && !showAllMode;
-		const isStart = this.engineState === 1 && !showAllMode;
-		const isRunning = this.engineState >= 2 || showAllMode;
-		*/
-
+		//const showSpeed = this.speed !== INVALID;
 		const speedValue = showAllMode
 			? 65
 			: !this.speedKPH
 			? mpsToMph(this.speed).toFixed(0)
 			: mpsToKph(this.speed).toFixed(0);
+		return (
+			<div
+			{...widgetSettings(this.props)}
+			className={classNames(
+				"motecCircular",
+				{
+				plBBlink:
+					this.props.settings.subSettings.plBBlink.enabled &&
+					(showAllMode || this.limiter),
+				upshift: this.rpm > this.upshiftRps * 0.94 && this.rpm <= this.maxRpm * 0.96,
+					redline: this.rpm > this.maxRpm * 0.96,
+					disabled: this.engineState === 0 && !showAllMode,
+				}
+			)}
+			>
 
+			{/* RPM RING */}
+			<svg className="rpmRing" viewBox="0 0 200 200">
+				{/* fundo semicircular */}
+				<circle
+					className="motecBackground"
+					cx="100"
+					cy="100"
+					r="99"
+				/>
+				{/* trilha */}
+				<circle
+					className="rpmBackground"
+					cx="100"
+					cy="100"
+					r="90"
+					strokeDasharray="370 565"
+					strokeDashoffset="0"
+				/>
+				{/* barra rpm */}
+				<circle
+					className={classNames("rpmProgress", {
+						upshift: this.rpm > this.upshiftRps * 0.94,
+						redline: this.rpm > this.maxRpm * 0.96
+					})}
+					cx="100"
+					cy="100"
+					r="90"
+					strokeDasharray="370 565"
+					strokeDashoffset={
+						370 - (this.rpm / this.maxRpm) * 370
+					}
+				/>
+			</svg>
+
+			{/* CENTER CONTENT */}
+			<div className="motecCenter">
+				<div className="gear">				
+				{this.engineState >= 1 && (
+					isTruck ? (
+						<div>
+							<span>{gearLabel}</span>
+
+							<span className={classNames("truckGearSplitCirc","low",{ active: split === 'L' })}>
+								L
+							</span>
+							<span className={classNames("truckGearSplitCirc","high",{ active: split === 'H' })}>
+								H
+							</span>
+
+							<span className={classNames("truckGearRangeCirc","low",{ active: range === 'LO' })}>
+								LO
+							</span>
+							<span className={classNames("truckGearRangeCirc","high",{ active: range === 'HI' })}>
+								HI
+							</span>
+						</div>
+					) : (gearLabel)
+				)}
+				</div>
+				<div className="speed">
+				<span className="speedValue">{speedValue}</span>
+				<span className="speedUnit">
+					{!this.speedKPH ? "mph" : "km/h"}
+				</span>
+				</div>
+			</div>
+			</div>
+		);
+	}
+
+	renderLinearMotec() {
+		const isTruck = r3e.data.VehicleInfo.ClassPerformanceIndex === 217;
+		const gearLabel = this.gearNameLookup[this.gear] || this.gear;
+		const split = isTruck
+			? this.getTruckSplit(this.gear)
+			: null;
+		const range = isTruck
+			? this.getTruckRange(this.gear)
+			: null;
+		const showSpeed = this.speed !== INVALID;
+		const speedValue = showAllMode
+			? 65
+			: !this.speedKPH
+			? mpsToMph(this.speed).toFixed(0)
+			: mpsToKph(this.speed).toFixed(0);
 		return (
 			<div
 				{...widgetSettings(this.props)}
@@ -239,7 +327,6 @@ export default class Motec extends React.Component<IProps, {}> {
 						)}
 					</div>
 
-
 					{/* SPEED */}
 					<div className="motecBox speedBox">
 						<span className="speedValue">{speedValue}</span>
@@ -247,9 +334,18 @@ export default class Motec extends React.Component<IProps, {}> {
 							{!this.speedKPH ? "mph" : "km/h"}
 						</span>
 					</div>
-
 				</div>
 			</div>
 		);
+	}
+
+	render() {
+		if (this.sessionType === 2 && this.sessionPhase === 1) {
+			return null;
+		}
+
+		return this.props.settings.subSettings.circularMotec.enabled
+			? this.renderCircularMotec()
+			: this.renderLinearMotec();
 	}
 }

@@ -17,10 +17,13 @@ import _ from './../../translate';
 import r3e, { registerUpdate, nowCheck, unregisterUpdate } from '../../lib/r3e';
 import React from 'react';
 import './damage.scss';
+import SvgIcon from '../svgIcon/svgIcon';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	settings: IWidgetSetting;
 }
+
+type DamageKey = keyof ICarDamage;
 
 @observer
 export default class Damage extends React.Component<IProps, {}> {
@@ -37,16 +40,30 @@ export default class Damage extends React.Component<IProps, {}> {
 	@observable accessor lastCheck = 0;
 	@observable accessor sessionType = -1;
 	@observable accessor sessionPhase = -1;
+	@observable accessor label = 1;
 
 	constructor(props: IProps) {
 		super(props);
-
 		registerUpdate(this.update);
 	}
 
 	componentWillUnmount() {
 		unregisterUpdate(this.update);
 	}
+
+	private damageItems = [
+		{ label: "Engine", key: "Engine" as DamageKey },
+		{ label: "Transmission", key: "Transmission" as DamageKey },
+		{ label: "Aerodynamics", key: "Aerodynamics" as DamageKey },
+		{ label: "Suspension", key: "Suspension" as DamageKey }
+	];
+
+	private damageIcons: Record<string, string> = {
+		Engine: "Engine.svg",
+		Transmission: "Transmission.svg",
+		Aerodynamics: "Aero.svg",
+		Suspension: "Suspension.svg"
+	};
 
 	@action
 	private update = () => {
@@ -73,103 +90,76 @@ export default class Damage extends React.Component<IProps, {}> {
 		}
 	};
 
-	render() {return (		
-		<div
-			{...widgetSettings(this.props)}
-			className={classNames("damageNew", this.props.className)}
-		>
-			<div className="carDamageNew">
+	private renderDamageRow(label: string, value: number) {
+		const integrity = value;
+		const damagePercent = Math.round((1 - integrity) * 100);
+		const showBars = this.props.settings.subSettings.showBars.enabled;
+		const showIcons = this.props.settings.subSettings.showIcons.enabled;
+		let demoIntegrity = integrity;
+		if (showAllMode) {
+			if (label === "Engine") demoIntegrity = 0.75;
+			if (label === "Transmission") demoIntegrity = 0;
+		}
 
-			{/* Engine */}
-			{
+		return (
+			<div
+				className={classNames("damageRow", {
+					na: value === INVALID,
+					bad: (showAllMode && label === "Engine") || value < 0.98,
+					broken: (showAllMode && label === "Transmission") || value < 0.3
+				})}
+			>
 				<div
-					className={classNames("damageRow", {
-					na: this.carDamage.Engine === INVALID,
-					bad: !showAllMode && this.carDamage.Engine < 0.98,
-					broken: showAllMode || this.carDamage.Engine < 0.3
+					className={classNames("damageLabel", {
+						damageLabelIcon: showIcons
 					})}
 				>
-					<div className="damageLabel">{_("Engine")}</div>
-
-					<div className="damageValue">
-					{showAllMode
-						? "75%"
-						: this.carDamage.Engine !== INVALID
-							? `${Math.round((1 - this.carDamage.Engine) * 100)}%`
-							: "N/A"
-						}
-					</div>
+					{showIcons ? (
+						<div className={`damageIcon`}>
+							<SvgIcon src={require(`./../../img/icons/${this.damageIcons[label]}`)}/>
+						</div>
+					) : (
+						_(label)
+					)}
 				</div>
-			}
 
-			{/* Transmission */}
-			{
-				<div
-					className={classNames("damageRow", {
-					na: this.carDamage.Transmission === INVALID,
-					bad: showAllMode || this.carDamage.Transmission < 0.98,
-					broken: !showAllMode && this.carDamage.Transmission < 0.3
-					})}
-				>
-					<div className="damageLabel">{_("Transmission")}</div>
-
-					<div className="damageValue">
-					{showAllMode
-						? "49%"
-						: this.carDamage.Transmission !== INVALID
-							? `${Math.round((1 - this.carDamage.Transmission) * 100)}%`
-							: "N/A"
-						}
-					</div>
+				<div className="damageValue">
+					{value === INVALID ? (
+						"N/A"
+					) : showBars ? (
+						<div className="damageBar">
+							<div
+								className="damageFill"
+								style={{ width: `${demoIntegrity * 100}%` }}
+							/>
+						</div>
+					) : (
+						showAllMode && label === "Engine"
+							? "75%"
+							: showAllMode && label === "Transmission"
+								? "100%"
+								: `${damagePercent}%`
+					)}
 				</div>
-			}
-
-			{/* Aerodynamics */}
-			{
-				<div
-					className={classNames("damageRow", {
-					na: this.carDamage.Aerodynamics === INVALID,
-					bad: !showAllMode && this.carDamage.Aerodynamics < 0.98,
-					broken: !showAllMode && this.carDamage.Aerodynamics < 0.3
-					})}
-				>
-					<div className="damageLabel">{_("Aerodynamics")}</div>
-
-					<div className="damageValue">
-					{showAllMode
-						? "0%"
-						: this.carDamage.Aerodynamics !== INVALID
-							? `${Math.round((1 - this.carDamage.Aerodynamics) * 100)}%`
-							: "N/A"
-						}
-					</div>
-				</div>
-			}
-
-			{/* Suspension */}
-			{
-				<div
-					className={classNames("damageRow", {
-					na: this.carDamage.Suspension === INVALID,
-					bad: !showAllMode && this.carDamage.Suspension < 0.98,
-					broken: !showAllMode && this.carDamage.Suspension < 0.3
-					})}
-				>
-					<div className="damageLabel">{_("Suspension")}</div>
-
-					<div className="damageValue">
-					{showAllMode
-						? "0%"
-						: this.carDamage.Suspension !== INVALID
-							? `${Math.round((1 - this.carDamage.Suspension) * 100)}%`
-							: "N/A"
-						}
-					</div>
-				</div>
-			}
-
 			</div>
-		</div>
+		);
+	}
+
+	render() {
+		return (
+			<div
+				{...widgetSettings(this.props)}
+				className={classNames("damageNew", this.props.className)}
+			>
+				<div className="carDamageNew">
+					{this.damageItems.map(item =>
+						this.renderDamageRow(
+							item.label,
+							this.carDamage[item.key]
+						)
+					)}
+				</div>
+			</div>
 		);
 	}
 }

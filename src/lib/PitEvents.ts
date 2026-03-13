@@ -84,7 +84,7 @@ export class PitEvents {
       if (
         st.inPitlane &&
         !st.stoppedOnSpot &&
-        speed <= 0.1 &&
+        speed === 0 &&
         d.FinishStatus === 0
       ) {
         st.stoppedOnSpot = true;
@@ -97,7 +97,7 @@ export class PitEvents {
       if (
         st.stoppedOnSpot &&
         !st.leftSpot &&
-        speed > 1 &&
+        speed > 5 &&
         d.FinishStatus === 0
       ) {
         st.leftSpot = true;

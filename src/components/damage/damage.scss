@@ -37,12 +37,38 @@
 
 /* valor (80%) */
 .damageValue {
-  flex: 1;
+  width: 113px;
   background: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 600;
+}
+
+/* modo com barras */
+.damageBar {
+  width: 90%;
+  height: 60%;
+  background: rgba(26, 26, 26, 0.4);
+}
+
+.damageFill {
+  height: 100%;
+  background: currentColor;
+  transition: width 0.2s linear;
+}
+
+/* modo icones */
+.damageIcon {
+	margin-top: 6px;
+  margin-left: 6px;
+  height: 27px;
+	width: 27px;
+}
+.damageLabelIcon {
+  width: 84px;
+  justify-content: center;
+  padding-left: 0;
 }
 
 /* estados */
