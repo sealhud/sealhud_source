@@ -23,8 +23,9 @@ The goal is to provide a reliable, flexible, and future-proof HUD for sim racers
 
 1. In your **Steam Library**, right-click on *RaceRoom Racing Experience* → **Properties** → **Launch Options**  
 2. Add the following parameter: -webHudUrl=https://sealhud.github.io/
-3. Make sure your **CrewChief** or **dash.exe** is updated to the latest version:  
-👉 [Download dash.exe (latest)](https://sealhud.github.io/dash.zip)
+3. Make sure your **CrewChief** or **dash.exe** is updated to the latest version (only one of the two is required):  
+👉 [Download CrewChief](https://thecrewchief.org/forumdisplay.php?28-Download-and-Links)<br>
+👉 [Download dash.zip (latest)](https://sector3studios.github.io/webhud/public/dash.zip)
 
 ---
 
