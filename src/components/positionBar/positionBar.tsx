@@ -32,11 +32,7 @@ import { action, observable } from 'mobx';
 import { 
 	IWidgetSetting,
 	showAllMode,
-	// IDriverPitInfo,
 	eDriverNum,
-	// eDriverPitInfo,
-	// eIsLeaderboard,
-	// eIsHillClimb,
 	eGainLossPermanentBar,
 	eRankInvertRelative
 } from '../app/app';
@@ -78,7 +74,6 @@ interface IDriverInfo {
 	userId: number;
 	logoUrl: string;
 	classUrl: string;
-	//bestLapTime: number;
 	lapsDone: number;
 	rankingData: IRatingData;
 	penalties: ICutTrackPenalties;
@@ -88,44 +83,24 @@ export default class PositionBar extends React.Component<IProps, {}> {
   	@observable accessor vrGame = false;
 	@observable accessor drivers: IDriverInfo[] = [];
 	@observable accessor formattedDrivers: IDriverInfo[] = [];
-	//@observable accessor currentLap = INVALID;
-	//@observable accessor maxLaps = INVALID;
 	@observable accessor pitState = INVALID;
 	@observable accessor sessionPhase = INVALID;
-	//@observable accessor sessionTimeRemaining = INVALID;
 	@observable accessor position = INVALID;
 	@observable accessor positionClass = INVALID;
 	@observable accessor multiClass = false;
 	@observable accessor classDriverCount = INVALID;
 	@observable accessor sessionType = INVALID;
-	//@observable accessor lapTimeCurrentSelf = INVALID;
 	@observable accessor playerCount = INVALID;
-	//@observable accessor isLeaderboard = false;
-	//@observable accessor isHillClimb = false;
 	@observable accessor strengthOF = "";
 	@observable accessor logoUrlp1 = "https://game.raceroom.com/store/image_redirect?id=";
 	@observable accessor logoUrlp2 = "&size=small";
 	@observable accessor startingLights = -1;
 	@observable accessor singleplayerRace = false;
-	@observable accessor startPositions: IStartPositions = {};	
-	//@observable accessor lapTimePreviousSelf = -1;
-	//@observable accessor lapTimeBestSelf = -1;
-	//@observable accessor bestSelfSector3 = -1;
-	//@observable accessor completedLaps = -1;
-	//@observable accessor currentSlotId = -1;
-	//@observable accessor myIncidentPoints = -1;
+	@observable accessor startPositions: IStartPositions = {};
 	@observable accessor playerIsFocus = false;
-	//@observable accessor maxIncidentPoints = -1;
-	//@observable accessor myCutTrackWarnings = -1;
-	//@observable accessor actualRoundsLeft = -1;
-	//@observable accessor bestLapSelf = -1;
-	//@observable accessor sessionTimeDuration = -1;
-	//@observable accessor layoutLength = -1;
 	@observable accessor pitWindowStatus = -1;
 	@observable accessor lastCheck = 0;
-	//@observable accessor lapDistance = -1;
 	@observable accessor notInRacePhase = true;
-	//@observable accessor personalBestTime = FuelEvents.bestLapTimeSec;
 
 	playerPosition = INVALID;
 	positionBarCount = 15;
@@ -150,65 +125,17 @@ export default class PositionBar extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		/*
-		this.lapTimeCurrentSelf = r3e.data.LapTimeCurrentSelf;
-		this.bestLapSelf =
-			this.personalBestTime !== null
-			? this.personalBestTime
-			: r3e.data.LapTimeBestSelf > -1
-			? r3e.data.LapTimeBestSelf
-			: r3e.data.LapTimeBestLeaderClass > -1
-			? r3e.data.LapTimeBestLeaderClass
-			: r3e.data.LapTimeBestLeader > -1
-			? r3e.data.LapTimeBestLeader
-			: r3e.data.SectorTimesSessionBestLap.Sector3 > -1
-			? r3e.data.SectorTimesSessionBestLap.Sector3
-			: -1;
-		*/
-		//this.lapDistance = r3e.data.LapDistance;
-		//this.completedLaps = r3e.data.CompletedLaps;
 		this.sessionPhase = r3e.data.SessionPhase;
-		//this.currentLap = this.completedLaps + 1;
-		//this.maxLaps = r3e.data.NumberOfLaps;
 		this.position = r3e.data.Position;
 		this.positionClass = r3e.data.PositionClass;
 		this.sessionType = r3e.data.SessionType;
-		//this.lapTimePreviousSelf = r3e.data.LapTimePreviousSelf;
-		//this.lapTimeBestSelf = r3e.data.LapTimeBestSelf;
-		/*
-		this.actualRoundsLeft = 
-			FuelStrategy.RoundsLeft !== null 
-			? Math.round(FuelStrategy.RoundsLeft* 10) / 10 
-			: getRoundsLeft(this.lapTimeBestSelf);
-		this.bestSelfSector3 = r3e.data.SectorTimesBestSelf.Sector3;
-		*/
-		//this.layoutLength = r3e.data.LayoutLength;
-		//this.isLeaderboard = eIsLeaderboard;
-		//this.isHillClimb = eIsHillClimb;
-		//this.sessionTimeRemaining = showAllMode ? 1 : r3e.data.SessionTimeRemaining;
-		// ATIVAR ESSE TRECHO NOVAMENTE QUANDO HABILITAR SHORTBAR
-		// if (!this.props.relative) {
-		//  this.vrGame = this.props.settings.subSettings.shortBar.enabled;
-		// }
 		this.lastCheck = nowCheck;
 		this.playerIsFocus = ePlayerIsFocus;
-		//this.currentSlotId = eCurrentSlotId;
-		//this.sessionTimeDuration = r3e.data.SessionTimeDuration;
 		this.notInRacePhase =
 			(this.sessionPhase < 4 && r3e.data.CarSpeed < 5) ||
 			this.sessionPhase < 3;
 		this.pitState = r3e.data.PitState;
 		this.pitWindowStatus = r3e.data.PitWindowStatus;
-		/*
-		this.maxIncidentPoints =
-			r3e.data.MaxIncidentPoints !== undefined
-			? r3e.data.MaxIncidentPoints
-			: -1;
-		this.myIncidentPoints =
-			r3e.data.IncidentPoints !== undefined ? r3e.data.IncidentPoints : -1;
-		this.myCutTrackWarnings =
-			r3e.data.CutTrackWarnings !== undefined ? r3e.data.CutTrackWarnings : -1;
-		*/
 		this.classDriverCount = 0;
 		this.playerCount = r3e.data.DriverData.length;
 		this.multiClass = false;
@@ -349,12 +276,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 		this.singleplayerRace = true;
 		}
 
-		/*
-		const decName = !isUser && (this.isLeaderboard || this.isHillClimb)
-			? "Ghost-Car"
-			: base64ToString(driver.DriverInfo.Name);
-		*/
-
 		const decName = base64ToString(driver.DriverInfo.Name);
 
 		const driverData = {
@@ -389,7 +310,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 				driver.DriverInfo.ClassId.toString() +
 				this.logoUrlp2
 				: `${this.logoUrlp1}1717${this.logoUrlp2}`,
-			//bestLapTime: driver.SectorTimeBestSelf.Sector3,
 			lapsDone: driver.CompletedLaps,
 			rankingData: getRankingData(driver.DriverInfo.UserId),
 			classColor:  getClassColor(driver.DriverInfo.ClassPerformanceIndex),
@@ -810,12 +730,6 @@ export default class PositionBar extends React.Component<IProps, {}> {
 			{...widgetSettings(this.props)}
 			>
 			{
-			/*
-			(this.props.relative ||
-				(!this.props.relative &&
-				((!this.isLeaderboard && !this.isHillClimb) || showAllMode))
-			) &&
-			 */
             this.sessionPhase !== INVALID && (
 				<div
               	className={classNames("positionBar", this.props.className, {
@@ -833,14 +747,11 @@ export default class PositionBar extends React.Component<IProps, {}> {
 							player={player}
 							relative={this.props.relative}
 							settings={this.props.settings}
-							// playerPitInfo={eDriverPitInfo}
 							singleplayerRace={this.singleplayerRace}
 							sessionType={this.sessionType}
 							sessionPhase={this.sessionPhase}
 							position={this.position}
 							multiClass={this.multiClass}
-							//isLeaderboard={this.isLeaderboard}
-							//isHillClimb={this.isHillClimb}
 							startingLights={this.startingLights}
 							startPosition={this.startPositions}
 						/>
@@ -857,14 +768,11 @@ interface IEntryProps extends React.HTMLAttributes<HTMLDivElement> {
 	player: IDriverInfo;
 	relative: boolean;
 	settings: IWidgetSetting;
-	// playerPitInfo: IDriverPitInfo;
 	singleplayerRace: boolean;
 	sessionType: number;
 	sessionPhase: number;
 	position: number;
 	multiClass: boolean;
-	//isLeaderboard: boolean;
-	//isHillClimb: boolean;
 	startingLights: number;
 	startPosition: IStartPositions;
 }
@@ -882,8 +790,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 		const player = this.props.player;
 		const singleplayerRace = this.props.singleplayerRace;
 		const multiClass = this.props.multiClass;
-		//const isLeaderboard = this.props.isLeaderboard;
-		//const isHillClimb = this.props.isHillClimb;
 		const pitWindow = getTimeUntilPit(r3e.data.NumberOfLaps !== INVALID);
 		const startPositions = this.props.startPosition;
 		// CN=Car Names and CL=Car Logos
@@ -944,14 +850,8 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 				showAllMode);
 		const posGainedLost =
 		startPosition !== -1 ? Math.abs(startPosition - player.position) : -1;
-
-		// If Relative/Standings are Off or is not HillClimb/LeaderBoard
-		/*if (
-		  this.props.relative ||
-		  (!this.props.relative &&
-			((!isLeaderboard && !isHillClimb) || showAllMode))
-		)*/ {	
-
+		
+		{	
 		return (
 			<div className={classNames('player', {
 				isUser: player.isUser,
@@ -1156,7 +1056,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
 
 				{/*STANDINGS: GAP BETWEEN DRIVERS*/}
 				{!this.props.relative &&
-				//((!isLeaderboard && !isHillClimb) || showAllMode) && ((showAllMode) &&
 				(
 					<div
 					className="diff mono"

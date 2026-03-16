@@ -61,33 +61,22 @@ interface IWarnings {
 @observer
 export default class Spotting extends React.Component<IProps, {}> {
 	@observable accessor drivers: IDriver[] = [];
-
 	@observable accessor speed = 0;
-
 	@observable accessor startLights = -1;
-
 	@observable accessor controlType = INVALID;
-
 	@observable accessor warning: IWarnings = {
 		left: { slot: INVALID, name: '', distance: 0 },
 		right: { slot: INVALID, name: '', distance: 0 }
 	};
-
 	@observable accessor lastCheck = 0;
-
 	@observable accessor sessionType = -1;
-
 	@observable accessor sessionPhase = -1;
-
 	@observable accessor notInRacePhase = true;
-
 	audio = new Audio();
-
 	// Required otherwise there are issues with
 	// The play() request was interrupted by a call to pause()
 	// https://goo.gl/LdLk22
 	audioIsPlaying = false;
-
 	audioContext = new AudioContext();
 	mediaElementSource = this.audioContext.createMediaElementSource(this.audio);
 	stereoPanner = this.audioContext.createStereoPanner();
@@ -99,11 +88,8 @@ export default class Spotting extends React.Component<IProps, {}> {
 	scale = 5;
 
 	@observable accessor playerIsFocus = false;
-
 	@observable accessor currentSlotId = -1;
-
 	@observable accessor isLeaderboard = false;
-
 	@observable accessor isHillClimb = false;
 
 	constructor(props: IProps) {
@@ -300,7 +286,6 @@ export default class Spotting extends React.Component<IProps, {}> {
 		this.warning.right.slot = INVALID;
 
 		this.drivers.forEach((driver) => {
-			// const isFront = !this.isDriverBehind(driver);
 			if (
 				driver.isUser ||
 				(
@@ -388,37 +373,6 @@ export default class Spotting extends React.Component<IProps, {}> {
 		return {
 			transform: `rotate(${rotation}rad) translate(-50%, -50%)`
 		};
-	}
-
-	private isDriverBehind(driver: IDriver) {
-		if (!this.driverPosition) {
-			return true;
-		}
-		const scale = this.scale;
-		// const playerX = this.driverPosition.x * scale;
-		const playerY = this.driverPosition.y * scale;
-		// const rotation = r3e.data.CarOrientation.Yaw;
-		// const containerWidth = 500;
-		const containerHeight = 500;
-		// const left = driver.x * scale - playerX + containerWidth / 2;
-		const top = driver.y * scale - playerY + containerHeight / 2;
-		return top > 250;
-	}
-
-	private rotatedPosition(pLeft: number, pTop: number, oLeft: number, oTop: number, angle: number) {
-		// 1
-		const x = pLeft - oLeft;
-		const y = pTop - oTop;
-
-		// 2
-		const xRot = x * Math.cos(angle) - y * Math.sin(angle);
-		const yRot = x * Math.sin(angle) + y * Math.cos(angle);
-
-		// 3
-		const pLeftRot = xRot + oLeft;
-		const pTopRot = yRot + oTop;
-
-		return {left: pLeftRot, top: pTopRot};
 	}
 
 	private getDriverStyle(driver: IDriver) {

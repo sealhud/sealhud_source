@@ -16,7 +16,6 @@ import {
   getInitials,
   getRankingData,
   showDebugMessageSmall,
-  // resAspect,
   IRatingData,
   INVALID,
   getClassColor,
@@ -32,12 +31,10 @@ import {
   lowPerformanceMode,
   highPerformanceMode,
   eLogoUrl,
-  // eDriverPitInfo,
   eIsLeaderboard,
   eIsHillClimb,
   eGainLossPermanentTower,
   eRankInvert,
-  // IDriverPitInfo,
   showAllMode,
 } from "../app/app";
 import { action, observable } from "mobx";
@@ -167,8 +164,6 @@ export default class TvTower extends React.Component<IProps, {}> {
       this.sessionType = r3e.data.SessionType;
       this.isLeaderboard = eIsLeaderboard;
       this.isHillClimb = eIsHillClimb;
-      // this.driverPitInfo = eDriverPitInfo;
-      // this.driverDiffs = eDriverDiffs;
       this.gameInReplay = r3e.data.GameInReplay > 0;
       if ((!this.isLeaderboard && !this.isHillClimb) || showAllMode) {
         this.pitState = r3e.data.PitState;
@@ -410,20 +405,6 @@ export default class TvTower extends React.Component<IProps, {}> {
           : formatTime(diff, "s.SSS", this.addPrefix);
     });
   }
-
-  /*
-  private computeRealLapDiff = (
-    meLaps: number,
-    meDist: number,
-    otherLaps: number,
-    otherDist: number,
-  ) => {
-    let lapDiff = meLaps - otherLaps;
-    if (lapDiff < 0 && otherDist < meDist) lapDiff++;
-    else if (lapDiff > 0 && meDist < otherDist) lapDiff--;
-    return lapDiff;
-  };
-  */
 
   // TV Tower: Calculate Gaps Between Drivers (Race)
   private roundGap(gap: number): number {
@@ -845,15 +826,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
   constructor(props: IEntryProps) {
     super(props);
   }
-  /*
-  private renderPlayerNameLong(name: string) {
-    const firstInitial = name.substr(0, 1).toUpperCase() + ". ";
-    const parts = name.split(" ");
-    const lastNames = parts.slice(1);
-    const retName = lastNames.map((item) => item.toUpperCase());
-    return firstInitial + retName.toString().replace(",", " ").substr(0, 3);
-  }
-    */
   private renderPlayerNameShort(name: string) {
     const parts = name.split(" ");
     const lastNames = parts.slice(1);
@@ -884,23 +856,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
     }
     return require("./../../img/transparent.svg");
   }
-
-  /*
-  private hexToRGB(hex: string, alpha: number) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-
-    if (alpha > 0) {
-      return `rgba(${r >= 0 ? r : 0}, ${g >= 0 ? g : 0}, ${
-        b >= 0 ? b : 0
-      }, ${alpha}) 5px solid`;
-    }
-    return `rgba(${r >= 0 ? r : 0}, ${g >= 0 ? g : 0}, ${
-      b >= 0 ? b : 0
-    }, ${alpha}) 5px solid`;
-  }
-  */
 
   private getStartEnd(theEnd: boolean) {
     const classOnly = this.props.settings.subSettings.showOwnClassOnly.enabled;
@@ -940,17 +895,6 @@ export class PositionEntry extends React.Component<IEntryProps, {}> {
       return null;
     }
     const player = this.props.player;
-    // const playerDiffs = this.props.playerDiffs;      
-    /*
-    const playerPitInfo =
-    gameInReplay &&
-    ((r3e.data.SessionTimeDuration !== -1 &&
-      r3e.data.SessionTimeRemaining <= 0) ||
-      (r3e.data.NumberOfLaps !== -1 &&
-        r3e.data.CompletedLaps >= r3e.data.NumberOfLaps * 0.9))
-      ? {}
-      : this.props.playerPitInfo;
-    */
     const playerSlotId = this.props.playerSlotId;
     const classOnly = this.props.settings.subSettings.showOwnClassOnly.enabled;
     let showIt = false;
