@@ -1010,7 +1010,46 @@ export const trackDetails: ITrackDetails = {
 				BoxEntrance: 4144
 			}
 		}
-	}
+	},
+	13350: {
+		Name: 'Adria Intern. Raceway 2003',
+		Layouts: {
+			13352: {
+				Name: 'Full Circuit',
+				BoxEntrance: 2436
+			}
+		}
+	},
+	13424: {
+		Name: 'Adria Intern. Raceway 2021',
+		Layouts: {
+			13425: {
+				Name: 'Full Circuit',
+				BoxEntrance: 3437
+			}
+		}
+	},
+	13186: {
+		Name: 'Vallelunga',
+		Layouts: {
+			13187: {
+				Name: 'International',
+				BoxEntrance: 3670
+			},
+			13338: {
+				Name: 'Short',
+				BoxEntrance: 1344
+			},
+			13339: {
+				Name: 'Chicane',
+				BoxEntrance: 2866
+			},
+			13340: {
+				Name: 'Classic',
+				BoxEntrance: 2822
+			}
+		}
+	},
 };
 
 export function getCornerName(layoutId: number, lDist: number) {
@@ -3697,6 +3736,82 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 2725 && lDist <= 2835) { return 'Brooklands'; }
 		if (lDist >= 2890 && lDist <= 3090) { return 'Luffield'; }		
 		if (lDist >= 3245 && lDist <= 3465) { return 'Woodcote'; }
+		
+	// Vallelunga - International
+	} else if (layoutId === 13187) {
+		if (lDist >= 3900 || lDist <= 80) { return 'Start-Finish'; }
+		if (lDist >= 330 && lDist <= 660) { return 'Curva Grande'; }
+		if (lDist >= 950 && lDist <= 1060) { return 'Cimini 1'; }
+		if (lDist >= 1080 && lDist <= 1200) { return 'Cimini 2'; }
+		if (lDist >= 1850 && lDist <= 2100) { return 'Campagnano'; }
+		if (lDist >= 2330 && lDist <= 2450) { return 'Soratte'; }
+		if (lDist >= 2520 && lDist <= 2690) { return 'Trincea'; }
+		if (lDist >= 2810 && lDist <= 3000) { return 'Semaforo'; }
+		if (lDist >= 3030 && lDist <= 3180) { return 'Tornantino'; }
+		if (lDist >= 3240 && lDist <= 3480) { return 'Esse'; }
+		if (lDist >= 3620 && lDist <= 3860) { return 'Roma'; }
+		
+	// Vallelunga - Short
+	} else if (layoutId === 13338) {
+		if (lDist >= 1590 || lDist <= 80) { return 'Start-Finish'; }
+		if (lDist >= 200 && lDist <= 430) { return 'Viterbo'; }
+		if (lDist >= 480 && lDist <= 660) { return 'Semaforo'; }
+		if (lDist >= 720 && lDist <= 830) { return 'Tornantino'; }
+		if (lDist >= 930 && lDist <= 1140) { return 'Esse'; }
+		if (lDist >= 1280 && lDist <= 1540) { return 'Roma'; }
+		
+	// Vallelunga - Chicane
+	} else if (layoutId === 13339) {
+		if (lDist >= 3130 || lDist <= 80) { return 'Start-Finish'; }
+		if (lDist >= 280 && lDist <= 400) { return 'Chicane 1'; }
+		if (lDist >= 420 && lDist <= 680) { return 'Curva Grande'; }
+		if (lDist >= 960 && lDist <= 1080) { return 'Cimini 1'; }
+		if (lDist >= 1095 && lDist <= 1230) { return 'Cimini 2'; }
+		if (lDist >= 1440 && lDist <= 1590) { return 'Chicane 2'; }
+		if (lDist >= 1740 && lDist <= 1850) { return 'Trincea'; }
+		if (lDist >= 2000 && lDist <= 2180) { return 'Semaforo'; }
+		if (lDist >= 2240 && lDist <= 2380) { return 'Tornantino'; }
+		if (lDist >= 2465 && lDist <= 2670) { return 'Esse'; }
+		if (lDist >= 2830 && lDist <= 3090) { return 'Roma'; }
+		
+	// Vallelunga - Classic
+	} else if (layoutId === 13340) {
+		if (lDist >= 3090 || lDist <= 100) { return 'Start-Finish'; }
+		if (lDist >= 330 && lDist <= 630) { return 'Curva Grande'; }
+		if (lDist >= 950 && lDist <= 1070) { return 'Cimini 1'; }
+		if (lDist >= 1090 && lDist <= 1230) { return 'Cimini 2'; }
+		if (lDist >= 1640 && lDist <= 1860) { return 'Trincea'; }
+		if (lDist >= 1960 && lDist <= 2130) { return 'Semaforo'; }
+		if (lDist >= 2200 && lDist <= 2320) { return 'Tornantino'; }
+		if (lDist >= 2420 && lDist <= 2610) { return 'Esse'; }
+		if (lDist >= 2750 && lDist <= 3030) { return 'Roma'; }
+		
+	// Adria International Raceway 2003
+	} else if (layoutId === 13352) {
+		if (lDist >= 2520 || lDist <= 60) { return 'Start-Finish'; }
+		if (lDist >= 195 && lDist <= 370) { return 'Ramata'; }
+		if (lDist >= 765 && lDist <= 950) { return 'Cavanella'; }
+		if (lDist >= 1180 && lDist <= 1310) { return 'Tornantino'; }
+		if (lDist >= 1560 && lDist <= 1630) { return 'Variante Po'; }
+		if (lDist >= 1640 && lDist <= 1740) { return 'Quadra 1'; }
+		if (lDist >= 1770 && lDist <= 1890) { return 'Quadra 2'; }
+		if (lDist >= 2030 && lDist <= 2190) { return 'Dogado'; }
+		if (lDist >= 2280 && lDist <= 2430) { return 'Della Fonte'; }
+		
+	// Adria International Raceway 2021
+	} else if (layoutId === 13425) {
+		if (lDist >= 3470 || lDist <= 100) { return 'Start-Finish'; }
+		if (lDist >= 195 && lDist <= 395) { return 'Ramata'; }
+		if (lDist >= 815 && lDist <= 1040) { return 'Turn 2'; }
+		if (lDist >= 1295 && lDist <= 1445) { return 'Turn 3'; }
+		if (lDist >= 1585 && lDist <= 1730) { return 'Turn 4'; }
+		if (lDist >= 1970 && lDist <= 2125) { return 'Turn 5'; }
+		if (lDist >= 2525 && lDist <= 2625) { return 'Turn 6'; }
+		if (lDist >= 2630 && lDist <= 2700) { return 'Esses'; }
+		if (lDist >= 2705 && lDist <= 2780) { return 'Quadra 1'; }
+		if (lDist >= 2800 && lDist <= 2920) { return 'Quadra 2'; }
+		if (lDist >= 3040 && lDist <= 3210) { return 'Dogado'; }
+		if (lDist >= 3300 && lDist <= 3440) { return 'Della Fonte'; }
 
 	// The End
 	}

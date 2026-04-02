@@ -1,3 +1,14 @@
+	1.06
+	----------
+	WIDGETS:
+	- Relatives: Added names for the new cars LRT NXT1, Alpine A110 Cup and Alpine A110 GT4+.
+
+	TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
+	Track details, corner names, and pit spot positions have been added for all new circuits:
+	- Adria International Raceway 2003.
+	- Adria International Raceway 2021.
+	- Vallelunga: All layouts.
+
 	1.05
 	----------
 	WIDGETS:

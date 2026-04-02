@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.05;
+const currentVersion = 1.06;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4292,19 +4292,19 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-MARCH 13, 2026
+APRIL 2, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- TvTower / PositionBar: The pit-stop detection system has been improved to prevent false pit-stop detections.
-- MoTeC: Added a new option to display a circular MoTeC layout.
-- MoTeC: The speed limiter indicator light now has more vibrant colors. (Thanks, Jos)
-- Damage: Added option to display damage as bars.
-- Damage: Added option to display icons instead of text for each item's labels.
-- InputsGraph: Added option to display steering inputs on live telemetry. (Thanks, AzagThoth Realrace)
-- Clock: Minor style adjustments.
+- Relatives: Added names for the new cars LRT NXT1, Alpine A110 Cup and Alpine A110 GT4+.
+
+TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
+Track details, corner names, and pit spot positions have been added for all new circuits:
+- Adria International Raceway 2003.
+- Adria International Raceway 2021.
+- Vallelunga: All layouts.
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4352,6 +4352,16 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.05
+-------------------------
+- TvTower / PositionBar: The pit-stop detection system has been improved to prevent false pit-stop detections.
+- MoTeC: Added a new option to display a circular MoTeC layout.
+- MoTeC: The speed limiter indicator light now has more vibrant colors. (Thanks, Jos)
+- Damage: Added option to display damage as bars.
+- Damage: Added option to display icons instead of text for each item's labels.
+- InputsGraph: Added option to display steering inputs on live telemetry. (Thanks, AzagThoth Realrace)
+- Clock: Minor style adjustments.
 
 VERSION 1.04
 -------------------------

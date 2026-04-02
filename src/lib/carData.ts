@@ -324,6 +324,10 @@ export const carNames = [
 	'Praga R1',
 	'Porsche 911 GT3',
 	'Raceroom Truck',
+	'LRT NXT1',
+	'Alpine A110 Cup',
+	'Alpine A110 GT4+',
+
 ];
 
 export const carIds = [
@@ -650,6 +654,9 @@ export const carIds = [
 	11051,
 	12012,
 	9986,
+	13355,
+	13394,
+	13398,
 ];
 export default function getCarName(modelID: number, driverName?: string) {
 	const indexNum = carIds.indexOf(modelID);
