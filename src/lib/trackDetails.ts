@@ -1050,6 +1050,27 @@ export const trackDetails: ITrackDetails = {
 			}
 		}
 	},
+	13255: {
+		Name: 'Circuit de Spa-Francorchamps',
+		Layouts: {
+			13368: {
+				Name: 'Classic',
+				BoxEntrance: 6802
+			},
+			13369: {
+				Name: 'Combined',
+				BoxEntrance: 6102
+			},
+			13467: {
+				Name: 'Moto',
+				BoxEntrance: 6774
+			},
+			13256: {
+				Name: 'Grand Prix',
+				BoxEntrance: 6791
+			}
+		}
+	},
 };
 
 export function getCornerName(layoutId: number, lDist: number) {
@@ -3192,7 +3213,7 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 995 && lDist <= 1140) { return 'Turn 4'; }
 		if (lDist >= 1200 && lDist <= 1360) { return 'Turn 5'; }
 		if (lDist >= 1460 && lDist <= 1690) { return 'Turn 6'; }
-		if (lDist >= 1890 && lDist <= 2110) { return 'Turn 7'; }
+		if (lDist >= 1890 && lDist <= 2110) { return 'Graveyard'; }
 		if (lDist >= 2111 && lDist <= 2340) { return 'Rahal Straight'; }
 		if (lDist >= 2410 && lDist <= 2590) { return 'The Corkscrew'; }
 		if (lDist >= 2600 && lDist <= 2820) { return 'Turn 10'; }
@@ -3812,6 +3833,88 @@ export function getCornerName(layoutId: number, lDist: number) {
 		if (lDist >= 2800 && lDist <= 2920) { return 'Quadra 2'; }
 		if (lDist >= 3040 && lDist <= 3210) { return 'Dogado'; }
 		if (lDist >= 3300 && lDist <= 3440) { return 'Della Fonte'; }
+
+	// Circuit de SPA - Classic
+	} else if (layoutId === 13368) {
+		if (lDist >= 6750 || lDist <= 190) { return 'Start-Finish'; }
+		if (lDist >= 191 && lDist <= 405) { return 'Eau Rouge'; }
+		if (lDist >= 406 && lDist <= 505) { return 'Raidillon'; }
+		if (lDist >= 685 && lDist <= 815) { return 'Kemmel'; }
+		if (lDist >= 816 && lDist <= 1515) { return 'Kemmel-Straight'; }
+		if (lDist >= 1516 && lDist <= 1720) { return 'Les Combes'; }
+		if (lDist >= 1770 && lDist <= 1880) { return 'Malmedy'; }
+		if (lDist >= 2120 && lDist <= 2320) { return 'Rivage'; }
+		if (lDist >= 2405 && lDist <= 2525) { return 'Turn 9'; }
+		if (lDist >= 2910 && lDist <= 3325) { return 'Pouhon'; }
+		if (lDist >= 3580 && lDist <= 3910) { return 'Fagnes'; }
+		if (lDist >= 4050 && lDist <= 4175) { return 'Turn 13'; }
+		if (lDist >= 4250 && lDist <= 4410) { return 'Stavelot'; }
+		if (lDist >= 4925 && lDist <= 5160) { return 'Turn 15'; }
+		if (lDist >= 5260 && lDist <= 5435) { return 'Blanchimont'; }
+		if (lDist >= 5855 && lDist <= 6000) { return 'Bus Stop'; }
+		if (lDist >= 6490 && lDist <= 6590) { return 'La Source'; }
+
+	// Circuit de SPA - Combined
+	} else if (layoutId === 13369) {
+		if (lDist >= 6750 || lDist <= 190) { return 'Start-Finish'; }
+		if (lDist >= 191 && lDist <= 405) { return 'Eau Rouge'; }
+		if (lDist >= 406 && lDist <= 505) { return 'Raidillon'; }
+		if (lDist >= 685 && lDist <= 815) { return 'Kemmel'; }
+		if (lDist >= 816 && lDist <= 1515) { return 'Kemmel-Straight'; }
+		if (lDist >= 1516 && lDist <= 1720) { return 'Les Combes'; }
+		if (lDist >= 1770 && lDist <= 1880) { return 'Malmedy'; }
+		if (lDist >= 2120 && lDist <= 2320) { return 'Rivage'; }
+		if (lDist >= 2405 && lDist <= 2525) { return 'Turn 9'; }
+		if (lDist >= 2910 && lDist <= 3325) { return 'Pouhon'; }
+		if (lDist >= 3580 && lDist <= 3910) { return 'Fagnes'; }
+		if (lDist >= 4050 && lDist <= 4175) { return 'Turn 13'; }
+		if (lDist >= 4250 && lDist <= 4410) { return 'Stavelot'; }
+		if (lDist >= 4925 && lDist <= 5160) { return 'Turn 15'; }
+		if (lDist >= 5260 && lDist <= 5435) { return 'Blanchimont'; }
+		if (lDist >= 5855 && lDist <= 6000) { return 'Bus Stop'; }
+		if (lDist >= 6490 && lDist <= 6590) { return 'La Source'; }
+
+		// Circuit de SPA - GP
+	} else if (layoutId === 13256) {
+		if (lDist >= 6750 || lDist <= 199) { return 'Start-Finish'; }
+		if (lDist >= 200 && lDist <= 310) { return 'La Source'; }
+		if (lDist >= 405 && lDist <= 620) { return 'Turn 2'; }
+		if (lDist >= 890 && lDist <= 1105) { return 'Eau Rouge'; }
+		if (lDist >= 1106 && lDist <= 1205) { return 'Raidillon'; }
+		if (lDist >= 1395 && lDist <= 1510) { return 'Kemmel'; }
+		if (lDist >= 1511 && lDist <= 2205) { return 'Kemmel-Straight'; }
+		if (lDist >= 2206 && lDist <= 2420) { return 'Les Combes'; }
+		if (lDist >= 2465 && lDist <= 2570) { return 'Malmedy'; }
+		if (lDist >= 2820 && lDist <= 3020) { return 'Rivage'; }
+		if (lDist >= 3100 && lDist <= 3220) { return 'Turn 11'; }
+		if (lDist >= 3605 && lDist <= 4030) { return 'Pouhon'; }
+		if (lDist >= 4280 && lDist <= 4610) { return 'Fagnes'; }
+		if (lDist >= 4750 && lDist <= 4875) { return 'Turn 13'; }
+		if (lDist >= 4950 && lDist <= 5110) { return 'Stavelot'; }
+		if (lDist >= 5620 && lDist <= 5855) { return 'Turn 17'; }
+		if (lDist >= 5955 && lDist <= 6145) { return 'Blanchimont'; }
+		if (lDist >= 6550 && lDist <= 6700) { return 'Bus Stop'; }
+
+		// Circuit de SPA - Moto
+	} else if (layoutId === 13467) {
+		if (lDist >= 6750 || lDist <= 199) { return 'Start-Finish'; }
+		if (lDist >= 200 && lDist <= 310) { return 'La Source'; }
+		if (lDist >= 405 && lDist <= 620) { return 'Turn 2'; }
+		if (lDist >= 890 && lDist <= 1105) { return 'Eau Rouge'; }
+		if (lDist >= 1106 && lDist <= 1205) { return 'Raidillon'; }
+		if (lDist >= 1395 && lDist <= 1510) { return 'Kemmel'; }
+		if (lDist >= 1511 && lDist <= 2205) { return 'Kemmel-Straight'; }
+		if (lDist >= 2206 && lDist <= 2420) { return 'Les Combes'; }
+		if (lDist >= 2465 && lDist <= 2570) { return 'Malmedy'; }
+		if (lDist >= 2820 && lDist <= 3020) { return 'Rivage'; }
+		if (lDist >= 3100 && lDist <= 3220) { return 'Turn 11'; }
+		if (lDist >= 3605 && lDist <= 4030) { return 'Pouhon'; }
+		if (lDist >= 4280 && lDist <= 4610) { return 'Fagnes'; }
+		if (lDist >= 4750 && lDist <= 4875) { return 'Turn 13'; }
+		if (lDist >= 4950 && lDist <= 5110) { return 'Stavelot'; }
+		if (lDist >= 5620 && lDist <= 5855) { return 'Turn 17'; }
+		if (lDist >= 5955 && lDist <= 6145) { return 'Blanchimont'; }
+		if (lDist >= 6550 && lDist <= 6700) { return 'Bus Stop'; }
 
 	// The End
 	}

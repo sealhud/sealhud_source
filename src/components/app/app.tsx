@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.06;
+const currentVersion = 1.07;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4292,19 +4292,16 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-APRIL 2, 2026
+APRIL 13, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Relatives: Added names for the new cars LRT NXT1, Alpine A110 Cup and Alpine A110 GT4+.
+- Inputs: Throttle inputs bar was moved to the top and the Clutch inputs bar was moved to the bottom..
 
 TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
-Track details, corner names, and pit spot positions have been added for all new circuits:
-- Adria International Raceway 2003.
-- Adria International Raceway 2021.
-- Vallelunga: All layouts.
+- Track details, corner names, and pit spot positions have been added for the new 'Circuit de Spa-Francorchamps'.
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4352,6 +4349,14 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.06
+-------------------------
+- Relatives: Added names for the new cars LRT NXT1, Alpine A110 Cup and Alpine A110 GT4+.
+- Track details, corner names, and pit spot positions have been added for new circuits:
+  Adria International Raceway 2003.
+  Adria International Raceway 2021.
+  Vallelunga: All layouts.
 
 VERSION 1.05
 -------------------------

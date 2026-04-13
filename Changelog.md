@@ -1,6 +1,10 @@
 	1.07
 	----------
-	-
+	WIDGETS:
+	- Inputs: Throttle inputs bar was moved to the top and the Clutch inputs bar was moved to the bottom..
+
+	TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
+	- Track details, corner names, and pit spot positions have been added for the new 'Circuit de Spa-Francorchamps'.
 	
 	1.06
 	----------

@@ -94,15 +94,15 @@ export default class Inputs extends React.Component<IProps, {}> {
 			{/* RIGHT COLUMN — INPUTS */}
 			<div className="inputsBars">
 
-				{/* CLUTCH */}
-				<div className="inputRow clutch">
+				{/* THROTTLE */}
+				<div className="inputRow throttle">
 				<div className="inputValue">
-					{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
+					{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
 				</div>
 				<div className="inputMeter">
 					<div
 					className="inputFill"
-					style={{ width: `${showAllMode ? 80 : this.clutchPedal * 100}%` }}
+					style={{ width: `${showAllMode ? 100 : this.throttlePedal * 100}%` }}
 					/>
 				</div>
 				</div>
@@ -120,18 +120,18 @@ export default class Inputs extends React.Component<IProps, {}> {
 				</div>
 				</div>
 
-				{/* THROTTLE */}
-				<div className="inputRow throttle">
+				{/* CLUTCH */}
+				<div className="inputRow clutch">
 				<div className="inputValue">
-					{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
+					{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
 				</div>
 				<div className="inputMeter">
 					<div
 					className="inputFill"
-					style={{ width: `${showAllMode ? 100 : this.throttlePedal * 100}%` }}
+					style={{ width: `${showAllMode ? 80 : this.clutchPedal * 100}%` }}
 					/>
 				</div>
-				</div>
+				</div>				
 
 			</div>
 			</div>
