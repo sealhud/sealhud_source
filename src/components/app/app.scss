@@ -593,7 +593,7 @@ html.debug .viewport {
 .settingsRight {
   flex: 1;
   height: 100%;
-  padding: 12px;
+  padding: 11px;
   box-sizing: border-box;
   overflow-y: auto;
   display: grid;
@@ -620,7 +620,7 @@ html.debug .viewport {
 .widgetBody {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .widget .widgetTitle {

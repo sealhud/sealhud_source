@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.07;
+const currentVersion = 1.08;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -849,8 +849,12 @@ export default class App extends React.Component<IProps> {
           enabled: true,
         },
         steeringInput: {
-          text: __("Steering wheel"),
+          text: __("Steering Wheel"),
           enabled: true,
+        },
+        verticalLayout: {
+          text: __("Vertical Layout"),
+          enabled: false,
         },
       },
       position: {
@@ -1579,8 +1583,12 @@ export default class App extends React.Component<IProps> {
           enabled: true,
         },
         steeringInput: {
-          text: __("Steering wheel"),
+          text: __("Steering Wheel"),
           enabled: true,
+        },
+        verticalLayout: {
+          text: __("Vertical Layout"),
+          enabled: false,
         },
       },
       position: {
@@ -4292,16 +4300,17 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-APRIL 13, 2026
+APRIL 20, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Inputs: Throttle inputs bar was moved to the top and the Clutch inputs bar was moved to the bottom..
+- Inputs: Vertical layout option added.
+- Inputs Graph: Inputs bars weren't reaching 100% max. Fixed. (Thanks Mike Kara for reporting ).
 
-TRACK DATA (used by 'Track Info' AND 'Pit Limiter' widgets):
-- Track details, corner names, and pit spot positions have been added for the new 'Circuit de Spa-Francorchamps'.
+TRANSLATIONS:
+- A few minor fixes.
 
 
 Thanks for using SealHUD. Thanks for driving RaceRoom.
@@ -4349,6 +4358,11 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.07
+-------------------------
+- Inputs: Throttle inputs bar was moved to the top and the Clutch inputs bar was moved to the bottom.
+- Track details, corner names, and pit spot positions have been added for the new 'Circuit de Spa-Francorchamps'.
 
 VERSION 1.06
 -------------------------

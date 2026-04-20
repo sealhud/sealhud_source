@@ -109,7 +109,7 @@ export default class InputsGraph extends React.Component<IProps> {
 						height={this.canvasHeight}
 						style={{ overflow: "visible" }}
 					>
-						{/* Linha 75% (mais próxima do topo) */}
+						{/* Linha de referencia 75% (mais próxima do topo) */}
 						<line
 							x1={0}
 							y1={this.canvasHeight * 0.25}
@@ -120,7 +120,7 @@ export default class InputsGraph extends React.Component<IProps> {
 							strokeDasharray="4 6"
 						/>
 
-						{/* Linha 50% */}
+						{/* Linha de referencia  50% */}
 						<line
 							x1={0}
 							y1={this.canvasHeight / 2}
@@ -131,7 +131,7 @@ export default class InputsGraph extends React.Component<IProps> {
 							strokeDasharray="4 5"
 						/>
 
-						{/* Linha 25% (mais próxima do fundo) */}
+						{/* Linha de referencia 25% (mais próxima do fundo) */}
 						<line
 							x1={0}
 							y1={this.canvasHeight * 0.75}
@@ -195,17 +195,17 @@ export default class InputsGraph extends React.Component<IProps> {
 						{/* Vertical Pedals (Clutch / Brake / Throttle) */}
 						<div className="pedalsGroup">
 							<div className="meterGroup">
-								<div className="meter clutch" style={{ height: `${r3e.data.ClutchRaw * 100}%` }} />
+								<div className="meter clutch" style={{ height: `${r3e.data.ClutchRaw * 76}%` }} />
 								<div className="meterLabel">{Math.round(r3e.data.ClutchRaw * 100)}</div>
 							</div>							
 
 							<div className="meterGroup">
-								<div className="meter brake" style={{ height: `${r3e.data.BrakeRaw * 100}%` }} />
+								<div className="meter brake" style={{ height: `${r3e.data.BrakeRaw * 76}%` }} />
 								<div className="meterLabel">{Math.round(r3e.data.BrakeRaw * 100)}</div>
 							</div>
 
 							<div className="meterGroup">
-								<div className="meter throttle" style={{ height: `${r3e.data.ThrottleRaw * 100}%` }} />
+								<div className="meter throttle" style={{ height: `${r3e.data.ThrottleRaw * 76}%` }} />
 								<div className="meterLabel">{Math.round(r3e.data.ThrottleRaw * 100)}</div>
 							</div>
 						</div>

@@ -64,6 +64,10 @@ export default class Inputs extends React.Component<IProps, {}> {
 	};
 
 	render() {
+		const isVertical = this.props.settings.subSettings.verticalLayout.enabled;
+		const throttleValue = showAllMode ? 100 : this.throttlePedal * 100;
+		const brakeValue = showAllMode ? 90 : this.brakePedal * 100;
+		const clutchValue = showAllMode ? 80 : this.clutchPedal * 100;
 		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
 		if (r3e.data.GameInReplay > 0 && !this.playerIsFocus && !showAllMode) return null;
 
@@ -73,11 +77,12 @@ export default class Inputs extends React.Component<IProps, {}> {
 			className={classNames("inputsNew", this.props.className, {
 				hasWheel: this.props.settings.subSettings.steeringInput.enabled &&
 						(this.playerIsFocus || showAllMode),
-				showNumbers: this.props.settings.subSettings.showInputNumbers.enabled
+				showNumbers: this.props.settings.subSettings.showInputNumbers.enabled,
+				vertical: isVertical
 			})}
 			>
 
-			{/* LEFT COLUMN — WHEEL */}
+			{/* WHEEL */}
 			{this.props.settings.subSettings.steeringInput.enabled &&
 				(this.playerIsFocus || showAllMode) && (
 				<div className="inputsWheel">
@@ -91,46 +96,58 @@ export default class Inputs extends React.Component<IProps, {}> {
 				</div>
 			)}
 
-			{/* RIGHT COLUMN — INPUTS */}
+			{/* INPUTS BARS */}
 			<div className="inputsBars">
 
 				{/* THROTTLE */}
 				<div className="inputRow throttle">
-				<div className="inputValue">
-					{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
-				</div>
-				<div className="inputMeter">
-					<div
-					className="inputFill"
-					style={{ width: `${showAllMode ? 100 : this.throttlePedal * 100}%` }}
-					/>
-				</div>
+					<div className="inputValue">
+						{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
+					</div>
+					<div className="inputMeter">
+						<div
+						className="inputFill"
+						style={
+							isVertical
+								? { height: `${throttleValue}%` }
+								: { width: `${throttleValue}%` }
+						}					
+						/>
+					</div>
 				</div>
 
 				{/* BRAKE */}
 				<div className="inputRow brake">
-				<div className="inputValue">
-					{showAllMode ? 90 : Math.ceil(this.brakePedal * 100)}
-				</div>
-				<div className="inputMeter">
-					<div
-					className="inputFill"
-					style={{ width: `${showAllMode ? 90 : this.brakePedal * 100}%` }}
-					/>
-				</div>
+					<div className="inputValue">
+						{showAllMode ? 90 : Math.ceil(this.brakePedal * 100)}
+					</div>
+					<div className="inputMeter">
+						<div
+						className="inputFill"
+						style={
+							isVertical
+								? { height: `${brakeValue}%` }
+								: { width: `${brakeValue}%` }
+						}	
+						/>
+					</div>
 				</div>
 
 				{/* CLUTCH */}
 				<div className="inputRow clutch">
-				<div className="inputValue">
-					{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
-				</div>
-				<div className="inputMeter">
-					<div
-					className="inputFill"
-					style={{ width: `${showAllMode ? 80 : this.clutchPedal * 100}%` }}
-					/>
-				</div>
+					<div className="inputValue">
+						{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
+					</div>
+					<div className="inputMeter">
+						<div
+						className="inputFill"
+						style={
+							isVertical
+								? { height: `${clutchValue}%` }
+								: { width: `${clutchValue}%` }
+						}	
+						/>
+					</div>
 				</div>				
 
 			</div>

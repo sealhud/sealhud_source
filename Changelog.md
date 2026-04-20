@@ -1,3 +1,12 @@
+	1.08
+	----------
+	WIDGETS:
+	- Inputs: Vertical layout option added.
+	- Inputs Graph: Inputs bars weren't reaching 100% max. Fixed. (Thanks Mike Kara for reporting ).
+
+	TRANSLATIONS:
+	- A few minor fixes.
+	
 	1.07
 	----------
 	WIDGETS:
