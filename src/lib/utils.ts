@@ -132,9 +132,7 @@ export async function getJason() {
 		.filter(id => id !== -1)
 		.map(userId =>
 		fetch(
-			`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
-			`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
-			)}`
+			`https://proxy.corsfix.com/?https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
 		)
 			.then((r: Response) => r.json())
 			.catch(() => null)
@@ -160,7 +158,7 @@ export async function getJason() {
 		) {
 			try {
 				const resp = await fetch(
-				`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
+				`https://proxy.corsfix.com/?${encodeURIComponent(
 					`https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
 				)}`
 				);
