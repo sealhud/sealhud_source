@@ -124,27 +124,39 @@ export function getSlotIds() {
 
 
 // se parar de funcionar, precisa achar novo proxy cors ... antes era usado o https://corsproxy.io/? que parecia ser mais rápido
+let rankingLoading = false;
 export async function getJason() {
-	rankData = [];
 
-	const requests = r3e.data.DriverData
-		.map(d => d.DriverInfo.UserId)
-		.filter(id => id !== -1)
-		.map(userId =>
-		fetch(
-			`https://proxy.corsfix.com/?https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
-		)
-			.then((r: Response) => r.json())
-			.catch(() => null)
-		);
+  if (rankingLoading) {
+    return;
+  }
 
-	const results = await Promise.all(requests);
+  rankingLoading = true;
 
-	for (const data of results) {
-		if (data && typeof data.UserId === 'number') {
-		rankData.push(data);
-		}
-	}
+  try {
+    rankData = [];
+
+    const requests = r3e.data.DriverData
+      .map(d => d.DriverInfo.UserId)
+      .filter(id => id !== -1)
+      .map(userId =>
+        fetch(
+          `https://proxy.corsfix.com/?https://game.raceroom.com/multiplayer-rating/user/${userId}.json`
+        )
+          .then((r: Response) => r.json())
+          .catch(() => null)
+      );
+
+    const results = await Promise.all(requests);
+
+    for (const data of results) {
+      if (data && typeof data.UserId === 'number') {
+        rankData.push(data);
+      }
+    }
+  } finally {
+    rankingLoading = false;
+  }
 }
 
 /* getJason() BACKUP
