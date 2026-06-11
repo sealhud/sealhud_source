@@ -6,7 +6,7 @@ import {
 	fancyTimeFormatGap,
 	formatTime,
 	getClassColor,
-	// showDebugMessage,
+	//showDebugMessageSmall,
 	widgetSettings,
 	INVALID
 } from './../../lib/utils';
@@ -39,7 +39,8 @@ export default class Progress extends React.Component<IProps, {}> {
 	@observable accessor currentDifference = INVALID;
 	lastDifference = INVALID;
 	differences: number[] = [];
-
+	@observable accessor lastCompletedLaps = -1;
+	@observable accessor hideUntilNextLap = false;
 	@observable accessor lapDistanceFraction = 0;
 	@observable accessor lapDistance = -1;
 	@observable accessor isImproving = 0;
@@ -112,7 +113,6 @@ export default class Progress extends React.Component<IProps, {}> {
 	@observable accessor gotLapped = false;
 	@observable accessor completedLaps = -1;
 	@observable accessor lappedAmount = 0;
-	//@observable accessor pbTime = personalBestTime;
 	@observable accessor pbTime = FuelEvents.bestLapTimeSec;
 	@observable accessor lapTimeBestSelf = -1;
 	@observable accessor timeDeltaBestSelf = -1;
@@ -183,6 +183,9 @@ export default class Progress extends React.Component<IProps, {}> {
 			this.playerIsFocus = ePlayerIsFocus;
 			this.currentSlotId = eCurrentSlotId;
 			this.pitState = r3e.data.PitState;
+			if (this.pitState >= EPitState.Entered) {
+				this.hideUntilNextLap = true;
+			}
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;
 			this.sectorStartFactors = r3e.data.SectorStartFactors;
@@ -200,21 +203,10 @@ export default class Progress extends React.Component<IProps, {}> {
 			this.isLeading = showAllMode
 				?	false
 				:	r3e.data.PositionClass === 1;
-			this.showDeltaOnLaptime = (
-				(
-					this.sessionType === ESession.Race &&
-					(
-						this.props.settings.subSettings.deltaInRace.enabled ||
-						this.isLeading
-					) &&
-					r3e.data.CurrentLapValid === 1
-				) ||
-				(
-					this.sessionType !== ESession.Race &&
-					r3e.data.CurrentLapValid === 1
-				) ||
-				showAllMode
-			);
+			const noInvalidLaps = 
+				!this.props.settings.subSettings.hideWhenInvalid.enabled || 
+				r3e.data.CurrentLapValid === 1;
+			this.showDeltaOnLaptime = noInvalidLaps || showAllMode;
 			if (
 				this.lastSessionType != null &&
 				this.lastSessionType !== ESession.Race &&
@@ -223,7 +215,7 @@ export default class Progress extends React.Component<IProps, {}> {
 				this.resetSectors = true;
 			}
 			if (!this.showDeltaOnLaptime) {
-					this.updateRace();
+					return;
 			} else {
 				this.updatePracticeQualify();
 			}
@@ -266,38 +258,6 @@ export default class Progress extends React.Component<IProps, {}> {
 			}
 		}
 	};
-
-	private getClassTimeDeltaInfront() {
-		let classTimeDelta = 0;
-		let hasFoundOpponent = false;
-		if (showAllMode) {
-			return 55;
-		}
-		if (this.gotLapped) {
-			return classTimeDelta;
-		}
-		// Iterate backwards from the opponent infront of the driver
-		// and append their timeDeltas to get the total
-		for (let i = r3e.data.Position - 2; i >= 0; i -= 1) {
-			const driver = r3e.data.DriverData[i];
-			if (!driver) continue; // <---- skip se o driver sumiu nesse frame
-			classTimeDelta += driver.TimeDeltaBehind ?? 0;
-
-			const isSameClass =
-				driver.DriverInfo.ClassPerformanceIndex ===
-				r3e.data.VehicleInfo.ClassPerformanceIndex;
-			if (isSameClass) {
-				hasFoundOpponent = true;
-				break;
-			}
-		}
-
-		if (!hasFoundOpponent) {
-			return INVALID;
-		}
-
-		return classTimeDelta;
-	}
 
 	@action
 	private updateSectorTimes() {
@@ -890,14 +850,6 @@ export default class Progress extends React.Component<IProps, {}> {
 	}
 
 	@action
-	private updateRace() {
-		this.lastSessionType = r3e.data.SessionType;
-		this.lapDistanceFraction = this.lapDistanceFraction;
-		this.currentDifference = this.getClassTimeDeltaInfront();
-		this.updateDifferences();
-	}
-
-	@action
 	private updatePracticeQualify() {
 		this.sectorTimesBestSelf = r3e.data.SectorTimesBestSelf;
 		if (showAllMode) {
@@ -911,17 +863,24 @@ export default class Progress extends React.Component<IProps, {}> {
 			this.lastSessionType !== null &&
 			this.lastSessionType !== r3e.data.SessionType;
 
-		if (
-			shouldReset ||
-			this.lapDistanceFraction - this.lapDistanceFraction > 0.5
-		) {
-			this.differences.length = 0;
-		}
+			const newLapStarted =
+			this.lastCompletedLaps !== -1 &&
+			this.completedLaps > this.lastCompletedLaps;
 
-		if (this.lapTimeCurrentSelf === INVALID) {
-			this.lapDistanceFraction = this.lapDistanceFraction;
-			return;
-		}
+			if (shouldReset || newLapStarted) {
+				this.differences.length = 0;
+				this.isImproving = 0;
+				this.lastDifference = this.currentDifference;
+			}
+
+			if (newLapStarted) {
+				this.hideUntilNextLap = false;
+			}
+			this.lastCompletedLaps = this.completedLaps;
+
+		this.currentDifference = showAllMode
+			?	-3.123
+			:	this.timeDeltaBestSelf;
 
 		this.lastSessionType = r3e.data.SessionType;
 		this.lapDistanceFraction = this.lapDistanceFraction;
@@ -932,11 +891,7 @@ export default class Progress extends React.Component<IProps, {}> {
 		) {
 			return;
 		}
-
-		this.currentDifference = showAllMode
-			?	-3.123
-			:	this.timeDeltaBestSelf;
-
+		
 		// Estimated position
 		this.estimatedLaptime = showAllMode
 			?	1342
@@ -984,7 +939,7 @@ export default class Progress extends React.Component<IProps, {}> {
 			50
 		);
 		return `${showAllMode
-			?	90
+			?	0
 			:	proc}%`;
 	};
 
@@ -1027,11 +982,15 @@ export default class Progress extends React.Component<IProps, {}> {
 				)
 			);
 
-		if ((inPits || hideInRace) && !showAllMode) {
+		if ((inPits || hideInRace || this.hideUntilNextLap) && !showAllMode) {
 			return null;
 		}
 
 		if (this.startLights < 6 && !showAllMode) {
+			return null;
+		}
+
+		if (!this.showDeltaOnLaptime) {
 			return null;
 		}
 
@@ -1053,7 +1012,7 @@ export default class Progress extends React.Component<IProps, {}> {
 				{...widgetSettings(this.props)}
 				className={classNames('progress', this.props.className, {
 					shouldShow:
-						this.lapTimeCurrentSelf !== INVALID ||
+						this.currentDifference !== INVALID ||
 						this.sessionType === ESession.Race ||
 						showAllMode,
 					race: showAllMode
@@ -1147,6 +1106,7 @@ export default class Progress extends React.Component<IProps, {}> {
 					{
 						this.sessionType !== ESession.Race &&
 						!firstRoundInQualy &&
+						this.lapTimeCurrentSelf !== INVALID &&
 						this.props.settings.subSettings.deltaNextPosition.enabled &&
 						(showAllMode || (!this.isLeaderboard && !this.isHillClimb && this.playerIsFocus)) &&
 						showDelta &&
@@ -1174,6 +1134,7 @@ export default class Progress extends React.Component<IProps, {}> {
 							<div className="qualifyInfo">
 								{
 									this.props.settings.subSettings.estimatedLapTime.enabled &&
+									this.lapTimeCurrentSelf !== INVALID &&
 									(
 										<div className="esimatedLapTime">
 											{_('Est. Time')}:{' '}
@@ -1194,6 +1155,7 @@ export default class Progress extends React.Component<IProps, {}> {
 								}
 								{
 									this.props.settings.subSettings.estimatedPosition.enabled &&
+									this.lapTimeCurrentSelf !== INVALID &&
 									((!this.isLeaderboard && !this.isHillClimb) || showAllMode) &&
 									(
 										<div className="esimatedPosition">
@@ -1215,6 +1177,7 @@ export default class Progress extends React.Component<IProps, {}> {
 
 				{
 					this.props.settings.subSettings.lastLap.enabled &&
+					this.lapTimeCurrentSelf !== INVALID &&
 					(
 						(
 							(

@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.08;
+const currentVersion = 1.09;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -562,12 +562,12 @@ export default class App extends React.Component<IProps> {
           text: __("Show Sectors as time"),
           enabled: true,
         },
-        deltaInRace: {
-          text: __("Delta to Best-Lap in Race"),
-          enabled: true,
-        },
         hideInRace: {
           text: __("Hide in race"),
+          enabled: false,
+        },
+        hideWhenInvalid: {
+          text: __("Hide on Invalid Laps"),
           enabled: false,
         },
       },
@@ -1296,12 +1296,12 @@ export default class App extends React.Component<IProps> {
           text: __("Show Sectors as time"),
           enabled: true,
         },
-        deltaInRace: {
-          text: __("Delta to Best-Lap in Race"),
-          enabled: true,
-        },
         hideInRace: {
           text: __("Hide in race"),
+          enabled: false,
+        },
+        hideWhenInvalid: {
+          text: __("Hide on Invalid Laps"),
           enabled: false,
         },
       },
@@ -3068,9 +3068,10 @@ export default class App extends React.Component<IProps> {
                 className="welcomeLogo"
                 src={require("./../../img/sealhud_logo.png")}
               />
-              <div className="welcomeTitles">
+              {/*<div className="welcomeTitles">
                 <div className="welcomeVersion">Version {currentVersion}</div>
               </div>
+              */}
             </div>
 
             {/* CONTENT */}
@@ -3079,13 +3080,12 @@ export default class App extends React.Component<IProps> {
               {/* LEFT */}
               <div className="welcomeLeft">
                 <div className="welcomeSectionTitle">
-                  Support & Community
+                  SUPPORT & COMMUNITY
                 </div>
 
-                <div className="forumBlock">
-                  <div className="forumText">
-                    For issues, feedback and updates<br />
-                    visit the SealHUD forum thread:
+                <div className="leftBlock">
+                  <div className="leftBlockText">
+                    SealHUD Forum Thread:
                   </div>
                   <img
                     className="forumQR"
@@ -3094,7 +3094,7 @@ export default class App extends React.Component<IProps> {
                 </div>
 
                 <div className="donationBlock">
-                  <div className="donationTitle">Donations</div>
+                  <div className="donationTitle">Donations:</div>
                   <img
                     className="donationIcon"
                     src={require("./../../img/donate.png")}
@@ -3104,6 +3104,20 @@ export default class App extends React.Component<IProps> {
                     src={require("./../../img/qr.png")}
                   />
                 </div>
+
+                <div className="leftBlock">
+                  <div className="leftBlockText">
+                    Partners:
+                  </div>
+                  <img
+                    className="partnerIcon"
+                    src={require("./../../img/corsfix.png")}
+                  />
+                  <div className="partnerText">
+                    CORS proxy by Corsfix (www.corsfix.com)
+                  </div>
+                </div>
+                
               </div>
 
               {/* RIGHT */}
@@ -4300,26 +4314,28 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-APRIL 20, 2026
+JUNE 11, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Inputs: Vertical layout option added.
-- Inputs Graph: Inputs bars weren't reaching 100% max. Fixed. (Thanks Mike Kara for reporting ).
+- Delta: "Delta to Best Lap in Race" option removed, as it was not working. Delta's reference lap is the user's best lap in the session.
+- Delta: Added the "Hide on Invalid Laps" option. The widget will now display Delta even on invalid laps unless this option is enabled.
 
-TRANSLATIONS:
-- A few minor fixes.
+GENERAL:
+- SealHUD now uses CORSFIX as its CORS proxy (this is crucial to obtain MP ratings data from the RaceRoom API).
 
 
-Thanks for using SealHUD. Thanks for driving RaceRoom.
-Drive safe.
+Thanks for using SealHUD. 
+Thanks for driving RaceRoom.
+
 Diego Junges
 
 
 THANK YOU:
 -------------------------
+• corsfix.com: for partnering with and supporting the SealHUD project by providing a reliable CORS proxy service.
 • Mad Day Man: for creating and designing the prototype of this layout. I'm happy to be able to bring many of your ideas to "code".
 • Pedro Santana: for all the help from the beginning, back when we thought we were going to spend the rest of our lives collecting data.
 • Leonardo Santana: for teaching me how to use GitHub =)
@@ -4331,6 +4347,7 @@ THANK YOU:
 
 SUPPORTERS:
 -------------------------
+• Marcus Stüben
 • Christian Birkenbach
 • Martin Prinda
 • Rado Obrtal
@@ -4358,6 +4375,12 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.08
+-------------------------
+- Inputs: Vertical layout option added.
+- Inputs Graph: Inputs bars weren't reaching 100% max. Fixed. (Thanks Mike Kara for reporting).
+- Translations: A few minor fixes.
 
 VERSION 1.07
 -------------------------

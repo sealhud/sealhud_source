@@ -204,7 +204,7 @@ html.debug .viewport {
 
 .welcomeLogo {
   height: 200px;
-  margin-left: 15px;
+  margin-left: 150px;
 }
 
 .welcomeVersion {
@@ -227,54 +227,60 @@ html.debug .viewport {
 .welcomeLeft {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
 }
 
 .welcomeSectionTitle {
-  font-size: 26px;
+  font-size: 23px;
   border-bottom: 1px solid rgba(255,255,255,0.2);
   border-top: 1px solid rgba(255,255,255,0.2);
-  padding: 20px;
-}
-
-.forumBlock,
-.donationBlock {
-  background: rgba(0,0,0,0.8);
-  border-radius: 12px;
-  padding: 20px;
+  padding: 13px;
   text-align: center;
 }
 
-.forumText {
-  font-size: 22px;
-  margin-bottom: 12px;
+.leftBlock,
+.donationBlock {
+  background: rgba(0,0,0,0.8);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.leftBlockText,
+.donationTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.partnerText {
+  font-size: 16px;
+  margin: 6px;
+}
+
+.partnerIcon {
+  zoom: 0.30;
 }
 
 .forumQR {
-  zoom: 0.6;
+  zoom: 0.5;
   border: 2px solid #fff;
   border-radius: 20px;
-  padding: 8px;
+  padding: 6px;
   background: #fff;
   box-sizing: border-box;
 }
 
-.donationTitle {
-  font-size: 22px;
-  margin-bottom: 12px;
-}
-
 .donationIcon {
-  zoom: 0.27;
+  zoom: 0.22;
   margin-right: 50px;
 }
 
 .donationQR {
-  zoom: 0.6;
+  zoom: 0.5;
   margin: 25px;
   border: 2px solid #fff;
   border-radius: 20px;
-  padding: 8px;
+  padding: 6px;
   background: #fff;
   box-sizing: border-box;
 }

@@ -1,3 +1,12 @@
+	1.09
+	----------
+	WIDGETS:
+	- Delta: Removed the "Delta to Best Lap in Race" option, as it was not working. Delta's reference lap is the user's best lap in the session.
+	- Delta: Added the "Hide on Invalid Laps" option. The widget will now display Delta even on invalid laps unless this option is enabled.
+
+	GENERAL:
+	- SealHUD now uses CorsFix as its CORS proxy (used to obtain MP ratings data from the RaceRoom API).
+	
 	1.08
 	----------
 	WIDGETS:
