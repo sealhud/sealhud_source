@@ -15,7 +15,8 @@ SealHUD is an actively maintained project that delivers a modern HUD experience 
 - Compatibility with the latest RaceRoom versions  
 - Ongoing maintenance and feature improvements by the SealHUD Team  
 
-The goal is to provide a reliable, flexible, and future-proof HUD for sim racers.
+The goal is to provide a reliable, flexible, and future-proof HUD for sim racers.<br>
+🔗 CORS Proxy provided by [CORSFIX](https://www.corsfix.com)
 
 ---
 
