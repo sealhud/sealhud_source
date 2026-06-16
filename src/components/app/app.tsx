@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.09;
+const currentVersion = 1.10;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4314,17 +4314,15 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-JUNE 11, 2026
+JUNE 17, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Delta: "Delta to Best Lap in Race" option removed, as it was not working. Delta's reference lap is the user's best lap in the session.
-- Delta: Added the "Hide on Invalid Laps" option. The widget will now display Delta even on invalid laps unless this option is enabled.
-
-GENERAL:
-- SealHUD now uses CORSFIX as its CORS proxy (this is crucial to obtain MP ratings data from the RaceRoom API).
+- Delta: Fixed bug that mark sectors as purple when doing Leaderboard Challenge. (Thanks Mike Kara for reporting ).
+- Delta: Minor CSS style adjustments
+- Fuel Details: There was a bug that caused some laps not to be recorded. Fixed.
 
 
 Thanks for using SealHUD. 
@@ -4375,6 +4373,12 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.09
+-------------------------
+- Delta: "Delta to Best Lap in Race" option removed, as it was not working. Delta's reference lap is the user's best lap in the session.
+- Delta: Added the "Hide on Invalid Laps" option. The widget will now display Delta even on invalid laps unless this option is enabled.
+- General: SealHUD now uses CORSFIX as its CORS proxy (this is crucial to obtain MP ratings data from the RaceRoom API).
 
 VERSION 1.08
 -------------------------

@@ -1,3 +1,10 @@
+	1.10
+	----------
+	WIDGETS:
+	- Delta: Fixed bug that mark sectors as purple when doing Leaderboard Challenge. (Thanks Mike Kara for reporting ).
+	- Delta: Minor CSS style adjustments
+	- Fuel Details: There was a bug that caused some laps not to be recorded. Fixed.
+		
 	1.09
 	----------
 	WIDGETS:

@@ -1,4 +1,3 @@
-import { FuelEvents } from "../../lib/FuelEvents";
 import {
 	classNames,
 	ePlayerIsFocus,
@@ -6,7 +5,7 @@ import {
 	fancyTimeFormatGap,
 	formatTime,
 	getClassColor,
-	//showDebugMessageSmall,
+	showDebugMessageSmall,
 	widgetSettings,
 	INVALID
 } from './../../lib/utils';
@@ -88,12 +87,12 @@ export default class Progress extends React.Component<IProps, {}> {
 		Sector1: 0,
 		Sector2: 0,
 		Sector3: 0
-	};
+	};/*
 	@observable accessor sectorReset = {
 		Sector1: -1,
 		Sector2: -1,
 		Sector3: -1
-	};
+	};*/
 	@observable accessor toCheckCurrent = {
 		Sector1: -1,
 		Sector2: -1,
@@ -113,7 +112,6 @@ export default class Progress extends React.Component<IProps, {}> {
 	@observable accessor gotLapped = false;
 	@observable accessor completedLaps = -1;
 	@observable accessor lappedAmount = 0;
-	@observable accessor pbTime = FuelEvents.bestLapTimeSec;
 	@observable accessor lapTimeBestSelf = -1;
 	@observable accessor timeDeltaBestSelf = -1;
 	@observable accessor lapTimeBestLeaderClass = -1;
@@ -163,7 +161,6 @@ export default class Progress extends React.Component<IProps, {}> {
 
 	@action
 	private update = () => {
-		this.pbTime = FuelEvents.bestLapTimeSec;
 		/*if (
 			(
 				highPerformanceMode &&
@@ -550,34 +547,6 @@ export default class Progress extends React.Component<IProps, {}> {
 			}
 		});
 
-		/* this.currentSectors.Sector1 =
-			Math.round(this.currentSectors.Sector1 * 1e3) / 1e3;
-		this.currentSectors.Sector2 =
-			Math.round(this.currentSectors.Sector2 * 1e3) / 1e3;
-		this.currentSectors.Sector3 =
-			Math.round(this.currentSectors.Sector3 * 1e3) / 1e3;
-
-		this.bestSectorsSelf.Sector1 =
-			Math.round(this.bestSectorsSelf.Sector1 * 1e3) / 1e3;
-		this.bestSectorsSelf.Sector2 =
-			Math.round(this.bestSectorsSelf.Sector2 * 1e3) / 1e3;
-		this.bestSectorsSelf.Sector3 =
-			Math.round(this.bestSectorsSelf.Sector3 * 1e3) / 1e3;
-
-		this.bestSectorsClass.Sector1 =
-			Math.round(this.bestSectorsClass.Sector1 * 1e3) / 1e3;
-		this.bestSectorsClass.Sector2 =
-			Math.round(this.bestSectorsClass.Sector2 * 1e3) / 1e3;
-		this.bestSectorsClass.Sector3 =
-			Math.round(this.bestSectorsClass.Sector3 * 1e3) / 1e3;
-
-		this.bestSectorsOverall.Sector1 =
-			Math.round(this.bestSectorsOverall.Sector1 * 1e3)  / 1e3;
-		this.bestSectorsOverall.Sector2 =
-			Math.round(this.bestSectorsOverall.Sector2 * 1e3)  / 1e3;
-		this.bestSectorsOverall.Sector3 =
-			Math.round(this.bestSectorsOverall.Sector3 * 1e3)  / 1e3; */
-
 		if (
 			this.currentSectors.Sector1 > 0 &&
 			(
@@ -680,10 +649,34 @@ export default class Progress extends React.Component<IProps, {}> {
 		) {
 			this.laptimeStatus = 0;
 		}
-
+		
 		this.sectorStatus.Sector1 = 0;
 		this.sectorStatus.Sector2 = 0;
 		this.sectorStatus.Sector3 = 0;
+
+		// for leaderboard mode (fix the "always purple" bug)
+		if (this.isLeaderboard) {
+			if (this.currentSectors.Sector1 > 0) {
+				this.sectorStatus.Sector1 =
+					this.currentSectors.Sector1 <= this.bestSectorsSelf.Sector1 || this.bestSectorsSelf.Sector1 === -1
+						? 2
+						: 1;
+			}
+			if (this.currentSectors.Sector2 > 0) {
+				this.sectorStatus.Sector2 =
+					this.currentSectors.Sector2 <= this.bestSectorsSelf.Sector2 || this.bestSectorsSelf.Sector2 === -1
+						? 2
+						: 1;
+			}
+			if (this.currentSectors.Sector3 > 0) {
+				this.sectorStatus.Sector3 =
+					this.currentSectors.Sector3 <= this.bestSectorsSelf.Sector3 || this.bestSectorsSelf.Sector3 === -1
+						? 2
+						: 1;
+			}
+			return;
+		}
+		
 		if (this.currentSectors.Sector1 > 0) {
 			if (
 				(
@@ -851,6 +844,7 @@ export default class Progress extends React.Component<IProps, {}> {
 
 	@action
 	private updatePracticeQualify() {
+		//showDebugMessageSmall(`ref:${this.bestSectorsSelf.Sector1} - cur:${this.currentSectors.Sector1}`, 20000);
 		this.sectorTimesBestSelf = r3e.data.SectorTimesBestSelf;
 		if (showAllMode) {
 			this.sectorTimesBestSelf.Sector3 = 123.234;

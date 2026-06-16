@@ -171,12 +171,13 @@ export class FuelEvents {
 
     // Início de volta
     if (
-      this.lapStartFuel < 0 &&
-      frac < 0.05 &&
-      r3e.data.LapTimeCurrentSelf >= 0
+      //this.lapStartFuel < 0 &&
+      //frac < 0.05 &&
+      r3e.data.LapTimeCurrentSelf >= 1 &&
+      r3e.data.LapTimeCurrentSelf < 2 &&
+      r3e.data.LapValidState === 0
     ) {
       this.lapStartFuel = fuel;
-      //this.lapStartFraction = frac;
       this.lapPassedMid = false;
       this.lapInvalid = false;
       return;
@@ -194,7 +195,8 @@ export class FuelEvents {
     // Fechamento da volta
     if (
       this.lapStartFuel >= 0 &&
-      frac < 0.05 &&
+      r3e.data.LapTimeCurrentSelf >= 0 &&
+      r3e.data.LapTimeCurrentSelf < 1 &&
       this.lapPassedMid
     ) {
       const prevLap = r3e.data.LapTimePreviousSelf;
