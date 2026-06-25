@@ -1,3 +1,10 @@
+	1.11
+	----------
+	WIDGETS:
+	- Delta: The delta was being displayed before starting a lap on the leaderboards. Fixed. (Thanks to Mike Kara for the report).
+	- Delta: Sector times were not being automatically hidden after starting a new lap. Fixed. (Thanks to Mike Kara for the report).
+
+
 	1.10
 	----------
 	WIDGETS:

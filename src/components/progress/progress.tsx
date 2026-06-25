@@ -40,7 +40,7 @@ export default class Progress extends React.Component<IProps, {}> {
 	differences: number[] = [];
 	@observable accessor lastCompletedLaps = -1;
 	@observable accessor hideUntilNextLap = false;
-	@observable accessor lapDistanceFraction = 0;
+	@observable accessor lapOpen = false;
 	@observable accessor lapDistance = -1;
 	@observable accessor isImproving = 0;
 	@observable accessor showDeltaOnLaptime = false;
@@ -182,6 +182,9 @@ export default class Progress extends React.Component<IProps, {}> {
 			this.pitState = r3e.data.PitState;
 			if (this.pitState >= EPitState.Entered) {
 				this.hideUntilNextLap = true;
+			}
+			if (r3e.data.LapDistanceFraction > 0.00 && r3e.data.LapDistanceFraction < 0.05) {
+				this.lapOpen = true;
 			}
 			this.sessionType = r3e.data.SessionType;
 			this.sessionPhase = r3e.data.SessionPhase;
@@ -674,123 +677,125 @@ export default class Progress extends React.Component<IProps, {}> {
 						? 2
 						: 1;
 			}
-			return;
+			// return;
 		}
 		
-		if (this.currentSectors.Sector1 > 0) {
-			if (
-				(
-					this.currentSectors.Sector1 >
-					this.bestSectorsSelf.Sector1
-				) ||
-				this.bestSectorsSelf.Sector1 < 0
-			) {
-				this.sectorStatus.Sector1 = 1;
+		else {
+			if (this.currentSectors.Sector1 > 0) {
+				if (
+					(
+						this.currentSectors.Sector1 >
+						this.bestSectorsSelf.Sector1
+					) ||
+					this.bestSectorsSelf.Sector1 < 0
+				) {
+					this.sectorStatus.Sector1 = 1;
+				}
+				if (
+					(
+						this.currentSectors.Sector1 <=
+						this.bestSectorsSelf.Sector1
+					) ||
+					this.bestSectorsSelf.Sector1 < 0
+				) {
+					this.sectorStatus.Sector1 = 2;
+				}
+				if (
+					(
+						this.currentSectors.Sector1 <=
+						this.bestSectorsClass.Sector1
+					) ||
+					this.bestSectorsClass.Sector1 < 0
+				) {
+					this.sectorStatus.Sector1 = 3;
+				}
+				if (
+					(
+						this.currentSectors.Sector1 <=
+						this.bestSectorsOverall.Sector1
+					) ||
+					this.bestSectorsOverall.Sector1 < 0
+				) {
+					this.sectorStatus.Sector1 = 4;
+				}
 			}
-			if (
-				(
-					this.currentSectors.Sector1 <=
-					this.bestSectorsSelf.Sector1
-				) ||
-				this.bestSectorsSelf.Sector1 < 0
-			) {
-				this.sectorStatus.Sector1 = 2;
-			}
-			if (
-				(
-					this.currentSectors.Sector1 <=
-					this.bestSectorsClass.Sector1
-				) ||
-				this.bestSectorsClass.Sector1 < 0
-			) {
-				this.sectorStatus.Sector1 = 3;
-			}
-			if (
-				(
-					this.currentSectors.Sector1 <=
-					this.bestSectorsOverall.Sector1
-				) ||
-				this.bestSectorsOverall.Sector1 < 0
-			) {
-				this.sectorStatus.Sector1 = 4;
-			}
-		}
 
-		if (this.currentSectors.Sector2 > 0) {
-			if (
-				(
-					this.currentSectors.Sector2 >
-					this.bestSectorsSelf.Sector2
-				) ||
-				this.bestSectorsSelf.Sector2 < 0
-			) {
-				this.sectorStatus.Sector2 = 1;
+			if (this.currentSectors.Sector2 > 0) {
+				if (
+					(
+						this.currentSectors.Sector2 >
+						this.bestSectorsSelf.Sector2
+					) ||
+					this.bestSectorsSelf.Sector2 < 0
+				) {
+					this.sectorStatus.Sector2 = 1;
+				}
+				if (
+					(
+						this.currentSectors.Sector2 <=
+						this.bestSectorsSelf.Sector2
+					) ||
+					this.bestSectorsSelf.Sector2 < 0
+				) {
+					this.sectorStatus.Sector2 = 2;
+				}
+				if (
+					(
+						this.currentSectors.Sector2 <=
+						this.bestSectorsClass.Sector2
+					) ||
+					this.bestSectorsClass.Sector2 < 0
+				) {
+					this.sectorStatus.Sector2 = 3;
+				}
+				if (
+					(
+						this.currentSectors.Sector2 <=
+						this.bestSectorsOverall.Sector2
+					) ||
+					this.bestSectorsOverall.Sector2 < 0
+				) {
+					this.sectorStatus.Sector2 = 4;
+				}
 			}
-			if (
-				(
-					this.currentSectors.Sector2 <=
-					this.bestSectorsSelf.Sector2
-				) ||
-				this.bestSectorsSelf.Sector2 < 0
-			) {
-				this.sectorStatus.Sector2 = 2;
-			}
-			if (
-				(
-					this.currentSectors.Sector2 <=
-					this.bestSectorsClass.Sector2
-				) ||
-				this.bestSectorsClass.Sector2 < 0
-			) {
-				this.sectorStatus.Sector2 = 3;
-			}
-			if (
-				(
-					this.currentSectors.Sector2 <=
-					this.bestSectorsOverall.Sector2
-				) ||
-				this.bestSectorsOverall.Sector2 < 0
-			) {
-				this.sectorStatus.Sector2 = 4;
-			}
-		}
 
-		if (this.currentSectors.Sector3 > 0) {
-			if (
-				(
-					this.currentSectors.Sector3 >
-					this.bestSectorsSelf.Sector3
-				) ||
-				this.bestSectorsSelf.Sector3 < 0
-			) {
-				this.sectorStatus.Sector3 = 1;
-			}
-			if (
-				(
-					this.currentSectors.Sector3 <=
-					this.bestSectorsSelf.Sector3
-				) ||
-				this.bestSectorsSelf.Sector3 < 0
-			) {
-				this.sectorStatus.Sector3 = 2;
-			}
-			if (
-				(
-					this.currentSectors.Sector3 <=
-					this.bestSectorsClass.Sector3
-				) ||
-				this.bestSectorsClass.Sector3 < 0
-			) {
-				this.sectorStatus.Sector3 = 3;
-			}
-			if (
-				(
-					this.currentSectors.Sector3 <=
-					this.bestSectorsOverall.Sector3
-				) ||
-				this.bestSectorsOverall.Sector3 < 0
-			) {
-				this.sectorStatus.Sector3 = 4;
+			if (this.currentSectors.Sector3 > 0) {
+				if (
+					(
+						this.currentSectors.Sector3 >
+						this.bestSectorsSelf.Sector3
+					) ||
+					this.bestSectorsSelf.Sector3 < 0
+				) {
+					this.sectorStatus.Sector3 = 1;
+				}
+				if (
+					(
+						this.currentSectors.Sector3 <=
+						this.bestSectorsSelf.Sector3
+					) ||
+					this.bestSectorsSelf.Sector3 < 0
+				) {
+					this.sectorStatus.Sector3 = 2;
+				}
+				if (
+					(
+						this.currentSectors.Sector3 <=
+						this.bestSectorsClass.Sector3
+					) ||
+					this.bestSectorsClass.Sector3 < 0
+				) {
+					this.sectorStatus.Sector3 = 3;
+				}
+				if (
+					(
+						this.currentSectors.Sector3 <=
+						this.bestSectorsOverall.Sector3
+					) ||
+					this.bestSectorsOverall.Sector3 < 0
+				) {
+					this.sectorStatus.Sector3 = 4;
+				}
 			}
 		}
 
@@ -844,7 +849,6 @@ export default class Progress extends React.Component<IProps, {}> {
 
 	@action
 	private updatePracticeQualify() {
-		//showDebugMessageSmall(`ref:${this.bestSectorsSelf.Sector1} - cur:${this.currentSectors.Sector1}`, 20000);
 		this.sectorTimesBestSelf = r3e.data.SectorTimesBestSelf;
 		if (showAllMode) {
 			this.sectorTimesBestSelf.Sector3 = 123.234;
@@ -877,7 +881,7 @@ export default class Progress extends React.Component<IProps, {}> {
 			:	this.timeDeltaBestSelf;
 
 		this.lastSessionType = r3e.data.SessionType;
-		this.lapDistanceFraction = this.lapDistanceFraction;
+		//this.lapDistanceFraction = this.lapDistanceFraction;
 
 		if (
 			this.sectorTimesBestSelf.Sector3 === INVALID ||
@@ -984,7 +988,7 @@ export default class Progress extends React.Component<IProps, {}> {
 			return null;
 		}
 
-		if (!this.showDeltaOnLaptime) {
+		if (!this.showDeltaOnLaptime || this.lapOpen === false) {
 			return null;
 		}
 

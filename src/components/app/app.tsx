@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.10;
+const currentVersion = 1.11;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4314,15 +4314,14 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-JUNE 17, 2026
+JUNE 25, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Delta: Fixed bug that mark sectors as purple when doing Leaderboard Challenge. (Thanks Mike Kara for reporting ).
-- Delta: Minor CSS style adjustments
-- Fuel Details: There was a bug that caused some laps not to be recorded. Fixed.
+- Delta: The delta was being displayed before starting a lap on the leaderboards. Fixed. (Thanks to Mike Kara for the report).
+- Delta: Sector times were not being automatically hidden after starting a new lap. Fixed. (Thanks to Mike Kara for the report).
 
 
 Thanks for using SealHUD. 
@@ -4373,6 +4372,12 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.10
+-------------------------
+- Delta: Fixed bug that mark sectors as purple when doing Leaderboard Challenge. (Thanks Mike Kara for reporting ).
+- Delta: Minor CSS style adjustments
+- Fuel Details: There was a bug that caused some laps not to be recorded. Fixed.
 
 VERSION 1.09
 -------------------------
