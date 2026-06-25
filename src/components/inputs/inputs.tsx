@@ -70,7 +70,7 @@ export default class Inputs extends React.Component<IProps, {}> {
 		const clutchValue = showAllMode ? 80 : this.clutchPedal * 100;
 		if (this.sessionType === 2 && this.sessionPhase === 1) return null;
 		if (r3e.data.GameInReplay > 0 && !this.playerIsFocus && !showAllMode) return null;
-
+		
 		return (
 			<div
 			{...widgetSettings(this.props)}
@@ -102,7 +102,7 @@ export default class Inputs extends React.Component<IProps, {}> {
 				{/* THROTTLE */}
 				<div className="inputRow throttle">
 					<div className="inputValue">
-						{showAllMode ? 100 : Math.ceil(this.throttlePedal * 100)}
+						{showAllMode ? 100 : Math.round(this.throttlePedal * 100)}
 					</div>
 					<div className="inputMeter">
 						<div
@@ -119,7 +119,7 @@ export default class Inputs extends React.Component<IProps, {}> {
 				{/* BRAKE */}
 				<div className="inputRow brake">
 					<div className="inputValue">
-						{showAllMode ? 90 : Math.ceil(this.brakePedal * 100)}
+						{showAllMode ? 90 : Math.round(this.brakePedal * 100)}
 					</div>
 					<div className="inputMeter">
 						<div
@@ -136,7 +136,7 @@ export default class Inputs extends React.Component<IProps, {}> {
 				{/* CLUTCH */}
 				<div className="inputRow clutch">
 					<div className="inputValue">
-						{showAllMode ? 80 : Math.ceil(this.clutchPedal * 100)}
+						{showAllMode ? 80 : Math.round(this.clutchPedal * 100)}
 					</div>
 					<div className="inputMeter">
 						<div
