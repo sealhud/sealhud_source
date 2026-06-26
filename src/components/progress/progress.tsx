@@ -183,7 +183,7 @@ export default class Progress extends React.Component<IProps, {}> {
 			if (this.pitState >= EPitState.Entered) {
 				this.hideUntilNextLap = true;
 			}
-			if (r3e.data.LapDistanceFraction > 0.00 && r3e.data.LapDistanceFraction < 0.05) {
+			if (this.lapOpen === false && r3e.data.LapDistance < 50) {
 				this.lapOpen = true;
 			}
 			this.sessionType = r3e.data.SessionType;
