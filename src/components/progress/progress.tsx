@@ -987,8 +987,8 @@ export default class Progress extends React.Component<IProps, {}> {
 		if (this.startLights < 6 && !showAllMode) {
 			return null;
 		}
-
-		if (!this.showDeltaOnLaptime || this.lapOpen === false) {
+		// delta não aparecia em test mode - fixado na versao 1.12
+		if ((!this.showDeltaOnLaptime || this.lapOpen === false) && !showAllMode) {
 			return null;
 		}
 

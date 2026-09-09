@@ -143,7 +143,7 @@ export {
   hudApp,
 };
 // Hud Version
-const currentVersion = 1.11;
+const currentVersion = 1.12;
 
 @observer
 export default class App extends React.Component<IProps> {
@@ -4314,20 +4314,36 @@ private getChangelog() {
       {`${"VERSION "}`+currentVersion}
     </span>
 {`
-JUNE 25, 2026
+SEPTEMBER 09, 2026
 
 
 WHAT'S NEW:
 -------------------------
 WIDGETS:
-- Delta: The delta was being displayed before starting a lap on the leaderboards. Fixed. (Thanks to Mike Kara for the report).
-- Delta: Sector times were not being automatically hidden after starting a new lap. Fixed. (Thanks to Mike Kara for the report).
-
+- Relatives: Included new GT3/DTM 2026 car names.
+- Delta: The widget was not displaying in Test Mode. Fixed. (Thanks to Mike Kara for the report).
 
 Thanks for using SealHUD. 
 Thanks for driving RaceRoom.
 
 Diego Junges
+
+
+SUPPORTERS:
+-------------------------
+• Colin Barker
+• Jesus Fadrique
+• Marcus Stüben
+• Christian Birkenbach
+• Martin Prinda
+• Rado Obrtal
+• Alexander Samardzic
+• Martin Decker
+• Marcus Stoffels
+• Stuart Tennant
+• Donald Hunter
+• Hans-Jörg Mächler
+• Jos Snijder
 
 
 THANK YOU:
@@ -4341,20 +4357,6 @@ THANK YOU:
   Maskerader, S3MØG, Jos Snijder, Mike Kara, Spidybite, ShortyBuzzGER, Niismo, Shay, Marcus, 
   and so so many others (too many people, BUT THANK YOU!) 
 
-
-SUPPORTERS:
--------------------------
-• Marcus Stüben
-• Christian Birkenbach
-• Martin Prinda
-• Rado Obrtal
-• Alexander Samardzic
-• Martin Decker
-• Marcus Stoffels
-• Stuart Tennant
-• Donald Hunter
-• Hans-Jörg Mächler
-• Jos Snijder
 
 If you encounter any sort of problems, have questions or suggestions, feel free to post in the Forum-Thread!
 
@@ -4372,6 +4374,11 @@ Diego Junges
 {`
 PAST CHANGES (since v.1.00)
 
+
+VERSION 1.11
+-------------------------
+- Delta: The delta was being displayed before starting a lap on the leaderboards. Fixed. (Thanks to Mike Kara for the report).
+- Delta: Sector times were not being automatically hidden after starting a new lap. Fixed. (Thanks to Mike Kara for the report).
 
 VERSION 1.10
 -------------------------

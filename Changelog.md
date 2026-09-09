@@ -1,9 +1,14 @@
+	1.12
+	----------
+	WIDGETS:
+	- Relatives: Included new GT3/DTM 2026 car names.
+	- Delta: The widget was not displaying in Test Mode. Fixed. (Thanks to Mike Kara for the report).
+
 	1.11
 	----------
 	WIDGETS:
 	- Delta: The delta was being displayed before starting a lap on the leaderboards. Fixed. (Thanks to Mike Kara for the report).
 	- Delta: Sector times were not being automatically hidden after starting a new lap. Fixed. (Thanks to Mike Kara for the report).
-
 
 	1.10
 	----------
